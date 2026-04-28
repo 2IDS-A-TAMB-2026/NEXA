@@ -1,0 +1,358 @@
+<!--<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NEXA | Usuários</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #0f2a44;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a.active,
+        .sidebar a:hover {
+            background: #0a66c2;
+        }
+
+        .menu-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-footer img {
+            width: 120px;
+            opacity: 0.85;
+            border-radius: 100%;
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin-bottom: 20px;
+            color: #0f2a44;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-add {
+            background: #2e7d32;
+            color: #fff;
+        }
+
+        .btn-edit {
+            background: #0a66c2;
+            color: #fff;
+        }
+
+        .btn-delete {
+            background: #c62828;
+            color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #e9eef3;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* MODAL */
+        #modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
+        }
+
+        #modalBox {
+            background: #fff;
+            width: 320px;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #modalBox input,
+        #modalBox select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div>
+            <h2>NEXA</h2>
+
+            <a href="dashboard.html">Dashboard</a>
+            <a href="dashboard_cameras.html" id="menuCameras">
+                Dashboard de Câmeras
+            </a>
+            <a href="upload.html">Análise de EPI</a>
+            <a href="history.html" id="menu-history">Histórico</a>
+
+            
+            <a href="reports.html" id="menu-reports">Relatórios</a>
+            <a href="users.html" id="menu-users">Usuários</a>
+
+            <a href="profile.html">Perfil</a>
+            <a href="#" onclick="logout()">Sair</a>
+        </div>
+
+        <div class="menu-footer">
+            <img src="assets/images/logo-nexa.png" alt="Logo NEXA">
+        </div>
+
+    </aside>
+
+    <div class="main">
+        <header>
+            <h1>Gestão de Usuários</h1>
+        </header>
+
+        <div class="card">
+            <button class="btn btn-add" onclick="abrirModal()">+ Novo Usuário</button>
+
+            <table id="tabelaUsuarios">
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Tipo</th>
+                    <th>Ações</th>
+                </tr>
+                <tr>
+                    <td>Administrador</td>
+                    <td>admin@nexa.com</td>
+                    <td>Administrador</td>
+                    <td>
+                        <button class="btn btn-edit" onclick="editarUsuario(this)">Editar</button>
+                        <button class="btn btn-delete" onclick="excluirUsuario(this)">Excluir</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    
+    <div id="modal">
+        <div id="modalBox">
+            <h3 id="tituloModal">Novo Usuário</h3>
+            <input type="text" id="nome" placeholder="Nome">
+            <input type="email" id="email" placeholder="E-mail">
+            <select id="tipo">
+                <option>Administrador</option>
+                <option>Operador</option>
+            </select>
+            <button class="btn btn-add" onclick="salvarUsuario()">Salvar</button>
+            <button class="btn btn-delete" onclick="fecharModal()">Cancelar</button>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let linhaEditando = null;
+
+        /* ABRIR MODAL */
+        function abrirModal() {
+            linhaEditando = null;
+            document.getElementById("tituloModal").innerText = "Novo Usuário";
+            document.getElementById("nome").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("tipo").value = "Operador";
+            document.getElementById("modal").style.display = "block";
+        }
+
+        /* FECHAR MODAL */
+        function fecharModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        /* SALVAR USUÁRIO */
+        function salvarUsuario() {
+            const nome = document.getElementById("nome").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const tipo = document.getElementById("tipo").value;
+
+            if (!nome || !email) {
+                Swal.fire({
+                    title: "Campos obrigatórios",
+                    text: "Preencha todos os campos antes de salvar.",
+                    icon: "warning"
+                });
+                return;
+            }
+
+            if (linhaEditando) {
+                linhaEditando.cells[0].innerText = nome;
+                linhaEditando.cells[1].innerText = email;
+                linhaEditando.cells[2].innerText = tipo;
+
+                Swal.fire({
+                    title: "Usuário atualizado",
+                    text: "Os dados foram alterados com sucesso.",
+                    icon: "success"
+                });
+            } else {
+                const tabela = document.getElementById("tabelaUsuarios");
+                const linha = tabela.insertRow();
+
+                linha.innerHTML = `
+            <td>${nome}</td>
+            <td>${email}</td>
+            <td>${tipo}</td>
+            <td>
+                <button class="btn btn-edit" onclick="editarUsuario(this)">Editar</button>
+                <button class="btn btn-delete" onclick="excluirUsuario(this)">Excluir</button>
+            </td>
+        `;
+
+                Swal.fire({
+                    title: "Usuário adicionado",
+                    text: "O usuário foi cadastrado com sucesso.",
+                    icon: "success"
+                });
+            }
+
+            fecharModal();
+        }
+
+        /* EDITAR USUÁRIO */
+        function editarUsuario(botao) {
+            linhaEditando = botao.parentElement.parentElement;
+            document.getElementById("tituloModal").innerText = "Editar Usuário";
+            document.getElementById("nome").value = linhaEditando.cells[0].innerText;
+            document.getElementById("email").value = linhaEditando.cells[1].innerText;
+            document.getElementById("tipo").value = linhaEditando.cells[2].innerText;
+            document.getElementById("modal").style.display = "block";
+
+            // ALERTA SWEETALERT AO EDITAR
+            Swal.fire({
+                title: "Modo edição ativado",
+                text: "Você pode alterar os dados deste usuário.",
+                icon: "info",
+                draggable: true
+            });
+        }
+
+        /* EXCLUIR USUÁRIO */
+        function excluirUsuario(botao) {
+            Swal.fire({
+                title: "Confirmar exclusão",
+                text: "Deseja realmente excluir este usuário?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sim, excluir",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    botao.parentElement.parentElement.remove();
+                    Swal.fire({
+                        title: "Usuário excluído",
+                        text: "O usuário foi removido com sucesso.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+    </script>
+    <script src="assets/js/permissions.js"></script>
+    <script src="assets/js/permissions.js"></script>
+
+    <script>
+        function logout() {
+            localStorage.removeItem("tipoUsuario");
+            window.location.href = "login.html";
+        }
+
+        // Nome dinâmico no topo
+        document.addEventListener("DOMContentLoaded", function () {
+            const tipo = localStorage.getItem("tipoUsuario");
+            const span = document.getElementById("boasVindas");
+
+            if (span && tipo) {
+                if (tipo === "admin") {
+                    span.innerText = "Bem-vindo, Administrador";
+                } else {
+                    span.innerText = "Bem-vindo, Funcionário";
+                }
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

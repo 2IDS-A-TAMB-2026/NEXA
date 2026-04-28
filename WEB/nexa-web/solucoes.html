@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NEXA | Soluções</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0a66c2;
+            --dark: #0f2a44;
+            --gray: #4b5563;
+            --bg: #f7f9fb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #1f2937;
+        }
+
+        /* ===== HEADER ===== */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #fff;
+            padding: 18px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 34px;
+        }
+
+        .logo span {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: 1px;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .menu a {
+            position: relative;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            padding: 5px 0;
+        }
+
+        .menu a::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: .3s;
+        }
+
+        .menu a:hover::after,
+        .menu a.active::after {
+            width: 100%;
+        }
+
+        /* ===== BOTÃO ENTRAR (PADRÃO NEXA) ===== */
+        .button {
+            min-width: 120px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 22px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+
+            background: linear-gradient(135deg, #0a66c2 0%, #084d96 100%);
+            color: #fff !important;
+
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, .15),
+                0 6px 18px rgba(10, 102, 194, .35);
+
+            transition: .35s ease;
+        }
+
+        .button::after {
+            display: none;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, .2),
+                0 10px 25px rgba(10, 102, 194, .45);
+        }
+
+        /* ===== PAGE ===== */
+        .page {
+            padding: 90px 80px;
+        }
+
+        .page h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .page .subtitle {
+            max-width: 900px;
+            font-size: 18px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* ===== SOLUÇÕES ===== */
+        .solutions {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .solution {
+            background: #fff;
+            padding: 40px;
+            border-radius: 22px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+            transition: .3s;
+        }
+
+        .solution:hover {
+            transform: translateY(-8px);
+        }
+
+        .solution i {
+            font-size: 36px;
+            color: var(--primary);
+            margin-bottom: 18px;
+        }
+
+        .solution h3 {
+            margin-bottom: 10px;
+        }
+
+        .solution p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark);
+            color: #fff;
+            padding: 70px 80px 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        footer p,
+        footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        .social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social a {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #fff;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .3s;
+        }
+
+        .social a:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .copy {
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, .2);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media(max-width:900px) {
+
+            .page,
+            footer,
+            header {
+                padding: 40px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="assets/css/style_inst.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="topbar">
+        <div class="logo">
+            <img src="assets/images/logo.nexa.png" alt="NEXA">
+            <span>NEXA</span>
+        </div>
+
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="solucoes.html" class="active">Soluções</a>
+            <a href="valores.html">Valores</a>
+            <a href="login.html" class="button">Entrar</a>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO -->
+    <section class="page">
+        <h1>Nossas Soluções</h1>
+        <p class="subtitle">
+            A NEXA oferece soluções digitais integradas que garantem
+            segurança, conformidade e inteligência operacional em
+            ambientes corporativos e industriais.
+        </p>
+
+        <div class="solutions">
+            <div class="solution">
+                <i class="fa-solid fa-helmet-safety"></i>
+                <h3>Monitoramento de EPIs</h3>
+                <p>Identificação automática do uso correto de EPIs.</p>
+            </div>
+
+            <div class="solution">
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Relatórios Inteligentes</h3>
+                <p>Análises em tempo real para decisões estratégicas.</p>
+            </div>
+
+            <div class="solution">
+                <i class="fa-solid fa-globe"></i>
+                <h3>Compliance Global</h3>
+                <p>Adequação às normas nacionais e internacionais.</p>
+            </div>
+
+            <div class="solution">
+                <i class="fa-solid fa-bell"></i>
+                <h3>Alertas em Tempo Real</h3>
+                <p>Notificações imediatas para prevenção de acidentes.</p>
+            </div>
+
+            <div class="solution">
+                <i class="fa-solid fa-database"></i>
+                <h3>Centralização de Dados</h3>
+                <p>Histórico seguro e rastreável de informações.</p>
+            </div>
+
+            <div class="solution">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Gestão de Riscos</h3>
+                <p>Mitigação de riscos com apoio tecnológico.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h4>NEXA</h4>
+                <p>Safety at the core of modern operations.</p>
+                <div class="social">
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4>Empresa</h4>
+                <a href="sobre.html">Sobre</a><br>
+                <a href="#">Carreiras</a><br>
+                <a href="#">Contato</a>
+            </div>
+
+            <div>
+                <h4>Plataforma</h4>
+                <a href="login.html">Login</a><br>
+                <a href="#">Dashboard</a><br>
+                <a href="#">Relatórios</a>
+            </div>
+        </div>
+
+        <div class="copy">
+            © 2026 NEXA. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
+</html>

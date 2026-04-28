@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>NEXA | Perfil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 240px;
+            background: #0f2a44;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a:hover {
+            background: #0a66c2;
+        }
+
+        .menu-footer {
+            margin-top: auto;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        .menu-footer img {
+            width: 120px;
+            opacity: .85;
+            border-radius: 100%;
+        }
+
+        /* MAIN */
+
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        header h1 {
+            text-align: center;
+            color: #0f2a44;
+            margin-bottom: 20px;
+        }
+
+        /* CARD */
+
+        .profile-card {
+            background: #fff;
+            max-width: 600px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+            margin: 0 auto;
+        }
+
+        .profile-card h2 {
+            margin-bottom: 15px;
+            color: #0a66c2;
+        }
+
+        .profile-card label {
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            margin-top: 12px;
+        }
+
+        .profile-card input,
+        .profile-card select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .profile-card input:disabled {
+            background: #f1f1f1;
+        }
+
+        /* BOTÕES */
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .Btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 140px;
+            height: 42px;
+            padding: 0 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #fff;
+            background: #0a66c2;
+            box-shadow: 4px 4px 0 #084b94;
+            transition: .3s;
+            overflow: hidden;
+        }
+
+        .Btn span {
+            transition: .3s;
+        }
+
+        .Btn svg {
+            width: 14px;
+            position: absolute;
+            right: 18px;
+            fill: #fff;
+            transition: .3s;
+        }
+
+        .Btn:hover span {
+            color: transparent;
+        }
+
+        .Btn:hover svg {
+            right: 50%;
+            transform: translateX(50%);
+        }
+
+        .Btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 #084b94;
+        }
+
+        .Btn.save {
+            background: #2e7d32;
+            box-shadow: 4px 4px 0 #1b5e20;
+            display: none;
+        }
+
+        .Btn.cancel {
+            background: #b71c1c;
+            box-shadow: 4px 4px 0 #7f0000;
+            display: none;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 12px;
+            text-align: center;
+            color: #999;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div>
+
+            <h2>NEXA</h2>
+
+            <a href="dashboard.html">Dashboard</a>
+            <a href="dashboard_cameras.html" id="menuCameras">
+                Dashboard de Câmeras
+            </a>
+            <a href="upload.html">Análise de EPI</a>
+            <a href="history.html" id="menu-history">Histórico</a>
+
+            <a href="reports.html">Relatórios</a>
+            <a href="users.html">Usuários</a>
+
+            <a href="profile.html">Perfil</a>
+            <a href="#" onclick="logout()">Sair</a>
+
+        </div>
+
+        <div class="menu-footer">
+            <img src="assets/images/logo-nexa.png">
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <header>
+            <h1>Perfil do Usuário</h1>
+        </header>
+
+        <div class="profile-card">
+
+            <h2>Informações Pessoais</h2>
+
+            <label>Nome completo</label>
+            <input id="nome" value="Administrador NEXA" disabled>
+
+            <label>CPF</label>
+            <input id="cpf" value="000.000.000-00" disabled>
+
+            <label>Data de nascimento</label>
+            <input id="nascimento" type="date" value="1990-01-01" disabled>
+
+            <label>E-mail corporativo</label>
+            <input id="email" value="admin@nexa.com" disabled>
+
+            <label>Telefone</label>
+            <input id="telefone" name="telefone">
+
+            <label>Tipo de perfil</label>
+            <select id="tipo" disabled>
+                <option>Administrador</option>
+                <option>Funcionário</option>
+            </select>
+
+            <label>UID RFID</label>
+            <input id="rfid" value="RFID-984523" disabled>
+
+            <label>EPIs obrigatórios</label>
+            <input id="epis" value="Capacete, Luva, Óculos" disabled>
+
+            <label>Senha</label>
+            <input type="password" value="******" disabled>
+
+            <button class="Btn" style="margin-top:10px;" onclick="mostrarAlterarSenha()">
+
+                <span>Alterar senha</span>
+
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 17a2 2 0 1 0 0.001-3.999A2 2 0 0 0 12 17zm6-6h-1V9a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-8-2a3 3 0 0 1 6 0v2H10V9z" />
+                </svg>
+
+            </button>
+
+            <!-- ALTERAR SENHA -->
+
+            <div id="alterarSenhaBox" style="display:none;margin-top:15px">
+
+                <label>Senha atual</label>
+                <input id="senhaAtual" type="password">
+
+                <label>Nova senha</label>
+                <input id="novaSenha" type="password">
+
+                <label>Confirmar senha</label>
+                <input id="confirmarSenha" type="password">
+
+                <button class="Btn save" onclick="alterarSenha()" style="margin-top:10px;display:flex;">
+
+                    <span>Confirmar</span>
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+
+                </button>
+
+            </div>
+
+            <!-- BOTÕES -->
+
+            <div class="actions">
+
+                <button class="Btn edit" onclick="editar()">
+
+                    <span>Editar</span>
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" />
+                    </svg>
+
+                </button>
+
+                <button class="Btn save" onclick="salvar()">
+
+                    <span>Salvar</span>
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" />
+                    </svg>
+
+                </button>
+
+                <button class="Btn cancel" onclick="cancelar()">
+
+                    <span>Cancelar</span>
+
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M18.3 5.71L12 12l6.3 6.29-1.41 1.42L12 13.41l-6.29 6.3-1.42-1.42L10.59 12 4.29 5.71 5.7 4.29 12 10.59l6.29-6.3z" />
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <footer>© 2026 – NEXA | Segurança no centro</footer>
+
+    </div>
+
+    <script src="assets/js/profile.js"></script>
+    <script src="assets/js/permissions.js"></script>
+    <script>
+        function logout() {
+            localStorage.removeItem("tipoUsuario");
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+
+</html>

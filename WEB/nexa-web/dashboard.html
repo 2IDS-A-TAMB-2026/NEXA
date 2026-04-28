@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NEXA | Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f4f6f8;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: #0f2a44;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar a:hover {
+            background: #0a66c2;
+        }
+
+        .menu-footer {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 15px;
+        }
+
+        .menu-footer img {
+            width: 120px;
+            border-radius: 100%;
+            opacity: .9;
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: #0f2a44;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+        }
+
+        .card h3 {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .card p {
+            margin-top: 10px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #0a66c2;
+        }
+
+        .card.alert p {
+            color: #d32f2f;
+        }
+
+        /* ALERTAS */
+        .alerts {
+            margin-top: 30px;
+        }
+
+        .alerts h2 {
+            margin-bottom: 15px;
+            color: #0f2a44;
+        }
+
+        .alert-item {
+            background: #fff;
+            padding: 15px;
+            border-left: 5px solid #d32f2f;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div>
+            <h2>NEXA</h2>
+
+            <a href="dashboard.html">Dashboard</a>
+            <a href="dashboard_cameras.html" id="menuCameras">
+                Dashboard de Câmeras
+            </a>
+            <a href="upload.html">Análise de EPI</a>
+            <a href="history.html" id="menu-history">Histórico</a>
+
+            <!-- ADMIN ONLY -->
+            <a href="reports.html" id="menu-reports">Relatórios</a>
+            <a href="users.html" id="menu-users">Usuários</a>
+
+            <a href="profile.html">Perfil</a>
+            <a href="#" onclick="logout()">Sair</a>
+        </div>
+
+        <div class="menu-footer">
+            <img src="assets/images/logo-nexa.png" alt="Logo NEXA">
+        </div>
+
+    </aside>
+
+    <div class="main">
+
+        <header>
+            <h1>Dashboard</h1>
+            <span id="boasVindas"></span>
+        </header>
+
+        <section class="cards">
+
+            <div class="card">
+                <h3>Pessoas analisadas hoje</h3>
+                <p>0</p>
+            </div>
+
+            <div class="card">
+                <h3>Conformidade</h3>
+                <p>30%</p>
+            </div>
+
+            <div class="card alert">
+                <h3>Alertas ativos</h3>
+                <p>0</p>
+            </div>
+
+            <div class="card">
+                <h3>Câmeras ativas</h3>
+                <p>3</p>
+            </div>
+
+        </section>
+
+        <section class="alerts">
+            <h2>Alertas Recentes</h2>
+
+            <div class="alert-item">Funcionário sem capacete</div>
+            <div class="alert-item">Área restrita acessada</div>
+        </section>
+
+        <footer class="footerweb">
+            © 2026 – NEXA | Segurança no centro
+        </footer>
+
+    </div>
+    <script src="assets/js/permissions.js"></script>
+
+    <script src="assets/js/permissions.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const tipo = localStorage.getItem("tipoUsuario");
+            const span = document.getElementById("boasVindas");
+
+            console.log("Tipo:", tipo); 
+
+            if (span && tipo) {
+
+                if (tipo === "admin") {
+                    span.innerText = "Bem-vindo, Administrador";
+                } else if (tipo === "funcionario") {
+                    span.innerText = "Bem-vindo, Funcionário";
+                }
+
+            }
+
+        });
+        
+        function logout() {
+            localStorage.removeItem("tipoUsuario");
+            window.location.href = "login.html";
+        }
+    
+    </script>
+
+</body>
+
+</html>

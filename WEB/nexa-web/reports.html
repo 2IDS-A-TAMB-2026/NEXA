@@ -1,0 +1,282 @@
+<!--<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>NEXA | Relatórios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 240px;
+            background: #0f2a44;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a.active,
+        .sidebar a:hover {
+            background: #0a66c2;
+        }
+
+        .menu-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .menu-footer img {
+            width: 120px;
+            opacity: 0.85;
+            border-radius:100%;
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        header h1 {
+            color: #0f2a44;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ===== FILTROS ===== */
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filters input {
+            padding: 8px;
+        }
+
+        /* ===== BOTÃO RELATÓRIO ===== */
+        .report-btn {
+            --color: #0a66c2;
+            font-family: inherit;
+            display: inline-block;
+            width: 180px;
+            height: 44px;
+            line-height: 42px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--color);
+            background: transparent;
+            border: 2px solid var(--color);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .report-btn::before {
+            content: "";
+            position: absolute;
+            background: var(--color);
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            top: 100%;
+            left: 100%;
+            z-index: -1;
+            transition: 0.4s ease;
+        }
+
+        .report-btn:hover {
+            color: #fff;
+        }
+
+        .report-btn:hover::before {
+            top: -60px;
+            left: -60px;
+        }
+
+        /* ===== TABELA ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #e9eef3;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+
+<aside class="sidebar">
+
+<div>
+    <h2>NEXA</h2>
+
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard_cameras.html" id="menuCameras">
+    Dashboard de Câmeras
+    </a>
+    <a href="upload.html">Análise de EPI</a>
+    <a href="history.html" id="menu-history">Histórico</a>
+
+    
+    <a href="reports.html" id="menu-reports">Relatórios</a>
+    <a href="users.html" id="menu-users">Usuários</a>
+
+    <a href="profile.html">Perfil</a>
+    <a href="#" onclick="logout()">Sair</a>
+</div>
+
+<div class="menu-footer">
+    <img src="assets/images/logo-nexa.png" alt="Logo NEXA">
+</div>
+
+</aside>
+
+
+<div class="main">
+    <header>
+        <h1>Relatórios de Conformidade</h1>
+    </header>
+
+    
+    <div class="card">
+        <div class="filters">
+            <input type="date" id="dataInicio">
+            <input type="date" id="dataFim">
+            <button class="report-btn" onclick="gerarRelatorio()">Gerar Relatório</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <table id="tabelaRelatorios">
+            <tr>
+                <th>Data</th>
+                <th>Área</th>
+                <th>Pessoas Analisadas</th>
+                <th>Conformidade</th>
+                <th>Alertas</th>
+            </tr>
+        </table>
+    </div>
+
+    <footer class="footerweb">
+        © 2026 – NEXA | Safety at the core
+    </footer>
+</div>
+
+<script>
+    const tabela = document.getElementById("tabelaRelatorios");
+
+    function gerarRelatorio() {
+        tabela.innerHTML = `
+            <tr>
+                <th>Data</th>
+                <th>Área</th>
+                <th>Pessoas Analisadas</th>
+                <th>Conformidade</th>
+                <th>Alertas</th>
+            </tr>
+        `;
+
+        const dados = [
+            ["03/02/2026", "Área A", 42, "88%", 3],
+            ["03/02/2026", "Área B", 37, "92%", 1],
+            ["03/02/2026", "Área C", 49, "81%", 5]
+        ];
+
+        dados.forEach(linha => {
+            const tr = tabela.insertRow();
+            linha.forEach(coluna => {
+                const td = tr.insertCell();
+                td.innerText = coluna;
+            });
+        });
+    }
+</script>
+
+
+<script>
+function logout(){
+    localStorage.removeItem("tipoUsuario");
+    window.location.href = "login.html";
+}
+
+// Nome dinâmico no topo
+document.addEventListener("DOMContentLoaded", function(){
+    const tipo = localStorage.getItem("tipoUsuario");
+    const span = document.getElementById("boasVindas");
+
+    if(span && tipo){
+        if(tipo === "admin"){
+            span.innerText = "Bem-vindo, Administrador";
+        } else {
+            span.innerText = "Bem-vindo, Funcionário";
+        }
+    }
+});
+</script>
+
+</body>
+</html>
