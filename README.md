@@ -174,24 +174,27 @@ Integração com câmeras e sistema
 # Diagrama de Fluxos
 <img width="1536" height="1024" alt="Diagrama_Fluxos_NEXA" src="https://github.com/user-attachments/assets/8f18f7ed-9984-4b5a-bbaa-a1eaabd5976f" />
 
-# DER
+
+# MER
 <img width="1276" height="734" alt="image" src="https://github.com/user-attachments/assets/94b8b255-0f11-41cb-aeb8-5398a771d3d2" />
 
 
-# MER
+ 
+# DER
+<img width="1392" height="812" alt="image" src="https://github.com/user-attachments/assets/d8511ffe-8828-42f7-8607-304d0afc05ab" />
 
  
 #  Equipe
 
-| Foto | Nome | Cargo |
+| Foto | Nome | Cargo | 
 |------|------|-------|
-| <img src="https://github.com/user-attachments/assets/3e5a06f3-0000-4115-92e7-f8fee2adce82" width="80" height="80"> | **Livia Bussaglia Bispo** | Desenvolvedora Full-Stack |
-| <img src="https://github.com/user-attachments/assets/63734774-1771-4848-9857-d0455e9e6723" width="80" height="80"> | **Bruno Donizetti Gusmin** | Desenvolvedor Full-Stack |
-| <img src="https://github.com/user-attachments/assets/4536a089-fe8e-4597-86d5-f10af65875cc" width="80" height="80"> | **Laura Costa Ubaldo** | Analista de Sistemas e Requisitos |
+| <img width="80" height="80" alt="10" src="https://github.com/user-attachments/assets/ed49c45e-4ac3-45ed-80d3-ba43edabf7ef" /> | **Livia Bussaglia Bispo** | Desenvolvedora Full-Stack | 
+|<img width="80" height="80" alt="bruno" src="https://github.com/user-attachments/assets/a99a7dd3-93da-4c02-8800-072d0f7f1b47" /> | **Bruno Donizetti Gusmin** | Desenvolvedor Full-Stack | 
+| <img width="80" height="80" alt="Laura" src="https://github.com/user-attachments/assets/fad53fa4-8d20-4d92-abf4-353414620a49" /> | **Laura Costa Ubaldo** | Analista de Sistemas e Requisitos | 
 | <img width="80" height="80" alt="image" src="https://github.com/user-attachments/assets/c1ba2694-3105-4ea3-a554-6ab25f687f17" /> | **Ryan Donizetti Porto** | Analista de Sistemas e Requisitos |
-| <img src="https://github.com/user-attachments/assets/3d1f91e0-cff9-42b7-a0e1-202c8fdef173" width="80" height="80"> | **Nicoly Gentina Geribola** | Desenvolvedora Back-End |
-| <img src="https://github.com/user-attachments/assets/fc9882b2-c65a-4f33-aff1-c52a2704c1de" width="80" height="80"> | **Erick Donizetti Ferreira do Nascimento** | Desenvolvedor Back-End |
-| <img src="https://github.com/user-attachments/assets/94723fb4-bb3d-47bf-bfa8-d039deb5fbde" width="80" height="80"> | **Fernanda Machado Nogueira** | Desenvolvedora Back-End |
+| <img width="80" height="80" alt="nicloy" src="https://github.com/user-attachments/assets/c323b413-ae4e-4151-8661-f08ce506016e" /> | **Nicoly Gentina Geribola** | Desenvolvedora Back-End | 
+| <img width="80" height="80" alt="9" src="https://github.com/user-attachments/assets/27f04d33-2a9b-488a-8abe-3615b7da10db" /> | **Erick Donizetti Ferreira do Nascimento** | Desenvolvedor Back-End | 
+| <img width="80" height="80" alt="11" src="https://github.com/user-attachments/assets/aeaf07be-5525-4eaa-b661-e2d6874aa5ad" />| **Fernanda Machado Nogueira** | Desenvolvedora Back-End|
 
  # NEXA
  
@@ -361,18 +364,28 @@ PPE recognition
 
 Integration with cameras and system  
 
+# Class Diagram
+<img width="1536" height="1024" alt="Diagrama_Classes_NEXA" src="https://github.com/user-attachments/assets/74885725-5e91-40ce-a7a1-ca544ebc8b45" />
+
+# Flow Diagram
+<img width="1536" height="1024" alt="Diagrama_Fluxos_NEXA" src="https://github.com/user-attachments/assets/8f18f7ed-9984-4b5a-bbaa-a1eaabd5976f" />
+
+# ER Model (MER)
+<img width="1276" height="734" alt="image" src="https://github.com/user-attachments/assets/94b8b255-0f11-41cb-aeb8-5398a771d3d2" />
+
+# ER Diagram (DER)
+<img width="1392" height="812" alt="image" src="https://github.com/user-attachments/assets/d8511ffe-8828-42f7-8607-304d0afc05ab" />
+
  
 
  # Team 
 
-| Foto | Nome | Cargo |
+| Photo | Name | Role |
 |------|------|-------|
-| <img src="https://github.com/user-attachments/assets/3e5a06f3-0000-4115-92e7-f8fee2adce82" width="80" height="80"> | **Livia Bussaglia Bispo** | Desenvolvedora Full-Stack |
-| <img width="262" height="271" alt="bruno" src="https://github.com/user-attachments/assets/504e3eb5-cc26-4978-974d-90a86c08b5dd" />
- | **Bruno Donizetti Gusmin** | Desenvolvedor Full-Stack |
-| <img src="https://github.com/user-attachments/assets/4536a089-fe8e-4597-86d5-f10af65875cc" width="80" height="80"> | **Laura Costa Ubaldo** | Analista de Sistemas e Requisitos |
-| <img width="80" height="80" alt="image" src="https://github.com/user-attachments/assets/c1ba2694-3105-4ea3-a554-6ab25f687f17" /> | **Ryan Donizetti Porto** | Analista de Sistemas e Requisitos |
-| <img src="https://github.com/user-attachments/assets/3d1f91e0-cff9-42b7-a0e1-202c8fdef173" width="80" height="80"> | **Nicoly Gentina Geribola** | Desenvolvedora Back-End |
-| <img src="https://github.com/user-attachments/assets/fc9882b2-c65a-4f33-aff1-c52a2704c1de" width="80" height="80"> | **Erick Donizetti Ferreira do Nascimento** | Desenvolvedor Back-End |
-| <img src="https://github.com/user-attachments/assets/94723fb4-bb3d-47bf-bfa8-d039deb5fbde" width="80" height="80"> | **Fernanda Machado Nogueira** | Desenvolvedora Back-End |
-
+| <img width="80" height="80" alt="10" src="https://github.com/user-attachments/assets/ed49c45e-4ac3-45ed-80d3-ba43edabf7ef" /> | **Livia Bussaglia Bispo** | Full-Stack Developer |
+| <img width="80" height="80" alt="bruno" src="https://github.com/user-attachments/assets/a99a7dd3-93da-4c02-8800-072d0f7f1b47" /> | **Bruno Donizetti Gusmin** | Full-Stack Developer |
+| <img width="80" height="80" alt="Laura" src="https://github.com/user-attachments/assets/fad53fa4-8d20-4d92-abf4-353414620a49" /> | **Laura Costa Ubaldo** | Systems and Requirements Analyst |
+| <img width="80" height="80" alt="image" src="https://github.com/user-attachments/assets/c1ba2694-3105-4ea3-a554-6ab25f687f17" /> | **Ryan Donizetti Porto** | Systems and Requirements Analyst |
+| <img width="80" height="80" alt="nicloy" src="https://github.com/user-attachments/assets/c323b413-ae4e-4151-8661-f08ce506016e" /> | **Nicoly Gentina Geribola** | Back-End Developer |
+| <img width="80" height="80" alt="9" src="https://github.com/user-attachments/assets/27f04d33-2a9b-488a-8abe-3615b7da10db" /> | **Erick Donizetti Ferreira do Nascimento** | Back-End Developer |
+| <img width="80" height="80" alt="11" src="https://github.com/user-attachments/assets/aeaf07be-5525-4eaa-b661-e2d6874aa5ad" /> | **Fernanda Machado Nogueira** | Back-End Developer |
