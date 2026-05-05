@@ -140,7 +140,7 @@ Login
 
 Visualização de alertas  
 
-### Sprint 2 – 95% 
+### Sprint 2 – 100% 
 
 Consulta de ocorrências  
 
