@@ -2,355 +2,512 @@
 <html lang="pt-br">
 
 <head>
+<meta charset="UTF-8">
+<title>NEXA | Perfil</title>
 
-    <meta charset="UTF-8">
-    <title>NEXA | Perfil</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/acessibilidade.css">
+<link rel="stylesheet" href="assets/css/style_funci.css">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
 
-        body {
-            background: #f4f6f8;
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+/* ===== BODY ===== */
+body {
+    display: flex;
+     
+    min-height: 100vh;
+    background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg')
+                no-repeat center center/cover;
+
+}
+
+        /* ===== SIDEBAR ===== */
+    .sidebar {
+    width: 260px;
+    background: #0f2a44;
+    color: #fff;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto; /* caso o menu cresça */
+}
+
+
+        .sidebar-top {
+            position: relative;
+            height: 160px;
+            background: url('assets/images/slide1.jpg') center/cover;
             display: flex;
-            min-height: 100vh;
+            align-items: flex-end;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
         }
 
-        /* SIDEBAR */
+        .sidebar-top::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(15,42,68,0.95));
+        }
 
-        .sidebar {
-            width: 240px;
-            background: #0f2a44;
-            color: #fff;
-            padding: 20px;
+        .sidebar-top span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu {
             display: flex;
             flex-direction: column;
         }
 
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: #fff;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-
-        .sidebar a:hover {
-            background: #0a66c2;
-        }
-
-        .menu-footer {
-            margin-top: auto;
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, .2);
-        }
-
-        .menu-footer img {
-            width: 120px;
-            opacity: .85;
-            border-radius: 100%;
-        }
-
-        /* MAIN */
-
-        .main {
-            flex: 1;
-            padding: 20px;
-        }
-
-        header h1 {
-            text-align: center;
-            color: #0f2a44;
-            margin-bottom: 20px;
-        }
-
-        /* CARD */
-
-        .profile-card {
-            background: #fff;
-            max-width: 600px;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
-            margin: 0 auto;
-        }
-
-        .profile-card h2 {
-            margin-bottom: 15px;
-            color: #0a66c2;
-        }
-
-        .profile-card label {
-            font-weight: bold;
-            font-size: 14px;
-            display: block;
-            margin-top: 12px;
-        }
-
-        .profile-card input,
-        .profile-card select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        .profile-card input:disabled {
-            background: #f1f1f1;
-        }
-
-        /* BOTÕES */
-
-        .actions {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .Btn {
-            position: relative;
+        .menu a {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            width: 140px;
-            height: 42px;
-            padding: 0 18px;
-            border: none;
+            gap: 12px;
+            padding: 12px 10px;
+            margin-bottom: 10px;
             border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #fff;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .menu a:hover {
             background: #0a66c2;
-            box-shadow: 4px 4px 0 #084b94;
-            transition: .3s;
-            overflow: hidden;
+            color: #fff;
         }
 
-        .Btn span {
-            transition: .3s;
+                    /* LOGOUT IGUAL MENU */
+            .logout-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 10px;
+                margin: 10px;
+                border-radius: 8px;
+                color: #cbd5e1;
+                text-decoration: none;
+                transition: .2s;
+                border-top: 1px solid rgba(255,255,255,.1);
+                 margin-top: auto;
+            }
+
+            /* HOVER */
+            .logout-item:hover {
+                background: #0a66c2;
+                color: #fff;
+            }
+
+        .logout {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,.1);
         }
 
-        .Btn svg {
-            width: 14px;
-            position: absolute;
-            right: 18px;
-            fill: #fff;
-            transition: .3s;
-        }
 
-        .Btn:hover span {
-            color: transparent;
-        }
+/* ===== MAIN ===== */
+.main {
+    flex: 1;
+    padding: 10px;
+    padding-top: 0px;
 
-        .Btn:hover svg {
-            right: 50%;
-            transform: translateX(50%);
-        }
+}
 
-        .Btn:active {
-            transform: translate(3px, 3px);
-            box-shadow: 2px 2px 0 #084b94;
-        }
+/* ===== ACESSIBILIDADE ===== */
 
-        .Btn.save {
-            background: #2e7d32;
-            box-shadow: 4px 4px 0 #1b5e20;
-            display: none;
-        }
+/* ===== CARD ===== */
+.card{
+    width:950px;
+    background:#fff;
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
 
-        .Btn.cancel {
-            background: #b71c1c;
-            box-shadow: 4px 4px 0 #7f0000;
-            display: none;
-        }
+.card h1{
+    text-align:center;
+    margin-bottom:25px;
+    color:#0a66c2;
+}
 
-        footer {
-            margin-top: 25px;
-            font-size: 12px;
-            text-align: center;
-            color: #999;
-        }
-    </style>
+.subtitle{
+    color:#1565c0;
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
 
+/* GRID */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.access-bar{
+    position: static;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.error-text{
+    font-size:13px;
+    color:#e53935;
+    margin-top:5px;
+    padding-left:5px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+.input-box{
+    background:#f2f2f2;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    padding:15px;
+}
+
+.input-box i{
+    color:#1565c0;
+    margin-right:10px;
+}
+
+.input-box input{
+    border:none;
+    background:transparent;
+    outline:none;
+    width:100%;
+}
+.input-box.error {
+    border: 2px solid #e53935;
+    box-shadow: 0 0 6px rgba(229, 57, 53, 0.3);
+}
+.full{
+    grid-column:span 2;
+}
+
+/* BOTÕES */
+.btn{
+    margin-top:25px;
+    width:260px;
+    height:55px;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    cursor:pointer;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.editar{
+    background:#1565c0;
+    color:#fff;
+}
+
+.salvar{
+    display:none;
+    background:#28a745;
+    color:#fff;
+}
+
+/* botão menor */
+.btn-small{
+    width:150px;
+    height:38px;
+    font-size:14px;
+    border-radius:20px;
+}
+
+/* DARK MODE */
+.dark{
+    background:#0f172a !important;
+    color:#fff;
+}
+
+.dark .card{
+    background:#1e293b;
+    color:#fff;
+}
+
+.dark .input-box{
+    background:#334155;
+}
+</style>
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
+<!-- SIDEBAR -->
+<aside class="sidebar">
 
-    <aside class="sidebar">
+    <div class="sidebar-top">
+        <span>NEXA</span>
+    </div>
 
-        <div>
+    <nav class="menu">
+        <a href="dashboard_funci.html"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a href="upload.html"><i class="fas fa-camera"></i> Análise EPI</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Perfil</a>
+    </nav>
 
-            <h2>NEXA</h2>
+    <a href="#" class="logout-item" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Sair
+    </a>
 
-            <a href="dashboard.html">Dashboard</a>
-            <a href="dashboard_cameras.html" id="menuCameras">
-                Dashboard de Câmeras
-            </a>
-            <a href="upload.html">Análise de EPI</a>
-            <a href="history.html" id="menu-history">Histórico</a>
+</aside>
+<div class="overlay">
+<!-- MAIN -->
+<div class="main">
 
-            <a href="reports.html">Relatórios</a>
-            <a href="users.html">Usuários</a>
+    <!-- ACESSIBILIDADE -->
+    <div class="access-bar">
+        <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+            <i class="fas fa-adjust"></i>
+        </button>
 
-            <a href="profile.html">Perfil</a>
-            <a href="#" onclick="logout()">Sair</a>
+        <button class="access-btn" onclick="toggleDark()">
+            <i class="fas fa-moon"></i>
+        </button>
 
-        </div>
+        <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">A+</button>
+        <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">A-</button>
+        <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
 
-        <div class="menu-footer">
-            <img src="assets/images/logo-nexa.png">
-        </div>
+    <!-- CARD -->
+    <div class="card">
 
-    </aside>
+        <h1>Perfil do Funcionário</h1>
 
-    <!-- MAIN -->
+        <div class="subtitle">Informações pessoais</div>
 
-    <div class="main">
+        <div class="form-grid">
 
-        <header>
-            <h1>Perfil do Usuário</h1>
-        </header>
-
-        <div class="profile-card">
-
-            <h2>Informações Pessoais</h2>
-
-            <label>Nome completo</label>
-            <input id="nome" value="Administrador NEXA" disabled>
-
-            <label>CPF</label>
-            <input id="cpf" value="000.000.000-00" disabled>
-
-            <label>Data de nascimento</label>
-            <input id="nascimento" type="date" value="1990-01-01" disabled>
-
-            <label>E-mail corporativo</label>
-            <input id="email" value="admin@nexa.com" disabled>
-
-            <label>Telefone</label>
-            <input id="telefone" name="telefone">
-
-            <label>Tipo de perfil</label>
-            <select id="tipo" disabled>
-                <option>Administrador</option>
-                <option>Funcionário</option>
-            </select>
-
-            <label>UID RFID</label>
-            <input id="rfid" value="RFID-984523" disabled>
-
-            <label>EPIs obrigatórios</label>
-            <input id="epis" value="Capacete, Luva, Óculos" disabled>
-
-            <label>Senha</label>
-            <input type="password" value="******" disabled>
-
-            <button class="Btn" style="margin-top:10px;" onclick="mostrarAlterarSenha()">
-
-                <span>Alterar senha</span>
-
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 17a2 2 0 1 0 0.001-3.999A2 2 0 0 0 12 17zm6-6h-1V9a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-8-2a3 3 0 0 1 6 0v2H10V9z" />
-                </svg>
-
-            </button>
-
-            <!-- ALTERAR SENHA -->
-
-            <div id="alterarSenhaBox" style="display:none;margin-top:15px">
-
-                <label>Senha atual</label>
-                <input id="senhaAtual" type="password">
-
-                <label>Nova senha</label>
-                <input id="novaSenha" type="password">
-
-                <label>Confirmar senha</label>
-                <input id="confirmarSenha" type="password">
-
-                <button class="Btn save" onclick="alterarSenha()" style="margin-top:10px;display:flex;">
-
-                    <span>Confirmar</span>
-
-                    <svg viewBox="0 0 24 24">
-                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                    </svg>
-
-                </button>
-
+            <div class="input-box full">
+                <i class="fas fa-user"></i>
+                <input type="text" value="Nome do Funcionário" disabled>
             </div>
 
-            <!-- BOTÕES -->
+            <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input id="email" type="email" value="email@nexa.com" disabled>
+            </div>
 
-            <div class="actions">
+            <div class="input-box">
+                <i class="fas fa-phone"></i>
+            <input id="telefone" type="text" placeholder="(00) 00000-0000" maxlength="15" oninput="mascaraTelefone(this)">
+            </div>
 
-                <button class="Btn edit" onclick="editar()">
+            <div class="input-box">
+                <i class="fas fa-calendar"></i>
+                <input type="date" value="2000-01-01" disabled>
+            </div>
 
-                    <span>Editar</span>
+            <div class="input-box">
+                <i class="fas fa-id-badge"></i>
+                <input type="text" value="UID RFID 123456" disabled>
+            </div>
 
-                    <svg viewBox="0 0 24 24">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" />
-                    </svg>
-
-                </button>
-
-                <button class="Btn save" onclick="salvar()">
-
-                    <span>Salvar</span>
-
-                    <svg viewBox="0 0 24 24">
-                        <path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" />
-                    </svg>
-
-                </button>
-
-                <button class="Btn cancel" onclick="cancelar()">
-
-                    <span>Cancelar</span>
-
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M18.3 5.71L12 12l6.3 6.29-1.41 1.42L12 13.41l-6.29 6.3-1.42-1.42L10.59 12 4.29 5.71 5.7 4.29 12 10.59l6.29-6.3z" />
-                    </svg>
-
-                </button>
-
+            <div class="input-box full">
+                <i class="fas fa-hard-hat"></i>
+                <input type="text" value="Capacete, Luvas, Óculos" disabled>
             </div>
 
         </div>
 
-        <footer>© 2026 – NEXA | Segurança no centro</footer>
+    <div class="subtitle" style="margin-top:25px;">Segurança</div>
+
+<div class="form-grid">
+
+    
+    <div class="input-box input-group">
+        <div style="display:flex; align-items:center;">
+            <i class="fas fa-lock"></i>
+            <input id="senhaAtual" type="password" placeholder="Senha atual">
+        </div>
+        <div class="error-text" id="erroAtual"></div>
+    </div>
+
+    <div class="input-box input-group" id="novaSenhaBox" style="display:none;">
+        <div style="display:flex; align-items:center;">
+            <i class="fas fa-key"></i>
+            <input id="novaSenha" type="password" placeholder="Nova senha (mín. 8 caracteres)">
+        </div>
+        <div class="error-text" id="erroNova"></div>
+    </div>
+
+    <div class="input-box input-group" id="confirmarSenhaBox" style="display:none;">
+        <div style="display:flex; align-items:center;">
+            <i class="fas fa-key"></i>
+            <input id="confirmarSenha" type="password" placeholder="Confirmar senha">
+        </div>
+        <div class="error-text" id="erroConfirmar"></div>
+    </div>
+
+</div>
+
+        <button class="btn editar btn-small" onclick="editar()">
+            <i class="fas fa-edit"></i> Editar
+        </button>
+
+        <button class="btn salvar" onclick="salvar()">
+            <i class="fas fa-save"></i> Salvar
+        </button>
 
     </div>
 
-    <script src="assets/js/profile.js"></script>
-    <script src="assets/js/permissions.js"></script>
-    <script>
-        function logout() {
-            localStorage.removeItem("tipoUsuario");
-            window.location.href = "login.html";
+</div>
+<script>
+function editar(){
+
+    document.getElementById("telefone").disabled = false;
+    document.getElementById("senhaAtual").disabled = false;
+
+    document.getElementById("novaSenhaBox").style.display = "block";
+    document.getElementById("confirmarSenhaBox").style.display = "block";
+
+    document.querySelector(".editar").style.display="none";
+    document.querySelector(".salvar").style.display="block";
+}
+
+function salvar(){
+
+    let ok = true;
+
+    const nova = document.getElementById("novaSenha");
+    const confirmar = document.getElementById("confirmarSenha");
+
+    limparErros();
+
+    if(nova.value !== "" || confirmar.value !== ""){
+
+        if(nova.value.length < 8){
+            document.getElementById("erroNova").innerText = "A senha deve ter no mínimo 8 caracteres";
+            ok = false;
         }
-    </script>
+
+        if(nova.value !== confirmar.value){
+            document.getElementById("erroConfirmar").innerText = "As senhas não coincidem";
+            ok = false;
+        }
+    }
+
+    if(!ok) return;
+
+    document.getElementById("telefone").disabled = true;
+    document.getElementById("senhaAtual").disabled = true;
+
+    document.getElementById("novaSenhaBox").style.display = "none";
+    document.getElementById("confirmarSenhaBox").style.display = "none";
+
+    document.querySelector(".editar").style.display="block";
+    document.querySelector(".salvar").style.display="none";
+
+    alert("Dados atualizados com sucesso!");
+}
+
+function limparErros(){
+    document.getElementById("erroNova").innerText = "";
+    document.getElementById("erroConfirmar").innerText = "";
+}
+
+/* MÁSCARA TELEFONE */
+function mascaraTelefone(input){
+    let v = input.value.replace(/\D/g, "");
+
+    if(v.length <= 10){
+        v = v.replace(/(\d{2})(\d)/, "($1) $2");
+        v = v.replace(/(\d{4})(\d)/, "$1-$2");
+    } else {
+        v = v.replace(/(\d{2})(\d)/, "($1) $2");
+        v = v.replace(/(\d{5})(\d)/, "$1-$2");
+    }
+
+    input.value = v;
+}
+
+function logout(){
+    localStorage.removeItem("tipoUsuario");
+    window.location.href="index.html";
+}
+
+
+   function salvar(){
+
+    let ok = true;
+
+    const nova = document.getElementById("novaSenha");
+    const confirmar = document.getElementById("confirmarSenha");
+
+    limparErros();
+
+    const novaBox = document.getElementById("novaSenhaBox");
+    const confirmarBox = document.getElementById("confirmarSenhaBox");
+
+    if(nova.value !== "" || confirmar.value !== ""){
+
+        if(nova.value.length < 8){
+            document.getElementById("erroNova").innerText = "A senha deve ter no mínimo 8 caracteres";
+            novaBox.classList.add("error");
+            ok = false;
+        }
+
+        if(nova.value !== confirmar.value){
+            document.getElementById("erroConfirmar").innerText = "As senhas não coincidem";
+            confirmarBox.classList.add("error");
+            ok = false;
+        }
+    }
+
+    if(!ok) return;
+
+    // limpa bordas de erro
+    novaBox.classList.remove("error");
+    confirmarBox.classList.remove("error");
+
+    document.getElementById("telefone").disabled = true;
+    document.getElementById("senhaAtual").disabled = true;
+
+    document.getElementById("novaSenhaBox").style.display = "none";
+    document.getElementById("confirmarSenhaBox").style.display = "none";
+
+    document.querySelector(".editar").style.display="block";
+    document.querySelector(".salvar").style.display="none";
+
+    Swal.fire({
+        icon: "success",
+        title: "Sucesso!",
+        text: "Seus dados foram atualizados com sucesso.",
+        confirmButtonColor: "#1565c0",
+        background: "#ffffff",
+        color: "#0c2744",
+        iconColor: "#28a745",
+        confirmButtonText: "Continuar"
+    });
+}
+</script>
+
+<script src="assets/js/acessibilidade.js"></script>
 
 </body>
-
 </html>

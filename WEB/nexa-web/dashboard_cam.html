@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard de Câmeras</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/acessibilidade.css">
+<link rel="stylesheet" href="assets/css/style_geral.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+/* status-camera BASE */
+.status-camera {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status-camera span,
+.status-camera .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+/* CORES */
+.ativa span,
+.ativa .dot {
+    background: #22c55e;
+}
+
+.inativa span,
+.inativa .dot {
+    background: #ef4444;
+}
+body{
+  
+    min-height:100vh;
+    background:url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg') no-repeat center/cover;
+}
+
+
+
+.access-btn{
+    background: linear-gradient(145deg, #ffffff, #f3f6fb);
+    border: 1px solid rgba(15,100,185,0.25);
+    color: #0f64b9;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+    transition: all .25s ease;
+    font-weight: 600;
+
+    /* profundidade suave */
+    box-shadow: 
+        0 4px 10px rgba(0,0,0,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+/* HOVER */
+.access-btn:hover{
+    background: linear-gradient(135deg, #0a66c2, #19aaed);
+    color:#fff;
+
+    transform: translateY(-3px) scale(1.04);
+
+    box-shadow: 
+        0 10px 20px rgba(10,102,194,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* CLICK */
+.access-btn:active{
+    transform: scale(0.95);
+    box-shadow: 
+        0 3px 6px rgba(0,0,0,0.2),
+        inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ÍCONE */
+.access-btn i{
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+/* leve animação no ícone */
+.access-btn:hover i{
+    transform: scale(1.1);
+}
+
+
+/* SIDEBAR */
+.sidebar {
+    width: 270px;
+    background: #0f2a44;
+    color: #fff;
+
+    position: fixed; /* 🔥 fixa */
+    top: 0;
+    left: 0;
+
+    height: 100vh; /* ocupa tela inteira */
+    display: flex;
+    flex-direction: column;
+
+  
+}
+
+
+
+.sidebar h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 8px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.sidebar a:hover {
+    background: #0a66c2;
+}
+
+
+.sidebar-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0; /* ↓ antes 25px */
+}
+.sidebar-logo img {
+    width: 120px; /* ↓ levemente menor */
+    margin: 0 auto;
+    display: block;
+}
+
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px; /* ↓ antes 25px 18px */
+    flex: 1;
+    gap: 4px; /* ↓ antes 14px */
+}
+
+/* ITENS DO MENU */
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 9px 11px; /* ↓ antes 16px 18px */
+    border-radius: 12px;
+
+    color: #cbd5e1;
+    text-decoration: none;
+
+    transition: 0.2s;
+    font-size: 15px; /* ↓ leve ajuste */
+}
+.menu i {
+    font-size: 15px; /* ↓ antes 18px */
+    width: 18px;
+    text-align: center;
+}
+
+/* HOVER MAIS LEVE */
+.menu a:hover {
+    background: #19aaed;
+    color: #fff;
+    transform: translateX(3px);
+}
+
+
+.menu a.active {
+    background: #0a66c2;
+    color: #fff;
+    font-weight: bold;
+    border-left: 4px solid #19aaed; /* detalhe visual moderno */
+}
+
+.menu a.active i {
+    color: #fff;
+}
+/* SAIR */
+.logout-item {
+    margin: 10px 12px 30px 12px; /* 🔥 sobe ele */
+    padding: 12px;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #cbd5e1;
+    text-decoration: none;
+
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+/* LOGO DO SAIR */
+.logout-item i {
+    font-size: 16px;
+}
+
+.logout-item:hover {
+    background: #dc2626;
+    color: #fff;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 25px;
+   
+    position: relative;
+
+}
+
+header h1 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+
+/* CONTEÚDO */
+
+.title h1{
+    color:#fff;
+    font-size:28px;
+    margin-left:10px;
+}
+
+/* GRID DE CÂMERAS */
+
+.content-grid{
+    display:grid;
+       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap:20px;
+    justify-content:center;
+}
+
+/* CARD CAMERA */
+.camera-card{
+    width:200px;
+    height:200px;
+    background:#f4f4f4;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 6px 15px rgba(0,0,0,0.2);
+    display:flex;
+    flex-direction:column;
+    padding-top:10px;
+     padding-left:10px;
+     padding-right:10px;
+}
+
+/* TELA PRETA (simulação câmera) */
+.camera-view{
+    height:140px;
+    background:#000;
+}
+
+/* INFO */
+.camera-info{
+    flex:1;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.camera-info h3{
+    font-size:14px;
+    color:#1d6fc7;
+}
+
+/* status-camera */
+
+
+.status-camera span{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+}
+
+.ativa span{
+    background:#22c55e;
+}
+
+.inativa span{
+    background:#ef4444;
+}
+.camera-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px;
+}
+
+/* CARD QUADRADO */
+.camera-card{
+    background:#f4f4f4;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 6px 15px rgba(0,0,0,0.2);
+    transition:.2s;
+}
+
+.camera-card:hover{
+    transform:scale(1.03);
+}
+
+/* ÁREA DA CÂMERA (TELA PRETA) */
+.camera-view{
+    width:100%;
+    aspect-ratio:1/1; /* 🔥 deixa quadrado */
+    background:#000; /* 🔥 tela preta */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:14px;
+    opacity:0.7;
+}
+.main {
+   /* mesmo tamanho da sidebar */
+    width: 100%;
+    padding-left:20px ;
+        
+}
+
+main h1{
+    padding-top: 30px;
+}
+
+/* INFO */
+.camera-info{
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.camera-name{
+    font-weight:bold;
+    color:#0c2744;
+}
+
+
+
+.dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+}
+
+.ativa .dot{
+    background:#22c55e;
+}
+
+.inativa .dot{
+    background:#ef4444;
+}
+h1{
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 30px;
+    padding-top: 40px;
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <img src="assets/images/logo_escura_transparente.png">
+    </div>
+
+    <nav class="menu">
+        <a href="dashboard.html">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </a>
+
+        <a href="dashboard_cam.html" class="active">
+            <i class="fas fa-video"></i> Dashboard de Câmeras
+        </a>
+
+        <a href="history.html">
+            <i class="fas fa-exclamation-triangle"></i> Ocorrências
+        </a>
+
+        <a href="cadastro_funcionario.html">
+            <i class="fas fa-users"></i> Cadastro funcionários
+        </a>
+
+        <a href="register_epi.html">
+            <i class="fas fa-helmet-safety"></i> Cadastro EPIs
+        </a>
+
+        <a href="cadastro_camera.html">
+            <i class="fas fa-camera"></i> Cadastro Câmeras
+        </a>
+
+        <a href="cadastro_setor.html">
+            <i class="fas fa-building"></i> Cadastro Setores
+        </a>
+
+        <a href="perfil_admin.html">
+            <i class="fas fa-user"></i> Perfil
+        </a>
+    </nav>
+
+    <a href="index.html" class="logout-item">
+        <i class="fas fa-sign-out-alt"></i> Sair
+    </a>
+</aside>
+<div class="overlaydc">
+
+      
+      
+        <!-- 🔹 MENU ACESSIBILIDADE -->
+      <div class="access-bar">
+
+    <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+        <i class="fas fa-adjust"></i>
+    </button>
+
+     <button class="access-btn" onclick="toggleDark()">
+            <i class="fas fa-moon"></i>
+        </button>
+
+    <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+         A+
+    </button>
+
+    <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+        A-
+    </button>
+
+    <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+        <i class="fas fa-volume-up"></i>
+    </button>
+
+</div>
+
+
+
+    <div class="main">
+
+    <div class="title"><h1>Dashboard de Câmeras</h1></div>
+<div class="content-grid">
+
+    <!-- LINHA 1 -->
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Entrada Principal</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+     <div class="camera-card">
+        <div class="camera-view">Fora de serviço</div>
+        <div class="camera-info">
+            <h3>Recepção</h3>
+            <div class="status-camera inativa"><span></span> Inativa</div>
+        </div>
+    </div>
+
+    
+
+     <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Corredor A</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Corredor B</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+
+  <div class="camera-card">
+        <div class="camera-view">Fora de serviço</div>
+        <div class="camera-info">
+            <h3>Estacionamento 1</h3>
+            <div class="status-camera inativa"><span></span> Inativa</div>
+        </div>
+    </div>
+
+     <div class="camera-card">
+        <div class="camera-view">Fora de serviço</div>
+        <div class="camera-info">
+            <h3>Estacionamento 2</h3>
+            <div class="status-camera inativa"><span></span> Inativa</div>
+        </div>
+    </div>
+
+
+
+   
+   
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Almoxarifado</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Produção 1</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+    <!-- LINHA 3 -->
+    <div class="camera-card">
+        <div class="camera-view">Fora de serviço</div>
+        <div class="camera-info">
+            <h3>Produção 2</h3>
+            <div class="status-camera inativa"><span></span> Inativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Área Externa</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Portaria</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Fora de serviço</div>
+        <div class="camera-info">
+            <h3>Depósito</h3>
+            <div class="status-camera inativa"><span></span> Inativa</div>
+        </div>
+    </div>
+
+    <!-- LINHA 4 -->
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Entrada Fundo</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Refeitório</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Fora de serviço</div>
+        <div class="camera-info">
+            <h3>Saída Emergência</h3>
+            <div class="status-camera inativa"><span></span> Inativa</div>
+        </div>
+    </div>
+
+    <div class="camera-card">
+        <div class="camera-view">Transmitindo</div>
+        <div class="camera-info">
+            <h3>Escada</h3>
+            <div class="status-camera ativa"><span></span> Ativa</div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+
+
+<script src="assets/js/acessibilidade.js"></script>
+
+</body>
+</html>

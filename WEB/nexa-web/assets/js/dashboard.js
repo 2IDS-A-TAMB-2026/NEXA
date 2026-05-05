@@ -1,28 +1,37 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ESTADO DO SISTEMA (simula backend)
+    //controle do acesso
+    const tipo = localStorage.getItem("tipoUsuario");
+
+    if (tipo !== "admin") {
+        alert("Acesso restrito!");
+        window.location.href = "dashboard_funcionario.html";
+        return;
+    }
+
+    // nn ta funcionando
+    const span = document.getElementById("boasVindas");
+    if (span) {
+        span.innerText = "Bem-vindo, Administrador";
+    }
+
+    // simulação
     let estado = {
         pessoas: 120,
         alertas: 3,
         cameras: 4
     };
 
-    // ELEMENTOS
+    // elemento
     const cardPessoas = document.getElementById("cardPessoas");
     const cardConformidade = document.getElementById("cardConformidade");
     const cardAlertas = document.getElementById("cardAlertas");
     const cardCameras = document.getElementById("cardCameras");
     const listaAlertas = document.getElementById("listaAlertas");
 
-    // SEGURANÇA
-    if (!cardPessoas || !listaAlertas) return;
-
-    // ATUALIZA CARDS
+    // atualiza o dashboard, nn funciona
     function atualizarDashboard() {
-        const conformidade = Math.max(
-            60,
-            100 - estado.alertas * 5
-        );
+        const conformidade = Math.max(60, 100 - estado.alertas * 5);
 
         cardPessoas.innerText = estado.pessoas;
         cardAlertas.innerText = estado.alertas;
@@ -30,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cardConformidade.innerText = conformidade + "%";
     }
 
-    // ATUALIZA ALERTAS VISUAIS
+    // alertas atualiza
     function atualizarAlertas() {
         listaAlertas.innerHTML = "";
 
@@ -45,25 +54,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // SIMULA EVENTOS EM TEMPO REAL
+    // simula tempo
     setInterval(() => {
-        // Pessoas sempre aumentam
         estado.pessoas += Math.floor(Math.random() * 4) + 1;
 
-        // Alertas sobem ou descem
         const variacao = Math.floor(Math.random() * 3) - 1;
         estado.alertas = Math.max(0, estado.alertas + variacao);
 
         atualizarDashboard();
         atualizarAlertas();
-    }, 5000); // a cada 5 segundos
+    }, 5000);
 
-    // INICIALIZA
+    //começa
     atualizarDashboard();
     atualizarAlertas();
 });
 
-// LOGOUT
+//sair
 function logout() {
+    localStorage.removeItem("tipoUsuario");
     window.location.href = "login.html";
 }

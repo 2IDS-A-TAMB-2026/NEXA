@@ -1,14 +1,16 @@
 /* ========================================
    NEXA - SITE INSTITUCIONAL
 ======================================== */
-
+/*coloca essas cores como padrão e permite referência delas no código a partir dessas palavras*/
 :root{
     --primary:#0a66c2;
     --dark:#0f2a44;
     --gray:#4b5563;
     --bg:#f7f9fb;
 }
-
+/*html{
+    scroll-behavior: smooth;
+}*/
 /* RESET */
 *{
     margin:0;
@@ -20,6 +22,7 @@
 body{
     background:var(--bg);
     color:#1f2937;
+    scroll-behavior:smooth;
 }
 
 /* ========================================
@@ -119,6 +122,8 @@ body{
         inset 0 0 0 1px rgba(255,255,255,.2),
         0 10px 25px rgba(10,102,194,.45);
 }
+
+
 
 /* ========================================
    SECTIONS

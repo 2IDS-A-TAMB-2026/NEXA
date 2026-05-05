@@ -1,173 +1,172 @@
-/* MASCARA CPF */
-document.getElementById("cpf").addEventListener("input", function(){
+/* mascara cpf */
+document.getElementById("cpf").addEventListener("input", function () {
 
-let cpf = this.value.replace(/\D/g,"");
+    let cpf = this.value.replace(/\D/g, "");
 
-if(cpf.length > 3 && cpf.length <=6){
-cpf = cpf.slice(0,3) + "." + cpf.slice(3);
-}
-else if(cpf.length > 6 && cpf.length <=9){
-cpf = cpf.slice(0,3) + "." + cpf.slice(3,6) + "." + cpf.slice(6);
-}
-else if(cpf.length > 9){
-cpf = cpf.slice(0,3) + "." + cpf.slice(3,6) + "." + cpf.slice(6,9) + "-" + cpf.slice(9,11);
-}
+    if (cpf.length > 3 && cpf.length <= 6) {
+        cpf = cpf.slice(0, 3) + "." + cpf.slice(3);
+    }
+    else if (cpf.length > 6 && cpf.length <= 9) {
+        cpf = cpf.slice(0, 3) + "." + cpf.slice(3, 6) + "." + cpf.slice(6);
+    }
+    else if (cpf.length > 9) {
+        cpf = cpf.slice(0, 3) + "." + cpf.slice(3, 6) + "." + cpf.slice(6, 9) + "-" + cpf.slice(9, 11);
+    }
 
-this.value = cpf;
-
-});
-
-
-/* MASCARA TELEFONE */
-document.getElementById("telefone").addEventListener("input", function(){
-
-let telefone = this.value.replace(/\D/g,"");
-
-if(telefone.length > 2 && telefone.length <=7){
-telefone = "(" + telefone.slice(0,2) + ") " + telefone.slice(2);
-}
-else if(telefone.length > 7){
-telefone = "(" + telefone.slice(0,2) + ") " +
-telefone.slice(2,7) + "-" + telefone.slice(7,11);
-}
-
-this.value = telefone;
+    this.value = cpf;
 
 });
 
 
-/* MOSTRAR CODIGO EMPRESA */
-document.getElementById("tipo").addEventListener("change", function(){
+/* mascara de telefone */
+document.getElementById("telefone").addEventListener("input", function () {
 
-const campoEmpresa = document.getElementById("campoEmpresa");
+    let telefone = this.value.replace(/\D/g, "");
 
-if(this.value === "funcionario"){
-campoEmpresa.style.display = "block";
-}
-else{
-campoEmpresa.style.display = "none";
-}
+    if (telefone.length > 2 && telefone.length <= 7) {
+        telefone = "(" + telefone.slice(0, 2) + ") " + telefone.slice(2);
+    }
+    else if (telefone.length > 7) {
+        telefone = "(" + telefone.slice(0, 2) + ") " +
+            telefone.slice(2, 7) + "-" + telefone.slice(7, 11);
+    }
+
+    this.value = telefone;
+
+});
+
+
+/* mostra o codigo da empresa */
+document.getElementById("tipo").addEventListener("change", function () {
+
+    const campoEmpresa = document.getElementById("campoEmpresa");
+
+    if (this.value === "funcionario") {
+        campoEmpresa.style.display = "block";
+    }
+    else {
+        campoEmpresa.style.display = "none";
+    }
 
 });
 
 
-/* CADASTRAR */
-document.getElementById("registerForm").addEventListener("submit", function(event){
+/* cadastrar */
+document.getElementById("registerForm").addEventListener("submit", function (event) {
 
-event.preventDefault();
+    event.preventDefault();
 
-const nome = document.getElementById("nome").value.trim();
-const cpf = document.getElementById("cpf").value.replace(/\D/g,"");
-const nascimento = document.getElementById("nascimento").value;
-const email = document.getElementById("email").value.trim();
-const telefone = document.getElementById("telefone").value.replace(/\D/g,"");
-const senha = document.getElementById("senha").value;
-const confirmar = document.getElementById("confirmar").value;
-const tipo = document.getElementById("tipo").value;
-const codigoEmpresa = document.getElementById("codigo_empresa").value.trim();
-
-
-/* CAMPOS OBRIGATORIOS */
-
-if(!nome || !cpf || !nascimento || !email || !telefone || !senha || !confirmar){
-
-Swal.fire({
-title: "Campos obrigatórios",
-text: "Preencha todos os campos antes de continuar.",
-icon: "warning"
-});
-
-return;
-
-}
+    const nome = document.getElementById("nome").value.trim();
+    const cpf = document.getElementById("cpf").value.replace(/\D/g, "");
+    const nascimento = document.getElementById("nascimento").value;
+    const email = document.getElementById("email").value.trim();
+    const telefone = document.getElementById("telefone").value.replace(/\D/g, "");
+    const senha = document.getElementById("senha").value;
+    const confirmar = document.getElementById("confirmar").value;
+    const tipo = document.getElementById("tipo").value;
+    const codigoEmpresa = document.getElementById("codigo_empresa").value.trim();
 
 
-/* CPF INVALIDO */
+    /* campos obrigatorios */
 
-if(cpf.length !== 11){
+    if (!nome || !cpf || !nascimento || !email || !telefone || !senha || !confirmar) {
 
-Swal.fire({
-title: "Erro no CPF",
-text: "Digite um CPF válido.",
-icon: "error"
-});
+        Swal.fire({
+            title: "Campos obrigatórios",
+            text: "Preencha todos os campos antes de continuar.",
+            icon: "warning"
+        });
 
-return;
+        return;
 
-}
-
-
-/* TELEFONE INVALIDO */
-
-if(telefone.length !== 11){
-
-Swal.fire({
-title: "Erro no telefone",
-text: "Digite um telefone válido.",
-icon: "error"
-});
-
-return;
-
-}
+    }
 
 
-/* SENHA */
+    /* cpf invalido*/
 
-if(senha.length < 6){
+    if (cpf.length !== 11) {
 
-Swal.fire({
-title: "Erro na senha",
-text: "A senha deve ter no mínimo 6 caracteres.",
-icon: "error"
-});
+        Swal.fire({
+            title: "Erro no CPF",
+            text: "Digite um CPF válido.",
+            icon: "error"
+        });
 
-return;
+        return;
 
-}
-
-
-/* CONFIRMAR SENHA */
-
-if(senha !== confirmar){
-
-Swal.fire({
-title: "Erro de senha",
-text: "As senhas não conferem.",
-icon: "error"
-});
-
-return;
-
-}
+    }
 
 
-/* CODIGO EMPRESA */
+    /* telefone invalido */
 
-if(tipo === "funcionario" && codigoEmpresa === ""){
+    if (telefone.length !== 11) {
 
-Swal.fire({
-title: "Erro no cadastro",
-text: "Funcionários precisam informar o código da empresa.",
-icon: "error"
-});
+        Swal.fire({
+            title: "Erro no telefone",
+            text: "Digite um telefone válido.",
+            icon: "error"
+        });
 
-return;
+        return;
 
-}
+    }
 
 
-/* SUCESSO */
+    /* senha */
 
-Swal.fire({
-title: "Cadastro realizado",
-text: "Usuário cadastrado com sucesso.",
-icon: "success"
-}).then(()=>{
+    if (senha.length < 6) {
 
-document.getElementById("registerForm").reset();
+        Swal.fire({
+            title: "Erro na senha",
+            text: "A senha deve ter no mínimo 6 caracteres.",
+            icon: "error"
+        });
 
-});
+        return;
+
+    }
+
+
+    /* confirma a senha */
+
+    if (senha !== confirmar) {
+
+        Swal.fire({
+            title: "Erro de senha",
+            text: "As senhas não conferem.",
+            icon: "error"
+        });
+
+        return;
+
+    }
+
+
+    /* codigo empresa*/
+
+    if (tipo === "funcionario" && codigoEmpresa === "") {
+
+        Swal.fire({
+            title: "Erro no cadastro",
+            text: "Funcionários precisam informar o código da empresa.",
+            icon: "error"
+        });
+
+        return;
+
+    }
+
+    /*sucesso*/
+
+    Swal.fire({
+        title: "Cadastro realizado",
+        text: "Usuário cadastrado com sucesso.",
+        icon: "success"
+    }).then(() => {
+
+        document.getElementById("registerForm").reset();
+
+    });
 
 });//capturar o formulário
 const form = document.getElementById("formCadastro");
@@ -195,119 +194,77 @@ const erroPreco = document.getElementById("erroPreco");
 const erroData = document.getElementById("erroData");
 
 
-// MASCARA TELEFONE
-telefoneInput.addEventListener("input", function() {
-
-    let telefone = telefoneInput.value.replace(/\D/g, "");
-
-    if(telefone.length > 2 && telefone.length <= 7) {
-        telefone = "(" + telefone.slice(0, 2) + ") " + telefone.slice(2);
-    }
-    else if(telefone.length > 7) {
-        telefone = "(" + telefone.slice(0, 2) + ") " + 
-                   telefone.slice(2, 7) + "-" + telefone.slice(7, 11);
-    }
-
-    telefoneInput.value = telefone;
-
-});
-
-
-// MASCARA CNPJ
-cnpjInput.addEventListener("input", function(){
-
-    let cnpj = cnpjInput.value.replace(/\D/g, "");
-
-    if(cnpj.length > 2 && cnpj.length <=5){
-        cnpj = cnpj.slice(0,2) + "." + cnpj.slice(2);
-    }
-    else if (cnpj.length > 5 && cnpj.length <=8){
-        cnpj = cnpj.slice(0,2) + "." + cnpj.slice(2,5) + "." + cnpj.slice(5);
-    }
-    else if (cnpj.length > 8 && cnpj.length <=12){
-        cnpj = cnpj.slice(0,2) + "." + cnpj.slice(2,5) + "." + cnpj.slice(5,8) + "/" + cnpj.slice(8);
-    }
-    else if (cnpj.length > 12){
-        cnpj = cnpj.slice(0,2) + "." + cnpj.slice(2,5) + "." + 
-               cnpj.slice(5,8) + "/" + cnpj.slice(8,12) + "-" + cnpj.slice(12,14);
-    }
-
-    cnpjInput.value = cnpj;
-
-});
-
-
-// VALIDAÇÃO
-form.addEventListener("submit", function(event){
+// validação dos inputs
+form.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
     let formValidado = true;
 
-    if(nomeInput.value.trim() === ""){
+    if (nomeInput.value.trim() === "") {
         erroNome.innerText = "O nome do produto é obrigatório!";
         nomeInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroNome.innerText = "";
         nomeInput.style.border = "2px solid green";
     }
 
-    if(codigoInput.value.trim() === ""){
+    if (codigoInput.value.trim() === "") {
         erroCodigo.innerText = "O código do produto é obrigatório!";
         codigoInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroCodigo.innerText = "";
         codigoInput.style.border = "2px solid green";
     }
 
-    if(categoriaInput.value === ""){
+    if (categoriaInput.value === "") {
         erroCategoria.innerText = "A categoria do produto é obrigatória!";
         categoriaInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroCategoria.innerText = "";
         categoriaInput.style.border = "2px solid green";
     }
 
-    if(serieInput.value.trim() === ""){
+    if (serieInput.value.trim() === "") {
         erroSerie.innerText = "O número de série é obrigatório!";
         serieInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroSerie.innerText = "";
         serieInput.style.border = "2px solid green";
     }
 
-    if(fornecedorInput.value.trim() === ""){
+    if (fornecedorInput.value.trim() === "") {
         erroFornecedor.innerText = "O fornecedor é obrigatório!";
         fornecedorInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroFornecedor.innerText = "";
         fornecedorInput.style.border = "2px solid green";
     }
 
-    if(telefoneInput.value.replace(/\D/g, "").length !== 11){
+    if (telefoneInput.value.replace(/\D/g, "").length !== 11) {
         erroTelefone.innerText = "Telefone inválido!";
         telefoneInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroTelefone.innerText = "";
         telefoneInput.style.border = "2px solid green";
     }
 
-    if(cnpjInput.value.replace(/\D/g, "").length !== 14){
+    if (cnpjInput.value.replace(/\D/g, "").length !== 14) {
         erroCNPJ.innerText = "CNPJ inválido!";
         cnpjInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroCNPJ.innerText = "";
         cnpjInput.style.border = "2px solid green";
     }
 
-    if(precoInput.value <= 0){
+    if (precoInput.value <= 0) {
         erroPreco.innerText = "Preço inválido!";
         precoInput.style.border = "2px solid red";
         formValidado = false;
@@ -316,29 +273,29 @@ form.addEventListener("submit", function(event){
         precoInput.style.border = "2px solid green";
     }
 
-    if(dataInput.value === ""){
+    if (dataInput.value === "") {
         erroData.innerText = "A data de fabricação é obrigatória!";
         dataInput.style.border = "2px solid red";
         formValidado = false;
-    } else{
+    } else {
         erroData.innerText = "";
         dataInput.style.border = "2px solid green";
     }
 
 
-    if(formValidado === true){
+    if (formValidado === true) {
 
         Swal.fire({
             title: "Sucesso!",
             text: "Dados cadastrados com sucesso.",
             icon: "success",
             confirmButtonText: "OK"
-        }).then(()=>{
+        }).then(() => {
             window.location.reload(true);
         });
 
     }
-    else{
+    else {
 
         Swal.fire({
             title: "Erro no cadastro",

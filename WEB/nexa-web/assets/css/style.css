@@ -24,16 +24,37 @@ body{
     min-height:100vh;
 }
 
+.divider {
+    width: 60%;
+    height: 1px;
+    background: #ddd;
+    margin: 10px auto;
+}
+
 /* ========================================
    LOGIN
 ======================================== */
-
 .body_login{
     min-height:100vh;
     background:linear-gradient(135deg,var(--primary),var(--dark));
     display:flex;
     align-items:center;
     justify-content:center;
+    background-color: linear-gradient(-45deg, var(--primary), #004182, var(--dark));
+    background-size: 400% 400%;
+    animation: gradientMove 5s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .login-container,
@@ -84,9 +105,9 @@ body:not(.body_login){
     display:block;
     color:#fff;
     text-decoration:none;
-    padding:12px;
+    padding:10px;
     border-radius:6px;
-    margin-bottom:10px;
+    margin-bottom:8px;
     transition:.2s;
 }
 
@@ -205,6 +226,8 @@ form select:focus{
    BOTÕES PADRÃO
 ======================================== */
 
+button{transition: .2s;}
+
 .button2,
 .btn{
     display:inline-block;
@@ -230,20 +253,25 @@ form select:focus{
     opacity:.9;
 }
 
+/*botao de adicionar*/
 .btn-add{
     background:var(--success);
     color:#fff;
 }
+.btn-add:hover{background:#246a28}
 
+/*botao de excluir*/
 .btn-edit{
     background:var(--primary);
     color:#fff;
 }
+.btn-edit:hover{background:#063e77}
 
 .btn-delete{
     background:var(--danger);
     color:#fff;
 }
+.btn-delete:hover{background:#920f0f}
 
 /* ========================================
    TABELAS

@@ -1,0 +1,308 @@
+/* =========================
+   🌙 DARK MODE COMPLETO
+   ========================= */
+
+body.dark-mode{
+    background: #00050f !important;
+    color: #e5e7eb !important;
+}
+
+/* CARD */
+body.dark-mode .login-container{
+    background: #030407;
+    color: #e5e7eb;
+    
+    border: 1.5px solid #0a66c2;
+
+    /* sombra azul suave */
+    box-shadow: 
+        0 0 15px rgba(10,102,194,0.4),
+        0 20px 50px rgba(0,0,0,0.6);
+
+    border-radius: 20px;
+}
+/* TÍTULO */
+body.dark-mode .titulo-login{
+    color: #0a66c2;
+}
+
+/* INPUT */
+body.dark-mode .input-box{
+    background: #070a11;
+    box-shadow: inset 0 0 0 1px #334155;
+}
+
+body.dark-mode .input-box input{
+    color: #e5e7eb;
+}
+
+body.dark-mode .input-box input::placeholder{
+    color: #94a3b8;
+}
+
+/* BOTÃO */
+body.dark-mode .btn-entrar{
+    background: linear-gradient(135deg,#60a5fa,#2563eb);
+    color:#000;
+}
+
+body.dark-mode .btn-entrar:hover{
+    box-shadow: 0 0 15px rgba(96,165,250,0.6);
+}
+
+/* LINKS */
+body.dark-mode .links a{
+    color:#60a5fa;
+}
+
+/* FOOTER */
+body.dark-mode footer{
+    color:#9ca3af;
+}
+
+/* =========================
+   🔁 TROCA DE LOGO CORRETA
+   ========================= */
+
+/* padrão (modo claro) */
+.logo-dark{
+    display:none;
+}
+
+.logo-light{
+    display:block;
+}
+
+/* modo escuro */
+body.dark-mode .logo-light{
+    display:none;
+}
+
+body.dark-mode .logo-dark{
+    display:block;
+}
+
+/* =========================
+   🔥 ALTO CONTRASTE
+   ========================= */
+
+body.alto-contraste{
+    background:#000 !important;
+    color:#ffd400 !important;
+}
+
+/* CARD */
+body.alto-contraste .login-container{
+    background:#000 !important;
+    border:2px solid #ffd400 !important;
+    color:#ffd400 !important;
+     box-shadow: 
+        0 0 15px rgb(251, 255, 2),
+        0 20px 50px rgba(0,0,0,0.6);
+
+}
+
+/* INPUT */
+body.alto-contraste .input-box{
+    background:#000 !important;
+    border:2px solid #ffd400 !important;
+    box-shadow:none !important;
+}
+
+body.alto-contraste .input-box input{
+    color:#ffd400 !important;
+}
+
+/* BOTÃO */
+body.alto-contraste .btn-entrar{
+    background:#ffd400 !important;
+    color:#000 !important;
+    border:2px solid #ffd400 !important;
+}
+
+body.alto-contraste .btn-entrar:hover{
+    background:#000 !important;
+    color:#ffd400 !important;
+}
+
+/* LINKS */
+body.alto-contraste a{
+    color:#ffd400 !important;
+}
+
+/* ERRO */
+body.alto-contraste .error{
+    color:#ff4d4d !important;
+}
+
+/* ICONES */
+body.alto-contraste i{
+    color:#ffd400 !important;
+}
+
+/* =========================
+   ✨ TRANSIÇÕES SUAVES
+   ========================= */
+
+body,
+.login-container,
+.input-box,
+.btn-entrar{
+    transition: all 0.3s ease;
+}
+
+/* =========================
+   🌙 DARK MODE COMPLETO
+   ========================= */
+
+body.dark-mode{
+    background: #00050f !important;
+    color: #e5e7eb !important;
+}
+
+/* CARD */
+body.dark-mode .container{
+    background: #030407;
+    color: #e5e7eb;
+
+    border: 1px solid #0a66c2;
+
+    box-shadow:
+        0 0 10px rgba(10,102,194,0.5),
+        0 0 25px rgba(10,102,194,0.2),
+        0 20px 50px rgba(0,0,0,0.7);
+
+    border-radius: 20px;
+}
+
+/* TÍTULO */
+body.dark-mode h2{
+    color: #ffffff;
+}
+
+/* TEXTO */
+body.dark-mode p{
+    color: #9ca3af;
+}
+
+/* INPUT */
+body.dark-mode .input-box{
+    background: #070a11;
+    box-shadow: inset 0 0 0 1px #334155;
+}
+
+body.dark-mode .input-box input{
+    color: #e5e7eb;
+}
+
+body.dark-mode .input-box input::placeholder{
+    color: #94a3b8;
+}
+
+/* ÍCONE */
+body.dark-mode .input-box i{
+    color: #60a5fa;
+}
+
+/* BOTÃO */
+body.dark-mode .btn{
+    background: linear-gradient(135deg,#073a78,#2563eb);
+    color:#000;
+}
+
+body.dark-mode .btn:hover{
+    box-shadow: 0 0 15px rgba(96,165,250,0.6);
+}
+
+/* LINKS */
+body.dark-mode a{
+    color:#60a5fa;
+}
+
+/* MENSAGENS */
+body.dark-mode .error{
+    color:#ff6b6b;
+}
+
+body.dark-mode .success{
+    color:#4ade80;
+}
+
+/* LOGO */
+body.dark-mode .logo-esquerda{
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+/* =========================
+   🔥 ALTO CONTRASTE
+   ========================= */
+
+body.alto-contraste{
+    background:#000 !important;
+    color:#ffd400 !important;
+}
+
+/* CARD */
+body.alto-contraste .container{
+    background:#000 !important;
+    border:2px solid #ffd400 !important;
+    color:#ffd400 !important;
+    box-shadow:none !important;
+}
+
+/* TEXTOS */
+body.alto-contraste h2,
+body.alto-contraste p,
+body.alto-contraste a{
+    color:#ffd400 !important;
+}
+
+/* INPUT */
+body.alto-contraste .input-box{
+    background:#000 !important;
+    border:2px solid #ffd400 !important;
+    box-shadow:none !important;
+}
+
+body.alto-contraste .input-box input{
+    color:#ffd400 !important;
+}
+
+/* ÍCONE */
+body.alto-contraste .input-box i{
+    color:#ffd400 !important;
+}
+
+/* BOTÃO */
+body.alto-contraste .btn{
+    background:#ffd400 !important;
+    color:#000 !important;
+    border:2px solid #ffd400 !important;
+}
+
+body.alto-contraste .btn:hover{
+    background:#000 !important;
+    color:#ffd400 !important;
+}
+
+/* ERRO */
+body.alto-contraste .error{
+    color:#ff4d4d !important;
+}
+
+/* SUCESSO */
+body.alto-contraste .success{
+    color:#00ff88 !important;
+}
+
+/* =========================
+   ✨ TRANSIÇÕES
+   ========================= */
+
+body,
+.container,
+.input-box,
+.btn{
+    transition: all 0.3s ease;
+}
