@@ -1,0 +1,92 @@
+.overlay {
+    margin-left: 260px;
+    min-height: 100vh;
+    width: calc(100% - 260px);
+
+    overflow-y: auto;
+
+    background: rgba(45, 141, 238, 0.25); /* mais leve */
+    
+    padding: 20px 30px; /* 👈 reduzido e horizontal melhor */
+}
+
+
+   /* ===== SIDEBAR (MENU LATERAL FIXO) ===== */
+        .sidebar {
+            width: 260px;
+            background: #0f2a44;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-top {
+            position: relative;
+            height: 160px;
+            background: url('<?= base_url("/assets/images/slide1.jpg") ?>') center/cover;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .sidebar-top::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(15,42,68,0.95));
+        }
+
+        .sidebar-top span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .menu a:hover, .menu a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .logout-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin: 15px;
+            border-radius: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: .2s;
+            border-top: 1px solid rgba(255,255,255,.1);
+            margin-top: auto;
+        }
+
+        .logout-item:hover {
+            background: #e53935;
+            color: #fff;
+        }

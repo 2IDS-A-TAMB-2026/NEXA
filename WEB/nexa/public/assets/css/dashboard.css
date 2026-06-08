@@ -1,0 +1,538 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* BODY */
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        
+        url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    overflow-x: hidden;
+
+}
+
+.main{
+    margin-left:270px;
+    width:calc(100% - 270px);
+}
+
+/* SIDEBAR */
+
+.sidebar {
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: 220px;
+
+    height: 100vh;
+
+    background:
+        linear-gradient(180deg,
+            #0f2a44,
+            #123456);
+
+    display: flex;
+    flex-direction: column;
+
+    border-right:
+        1px solid rgba(255, 255, 255, .08);
+
+    box-shadow:
+        8px 0 20px rgba(0, 0, 0, .25);
+
+    z-index: 100;
+
+}
+
+.sidebar-logo {
+
+    display: flex;
+
+    justify-content: center;
+
+    padding: 18px;
+
+}
+
+.sidebar-logo img {
+
+    width: 90px;
+
+}
+
+.menu {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 10px;
+
+    gap: 5px;
+
+}
+
+.menu a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    color: #dce8f6;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition: .25s;
+
+}
+
+.menu a:hover {
+
+    background:
+        rgba(255, 255, 255, .08);
+
+}
+
+.menu a.active {
+
+    background: #0a66c2;
+
+    font-weight: bold;
+
+}
+
+.logout-item {
+
+    margin: 12px;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    gap: 10px;
+
+    align-items: center;
+
+    text-decoration: none;
+
+    color: white;
+
+    border:
+        1px solid rgba(255, 255, 255, .1);
+
+}
+
+.logout-item:hover {
+
+    background: #dc2626;
+
+}
+
+/* MAIN */
+
+.main {
+
+    margin-left: 220px;
+
+    padding: 20px;
+
+    max-width: 1450px;
+
+}
+
+/* ACCESS */
+
+.access-bar {
+
+    position: fixed;
+
+    top: 15px;
+
+    right: 15px;
+
+    display: flex;
+
+    gap: 8px;
+
+    z-index: 999;
+
+}
+
+.access-btn {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, .95);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, .15);
+
+    transition: .2s;
+
+}
+
+.access-btn:hover {
+
+    transform:
+        translateY(-2px);
+
+}
+
+/* HEADER */
+
+header {
+
+    margin-bottom: 22px;
+
+}
+
+header h1 {
+
+    font-size: 32px;
+
+    font-weight: 800;
+
+    color: white;
+
+}
+
+header p {
+
+    margin-top: 4px;
+
+    font-size: 14px;
+
+    color:
+        rgba(255, 255, 255, .7);
+
+}
+
+/* METRICAS */
+
+.metrics {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(auto-fit, minmax(190px, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+
+}
+
+.metric {
+
+    background:
+        rgba(255, 255, 255, .97);
+
+    padding: 18px;
+
+    border-radius: 20px;
+
+    min-height: 95px;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, .12);
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+.metric::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: -15px;
+
+    top: -15px;
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 50%;
+
+    background:
+
+        rgba(10, 102, 194, .08);
+
+}
+
+.metric h4 {
+
+    font-size: 14px;
+
+    margin-bottom: 8px;
+
+    color: #666;
+
+}
+
+.metric span {
+
+    font-size: 26px;
+
+    font-weight: bold;
+
+}
+
+.metric span {
+
+    font-size: 26px;
+
+    font-weight: bold;
+
+}
+
+/* HOVER DOS CARDS DE MÉTRICAS */
+
+.metric{
+    transition: all .25s ease;
+    
+}
+
+.metric:hover{
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 15px 30px rgba(10,102,194,.15);
+
+    border-left: 5px solid #0a66c2;
+}
+
+/* GRAFICOS */
+
+.graficos-grid {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+
+}
+
+.card {
+
+    background:
+        rgba(255, 255, 255, .97);
+
+    border-radius: 22px;
+
+    padding: 18px;
+
+    height: 300px;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, .12);
+
+    transition: .25s;
+
+}
+
+.card:hover {
+
+    transform:
+        translateY(-3px);
+
+}
+
+.card h3 {
+
+    font-size: 18px;
+
+    margin-bottom: 14px;
+
+    color: #0a66c2;
+
+}
+
+.chart-container {
+
+    position: relative;
+
+    height: 190px;
+
+    width: 100%;
+
+}
+
+.chart-container canvas {
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+}
+
+/* RESPONSIVO */
+
+@media(max-width:1000px) {
+
+    .graficos-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+@media(max-width:900px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+    .main {
+
+        margin-left: 0;
+
+        padding: 18px;
+
+    }
+
+    header h1 {
+
+        font-size: 28px;
+
+    }
+
+    .metrics {
+
+        grid-template-columns:
+
+            1fr 1fr;
+
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .metrics {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .graficos-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .access-bar {
+
+        scale: .85;
+
+        right: 5px;
+
+    }
+
+    .chart-container {
+
+        height: 170px;
+
+    }
+
+    .card {
+
+        height: auto;
+
+    }
+
+}
+
+.metric{
+    position: relative;
+    padding: 20px;
+}
+
+.metric-icon{
+    position: absolute;
+
+    top: 18px;
+    right: 18px;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+
+    opacity: .9;
+}
+
+.pessoas{
+    background:#eaf3ff;
+    color:#5f9df5;
+}
+
+.conformidade{
+    background:#e8fff0;
+    color:#2fbf71;
+}
+
+.alerta{
+    background:#fff0f0;
+    color:#e05a5a;
+}
+
+.camera{
+    background:#eef4ff;
+    color:#4d8ff7;
+}
+

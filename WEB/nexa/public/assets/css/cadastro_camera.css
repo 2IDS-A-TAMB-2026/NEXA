@@ -1,0 +1,520 @@
+ /* RESET */
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: Arial, sans-serif;
+ }
+
+ body {
+     min-height: 100vh;
+     display: flex;
+     background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg') no-repeat center center/cover;
+ }
+
+
+
+
+
+ /* SIDEBAR */
+ .sidebar {
+     width: 270px;
+     background: #0f2a44;
+     color: #fff;
+
+     position: fixed;
+     /* 🔥 fixa */
+     top: 0;
+     left: 0;
+
+     height: 100vh;
+     /* ocupa tela inteira */
+     display: flex;
+     flex-direction: column;
+
+
+ }
+
+
+
+ .sidebar h1 {
+     text-align: center;
+     margin-bottom: 30px;
+ }
+
+ .sidebar a {
+     display: block;
+     padding: 10px;
+     margin-bottom: 8px;
+     color: #fff;
+     text-decoration: none;
+     border-radius: 6px;
+ }
+
+
+
+ .sidebar-logo {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     padding: 12px 0;
+     /* ↓ antes 25px */
+ }
+
+ .sidebar-logo img {
+     width: 120px;
+     /* ↓ levemente menor */
+     margin: 0 auto;
+     display: block;
+ }
+
+
+ .menu {
+     display: flex;
+     flex-direction: column;
+     padding: 8px 12px;
+     /* ↓ antes 25px 18px */
+     flex: 1;
+     gap: 4px;
+     /* ↓ antes 14px */
+ }
+
+ /* ITENS DO MENU */
+ .menu a {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+
+     padding: 9px 11px;
+     /* ↓ antes 16px 18px */
+     border-radius: 12px;
+
+     color: #cbd5e1;
+     text-decoration: none;
+
+     transition: 0.2s;
+     font-size: 15px;
+     /* ↓ leve ajuste */
+ }
+
+ .menu i {
+     font-size: 15px;
+     /* ↓ antes 18px */
+     width: 18px;
+     text-align: center;
+ }
+
+
+
+ .menu a.active {
+     background: #0a66c2;
+     color: #fff;
+     font-weight: bold;
+     border-left: 4px solid #19aaed;
+     /* detalhe visual moderno */
+ }
+
+ .menu a.active i {
+     color: #fff;
+ }
+
+ /* SAIR */
+ .logout-item {
+     margin: 10px 12px 30px 12px;
+     /* 🔥 sobe ele */
+     padding: 12px;
+
+     border-radius: 10px;
+
+     display: flex;
+     align-items: center;
+     gap: 10px;
+
+     color: #cbd5e1;
+     text-decoration: none;
+
+     border-top: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ /* LOGO DO SAIR */
+ .logout-item i {
+     font-size: 16px;
+ }
+
+ .logout-item:hover {
+     background: #dc2626;
+     color: #fff;
+ }
+
+
+
+ /* CONTEÚDO */
+
+ .page-header {
+     width: 100%;
+     margin-bottom: 20px;
+ }
+
+ .page-header h1 {
+     padding: 40px;
+     color: #fff;
+     font-size: 32px;
+ }
+
+
+ .content-grid {
+     display: flex;
+     gap: 30px;
+     margin-top: 20px;
+     width: 100%;
+     justify-content: center;
+     align-items: stretch;
+ }
+
+ .error-text {
+     color: #e53935;
+     font-size: 14px;
+     margin-top: -10px;
+     margin-bottom: 10px;
+     padding-left: 10px;
+     font-weight: 500;
+ }
+
+ .left-box,
+ .right-box {
+     flex: 1;
+     min-height: 500px;
+     display: flex;
+     flex-direction: column;
+     margin-left: 30px;
+     margin-top: 50px;
+ }
+
+ /* CARD ESQUERDA (FORM) */
+ .left-box {
+
+
+
+
+     background: #f8f8f8;
+
+     border-radius: 25px;
+
+     padding: 35px;
+
+     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+ }
+
+ .left-box h1 {
+     text-align: center;
+
+     color: #0a66c2;
+
+     margin-bottom: 25px;
+
+     font-size: 30px;
+ }
+
+ .subtitle {
+     color: #0066cc;
+
+     font-size: 24px;
+     font-weight: bold;
+
+     margin-bottom: 18px;
+ }
+
+
+ /* INPUTS */
+ .input-box {
+     width: 100%;
+     height: 58px;
+
+     background: #eceff1;
+
+     border-radius: 15px;
+
+     display: flex;
+     align-items: center;
+
+     padding: 0 18px;
+
+     margin-bottom: 18px;
+ }
+
+ .input-box i {
+     color: #0066cc;
+
+     font-size: 20px;
+
+     margin-right: 12px;
+ }
+
+ .input-box input {
+     width: 100%;
+
+     border: none;
+     outline: none;
+
+     background: transparent;
+
+     font-size: 18px;
+ }
+
+
+ /* BOTÃO */
+ .btn-area {
+     display: flex;
+     justify-content: center;
+
+     margin-top: 25px;
+ }
+
+ .btn {
+     width: 220px;
+     height: 52px;
+
+     background: #0066cc;
+     color: #fff;
+
+     border: none;
+     border-radius: 40px;
+
+     font-size: 22px;
+
+     cursor: pointer;
+ }
+
+
+ /* CARD DIREITA (LISTA) */
+ .right-box {
+     width: 400px;
+
+     background: #f8f8f8;
+
+     border-radius: 25px;
+
+     padding: 35px;
+
+     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+     max-height: 75vh;
+     overflow-y: auto;
+
+ }
+
+ .right-box h2 {
+     text-align: center;
+
+     color: #0a66c2;
+
+     margin-bottom: 20px;
+
+     font-size: 30px;
+ }
+
+
+ /* ITEM LISTA */
+ .lista-card {
+     width: 100%;
+
+     background: #fff;
+
+     border-radius: 20px;
+
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+
+     padding: 18px 20px;
+
+     margin-top: 15px;
+ }
+
+ .lista-left {
+     display: flex;
+     align-items: center;
+
+     gap: 15px;
+
+     max-width: 75%;
+ }
+
+ .lista-left i {
+     color: #0066cc;
+
+     font-size: 26px;
+ }
+
+ .lista-info h3 {
+     font-size: 18px;
+     color: #222;
+
+     word-break: break-word;
+ }
+
+ .lista-info p {
+     font-size: 15px;
+     color: #333;
+ }
+
+
+ /* AÇÕES */
+ .lista-actions {
+     display: flex;
+     gap: 16px;
+ }
+
+ .edit {
+     color: #1e88e5;
+     cursor: pointer;
+
+     font-size: 22px;
+ }
+
+ .delete {
+     color: #f44336;
+     cursor: pointer;
+
+     font-size: 22px;
+ }
+
+
+ /* MODAL */
+ .modal-bg {
+     position: fixed;
+
+     top: 0;
+     left: 0;
+
+     width: 100%;
+     height: 100%;
+
+     background: rgba(0, 0, 0, 0.45);
+
+     display: none;
+
+     align-items: center;
+     justify-content: center;
+ }
+
+ .modal {
+     width: 350px;
+
+     background: #f5f6fb;
+
+     border-radius: 30px;
+
+     padding: 30px;
+ }
+
+ .input-box.error {
+     border: 2px solid #e53935;
+ }
+
+ .modal input {
+     width: 100%;
+
+     border: none;
+     border-bottom: 2px solid #999;
+
+     background: transparent;
+
+     font-size: 16px;
+
+     margin-bottom: 18px;
+
+     outline: none;
+ }
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    height: 50px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Botão Cancelar */
+.modal-buttons button:first-child {
+    background: #f1f5f9;
+    color: #475569;
+    border: 2px solid #cbd5e1;
+}
+
+.modal-buttons button:first-child:hover {
+    background: #e2e8f0;
+}
+
+/* Botão Salvar */
+.save-btn {
+    background: #0066cc !important;
+    color: white !important;
+    border: none !important;
+}
+
+.save-btn:hover {
+    background: #0052a3 !important;
+}
+
+
+ .save-btn {
+     background: #ececec !important;
+
+     padding: 10px 28px;
+
+     border-radius: 25px;
+ }
+
+ .menu_nome {
+     text-align: center;
+
+ }
+
+ #mensagemVazia {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     text-align: center;
+     color: #9e9e9e;
+     font-size: 22px;
+     font-weight: 500;
+     height: 100%;
+     min-height: 250px;
+ }
+
+ .input-box select {
+     width: 100%;
+     border: none;
+     outline: none;
+     background: transparent;
+     font-size: 18px;
+     appearance: none;
+     /* remove estilo padrão */
+     cursor: pointer;
+ }
+
+ /* seta customizada */
+ .input-box {
+     position: relative;
+ }
+
+ .input-box.select::after {
+     content: "▼";
+     position: absolute;
+     right: 15px;
+     font-size: 12px;
+     color: #0066cc;
+     pointer-events: none;
+ }

@@ -1,0 +1,372 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* FUNDO COM IMAGEM */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg') no-repeat center/cover;
+}
+
+
+/* SIDEBAR */
+.sidebar {
+    width: 270px;
+    background: #0f2a44;
+    color: #fff;
+
+    position: fixed;
+    /* 🔥 fixa */
+    top: 0;
+    left: 0;
+
+    height: 100vh;
+    /* ocupa tela inteira */
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+
+
+.sidebar h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 8px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+
+
+.sidebar-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    /* ↓ antes 25px */
+}
+
+.sidebar-logo img {
+    width: 120px;
+    /* ↓ levemente menor */
+    margin: 0 auto;
+    display: block;
+}
+
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px;
+    /* ↓ antes 25px 18px */
+    flex: 1;
+    gap: 4px;
+    /* ↓ antes 14px */
+}
+
+/* ITENS DO MENU */
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 9px 11px;
+    /* ↓ antes 16px 18px */
+    border-radius: 12px;
+
+    color: #cbd5e1;
+    text-decoration: none;
+
+    transition: 0.2s;
+    font-size: 15px;
+    /* ↓ leve ajuste */
+}
+
+.menu i {
+    font-size: 15px;
+    /* ↓ antes 18px */
+    width: 18px;
+    text-align: center;
+}
+
+
+.menu a.active {
+    background: #0a66c2;
+    color: #fff;
+    font-weight: bold;
+    border-left: 4px solid #19aaed;
+    /* detalhe visual moderno */
+}
+
+.menu a.active i {
+    color: #fff;
+}
+
+/* SAIR */
+.logout-item {
+    margin: 10px 12px 30px 12px;
+    /* 🔥 sobe ele */
+    padding: 12px;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #cbd5e1;
+    text-decoration: none;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* LOGO DO SAIR */
+.logout-item i {
+    font-size: 16px;
+}
+
+.logout-item:hover {
+    background: #dc2626;
+    color: #fff;
+}
+
+/* CARD */
+.card {
+    margin-top: 40px;
+    width: 100%;
+    background: #f4f4f4;
+    border-radius: 25px;
+    padding: 40px;
+    margin: 40px auto;
+    max-width: 950px;
+}
+
+/* TITULO */
+.card h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #0a66c2;
+}
+
+/* SUBTITULO */
+.subtitle {
+    color: #1565c0;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* GRID */
+.form-grid {
+    display: grid;
+    /*grid-template-columns:1fr 1fr;
+    gap:15px;*/
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* INPUT */
+.input-box {
+    background: #e6e6e6;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+.input-box i {
+    color: #1565c0;
+    margin-right: 10px;
+}
+
+.input-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+}
+
+/* FULL */
+.full {
+    grid-column: span 2;
+}
+
+/* BOTÃO */
+.btn {
+    margin-top: 25px;
+    width: 260px;
+    height: 55px;
+    border: none;
+    border-radius: 30px;
+    /*background: #1565c0;*/
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn:hover {
+    background: #0d4fa3;
+}
+
+#editar-perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centraliza o form-grid horizontalmente */
+    width: 100%;
+}
+
+.form-grid {
+    width: 100%;
+    margin: auto;
+    max-width: 900px;
+}
+
+.card {
+    width: 100%;
+    max-width: 850px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.card h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #0f2a44;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #0a66c2;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card h3 {
+    font-size: 16px;
+    color: #0a66c2;
+    margin-left: 5px;
+    font-style: italic;
+}
+
+button {
+    font-size: 17px;
+    padding: 1em 2.7em;
+    font-weight: 500;
+    /*background: #0A66c2;*/
+    color: white;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.6em;
+    cursor: pointer;
+}
+
+.gradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 0.6em;
+    margin-top: -0.25em;
+    background-image: linear-gradient(rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 0.3));
+}
+
+.label {
+    position: relative;
+    top: -1px;
+}
+
+.transition {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 500ms;
+    background-color: #1e4b75;
+    border-radius: 9999px;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button:hover .transition {
+    width: 14em;
+    height: 14em;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/*==========================*/
+/*botao de salvar*/
+
+
+.salvar {
+    display: none;
+    background: #28a745;
+
+    font-size: 17px;
+    padding: 1em 2.7em;
+    font-weight: 500;
+    color: white;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.6em;
+    cursor: pointer;
+}
+
+.salvar:hover {
+    background: #175f28;
+}
+
+.transition_salvar {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 500ms;
+    background-color: #175f28;
+    border-radius: 9999px;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.salvar:hover .transition_salvar {
+    width: 14em;
+    height: 14em;
+}
+
+.salvar:active {
+    transform: scale(0.97);
+}

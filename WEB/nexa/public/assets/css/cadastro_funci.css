@@ -1,0 +1,370 @@
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   BODY
+========================= */
+body{
+    display: flex;
+    min-height: 100vh;
+    background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg')
+    center center/cover no-repeat;
+    /*overflow: hidden;*/
+    overflow-y: auto !important;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar{
+    width: 270px;
+    background: #0f2a44;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: 4px 0 20px rgba(0,0,0,.2);
+}
+
+.sidebar-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 0;
+}
+
+.sidebar-logo img{
+    width: 95px;
+}
+
+/* =========================
+   MENU
+========================= */
+.menu{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 2px;
+}
+
+.menu a{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: #d8e2ee;
+    padding: 14px;
+    border-radius: 12px;
+    transition: .3s;
+    font-size: 18px;
+}
+
+.menu a i{
+    width: 20px;
+    text-align: center;
+}
+
+.menu a:hover{
+    background: rgba(255,255,255,.08);
+    color: white;
+}
+
+.menu a.active{
+    background: linear-gradient(
+        90deg,
+        #0a66c2,
+        #1e88ff
+    );
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 6px 15px rgba(10,102,194,.35);
+}
+
+/* =========================
+   SAIR
+========================= */
+.logout-item{
+    margin: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: .3s;
+    border-top: 1px solid rgba(255,255,255,.1);
+}
+
+.logout-item:hover{
+    background: #dc2626;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+.overlay{
+    margin-left: 270px;
+    width: calc(100% - 270px);
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 20px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    gap:30px;
+
+    width:100%;
+    max-width:1400px;
+
+    margin:0 auto;
+}
+/* =========================
+   CARD FORMULÁRIO
+========================= */
+.card{
+    width:700px;
+    flex-shrink:0;
+    max-width:100%;
+
+    background:rgba(255,255,255,.92);
+
+    border-radius:30px;
+
+    padding:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+    height: filter;
+}
+
+.card h1{
+    text-align:center;
+    color:#0A66C2;
+    font-size:32px;
+    margin-bottom:30px;
+}
+
+
+/* =========================
+   FORM GRID
+========================= */
+.form-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.full{
+    grid-column: span 2;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.input-box{
+    background: #f5f8fc;
+    border: 2px solid transparent;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 15px;
+    transition: .3s;
+}
+
+.input-box:hover{
+    border-color: #0a66c2;
+}
+
+.input-box:focus-within{
+    border-color: #0a66c2;
+    box-shadow: 0 0 0 4px rgba(10,102,194,.15);
+}
+
+.input-box i{
+    color: #0a66c2;
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+.input-box input,
+.input-box select{
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+}
+
+/* =========================
+   BOTÃO
+========================= */
+.btn-area{
+    display:flex;
+    justify-content:center;
+    margin-top:30px;
+}
+
+
+/* =========================
+   LISTA
+========================= */
+.list-box{
+    width: 40%;
+    max-width: 500px;
+
+    background: rgba(255,255,255,.88);
+    backdrop-filter: blur(15px);
+
+    border-radius: 30px;
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,.15);
+
+    padding: 25px;
+
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-box h2{
+    text-align: center;
+    color: #0a66c2;
+    font-size: 34px;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   LISTA FUNCIONÁRIOS
+========================= */
+.lista-funcionarios{
+    
+    height: 600px;/*700*/
+    max-width:100%;
+
+    background: rgba(255,255,255,.95);
+
+    border-radius: 30px;
+
+    padding: 25px;
+
+    overflow-y: auto;
+
+    box-shadow: 0 15px 35px rgba(0,0,0,.15);
+}
+
+.lista-funcionarios h2{
+    text-align: center;
+    color: #0A66C2;
+    font-size: 32px;
+    margin-bottom: 25px;
+    position: sticky;
+    top: 0;
+    background: white;
+    padding-bottom: 10px;
+    z-index: 10;
+}
+/* =========================
+   SCROLL
+========================= */
+.lista-funcionarios::-webkit-scrollbar{
+    width: 8px;
+}
+
+.lista-funcionarios::-webkit-scrollbar-thumb{
+    background: #0A66C2;
+    border-radius: 10px;
+}
+
+/* =========================
+   CARD FUNCIONÁRIO
+========================= */
+.funcionario-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: #fff;
+
+    border-radius: 25px;
+
+    padding: 18px 22px;
+
+    margin-bottom: 18px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+
+    border-left: 5px solid #0A66C2;
+}
+
+.funcionario-info{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.funcionario-info i{
+    color: #0A66C2;
+    font-size: 42px;
+}
+
+.funcionario-info h3{
+    font-size: 18px;
+    color: #222;
+    margin-bottom: 5px;
+}
+
+.funcionario-info p{
+    font-size: 14px;
+    color: #444;
+    margin: 2px 0;
+}
+/* =========================
+   RESPONSIVO
+========================= */
+.acoes{
+    display: flex;
+    gap: 18px;
+}
+
+.acoes a{
+    font-size: 28px;
+    transition: .3s;
+}
+
+.acoes a:hover{
+    transform: scale(1.1);
+}
+
+.editar{
+    color: #0A66C2;
+}
+
+.excluir{
+    color: #ef4444;
+}

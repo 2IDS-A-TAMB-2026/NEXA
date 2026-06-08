@@ -1,0 +1,319 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg') no-repeat center/cover;
+
+        }
+
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 270px;
+            background: #0f2a44;
+            color: #fff;
+
+            position: fixed;
+            /* 🔥 fixa */
+            top: 0;
+            left: 0;
+
+            height: 100vh;
+            /* ocupa tela inteira */
+            display: flex;
+            flex-direction: column;
+
+
+        }
+
+
+
+        .sidebar h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 8px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+
+
+
+        .sidebar-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 0;
+            /* ↓ antes 25px */
+        }
+
+        .sidebar-logo img {
+            width: 120px;
+            /* ↓ levemente menor */
+            margin: 0 auto;
+            display: block;
+        }
+
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            /* ↓ antes 25px 18px */
+            flex: 1;
+            gap: 4px;
+            /* ↓ antes 14px */
+        }
+
+        /* ITENS DO MENU */
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 9px 11px;
+            /* ↓ antes 16px 18px */
+            border-radius: 12px;
+
+            color: #cbd5e1;
+            text-decoration: none;
+
+            transition: 0.2s;
+            font-size: 15px;
+            /* ↓ leve ajuste */
+        }
+
+        .menu i {
+            font-size: 15px;
+            /* ↓ antes 18px */
+            width: 18px;
+            text-align: center;
+        }
+
+
+        .menu a.active {
+            background: #0a66c2;
+            color: #fff;
+            font-weight: bold;
+            border-left: 4px solid #19aaed;
+            /* detalhe visual moderno */
+        }
+
+        .menu a.active i {
+            color: #fff;
+        }
+
+        /* SAIR */
+        .logout-item {
+            margin: 10px 12px 30px 12px;
+            /* 🔥 sobe ele */
+            padding: 12px;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: #cbd5e1;
+            text-decoration: none;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* LOGO DO SAIR */
+        .logout-item i {
+            font-size: 16px;
+        }
+
+        .logout-item:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+
+
+        /* MAIN / CONTEÚDO ROLÁVEL */
+
+
+        .access-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+
+
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            margin-left: 0px;
+            flex: 1;
+            padding: 25px;
+        }
+
+        header h1 {
+            color: #f5f8fa;
+        }
+
+        header p {
+            color: #fffdfd;
+            margin-bottom: 20px;
+        }
+
+        /* ===== CARDS ===== */
+        .ocorrencias {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid;
+        }
+
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            margin-bottom: 5px;
+        }
+
+        .card small {
+            color: #777;
+        }
+
+        .violacao {
+            border-color: #e53935;
+        }
+
+        .violacao .card-header {
+            color: #e53935;
+        }
+
+        .conforme {
+            border-color: #43a047;
+        }
+
+        .conforme .card-header {
+            color: #43a047;
+        }
+
+        .parcial {
+            border-color: #fb8c00;
+        }
+
+        .parcial .card-header {
+            color: #fb8c00;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .epi-box {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .ok {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .fail {
+            background: #ffebee;
+            color: #c62828;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        /* FILTROS */
+        .filtros {
+            display: flex;
+            gap: 30px;
+            /* MAIS ESPAÇO ENTRE OS FILTROS */
+            flex-wrap: wrap;
+
+            margin-bottom: 25px;
+
+            background: transparent;
+            /* FUNDO TRANSPARENTE */
+
+            padding: 10px 0;
+            border-radius: 14px;
+        }
+
+        .filtros input,
+        .filtros select {
+            padding: 14px 16px;
+
+            border: none;
+            border-radius: 12px;
+
+            min-width: 220px;
+            /* MAIOR */
+
+            outline: none;
+            font-size: 14px;
+
+            background: rgba(255, 255, 255, 0.92);
+
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .filtros input:focus,
+        .filtros select:focus {
+            border: 2px solid #0a66c2;
+        }
+
+        .btn-limpar {
+            border: none;
+            padding: 14px 22px;
+
+            border-radius: 12px;
+            cursor: pointer;
+
+            background: #dc2626;
+            color: white;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .btn-limpar:hover {
+            transform: translateY(-2px);
+        }

@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+
+    background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg') no-repeat center center/cover;
+
+    background-attachment: fixed;
+}
+
+header {
+    margin-bottom: 22px;
+}
+
+header h1 {
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: white;
+}
+
+header p {
+    margin-top: 4px;
+    font-size: 14px;
+    color: rgba(255,255,255,.7);
+}
+
+
+.filtros {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filtros input {
+    flex: 1;
+    min-width: 300px;
+
+    border: none;
+    border-radius: 12px;
+
+    padding: 14px 18px;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.btn-filtrar {
+    background: #0a66c2;
+    color: #fff;
+
+    border: none;
+
+    padding: 14px 25px;
+
+    border-radius: 12px;
+
+    font-weight: bold;
+}
+
+.btn-filtrar:hover {
+    background: #0854a3;
+}
+
+.cameras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.camera-card {
+    background: #fff;
+
+    border-radius: 16px;
+
+    padding: 25px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+    transition: 0.3s;
+}
+
+.camera-card:hover {
+    transform: translateY(-5px);
+}
+
+.camera-icon {
+    font-size: 40px;
+}
+
+.camera-nome {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.setor {
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.status-box {
+    margin-top: 10px;
+}
+
+.status {
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+
+    display: inline-block;
+
+    margin-right: 6px;
+}
+
+.ativo {
+    background: #43a047;
+    box-shadow: 0 0 8px #43a047;
+}
+
+.inativo {
+    background: #e53935;
+    box-shadow: 0 0 8px #e53935;
+}
+
+.texto-status {
+    font-weight: bold;
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #fff;
+}
+
+.main {
+    margin-left: 220px;
+    padding: 20px;
+    max-width: 1450px;
+}
