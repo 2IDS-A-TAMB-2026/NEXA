@@ -95,7 +95,8 @@ class DashboardPageFun extends StatelessWidget {
               },
             ),
 
-
+              const Spacer(),
+              
             _menuItem(
               icon: Icons.logout,
               texto: "Sair",

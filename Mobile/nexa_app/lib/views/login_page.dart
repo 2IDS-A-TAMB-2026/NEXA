@@ -4,14 +4,10 @@ import 'package:nexa_app/views/institucional_page.dart';
 import 'package:nexa_app/views/recuperar_senha_page.dart';
 
 class LoginPage extends StatefulWidget {
- final VoidCallback onLogin;
+  final VoidCallback onLogin;
   final VoidCallback onVoltar;
 
-  const LoginPage({
-    super.key,
-    required this.onLogin,
-    required this.onVoltar,
-  });
+  const LoginPage({super.key, required this.onLogin, required this.onVoltar});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -29,18 +25,16 @@ class _LoginPageState extends State<LoginPage> {
       erroEmail = null;
       erroSenha = null;
 
-      if (emailController.text.isEmpty ||
-          !emailController.text.contains("@")) {
+      if (emailController.text.isEmpty || !emailController.text.contains("@")) {
         erroEmail = "Digite um e-mail válido";
       }
 
-      if (senhaController.text.isEmpty ||
-          senhaController.text.length < 6) {
+      if (senhaController.text.isEmpty || senhaController.text.length < 6) {
         erroSenha = "Mínimo 6 caracteres";
       }
 
       if (erroEmail == null && erroSenha == null) {
-       widget.onLogin();
+        widget.onLogin();
       }
     });
   }
@@ -52,8 +46,9 @@ class _LoginPageState extends State<LoginPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF0D1117) : const Color(0xFFF4F6FA),
+      backgroundColor: isDark
+          ? const Color(0xFF0D1117)
+          : const Color(0xFFF4F6FA),
       body: isMobile
           ? _mobileLayout(context, isDark)
           : _desktopLayout(context, isDark),
@@ -70,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
           /// TOPO
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 60, bottom: 40),
+            padding: const EdgeInsets.only(top: 60, bottom: 50),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF0A66C2), Color(0xFF003C8F)],
@@ -87,44 +82,46 @@ class _LoginPageState extends State<LoginPage> {
                 const Text(
                   "Login",
                   style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
           ),
 
-          /// FORM
+          /// FORM COM MARGEM LATERAL MAIOR
           Transform.translate(
             offset: const Offset(0, -30),
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(
+                horizontal: 28,
+              ), // Margem lateral aumentada para 28
               padding: const EdgeInsets.all(25),
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF161B22) : Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
-                  BoxShadow(color: Colors.black12, blurRadius: 10)
+                  BoxShadow(color: Colors.black12, blurRadius: 10),
                 ],
               ),
               child: Column(
                 children: [
-                  /// VOLTAR (mais espaçado)
+                  /// VOLTAR
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton.icon(
                         onPressed: widget.onVoltar,
-                        icon: const Icon(Icons.undo,
-                            color: Color(0xFF0A66C2)),
+                        icon: const Icon(Icons.undo, color: Color(0xFF0A66C2)),
                         label: const Text(
                           "Voltar",
-                           style: TextStyle(
-                          color: Color.fromARGB(255, 36, 42, 224)
-                           ),
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 36, 42, 224),
                           ),
+                        ),
                       ),
                     ),
                   ),
@@ -151,8 +148,10 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton.icon(
                     onPressed: validar,
                     icon: const Icon(Icons.login, color: Colors.white),
-                    label: const Text("Entrar",
-                        style: TextStyle(color: Colors.white)),
+                    label: const Text(
+                      "Entrar",
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
                       backgroundColor: const Color(0xFF0A66C2),
@@ -208,88 +207,107 @@ class _LoginPageState extends State<LoginPage> {
 
         Expanded(
           child: Center(
-            child: Container(
-              width: 420,
-              padding: const EdgeInsets.all(35),
-              decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF161B22) : Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black12, blurRadius: 10)
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton.icon(
-                      onPressed: widget.onVoltar,
-                      icon: const Icon(Icons.undo,
-                          color: Color(0xFF0A66C2)),
-                      label: const Text("Voltar"),
-                    ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Container(
+                  width: 420,
+                  padding: const EdgeInsets.all(35),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF161B22) : Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(color: Colors.black12, blurRadius: 10),
+                    ],
                   ),
-
-                  const SizedBox(height: 10),
-
-                  Image.asset("assets/logo_branco.png", height: 60),
-
-                  const SizedBox(height: 10),
-
-                  Text(
-                    "Login",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color:
-                          isDark ? Colors.white : const Color(0xFF1F3C5B),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  campo("E-mail", Icons.email, isDark,
-                      controller: emailController, erro: erroEmail),
-
-                  campo("Senha", Icons.lock, isDark,
-                      controller: senhaController,
-                      isPassword: true,
-                      erro: erroSenha),
-
-                  const SizedBox(height: 20),
-
-                  ElevatedButton.icon(
-                    onPressed: validar,
-                    icon: const Icon(Icons.login, color: Colors.white),
-                    label: const Text("Entrar",
-                        style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      backgroundColor: const Color(0xFF0A66C2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RecuperarSenhaPage(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          onPressed: widget.onVoltar,
+                          icon: const Icon(
+                            Icons.undo,
+                            color: Color(0xFF0A66C2),
+                          ),
+                          label: const Text("Voltar"),
                         ),
-                      );
-                    },
-                    child: const Text(
-                      "Esqueci a senha",
-                      style: TextStyle(color: Color(0xFF0A66C2)),
-                    ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      Image.asset("assets/logo_branco.png", height: 60),
+
+                      const SizedBox(height: 10),
+
+                      Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: isDark
+                              ? Colors.white
+                              : const Color(0xFF1F3C5B),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      campo(
+                        "E-mail",
+                        Icons.email,
+                        isDark,
+                        controller: emailController,
+                        erro: erroEmail,
+                      ),
+
+                      campo(
+                        "Senha",
+                        Icons.lock,
+                        isDark,
+                        controller: senhaController,
+                        isPassword: true,
+                        erro: erroSenha,
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      ElevatedButton.icon(
+                        onPressed: validar,
+                        icon: const Icon(Icons.login, color: Colors.white),
+                        label: const Text(
+                          "Entrar",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: const Color(0xFF0A66C2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const RecuperarSenhaPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Esqueci a senha",
+                          style: TextStyle(color: Color(0xFF0A66C2)),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -321,9 +339,7 @@ class _LoginPageState extends State<LoginPage> {
           prefixIcon: Icon(icon, color: const Color(0xFF1F66B1)),
           filled: true,
           fillColor: isDark ? const Color(0xFF0D1117) : Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
     );

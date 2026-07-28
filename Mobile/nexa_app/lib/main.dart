@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:nexa_app/controllers/acessibility_controller.dart';
 import 'package:nexa_app/views/institucional_page.dart';
 
-
 ////////////////////////////////////////////////////////////
 /// APP BAR GLOBAL COM ACESSIBILIDADE
 ////////////////////////////////////////////////////////////
@@ -22,9 +21,7 @@ PreferredSizeWidget menuAppBar(BuildContext context) {
         onPressed: onPressed,
         child: Text(
           texto,
-          style: TextStyle(
-            color: theme.colorScheme.onPrimary,
-          ),
+          style: TextStyle(color: theme.colorScheme.onPrimary),
         ),
       ),
     );
@@ -38,9 +35,6 @@ PreferredSizeWidget menuAppBar(BuildContext context) {
         const Text("NEXA"),
       ],
     ),
-
-  
-    
   );
 }
 
@@ -67,9 +61,9 @@ class MyApp extends StatelessWidget {
           ////////////////////////////////////////////////////
           builder: (context, child) {
             return MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                textScaler: TextScaler.linear(acess.escalaFonte),
-              ),
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.linear(acess.escalaFonte)),
               child: child!,
             );
           },

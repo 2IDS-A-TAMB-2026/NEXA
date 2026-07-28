@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nexa_app/views/institucional_page.dart';
+import 'package:nexa_app/views/profile_page.dart';
+import 'package:nexa_app/views/dashboard_page_fun.dart';
 
 class DashboardCamera extends StatelessWidget {
   const DashboardCamera({super.key});
@@ -225,9 +228,9 @@ class DashboardCamera extends StatelessWidget {
 
           _menuItem(Icons.dashboard, "Dashboard"),
           _menuItem(Icons.videocam, "Câmeras"),
-          _menuItem(Icons.warning, "Ocorrências"),
-          _menuItem(Icons.people, "Funcionários"),
-          _menuItem(Icons.security, "EPIs"),
+          _menuItem(Icons.security, "Perfil"),
+
+          
 
           const Spacer(),
 

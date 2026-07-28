@@ -33,36 +33,37 @@ PreferredSizeWidget menuAppBar(BuildContext context) {
     actions: [
       Row(
         children: [
+          /// 🔠 AUMENTAR FONTE
+          IconButton(
+            icon: const Icon(
+              Icons.text_increase,
+              size: 25,
+              color: Color.fromARGB(255, 6, 74, 143),
+            ),
+            onPressed: () {
+              context.read<AccessibilityController>().aumentarFonte();
+            },
+          ),
 
-            /// 🔠 AUMENTAR FONTE
-    IconButton(
-      icon: const Icon(Icons.text_increase,
-      size: 25,
-        color:   Color.fromARGB(255, 6, 74, 143),
-        
-      ),
-      onPressed: () {
-        context.read<AccessibilityController>().aumentarFonte();
-      },
-    ),
+          /// 🔡 DIMINUIR FONTE
+          IconButton(
+            icon: const Icon(
+              Icons.text_decrease,
+              size: 25,
+              color: Color.fromARGB(255, 4, 64, 124),
+            ),
+            onPressed: () {
+              context.read<AccessibilityController>().diminuirFonte();
+            },
+          ),
 
-    /// 🔡 DIMINUIR FONTE
-    IconButton(
-      icon: const Icon(Icons.text_decrease,
-      size: 25,
-        color:   Color.fromARGB(255, 4, 64, 124),
-        
-      ),
-      onPressed: () {
-        context.read<AccessibilityController>().diminuirFonte();
-      },
-    ),
-
-
-     IconButton(
-  icon: const Icon(Icons.volume_up, color: Color.fromARGB(255, 4, 64, 124)),
-  onPressed: () {
-    final texto = """
+          IconButton(
+            icon: const Icon(
+              Icons.volume_up,
+              color: Color.fromARGB(255, 4, 64, 124),
+            ),
+            onPressed: () {
+              final texto = """
 NEXA.
 
 Safety at the Core.
@@ -101,28 +102,29 @@ Rodapé.
 Links e redes sociais da NEXA.
 """;
 
-context.read<AccessibilityController>().lerTexto(texto);  },
-),
+              context.read<AccessibilityController>().lerTexto(texto);
+            },
+          ),
+
           /// HOME
-         
-      botao("Entrar", () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => LoginPage(
-        onLogin: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const DashboardPageFun(),
-            ),
-          );
-        },
-        onVoltar: () => Navigator.pop(context),
-      ),
-    ),
-  );
-}),
+          botao("Entrar", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LoginPage(
+                  onLogin: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardPageFun(),
+                      ),
+                    );
+                  },
+                  onVoltar: () => Navigator.pop(context),
+                ),
+              ),
+            );
+          }),
 
           const SizedBox(width: 10),
 
