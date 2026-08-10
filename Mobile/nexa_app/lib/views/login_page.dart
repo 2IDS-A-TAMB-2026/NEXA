@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nexa_app/views/dashboard_page.dart';
+import 'package:nexa_app/views/dashboard_page_fun.dart';
 import 'package:nexa_app/views/institucional_page.dart';
 import 'package:nexa_app/views/recuperar_senha_page.dart';
 

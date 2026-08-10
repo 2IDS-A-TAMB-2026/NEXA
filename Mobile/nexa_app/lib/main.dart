@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:nexa_app/controllers/acessibility_controller.dart';
 import 'package:nexa_app/views/institucional_page.dart';
+import 'package:provider/provider.dart';
 
 ////////////////////////////////////////////////////////////
 /// APP BAR GLOBAL COM ACESSIBILIDADE
@@ -48,8 +48,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AccessibilityController>(
       builder: (context, acess, _) {
-        final colorScheme = acess.altoContraste
-            ? const ColorScheme.highContrastDark()
+        // Usando o darkMode do controller para definir o tema (Claro ou Escuro)
+        final colorScheme = acess.darkMode
+            ? const ColorScheme.dark(
+                primary: Color(0xFF0F62FE),
+                surface: Color(0xFF1A2B4C),
+              )
             : ColorScheme.fromSeed(seedColor: const Color(0xFF0F2A44));
 
         return MaterialApp(
@@ -63,20 +67,18 @@ class MyApp extends StatelessWidget {
             return MediaQuery(
               data: MediaQuery.of(
                 context,
-              ).copyWith(textScaler: TextScaler.linear(acess.escalaFonte)),
+              ).copyWith(textScaler: TextScaler.linear(acess.fontSizeScale)),
               child: child!,
             );
           },
 
           ////////////////////////////////////////////////////
-          /// 🔥 TEMA MODERNO (FUNCIONA)
+          /// 🔥 TEMA MODERNO (CORRIGIDO)
           ////////////////////////////////////////////////////
           theme: ThemeData(
             useMaterial3: true,
             colorScheme: colorScheme,
-
-            scaffoldBackgroundColor: colorScheme.background,
-
+            scaffoldBackgroundColor: colorScheme.surface,
             appBarTheme: AppBarTheme(
               backgroundColor: colorScheme.surface,
               foregroundColor: colorScheme.onSurface,

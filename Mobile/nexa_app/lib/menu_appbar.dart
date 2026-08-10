@@ -3,8 +3,6 @@ import 'package:nexa_app/controllers/acessibility_controller.dart';
 import 'package:nexa_app/views/dashboard_page_fun.dart';
 import 'package:nexa_app/views/institucional_page.dart';
 import 'package:nexa_app/views/login_page.dart';
-import 'package:nexa_app/views/dashboard_page.dart';
-import 'package:nexa_app/views/loginadm_page.dart';
 import 'package:provider/provider.dart';
 
 PreferredSizeWidget menuAppBar(BuildContext context) {
@@ -134,15 +132,13 @@ Links e redes sociais da NEXA.
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => LoginadmPage(
+                  builder: (_) => LoginPage(
                     onLogin: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => Dashboard(
-                            onLogout: () {
-                              Navigator.pop(context);
-                            },
+                          builder: (_) => DashboardPageFun  (
+                           
                           ),
                         ),
                       );

@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:nexa_app/menu_appbar.dart';
-import 'package:nexa_app/views/dashboard_page.dart';
+import 'package:nexa_app/views/dashboard_page_fun.dart'; // Mude aqui para o dashboard do funcionário se tiver um específico, ex: dashboard_funcionario_page.dart
 import 'package:nexa_app/views/login_page.dart';
-import 'package:nexa_app/views/loginadm_page.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+// Controllers globais para gerenciar o Dark Mode e o Zoom da Fonte em toda a página
+ValueNotifier<bool> darkModeNotifier = ValueNotifier<bool>(false);
+ValueNotifier<double> fontSizeScaleNotifier = ValueNotifier<double>(1.0);
 
 class InstitucionalPage extends StatefulWidget {
   const InstitucionalPage({super.key});
@@ -19,102 +21,298 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 249, 249, 250),
-      appBar: menuAppBar(context),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      /// CONTEÚDO PRINCIPAL (COM GRADIENTE E BORDAS ARREDONDADAS)
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF0A66C2), Color(0xFF003C8F)],
-                          ),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return ValueListenableBuilder<bool>(
+      valueListenable: darkModeNotifier,
+      builder: (context, isDarkMode, child) {
+        final Color backgroundColor = isDarkMode
+            ? const Color(0xFF000000)
+            : const Color(0xFFF9F9FA);
+        final Color appBarColor = isDarkMode
+            ? const Color(0xFF1A2B4C)
+            : Colors.white;
+        final Color textColor = isDarkMode ? Colors.white : Colors.black87;
+        final Color brandColor = const Color(0xFF1A9DE7);
+
+        return ValueListenableBuilder<double>(
+          valueListenable: fontSizeScaleNotifier,
+          builder: (context, fontScale, child) {
+            return Scaffold(
+              backgroundColor: backgroundColor,
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(70),
+                child: AppBar(
+                  backgroundColor: appBarColor,
+                  elevation: 1,
+                  automaticallyImplyLeading: false,
+                  title: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1200),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(40),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  /// TÍTULO
-                                  RichText(
-                                    text: const TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: 'Safety at the',
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                              252,
-                                              1,
-                                              152,
-                                              253,
-                                            ),
-                                            fontSize: 70,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: ' Core',
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                              251,
-                                              255,
-                                              255,
-                                              255,
-                                            ),
-                                            fontSize: 70,
-                                          ),
-                                        ),
-                                      ],
+                            // LOGO ARREDONDADA ALTERNANDO ENTRE OS ATIVOS CONFORME O TEMA
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                    8 * fontScale,
+                                  ),
+                                  child: SizedBox(
+                                    width: 32 * fontScale,
+                                    height: 32 * fontScale,
+                                    child: Image.asset(
+                                      isDarkMode
+                                          ? 'assets/escuro.png'
+                                          : 'assets/logo.nexa.png',
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  "NEXA",
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 22 * fontScale,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
 
-                                  const SizedBox(height: 20),
-
-                                  /// TEXTO
-                                  const Text(
-                                    "A NEXA é uma plataforma inteligente de segurança do trabalho, unindo tecnologia, dados e automação para proteger pessoas e operações.",
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                      fontSize: 16,
+                            // BOTÕES DO MENU COM CORES PADRONIZADAS
+                            Row(
+                              children: [
+                                // Botão A+ sem sombra e padronizado
+                                InkWell(
+                                  onTap: () {
+                                    if (fontSizeScaleNotifier.value < 1.4) {
+                                      fontSizeScaleNotifier.value += 0.1;
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 4,
+                                    ),
+                                    child: Text(
+                                      "A+",
+                                      style: TextStyle(
+                                        color: brandColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16 * fontScale,
+                                      ),
                                     ),
                                   ),
+                                ),
+                                const SizedBox(width: 4),
 
-                                  const SizedBox(height: 30),
+                                // BOTÃO DE MODO ESCURO / CLARO AO LADO DO A+
+                                IconButton(
+                                  icon: Icon(
+                                    isDarkMode
+                                        ? Icons.wb_sunny
+                                        : Icons.nightlight_round,
+                                    color: brandColor,
+                                    size: 22,
+                                  ),
+                                  tooltip: "Alternar Modo Escuro",
+                                  onPressed: () {
+                                    darkModeNotifier.value =
+                                        !darkModeNotifier.value;
+                                  },
+                                ),
+                                const SizedBox(width: 4),
 
-                                  /// BOTÕES
-                                  Wrap(
-                                    spacing: 15,
-                                    runSpacing: 10,
-                                    children: [
-                                      /// ACESSAR
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => LoginPage(
-                                                onLogin: () {
-                                                  Navigator.pushReplacement(
+                                // Botão A- padronizado
+                                InkWell(
+                                  onTap: () {
+                                    if (fontSizeScaleNotifier.value > 0.8) {
+                                      fontSizeScaleNotifier.value -= 0.1;
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 4,
+                                    ),
+                                    child: Text(
+                                      "A-",
+                                      style: TextStyle(
+                                        color: brandColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16 * fontScale,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+
+                                // Botão de Som / Áudio padronizado
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.volume_up,
+                                    color: brandColor,
+                                    size: 20,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                                const SizedBox(width: 16),
+
+                                // Botão Entrar direcionando para LoginPage de Funcionário
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => LoginPage(
+                                          onLogin: () {
+                                            // AQUI VOCÊ DIRECIONA PARA O DASHBOARD ESPECÍFICO DO FUNCIONÁRIO
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => DashboardPageFun(),
+                                              ),
+                                            );
+                                          },
+                                          onVoltar: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: brandColor,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Entrar",
+                                    style: TextStyle(fontSize: 14 * fontScale),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1200),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 20,
+                          ),
+                          child: Column(
+                            children: [
+                              /// CONTEÚDO PRINCIPAL (COM GRADIENTE E BORDAS ARREDONDADAS)
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFF1A2B4C),
+                                      Color(0xFF1A9DE7),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(40),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          /// TÍTULO
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Safety at the',
+                                                  style: TextStyle(
+                                                    color: const Color.fromARGB(
+                                                      252,
+                                                      1,
+                                                      152,
+                                                      253,
+                                                    ),
+                                                    fontSize: 70 * fontScale,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: ' Core',
+                                                  style: TextStyle(
+                                                    color: const Color.fromARGB(
+                                                      251,
+                                                      255,
+                                                      255,
+                                                      255,
+                                                    ),
+                                                    fontSize: 70 * fontScale,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 20),
+
+                                          /// TEXTO
+                                          Text(
+                                            "A NEXA é uma plataforma inteligente de segurança do trabalho, unindo tecnologia, dados e automação para proteger pessoas e operações.",
+                                            style: TextStyle(
+                                              color: const Color.fromARGB(
+                                                255,
+                                                255,
+                                                255,
+                                                255,
+                                              ),
+                                              fontSize: 16 * fontScale,
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 30),
+
+                                          /// BOTÕES DA SEÇÃO PRINCIPAL
+                                          Wrap(
+                                            spacing: 15,
+                                            runSpacing: 10,
+                                            children: [
+                                              /// ACESSAR (direcionando para LoginPage)
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (_) => Dashboard(
-                                                        onLogout: () {
+                                                      builder: (_) => LoginPage(
+                                                        onLogin: () {
+                                                          Navigator.pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (_) =>
+                                                                  DashboardPageFun(
+                                                                   
+                                                                  ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        onVoltar: () {
                                                           Navigator.pop(
                                                             context,
                                                           );
@@ -123,131 +321,149 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                                                     ),
                                                   );
                                                 },
-                                                onVoltar: () {
-                                                  Navigator.pop(context);
-                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  foregroundColor: const Color(
+                                                    0xFF1A2B4C,
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 30,
+                                                        vertical: 15,
+                                                      ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  "Acesse o app",
+                                                  style: TextStyle(
+                                                    color: const Color(
+                                                      0xFF1A2B4C,
+                                                    ),
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14 * fontScale,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          foregroundColor: const Color(
-                                            0xFF0A66C2,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 30,
-                                            vertical: 15,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                          ),
-                                        ),
-                                        child: const Text(
-                                          "Acesse o app",
-                                          style: TextStyle(
-                                            color: Color(0xFF0A66C2),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
 
-                                      /// SOBRE NÓS (SCROLL)
-                                      OutlinedButton(
-                                        onPressed: () {
-                                          Scrollable.ensureVisible(
-                                            _sobreKey.currentContext!,
-                                            duration: const Duration(
-                                              milliseconds: 600,
-                                            ),
-                                            curve: Curves.easeInOut,
-                                          );
-                                        },
-                                        style: OutlinedButton.styleFrom(
-                                          side: const BorderSide(
-                                            color: Color.fromARGB(
-                                              255,
-                                              255,
-                                              255,
-                                              255,
-                                            ),
+                                              /// SOBRE NÓS (SCROLL)
+                                              OutlinedButton(
+                                                onPressed: () {
+                                                  Scrollable.ensureVisible(
+                                                    _sobreKey.currentContext!,
+                                                    duration: const Duration(
+                                                      milliseconds: 600,
+                                                    ),
+                                                    curve: Curves.easeInOut,
+                                                  );
+                                                },
+                                                style: OutlinedButton.styleFrom(
+                                                  side: const BorderSide(
+                                                    color: Color.fromARGB(
+                                                      255,
+                                                      255,
+                                                      255,
+                                                      255,
+                                                    ),
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 30,
+                                                        vertical: 15,
+                                                      ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  "Sobre nós",
+                                                  style: TextStyle(
+                                                    color: const Color.fromARGB(
+                                                      255,
+                                                      255,
+                                                      255,
+                                                      255,
+                                                    ),
+                                                    fontSize: 14 * fontScale,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 30,
-                                            vertical: 15,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                          ),
-                                        ),
-                                        child: const Text(
-                                          "Sobre nós",
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                              255,
-                                              255,
-                                              255,
-                                              255,
-                                            ),
-                                          ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(16),
+                                        bottomRight: Radius.circular(16),
+                                      ),
+                                      child: SizedBox(
+                                        height: 250,
+                                        child: const Carrossel(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
+
+                              const SizedBox(height: 50),
+
+                              ValoresSection(
+                                isDarkMode: isDarkMode,
+                                fontScale: fontScale,
                               ),
-                              child: SizedBox(
-                                height: 250,
-                                child: const Carrossel(),
+                              const Divider(),
+
+                              const SizedBox(height: 50),
+
+                              SolucoesSection(
+                                isDarkMode: isDarkMode,
+                                fontScale: fontScale,
                               ),
-                            ),
-                          ],
+                              const Divider(),
+
+                              const SizedBox(height: 50),
+
+                              VisaoComputacionalSection(
+                                isDarkMode: isDarkMode,
+                                fontScale: fontScale,
+                              ),
+
+                              const Divider(),
+
+                              const SizedBox(height: 50),
+
+                              /// SOBRE COM KEY
+                              SobreSection(
+                                key: _sobreKey,
+                                isDarkMode: isDarkMode,
+                                fontScale: fontScale,
+                              ),
+
+                              const SizedBox(height: 40),
+                            ],
+                          ),
                         ),
                       ),
+                    ),
 
-                      const SizedBox(height: 50),
-
-                      const ValoresSection(),
-                      const Divider(),
-
-                      const SizedBox(height: 50),
-
-                      const SolucoesSection(),
-                      const Divider(),
-
-                      const SizedBox(height: 50),
-
-                      const VisaoComputacionalSection(),
-
-                      const Divider(),
-
-                      const SizedBox(height: 50),
-
-                      /// SOBRE COM KEY
-                      SobreSection(key: _sobreKey),
-
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                    /// FOOTER
+                    const FooterNexa(),
+                  ],
                 ),
               ),
-            ),
-
-            /// FOOTER
-            const FooterNexa(),
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -309,7 +525,13 @@ class _CarrosselState extends State<Carrossel> {
 }
 
 class ValoresSection extends StatelessWidget {
-  const ValoresSection({super.key});
+  final bool isDarkMode;
+  final double fontScale;
+  const ValoresSection({
+    super.key,
+    required this.isDarkMode,
+    required this.fontScale,
+  });
 
   Widget cardValor(IconData icone, String titulo, String descricao) {
     return LayoutBuilder(
@@ -318,20 +540,20 @@ class ValoresSection extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 20),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
             borderRadius: BorderRadius.circular(15),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black12,
+                color: isDarkMode ? Colors.black54 : Colors.black12,
                 blurRadius: 10,
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
               ),
             ],
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(icone, color: const Color(0xFF0A66C2), size: 30),
+              Icon(icone, color: const Color(0xFF1A9DE7), size: 30 * fontScale),
               const SizedBox(width: 15),
               Expanded(
                 child: Column(
@@ -339,15 +561,19 @@ class ValoresSection extends StatelessWidget {
                   children: [
                     Text(
                       titulo,
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: TextStyle(
+                        fontSize: 18 * fontScale,
                         fontWeight: FontWeight.bold,
+                        color: isDarkMode ? Colors.white : Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       descricao,
-                      style: const TextStyle(color: Colors.black87),
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white70 : Colors.black87,
+                        fontSize: 14 * fontScale,
+                      ),
                     ),
                   ],
                 ),
@@ -364,14 +590,21 @@ class ValoresSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Missão, Visão e Valores",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 32 * fontScale,
+            fontWeight: FontWeight.bold,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           "Os princípios que orientam a NEXA refletem nosso compromisso com inovação, ética e proteção da vida.",
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(
+            color: isDarkMode ? Colors.white70 : Colors.black54,
+            fontSize: 14 * fontScale,
+          ),
         ),
         const SizedBox(height: 30),
         cardValor(
@@ -395,35 +628,48 @@ class ValoresSection extends StatelessWidget {
 }
 
 class VisaoComputacionalSection extends StatelessWidget {
-  const VisaoComputacionalSection({super.key});
+  final bool isDarkMode;
+  final double fontScale;
+  const VisaoComputacionalSection({
+    super.key,
+    required this.isDarkMode,
+    required this.fontScale,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Visão Computacional",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 32 * fontScale,
+            fontWeight: FontWeight.bold,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
         ),
         const SizedBox(height: 20),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(25),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
             borderRadius: BorderRadius.circular(15),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black12,
+                color: isDarkMode ? Colors.black54 : Colors.black12,
                 blurRadius: 10,
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: const Text(
+          child: Text(
             "A visão computacional é um campo da inteligência artificial que treina computadores para interpretar e compreender o mundo visual de forma semelhante aos humanos. Utilizando modelos de aprendizado de máquina e redes neurais profundas, o sistema analisa imagens digitais, vídeos e entradas de sensores para identificar padrões, detectar objetos, classificar cenas e até rastrear movimentos. Na NEXA, usamos a visão computacional para detectar o uso de EPI's pelos funcionários, aliando segurança e tecnologia para o benefício de todos.",
-            style: TextStyle(color: Colors.black87, fontSize: 15),
+            style: TextStyle(
+              color: isDarkMode ? Colors.white70 : Colors.black87,
+              fontSize: 15 * fontScale,
+            ),
           ),
         ),
         const SizedBox(height: 30),
@@ -433,7 +679,13 @@ class VisaoComputacionalSection extends StatelessWidget {
 }
 
 class SolucoesSection extends StatelessWidget {
-  const SolucoesSection({super.key});
+  final bool isDarkMode;
+  final double fontScale;
+  const SolucoesSection({
+    super.key,
+    required this.isDarkMode,
+    required this.fontScale,
+  });
 
   Widget cardSolucao(IconData icone, String titulo, String descricao) {
     return LayoutBuilder(
@@ -442,20 +694,20 @@ class SolucoesSection extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 20),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black12,
+                color: isDarkMode ? Colors.black54 : Colors.black12,
                 blurRadius: 10,
-                offset: Offset(0, 5),
+                offset: const Offset(0, 5),
               ),
             ],
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(icone, size: 40, color: const Color(0xFF0A66C2)),
+              Icon(icone, size: 40 * fontScale, color: const Color(0xFF1A9DE7)),
               const SizedBox(width: 15),
               Expanded(
                 child: Column(
@@ -463,15 +715,19 @@ class SolucoesSection extends StatelessWidget {
                   children: [
                     Text(
                       titulo,
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: TextStyle(
+                        fontSize: 18 * fontScale,
                         fontWeight: FontWeight.bold,
+                        color: isDarkMode ? Colors.white : Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       descricao,
-                      style: const TextStyle(color: Colors.black87),
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white70 : Colors.black87,
+                        fontSize: 14 * fontScale,
+                      ),
                     ),
                   ],
                 ),
@@ -488,14 +744,21 @@ class SolucoesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Nossas Soluções",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 32 * fontScale,
+            fontWeight: FontWeight.bold,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           "A NEXA oferece soluções digitais integradas que garantem segurança, conformidade e inteligência operacional em ambientes corporativos e industriais.",
-          style: TextStyle(fontSize: 16, color: Colors.black54),
+          style: TextStyle(
+            fontSize: 16 * fontScale,
+            color: isDarkMode ? Colors.white70 : Colors.black54,
+          ),
         ),
         const SizedBox(height: 30),
         cardSolucao(
@@ -536,22 +799,28 @@ class SolucoesSection extends StatelessWidget {
 
 // SOBRE NÓS
 class SobreSection extends StatelessWidget {
-  const SobreSection({super.key});
+  final bool isDarkMode;
+  final double fontScale;
+  const SobreSection({
+    super.key,
+    required this.isDarkMode,
+    required this.fontScale,
+  });
 
   Widget cardMembro(String imagem, String nome, String cargo) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          width: 270, // Largura fixa ideal para ficarem lado a lado
+          width: 270,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 255, 255, 255),
+            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
             borderRadius: BorderRadius.circular(15),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black12,
+                color: isDarkMode ? Colors.black54 : Colors.black12,
                 blurRadius: 8,
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
               ),
             ],
           ),
@@ -564,13 +833,20 @@ class SobreSection extends StatelessWidget {
               Text(
                 nome,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                  fontSize: 14 * fontScale,
+                ),
               ),
               const SizedBox(height: 5),
               Text(
                 cargo,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.black54, fontSize: 12),
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white70 : Colors.black54,
+                  fontSize: 12 * fontScale,
+                ),
               ),
             ],
           ),
@@ -579,40 +855,27 @@ class SobreSection extends StatelessWidget {
     );
   }
 
-  Widget secao(BuildContext context, String titulo, List<Widget> membros) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 30),
-        Text(
-          titulo,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 20),
-        Wrap(
-          spacing: 20,
-          runSpacing: 20,
-          alignment: WrapAlignment.start,
-          children: membros,
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Sobre a NEXA",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 32 * fontScale,
+            fontWeight: FontWeight.bold,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           "A NEXA nasceu com o propósito de transformar a segurança do trabalho em um processo inteligente, integrado e orientado por dados.\n\n"
           "Nossa plataforma combina monitoramento inteligente, análise de dados em tempo real e conformidade normativa para garantir ambientes de trabalho mais seguros.",
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(
+            color: isDarkMode ? Colors.white70 : Colors.black54,
+            fontSize: 14 * fontScale,
+          ),
         ),
         const SizedBox(height: 30),
 
@@ -649,54 +912,140 @@ class SobreSection extends StatelessWidget {
 
         const SizedBox(height: 50),
 
-        const Text(
+        Text(
           "Nossa Equipe",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 24 * fontScale,
+            fontWeight: FontWeight.bold,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
         ),
+        const SizedBox(height: 20),
 
-        secao(context, "Análise e Design", [
-          cardMembro(
-            "assets/ryan.jpg",
-            "Ryan Donizetti Porto",
-            "Analista de Sistemas e Design",
-          ),
-          cardMembro(
-            "assets/laura.png",
-            "Laura Costa Ubaldo",
-            "Analista de Sistemas e Design",
-          ),
-        ]),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// ANÁLISE E DESIGN
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Análise e Design",
+                  style: TextStyle(
+                    fontSize: 20 * fontScale,
+                    fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 20),
 
-        secao(context, "Desenvolvimento Full Stack", [
-          cardMembro(
-            "assets/livia.png",
-            "Livia Bussaglia Bispo",
-            "Programadora Full Stack",
-          ),
-          cardMembro(
-            "assets/bruno.png",
-            "Bruno Donizetti Souza",
-            "Full Stack e Product Owner",
-          ),
-        ]),
+                Row(
+                  children: [
+                    Expanded(
+                      child: cardMembro(
+                        "assets/ryan.jpg",
+                        "Ryan Donizetti Porto",
+                        "Analista de Sistemas e Design",
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: cardMembro(
+                        "assets/laura.png",
+                        "Laura Costa Ubaldo",
+                        "Analista de Sistemas e Design",
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
 
-        secao(context, "Desenvolvimento Back-End", [
-          cardMembro(
-            "assets/nicoly.png",
-            "Nicoly Gentina Geribola",
-            "Back-End e Scrum Master",
-          ),
-          cardMembro(
-            "assets/erik.png",
-            "Erick Donizetti Ferreira",
-            "Programador Back-End",
-          ),
-          cardMembro(
-            "assets/fernanda.png",
-            "Fernanda Machado Nogueira",
-            "Programadora Back-End",
-          ),
-        ]),
+            const SizedBox(height: 30),
+
+            /// DESENVOLVIMENTO FULL STACK
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Desenvolvimento Full Stack",
+                  style: TextStyle(
+                    fontSize: 20 * fontScale,
+                    fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: cardMembro(
+                        "assets/livia.png",
+                        "Livia Bussaglia Bispo",
+                        "Programadora Full Stack",
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: cardMembro(
+                        "assets/bruno.png",
+                        "Bruno Donizetti Souza",
+                        "Full Stack e Product Owner",
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 30),
+
+            /// DESENVOLVIMENTO BACK-END
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Desenvolvimento Back-End",
+                  style: TextStyle(
+                    fontSize: 20 * fontScale,
+                    fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: cardMembro(
+                        "assets/nicoly.png",
+                        "Nicoly Gentina Geribola",
+                        "Back-End e Scrum Master",
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: cardMembro(
+                        "assets/erik.png",
+                        "Erick Donizetti Ferreira",
+                        "Programador Back-End",
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: cardMembro(
+                        "assets/fernanda.png",
+                        "Fernanda Machado Nogueira",
+                        "Programadora Back-End",
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -707,19 +1056,19 @@ class SobreSection extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(25),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 255, 255, 255),
+            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black12,
+                color: isDarkMode ? Colors.black54 : Colors.black12,
                 blurRadius: 6,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: Row(
             children: [
-              Icon(icon, color: const Color(0xFF0A66C2), size: 35),
+              Icon(icon, color: const Color(0xFF1A9DE7), size: 35 * fontScale),
               const SizedBox(width: 15),
               Expanded(
                 child: Column(
@@ -727,13 +1076,20 @@ class SobreSection extends StatelessWidget {
                   children: [
                     Text(
                       titulo,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 18 * fontScale,
+                        color: isDarkMode ? Colors.white : Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 5),
-                    Text(texto, style: const TextStyle(fontSize: 14)),
+                    Text(
+                      texto,
+                      style: TextStyle(
+                        fontSize: 14 * fontScale,
+                        color: isDarkMode ? Colors.white70 : Colors.black87,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -856,6 +1212,7 @@ class FooterNexa extends StatelessWidget {
                   "Contato",
                   style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
+                SizedBox(width: 20),
               ],
             ),
           Row(
@@ -865,15 +1222,13 @@ class FooterNexa extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => LoginadmPage(
+                      builder: (_) => LoginPage(
                         onLogin: () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => Dashboard(
-                                onLogout: () {
-                                  Navigator.pop(context);
-                                },
+                              builder: (_) => DashboardPageFun(
+                              
                               ),
                             ),
                           );

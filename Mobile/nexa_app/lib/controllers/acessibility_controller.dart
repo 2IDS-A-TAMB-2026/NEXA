@@ -1,41 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 class AccessibilityController extends ChangeNotifier {
-  bool altoContraste = false;
-  double escalaFonte = 1.0;
+  // 1. Variável privada para salvar o estado (começa como 'false' - modo claro)
+  bool _darkMode = false;
 
-  final FlutterTts tts = FlutterTts();
+  // 2. Getter público: ele retorna o valor de _darkMode (nunca retornará nulo)
+  bool get darkMode => _darkMode;
 
-  AccessibilityController() {
-    _initTTS();
+  // 3. Método para mudar de claro para escuro e vice-versa
+  void toggleDarkMode() {
+    _darkMode = !_darkMode;
+    notifyListeners(); // Isso avisa a tela para atualizar as cores automaticamente
   }
 
-void _initTTS() async {
-  await tts.setLanguage("pt-BR");
-  await tts.setSpeechRate(0.5);
-  await tts.setPitch(1.0);
-  await tts.setVolume(1.0);
-}
-
-  
+  // --- SEUS OUTROS MÉTODOS (FONTE, ÁUDIO, ETC.) ---
+  double _fontSizeScale = 1.0;
+  double get fontSizeScale => _fontSizeScale;
 
   void aumentarFonte() {
-    escalaFonte += 0.1;
+    _fontSizeScale += 0.1;
     notifyListeners();
   }
 
   void diminuirFonte() {
-    if (escalaFonte > 0.8) {
-      escalaFonte -= 0.1;
-      notifyListeners();
-    }
+    _fontSizeScale -= 0.1;
+    notifyListeners();
   }
 
- Future<void> lerTexto(String texto) async {
-  if (texto.trim().isEmpty) return;
-
-  await tts.stop();
-  await tts.speak(texto);
-}
+  void lerTexto(String texto) {
+    // Sua lógica de áudio aqui
+  }
 }

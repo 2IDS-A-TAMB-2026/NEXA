@@ -67,6 +67,7 @@ flutter:
     - assets/livia.png
     - assets/logo.nexa.png
     - assets/logo_branco.png
+    - assets/funci.png
     - assets/funci.webp
     - assets/nicoly.png
     - assets/ryan.jpg
@@ -76,6 +77,7 @@ flutter:
     - assets/slide3.jpg
     - assets/model.tflite
     - assets/labels.txt
+    - assets/escuro.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
