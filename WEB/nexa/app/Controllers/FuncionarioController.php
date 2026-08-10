@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\FuncionarioModel;
+use App\Models\FunEpi;
+use App\Models\EpiModel;
 
 class FuncionarioController extends BaseController
 {
@@ -15,13 +17,17 @@ class FuncionarioController extends BaseController
     }
 
     // LISTAR FUNCIONÁRIOS
-    public function index()
-    {
-        $dados['funcionarios'] = $this->funcionarioModel->findAll();
-
-        return view('Sistema/Cadastro_Fun/index', $dados);
-    }
-
+ public function index() {
+    $epiModel = new \App\Models\EpiModel();
+    // Busca todos os EPIs cadastrados no banco
+    $data['lista_de_todos_epis'] = $epiModel->findAll(); 
+    
+    // Busca funcionários (o que você já deve ter)
+    $funcionarioModel = new \App\Models\FunEpi();
+    $data['funcionarios'] = $funcionarioModel->findAll();
+    
+    return view('Sistema/Cadastro_Fun/index', $data);
+}
     // ABRIR FORMULÁRIO VAZIO
     public function novo()
     {
@@ -30,43 +36,63 @@ class FuncionarioController extends BaseController
 
     // CADASTRAR FUNCIONÁRIO (INSERT)
     public function inserir()
-    {
-        // Pega os dados vindos do formulário
-        $dados = [
-            'CPF'                => $this->request->getPost('CPF'),
-            'NOME_COMPLETO'      => $this->request->getPost('NOME_COMPLETO'),
-            'DATA_NASCIMENTO'    => $this->request->getPost('DATA_NASCIMENTO'),
-            'EMAIL_CORPORATIVO'  => $this->request->getPost('EMAIL_CORPORATIVO'),
-            'TELEFONE'           => $this->request->getPost('TELEFONE'),
-            'UID_RFID'           => $this->request->getPost('UID_RFID'),
-            'FK_CNPJ_EMPRESA'    => $this->request->getPost('FK_CNPJ_EMPRESA'),
-            'FK_ID_SETOR'        => $this->request->getPost('FK_ID_SETOR')
-        ];
+{
+    // 1. Coleta e limpa o CPF
+    $cpf = preg_replace('/\D/', '', $this->request->getPost('CPF'));
+    $episSelecionados = $this->request->getPost('EPIS'); // Array com IDs selecionados
 
-        // Só encripta e envia a senha se ela tiver sido digitada
-        $senha = $this->request->getPost('SENHA');
-        if (!empty($senha)) {
-            $dados['SENHA'] = password_hash($senha, PASSWORD_DEFAULT);
-        }
+    // 2. Monta o array de dados para o Funcionário
+    $dados = [
+        'CPF'               => $cpf,
+        'NOME_COMPLETO'     => $this->request->getPost('NOME_COMPLETO'),
+        'DATA_NASCIMENTO'   => $this->request->getPost('DATA_NASCIMENTO'),
+        'EMAIL_CORPORATIVO' => $this->request->getPost('EMAIL_CORPORATIVO'),
+        'TELEFONE'          => $this->request->getPost('TELEFONE'),
+        'UID_RFID'          => $this->request->getPost('UID_RFID'),
+        'FK_CNPJ_EMPRESA'   => $this->request->getPost('FK_CNPJ_EMPRESA'),
+        'FK_ID_SETOR'       => $this->request->getPost('FK_ID_SETOR'),
+        'FK_FUNCIONARIO_CPF' => $this->request->getPost('FK_FUNCIONARIO_CPF'),
+        'FK_EPI_ID'         => $this->request->getPost('FK_EPI_ID')
+    ];
 
-        // Limpa apenas o CPF (deixando só números)
-        $dados['CPF'] = preg_replace('/\D/', '', $dados['CPF']);
-
-        // OBSERVAÇÃO: Deixamos o CNPJ exatamente como veio do formulário (com pontos/barras). 
-        // Se o seu banco guardar o CNPJ SEM pontos, descomente a linha abaixo:
-        // $dados['FK_CNPJ_EMPRESA'] = preg_replace('/\D/', '', $dados['FK_CNPJ_EMPRESA']);
-
-        try {
-            if ($this->funcionarioModel->insert($dados)) {
-                return redirect()->to('/Cadastro_Fun')->with('sucesso', 'Funcionário cadastrado com sucesso!');
-            } else {
-                return redirect()->back()->with('erro', 'O Model recusou os dados. Verifique se os campos estão listados em $allowedFields no seu FuncionarioModel.');
-            }
-        } catch (\Exception $e) {
-            // Se o CNPJ digitado não existir na tabela empresa, este catch vai mostrar o erro amigavelmente
-            return redirect()->back()->with('erro', 'Erro de Validação/Banco: ' . $e->getMessage());
-        }
+    $senha = $this->request->getPost('SENHA');
+    if (!empty($senha)) {
+        $dados['SENHA'] = password_hash($senha, PASSWORD_DEFAULT);
     }
+
+    try {
+        // 3. Tenta inserir o funcionário
+        if ($this->funcionarioModel->insert($dados)) {
+            
+            // 4. Lógica de Verificação de Duplicidade nos EPIs
+            if (!empty($episSelecionados)) {
+                $db = \Config\Database::connect();
+                $funEpiTable = $db->table('FUN_EPI');
+
+                foreach ($episSelecionados as $epiId) {
+                    // Verifica se já existe esse vínculo
+                    $existe = $funEpiTable
+                        ->where('FK_FUNCIONARIO_CPF', $cpf)
+                        ->where('FK_EPI_ID', $epiId)
+                        ->countAllResults();
+
+                    // Se countAllResults for 0, insere. Se for > 0, já existe.
+                    if ($existe == 0) {
+                        $funEpiTable->insert([
+                            'FK_FUNCIONARIO_CPF' => $cpf,
+                            'FK_EPI_ID' => $epiId
+                        ]);
+                    }
+                    // Opcional: Se quiser avisar o usuário que um EPI foi pulado, 
+                    // você pode adicionar um log ou array de avisos aqui.
+                }
+            }
+            return redirect()->to('/Cadastro_Fun')->with('sucesso', 'Funcionário cadastrado com sucesso!');
+        }
+    } catch (\Exception $e) {
+        return redirect()->back()->with('erro', 'Erro ao processar cadastro: ' . $e->getMessage());
+    }
+}
 
     // EDITAR FUNCIONÁRIO (UPDATE)
     public function editar()
@@ -112,6 +138,7 @@ class FuncionarioController extends BaseController
         } catch (\Exception $e) {
             return redirect()->back()->with('erro', 'Erro ao atualizar (Chave Estrangeira): ' . $e->getMessage());
         }
+        
     }
 
     // EXCLUIR FUNCIONÁRIO (DELETE)
@@ -134,4 +161,5 @@ class FuncionarioController extends BaseController
 
         return redirect()->to('/Cadastro_Fun')->with('sucesso', 'Funcionário excluído com sucesso!');
     }
+    
 }

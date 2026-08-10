@@ -2,10 +2,16 @@
 <html lang="pt-BR">
 
 <head>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Cadastro de Setor</title>
+
+
     <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
 
     <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
@@ -14,512 +20,2000 @@
 
     <link rel="stylesheet" href="<?= base_url('assets/css/cadastro_setor.css') ?>">
 
-    <style>
-        /* From Uiverse.io by cssbuttons-io */
-        button {
-            font-size: 17px;
-            padding: 1em 2.7em;
-            font-weight: 500;
-            background: #0A66c2;
-            color: white;
-            border: none;
-            position: relative;
-            overflow: hidden;
-            border-radius: 0.6em;
-            cursor: pointer;
-        }
 
-        .gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            border-radius: 0.6em;
-            margin-top: -0.25em;
-            background-image: linear-gradient(rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0.3));
-        }
-
-        .label {
-            position: relative;
-            top: -1px;
-        }
-
-        .transition {
-            transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-            transition-duration: 500ms;
-            background-color: #1e4b75;
-            border-radius: 9999px;
-            width: 0;
-            height: 0;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        button:hover .transition {
-            width: 14em;
-            height: 14em;
-        }
-
-        button:active {
-            transform: scale(0.97);
-        }
-
-        /* LISTA COM ROLAGEM */
-
-        #lista {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-
-            height: 520px;
-            overflow-y: auto;
-        }
-
-        /* Barra de rolagem azul */
-
-        #lista::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #lista::-webkit-scrollbar-track {
-            background: #e5e7eb;
-            border-radius: 10px;
-        }
-
-        #lista::-webkit-scrollbar-thumb {
-            background: #0A66c2 !important;
-            border-radius: 10px;
-        }
-
-        #lista::-webkit-scrollbar-thumb:hover {
-            background: #1e4b75 !important;
-        }
-    </style>
 </head>
 
-<body class="has-bg-image">
 
-    <aside class="sidebar">
+<body>
 
 
-        <div class="sidebar-logo">
-            <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>" class="logo">
+    <div vw class="enabled">
+
+        <div vw-access-button class="active"></div>
+
+        <div vw-plugin-wrapper>
+
+            <div class="vw-plugin-top-wrapper"></div>
+
         </div>
 
-        <!-- MENU -->
+    </div>
+
+
+
+    <!-- ======================================================
+     SIDEBAR
+====================================================== -->
+
+
+  <aside class="sidebar">
+
+    <!-- FUNDO -->
+    <img
+        class="sidebar-construction"
+        src="<?= base_url('assets/images/construcao.jpg') ?>"
+        alt=""
+    >
+
+    <!-- CONTEÚDO -->
+    <div class="sidebar-content">
+
+        <div class="sidebar-logo">
+
+    <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
+
+    <div class="sidebar-brand-text">
+        <strong>NEXA</strong>
+        <span>Segurança é prioridade</span>
+    </div>
+
+</div>
+
+
         <nav class="menu">
-            <a href="<?= base_url('dashboard') ?>">
+
+            <div class="menu-title">PRINCIPAL</div>
+
+            <a href="<?= base_url('/dashboard') ?>" >
                 <i class="fas fa-chart-line"></i>
                 <span>Dashboard</span>
             </a>
 
-            <a href="<?= base_url('dashboard_camera') ?>">
+            <a href="<?= base_url('/dashboard_camera') ?>">
                 <i class="fas fa-video"></i>
                 <span>Dashboard de Câmeras</span>
             </a>
 
-            <a href="<?= base_url('ocorrencia') ?>">
+            <a href="<?= base_url('/ocorrencia') ?>">
                 <i class="fas fa-exclamation-triangle"></i>
                 <span>Ocorrências</span>
             </a>
 
-            <a href="<?= base_url('cadastro-funcionario') ?>">
+
+            <div class="menu-title">CADASTROS</div>
+
+            <a href="<?= base_url('/cadastro-funcionario') ?>">
                 <i class="fas fa-users"></i>
                 <span>Cadastro Funcionários</span>
             </a>
 
-            <a href="<?= base_url('epi') ?>">
+            <a href="<?= base_url('/epi') ?>">
                 <i class="fas fa-helmet-safety"></i>
                 <span>Cadastro EPIs</span>
             </a>
 
-            <a href="<?= base_url('/camera') ?>">
+            <a href="<?= base_url('/Camera') ?>">
                 <i class="fas fa-camera"></i>
                 <span>Cadastro Câmeras</span>
             </a>
 
-            <a href="<?= base_url('setor') ?>" class="active">
+            <a href="<?= base_url('/setor') ?>" class="active">
                 <i class="fas fa-building"></i>
                 <span>Cadastro Setores</span>
             </a>
 
 
+            <div class="menu-title">CONTA</div>
 
             <a href="<?= base_url('/administrador') ?>">
                 <i class="fas fa-user"></i>
                 <span>Perfil</span>
             </a>
+
         </nav>
 
 
-        <!-- SAIR (sempre no final) -->
-        <a href="<?= base_url('/') ?>">
+        <a href="<?= base_url('/') ?>" class="logout-item">
             <i class="fas fa-sign-out-alt"></i>
-            <span>Sair</span>
+            <span>Sair do Sistema</span>
         </a>
 
-    </aside>
+    </div>
 
-    <!-- 🔹 MENU ACESSIBILIDADE -->
+</aside>
 
-    <!-- 🔹 MENU ACESSIBILIDADE -->
-    <div class="access-bar">
 
-        <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
-            <i class="fas fa-adjust"></i>
+
+
+    <!-- ======================================================
+     MENU ACESSIBILIDADE
+====================================================== -->
+
+
+    <div class="access-menu">
+
+
+        <button class="gear-btn" onclick="toggleAccessMenu()">
+
+            <i class="fas fa-cog"></i>
+
         </button>
 
-        <button class="access-btn" onclick="toggleDark()">
-            <i class="fas fa-moon"></i>
-        </button>
 
-        <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
-            A+
-        </button>
 
-        <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
-            A-
-        </button>
+        <div class="access-options" id="accessOptions">
 
-        <button class="access-btn" onclick="Acessibilidade.lerPagina()">
-            <i class="fas fa-volume-up"></i>
-        </button>
+
+            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+
+                <i class="fas fa-adjust"></i>
+
+            </button>
+
+
+
+            <button class="access-btn" onclick="toggleDark()">
+
+                <i class="fas fa-moon"></i>
+
+            </button>
+
+
+
+            <button class="access-btn" onclick="mudarFonte('aumentar')">
+
+                A+
+
+            </button>
+
+
+
+            <button class="access-btn" onclick="mudarFonte('diminuir')">
+
+                A-
+
+            </button>
+
+
+
+            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+
+                <i class="fas fa-volume-up"></i>
+
+            </button>
+
+
+        </div>
+
 
     </div>
+
+
+
+
+
+    <!-- ======================================================
+     ÁREA PRINCIPAL
+====================================================== -->
 
 
     <div class="overlay">
-        <div class="page-header">
-
-        </div>
 
 
-        <div class="content-grid">
-
-            <!-- ESQUERDA -->
-            <div class="left-box">
-                <h1>Cadastro de Setores</h1>
-                <div class="subtitle">Informações do Setor</div>
+        <main class="main-content">
 
 
-                <form method="post" action="<?= base_url('setor/inserir') ?>">
 
-                    <div class="form-group">
-                        <div class="input-box">
+
+
+            <!-- ======================================================
+     HEADER
+====================================================== -->
+
+
+            <header class="dashboard-header">
+
+
+                <div class="header-left">
+
+
+                    <div class="header-title">
+
+
+                        <h1>
+                            Cadastro de Setores
+                        </h1>
+
+
+                        <p>
+                            Gerencie os setores da sua empresa
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="header-right">
+
+
+                    <a href="<?= base_url('/administrador') ?>" class="profile">
+
+
+
+                        <div class="profile-avatar">
+
+
+                            <?= strtoupper(substr(session()->get('nome'), 0, 1)) ?>
+
+
+                        </div>
+
+
+
+
+                        <div class="profile-info">
+
+
+                            <strong>
+
+                                <?= esc(session()->get('nome')) ?>
+
+                            </strong>
+
+
+
+                            <span>
+
+                                NEXA SOLUÇÕES
+
+                            </span>
+
+
+
+                        </div>
+
+
+
+                    </a>
+
+
+                </div>
+
+
+
+            </header>
+
+
+
+
+
+            <!-- ======================================================
+     CARD CADASTRO
+====================================================== -->
+
+
+            <section class="cadastro-box">
+
+
+
+                <div class="cadastro-topo">
+
+
+
+                    <div class="cadastro-info">
+
+
+
+                        <div class="camera-icon-bg">
+
+
                             <i class="fas fa-building"></i>
 
-                            <input type="text" name="nome_setor" placeholder="Nome do setor" oninput="clearError(this)">
+
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="input-box">
-                            <i class="fas fa-map-marker-alt"></i>
 
-                            <input type="text" name="localizacao" placeholder="Localização" oninput="clearError(this)">
+
+                        <div>
+
+
+                            <h2>
+                                Cadastrar Novo Setor
+                            </h2>
+
+
+
+                            <p>
+                                Preencha as informações para adicionar um novo setor ao sistema.
+                            </p>
+
+
+
                         </div>
+
+
                     </div>
 
-                    <div class="form-group">
-                        <div class="input-box">
-                            <i class="fas fa-building"></i>
 
-                            <input type="text" name="cnpj_empresa" placeholder="CNPJ da empresa"
-                                oninput="maskCNPJ(this)">
-                        </div>
-                    </div>
 
-                    <br>
 
-                    <div class="btn-area">
-                        <button>
-                            <span class="transition"></span>
-                            <span class="gradient"></span>
-                            <span class="label">Cadastrar</span>
-                        </button>
-                    </div>
 
-            </div>
 
-            <!-- DIREITA -->
-            <div class="right-box">
-                <h2>Setores Cadastrados</h2>
-                <div id="lista">
 
-                    <?php foreach ($setores as $s): ?>
 
-                        <div class="lista-card">
+                </div>
 
-                            <div class="lista-left">
+
+
+
+                <div class="subtitle">
+
+                    Informações
+
+                </div>
+
+
+
+                <form method="post" action="<?= base_url('setor/inserir') ?>" onsubmit="return validarSetor()">
+
+
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+
+                            <p class="p-card">
+                                Nome do setor
+                            </p>
+
+
+                            <div class="input-box">
 
                                 <i class="fas fa-building"></i>
 
-                                <div class="lista-info">
-                                    <h3><?= $s['NOME'] ?></h3>
-                                    <p>Local: <?= $s['LOCAL'] ?></p>
-                                    <p>CNPJ: <?= $s['FK_CNPJ_EMPRESA'] ?></p>
-                                </div>
+                                <input type="text" name="nome_setor" id="nome_setor" placeholder="Ex.: Produção">
 
                             </div>
 
-                            <div class="lista-actions">
 
-                                <i class="fas fa-pen edit" onclick='editar(
-            <?= json_encode($s["ID"]) ?>,
-            <?= json_encode($s["NOME"]) ?>,
-            <?= json_encode($s["LOCAL"]) ?>,
-            <?= json_encode($s["FK_CNPJ_EMPRESA"]) ?>
-        )'>
-                                </i>
+                            <div class="error-text"></div>
 
-                                <a href="<?= base_url('setor/excluir/' . $s['ID']) ?>">
-                                    <i class="fas fa-trash delete"></i>
-                                </a>
+
+
+                            <p class="p-card">
+                                Localização
+                            </p>
+
+
+                            <div class="input-box">
+
+                                <i class="fas fa-map-marker-alt"></i>
+
+                                <input type="text" name="localizacao" id="localizacao" placeholder="Ex.: Bloco A">
 
                             </div>
+
+
+                            <div class="error-text"></div>
+
+
 
                         </div>
 
-                    <?php endforeach; ?>
+
+
+
+                        <div class="camera-ilustracao">
+
+
+                            <img src="<?= base_url('assets/images/setor.png') ?>">
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="btn-area">
+
+                        <button type="submit">
+
+                            <i class="fas fa-plus"></i>
+
+                            Cadastrar
+
+                        </button>
+
+                    </div>
+
+
+
+                </form>
+
+
+
+            </section>
+
+
+
+
+
+
+
+
+            <!-- ======================================================
+     CARD LISTAGEM
+====================================================== -->
+
+
+            <section class="listagem-box">
+
+
+
+                <div class="listagem-header">
+
+
+
+                    <div>
+
+
+                        <h2>
+
+                            Setores Cadastrados
+
+                        </h2>
+
+
+
+                        <p>
+
+                            Gerencie todos os setores cadastrados no sistema.
+
+                        </p>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="table-tools">
+
+
+
+                        <div class="search-box">
+
+
+                            <i class="fas fa-search"></i>
+
+
+
+                            <input type="text" id="pesquisaSetor" placeholder="Pesquisar setor...">
+
+
+
+                        </div>
+
+
+
+
+                        <button class="filter-btn">
+
+
+                            <i class="fas fa-filter"></i>
+
+
+                        </button>
+
+
+
+                    </div>
+
+
 
                 </div>
-            </div>
-        </div>
+
+
+
+
+
+
+                <div class="table-wrapper">
+
+
+
+                    <table class="table-cameras">
+
+
+
+                        <colgroup>
+
+
+                            <col style="width:40%">
+
+
+                            <col style="width:40%">
+
+
+                            <col style="width:20%">
+
+
+
+
+
+                        </colgroup>
+
+
+
+
+                        <thead>
+
+
+                            <tr>
+
+
+                                <th>
+
+                                    Setor
+
+                                </th>
+
+
+
+                                <th>
+
+                                    Localização
+
+                                </th>
+
+
+
+
+
+
+                                <th>
+
+                                    Ações
+
+                                </th>
+
+
+
+                            </tr>
+
+
+
+                        </thead>
+
+
+
+
+
+
+                        <tbody id="lista">
+
+
+
+                            <?php foreach ($setores as $s): ?>
+
+
+
+                                <tr>
+
+
+                                    <td>
+
+
+
+                                        <div class="table-info">
+
+
+
+                                            <div class="table-icon">
+
+
+                                                <i class="fas fa-building"></i>
+
+
+                                            </div>
+
+
+
+
+                                            <div>
+
+
+                                                <strong>
+
+                                                    <?= $s['NOME'] ?>
+
+                                                </strong>
+
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+
+                                    </td>
+
+
+
+
+
+
+
+                                    <td>
+
+
+                                        <i class="fas fa-map-marker-alt" style="color:#0A66C2;margin-right:6px;"></i>
+
+
+                                        <?= $s['LOCAL'] ?>
+
+
+                                    </td>
+
+
+
+
+
+
+
+
+                                    <td>
+
+
+
+                                        <div class="table-actions">
+
+
+
+
+
+                                            <button class="table-action edit" type="button" onclick='editar(
+<?= json_encode($s["ID"]) ?>,
+<?= json_encode($s["NOME"]) ?>,
+<?= json_encode($s["LOCAL"]) ?>,
+<?= json_encode($s["FK_CNPJ_EMPRESA"]) ?>
+)'>
+
+
+                                                <i class="fas fa-pen"></i>
+
+
+                                            </button>
+
+
+
+                                            <a class="table-action delete" onclick="confirmarExclusao('<?= $s['ID'] ?>')">
+
+                                                <i class="fas fa-trash"></i>
+
+                                            </a>
+
+
+
+                                        </div>
+
+
+
+                                    </td>
+
+
+
+
+                                </tr>
+
+
+
+                            <?php endforeach; ?>
+
+
+
+
+                        </tbody>
+
+
+
+
+                    </table>
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+                <!-- ======================================================
+     RODAPÉ TABELA
+====================================================== -->
+
+
+                <div class="table-footer">
+
+
+
+
+
+                    <div class="rows-page">
+
+
+                        Mostrar
+
+
+
+                        <select id="linhasPagina">
+
+
+
+                            <option value="5" selected>
+
+                                5
+
+                            </option>
+
+
+
+                            <option value="10">
+
+                                10
+
+                            </option>
+
+
+
+                            <option value="20">
+
+                                20
+
+                            </option>
+
+
+
+                        </select>
+
+
+
+                        por página
+
+
+
+                    </div>
+
+
+
+
+
+
+                    <div id="infoTabela">
+
+
+                        Mostrando 0 de 0
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <div class="pagination">
+
+
+
+                        <button id="anterior">
+
+
+                            <i class="fas fa-chevron-left"></i>
+
+
+                        </button>
+
+
+
+
+
+                        <span id="paginaAtual">
+
+                            1
+
+                        </span>
+
+
+
+
+
+                        <button id="proximo">
+
+
+                            <i class="fas fa-chevron-right"></i>
+
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+
+                </div>
+
+
+
+
+
+            </section>
+
+
+
+
+
+        </main>
+
+
     </div>
 
-    <!-- MODAL EDITAR -->
+
+    <!-- ======================================================
+     MODAL (mantido caso precise)
+====================================================== -->
+
+
     <div class="modal-bg" id="modalBg" style="display:none;">
+
         <div class="modal">
 
-            <h2>Editar Setor</h2>
-
-            <div class="form-group">
-                <div class="input-box">
-                    <i class="fas fa-building"></i>
-                    <input type="text" id="editNome" oninput="clearError(this)" placeholder="Nome">
-                </div>
-                <div class="error-text"></div>
-            </div>
+            <h2>
+                Editar Setor
+            </h2>
 
 
             <div class="form-group">
+
                 <div class="input-box">
+
                     <i class="fas fa-building"></i>
-                    <input type="text" id="editLocal" oninput="clearError(this)" placeholder="Localização">
+
+                    <input type="text" id="editNome" placeholder="Nome">
+
                 </div>
-                <div class="error-text"></div>
+
             </div>
 
+
+
+
             <div class="form-group">
+
                 <div class="input-box">
-                    <i class="fas fa-building"></i>
-                    <input type="text" id="editCnpj" oninput="clearError(this)" placeholder="CNPJ empresa">
+
+                    <i class="fas fa-map-marker-alt"></i>
+
+                    <input type="text" id="editLocal" placeholder="Localização">
+
                 </div>
-                <div class="error-text"></div>
+
             </div>
+
+
+
 
             <div class="modal-buttons">
-                <button onclick="fecharModal()">Cancelar</button>
-                <button class="save-btn" onclick="salvarEdicao()">Salvar</button>
+
+
+                <button onclick="fecharModal()">
+
+                    Cancelar
+
+                </button>
+
+
+
+                <button class="save-btn" onclick="salvarEdicao()">
+
+                    Salvar
+
+                </button>
+
+
+
             </div>
+
+
         </div>
+
     </div>
 
+
+
+
+
     <script>
-        function fecharModal() {
-            document.getElementById('modalBg').style.display = 'none';
-        }
-        function salvarEdicao() {
-            const nome = document.getElementById('editNome');
-            const local = document.getElementById('editLocal');
-            const cnpj = document.getElementById('editCnpj');
 
-            let ok = true;
 
-            [nome, local, cnpj].forEach(clearError);
+        // ======================================================
+        // DADOS
+        // ======================================================
 
-            if (!validarObrigatorio(nome)) ok = false;
-            if (!validarObrigatorio(local)) ok = false;
 
-            if (!validarObrigatorio(cnpj)) {
-                ok = false;
-            } else if (!validarCNPJ(cnpj.value)) {
-                setError(cnpj, "CNPJ inválido");
-                ok = false;
-            }
+        let setores = <?= json_encode($setores ?? []) ?>;
 
-            if (!ok) return;
 
-            setores[editIndex] = {
-                nome: nome.value,
-                local: local.value,
-                cnpj: cnpj.value
-            };
+        let paginaAtual = 1;
+
+
+        let linhasPorPagina = 5;
+
+
+        let setoresFiltrados = [...setores];
+
+
+
+
+        // ======================================================
+        // INICIALIZAÇÃO
+        // ======================================================
+
+
+        window.onload = function () {
+
+
+            iniciarEventos();
 
             renderizar();
-            fecharModal();
-        }
-
-        function validarObrigatorio(input, msg = "Campo obrigatório") {
-            if (!input.value || !input.value.trim()) {
-                setError(input, msg);
-                return false;
-            }
-            return true;
-        }
-        function setError(input, msg) {
-            const group = input.closest(".form-group");
-            if (!group) return;
-
-            const box = group.querySelector(".input-box");
-            const erro = group.querySelector(".error-text");
-
-            if (box) box.classList.add("error");
-            if (erro) erro.innerText = msg;
-        }
-
-        function clearError(input) {
-            const group = input.closest(".form-group");
-            if (!group) return;
-
-            const box = group.querySelector(".input-box");
-            const erro = group.querySelector(".error-text");
-
-            if (box) box.classList.remove("error");
-            if (erro) erro.innerText = "";
-        }
 
 
-        function maskCNPJ(input) {
-            let v = input.value.replace(/\D/g, "").slice(0, 14);
+        };
 
-            v = v.replace(/^(\d{2})(\d)/, "$1.$2");
-            v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
-            v = v.replace(/\.(\d{3})(\d)/, ".$1/$2");
-            v = v.replace(/(\d{4})(\d)/, "$1-$2");
 
-            input.value = v;
-        }
 
-        function validarCNPJ(cnpj) {
-            cnpj = cnpj.replace(/[^\d]+/g, '');
 
-            if (cnpj.length !== 14) return false;
-            if (/^(\d)\1+$/.test(cnpj)) return false;
+        // ======================================================
+        // EVENTOS
+        // ======================================================
 
-            let tamanho = cnpj.length - 2;
-            let numeros = cnpj.substring(0, tamanho);
-            let digitos = cnpj.substring(tamanho);
 
-            let soma = 0;
-            let pos = tamanho - 7;
+        function iniciarEventos() {
 
-            for (let i = tamanho; i >= 1; i--) {
-                soma += numeros.charAt(tamanho - i) * pos--;
-                if (pos < 2) pos = 9;
+
+
+            const pesquisa =
+                document.getElementById("pesquisaSetor");
+
+
+
+            if (pesquisa) {
+
+
+                pesquisa.addEventListener("input", function () {
+
+
+                    paginaAtual = 1;
+
+
+                    aplicarPesquisa();
+
+
+
+                });
+
+
             }
 
-            let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-            if (resultado != digitos.charAt(0)) return false;
 
-            tamanho++;
-            numeros = cnpj.substring(0, tamanho);
 
-            soma = 0;
-            pos = tamanho - 7;
 
-            for (let i = tamanho; i >= 1; i--) {
-                soma += numeros.charAt(tamanho - i) * pos--;
-                if (pos < 2) pos = 9;
+            const select =
+                document.getElementById("linhasPagina");
+
+
+
+            if (select) {
+
+
+
+                select.addEventListener("change", function () {
+
+
+                    linhasPorPagina =
+                        parseInt(this.value);
+
+
+
+                    paginaAtual = 1;
+
+
+
+                    renderizar();
+
+
+
+                });
+
+
             }
 
-            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
 
-            return resultado == digitos.charAt(1);
-        }
-    </script>
-    <script src="assets/js/permissions.js"></script>
-    <script src="assets/js/acessibilidade.js"></script>
-    <script>
-        function editar(id, nome, local, cnpj) {
 
-            Swal.fire({
-                title: 'Editar Setor',
-                html: `
-            <input id="swalNome" class="swal2-input" placeholder="Nome do setor" value="${nome}">
-            <input id="swalLocal" class="swal2-input" placeholder="Localização" value="${local}">
-            <input id="swalCnpj" class="swal2-input" placeholder="CNPJ" value="${cnpj}">
-        `,
-                showCancelButton: true,
-                confirmButtonText: 'Salvar',
-                cancelButtonText: 'Cancelar',
 
-                preConfirm: () => {
+            document.getElementById("anterior")
+                .onclick = function () {
 
-                    const nomeSetor = document.getElementById('swalNome').value.trim();
-                    const localizacao = document.getElementById('swalLocal').value.trim();
-                    const cnpjEmpresa = document.getElementById('swalCnpj').value.trim();
 
-                    if (!nomeSetor || !localizacao || !cnpjEmpresa) {
 
-                        Swal.showValidationMessage(
-                            'Preencha todos os campos'
-                        );
+                    if (paginaAtual > 1) {
 
-                        return false;
+
+                        paginaAtual--;
+
+
+                        renderizar();
+
+
+
                     }
 
+
+                };
+
+
+
+
+
+            document.getElementById("proximo")
+                .onclick = function () {
+
+
+
+                    let totalPaginas =
+                        Math.ceil(
+                            setoresFiltrados.length /
+                            linhasPorPagina
+                        );
+
+
+
+                    if (paginaAtual < totalPaginas) {
+
+
+                        paginaAtual++;
+
+
+                        renderizar();
+
+
+                    }
+
+
+
+                };
+
+
+
+
+        }
+
+
+
+
+
+        // ======================================================
+        // PESQUISA
+        // ======================================================
+
+
+        function aplicarPesquisa() {
+
+
+            let texto =
+                document.getElementById("pesquisaSetor")
+                    .value
+                    .toLowerCase()
+                    .trim();
+
+
+
+            setoresFiltrados =
+                setores.filter(setor => {
+
+
+                    return (
+
+
+                        String(setor.NOME)
+                            .toLowerCase()
+                            .includes(texto)
+
+
+
+                        ||
+
+                        String(setor.LOCAL)
+                            .toLowerCase()
+                            .includes(texto)
+
+
+
+                        ||
+
+                        String(setor.FK_CNPJ_EMPRESA)
+                            .toLowerCase()
+                            .includes(texto)
+
+
+
+                    );
+
+
+
+                });
+
+
+
+            renderizar();
+
+
+
+        }
+
+
+
+
+
+        // ======================================================
+        // RENDERIZAÇÃO
+        // ======================================================
+
+
+        function renderizar() {
+
+
+            const lista =
+                document.getElementById("lista");
+
+
+
+            lista.innerHTML = "";
+
+
+
+
+
+            if (setoresFiltrados.length === 0) {
+
+
+
+                lista.innerHTML = `
+
+
+<tr>
+
+
+<td colspan="4"
+class="mensagem-vazia">
+
+
+<i class="fas fa-building"></i>
+
+
+<br><br>
+
+
+Nenhum setor encontrado.
+
+
+
+</td>
+
+
+
+</tr>
+
+
+`;
+
+
+
+                atualizarRodape(0, 0, 0);
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+            const inicio =
+                (paginaAtual - 1)
+                *
+                linhasPorPagina;
+
+
+
+            const fim =
+                inicio +
+                linhasPorPagina;
+
+
+
+
+
+            const pagina =
+                setoresFiltrados.slice(
+                    inicio,
+                    fim
+                );
+
+
+
+
+
+
+
+            pagina.forEach(setor => {
+
+
+
+                lista.innerHTML += `
+
+
+
+<tr>
+
+
+<td>
+
+
+<div class="table-info">
+
+
+<div class="table-icon">
+
+
+<i class="fas fa-building"></i>
+
+
+</div>
+
+
+
+<div>
+
+
+<strong>
+
+${setor.NOME}
+
+</strong>
+
+
+</div>
+
+
+
+</div>
+
+
+</td>
+
+
+
+
+
+<td>
+
+
+<i class="fas fa-map-marker-alt"
+style="color:#0A66C2;margin-right:6px;"></i>
+
+
+${setor.LOCAL}
+
+
+</td>
+
+
+<td>
+
+
+<div class="table-actions">
+
+
+
+<button
+class="table-action edit"
+onclick='editar(
+${JSON.stringify(setor.ID)},
+${JSON.stringify(setor.NOME)},
+${JSON.stringify(setor.LOCAL)},
+)'>
+
+
+<i class="fas fa-pen"></i>
+
+
+</button>
+
+
+
+
+<a 
+class="table-action delete"
+onclick="confirmarExclusao(${setor.ID})">
+
+<i class="fas fa-trash"></i>
+
+</a>
+
+
+
+</div>
+
+
+
+</td>
+
+
+
+</tr>
+
+
+
+`;
+
+
+
+            });
+
+
+
+
+            atualizarRodape(
+
+
+                inicio + 1,
+
+
+                Math.min(
+                    fim,
+                    setoresFiltrados.length
+                ),
+
+
+                setoresFiltrados.length
+
+
+
+            );
+
+
+
+        }
+
+
+
+
+
+
+        // ======================================================
+        // RODAPÉ
+        // ======================================================
+
+
+        function atualizarRodape(inicio, fim, total) {
+
+
+
+            document.getElementById("infoTabela")
+                .innerHTML =
+                `Mostrando ${inicio} a ${fim} de ${total}`;
+
+
+
+
+            document.getElementById("paginaAtual")
+                .innerHTML =
+                paginaAtual;
+
+
+
+
+            let totalPaginas =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        total / linhasPorPagina
+                    )
+                );
+
+
+
+
+
+            document.getElementById("anterior")
+                .disabled =
+                paginaAtual === 1;
+
+
+
+
+
+            document.getElementById("proximo")
+                .disabled =
+                paginaAtual >= totalPaginas;
+
+
+
+        }
+
+
+
+
+
+
+        // ======================================================
+        // EDITAR
+        // ======================================================
+
+
+        function editar(id, nome, local) {
+
+
+
+            Swal.fire({
+
+
+                title: "Editar Setor",
+
+
+                width: 600,
+
+
+
+                html: `
+
+
+<input id="swalNome"
+class="swal2-input"
+placeholder="Nome"
+value="${nome}">
+
+
+
+<input id="swalLocal"
+class="swal2-input"
+placeholder="Localização"
+value="${local}">
+
+
+
+
+`,
+
+
+
+                showCancelButton: true,
+
+
+                confirmButtonText: "Salvar",
+
+
+                cancelButtonText: "Cancelar",
+
+
+
+
+                preConfirm() {
+
+
+
                     return {
-                        nome_setor: nomeSetor,
-                        localizacao: localizacao,
-                        cnpj_empresa: cnpjEmpresa
+
+
+                        nome_setor:
+                            document.getElementById("swalNome").value,
+
+
+                        localizacao:
+                            document.getElementById("swalLocal").value,
+
+
+
+
+
+
                     };
+
+
                 }
 
-            }).then((result) => {
+
+
+            }).then(result => {
+
 
                 if (result.isConfirmed) {
 
-                    const form = document.createElement('form');
 
-                    form.method = 'POST';
+
+                    let form =
+                        document.createElement("form");
+
+
+
+                    form.method = "POST";
+
 
                     form.action =
-                        '<?= base_url("setor/atualizar") ?>/' + id;
+                        "<?= base_url('setor/atualizar/') ?>"
+                        +
+                        id;
+
+
+
 
                     form.innerHTML = `
-                <input type="hidden" name="nome_setor" value="${result.value.nome_setor}">
-                <input type="hidden" name="localizacao" value="${result.value.localizacao}">
-                <input type="hidden" name="cnpj_empresa" value="${result.value.cnpj_empresa}">
-            `;
+
+
+<input type="hidden"
+name="nome_setor"
+value="${result.value.nome_setor}">
+
+
+<input type="hidden"
+name="localizacao"
+value="${result.value.localizacao}">
+
+
+
+
+
+`;
+
+
 
                     document.body.appendChild(form);
 
+
                     form.submit();
+
+
+
                 }
+
+
             });
+
+
+
         }
 
-        function maskCNPJ(input) {
 
-            let v = input.value.replace(/\D/g, '');
 
-            v = v.substring(0, 14);
 
-            v = v.replace(/^(\d{2})(\d)/, '$1.$2');
-            v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-            v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
-            v = v.replace(/(\d{4})(\d)/, '$1-$2');
 
-            input.value = v;
+
+        // ======================================================
+        // ACESSIBILIDADE
+        // ======================================================
+
+
+        function toggleAccessMenu() {
+
+
+            const menu =
+                document.getElementById("accessOptions");
+
+
+            menu.style.display =
+                menu.style.display === "flex"
+                    ?
+                    "none"
+                    :
+                    "flex";
+
         }
+
+
+
+        function toggleDark() {
+
+
+            document.body.classList.toggle("dark-mode");
+        }
+
+
+
+        /* ==========================================================
+VALIDAÇÃO CADASTRO SETOR
+========================================================== */
+
+
+        function validarSetor() {
+
+
+            let valido = true;
+
+
+            const nome = document.getElementById("nome_setor");
+
+            const local = document.getElementById("localizacao");
+
+
+
+            limparErro(nome);
+
+            limparErro(local);
+
+
+
+            if (nome.value.trim() === "") {
+
+
+                mostrarErro(nome, "Campo obrigatório");
+
+                valido = false;
+
+
+            }
+
+
+
+            if (local.value.trim() === "") {
+
+
+                mostrarErro(local, "Campo obrigatório");
+
+                valido = false;
+
+
+            }
+
+
+
+
+            if (!valido) {
+
+
+                Swal.fire({
+
+                    icon: "warning",
+
+                    title: "Campos obrigatórios",
+
+                    text: "Preencha todos os campos antes de cadastrar.",
+
+                    confirmButtonText: "OK",
+
+                    confirmButtonColor: "#0A66C2"
+
+                });
+
+
+            }
+
+
+
+            return valido;
+
+
+        }
+
+
+
+
+
+
+        function mostrarErro(input, mensagem) {
+
+
+
+            const box = input.closest(".input-box");
+
+
+            box.classList.add("erro");
+
+
+
+            const erro = box.nextElementSibling;
+
+
+            if (erro) {
+
+                erro.innerHTML = mensagem;
+
+            }
+
+
+        }
+
+
+
+
+
+
+        function limparErro(input) {
+
+
+            const box = input.closest(".input-box");
+
+
+            if (box) {
+
+                box.classList.remove("erro");
+
+            }
+
+
+
+            const erro = box.nextElementSibling;
+
+
+            if (erro) {
+
+                erro.innerHTML = "";
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+        document.querySelectorAll(".input-box input")
+            .forEach(input => {
+
+
+                input.addEventListener("input", () => {
+
+
+                    limparErro(input);
+
+
+                });
+
+
+            });
+
+        function mostrarErro(input, mensagem) {
+
+
+            const grupo = input.closest("form");
+
+
+            const container = input.closest(".form-side");
+
+
+            const campo = input.parentElement;
+
+
+            campo.classList.add("erro");
+
+
+            const erro = campo.nextElementSibling;
+
+
+            if (erro) {
+
+                erro.innerHTML = mensagem;
+
+            }
+
+
+        }
+
+
+
+
+
+        function limparErro(input) {
+
+
+            const campo = input.parentElement;
+
+
+            campo.classList.remove("erro");
+
+
+            const erro = campo.nextElementSibling;
+
+
+            if (erro) {
+
+                erro.innerHTML = "";
+
+            }
+
+
+        }
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+
+            document
+                .querySelectorAll(".input-modern input")
+                .forEach(input => {
+
+
+                    input.addEventListener("input", () => {
+
+                        limparErro(input);
+
+                    });
+
+
+                });
+
+
+        });
+
+        function confirmarExclusao(id) {
+
+            Swal.fire({
+
+                title: "Excluir setor?",
+                text: "Essa ação não poderá ser desfeita.",
+                icon: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonText: "Sim, excluir",
+                cancelButtonText: "Cancelar",
+
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#0A66C2"
+
+
+            }).then((result) => {
+
+
+                if (result.isConfirmed) {
+
+
+                    window.location.href =
+                        "<?= base_url('setor/excluir/') ?>" + id;
+
+
+                }
+
+
+            });
+
+        }
+
+
+
+
     </script>
 
+
+
+    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
+
+
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+
+    <script>
+
+        new window.VLibras.Widget(
+            'https://vlibras.gov.br/app'
+        );
+
+
+    </script>
+
+    <?php if (session()->getFlashdata('sucesso')): ?>
+
+        <script>
+
+            Swal.fire({
+
+                icon: "success",
+
+                title: "Cadastrado com sucesso!",
+
+                text: "O setor foi adicionado ao sistema.",
+
+                confirmButtonColor: "#0A66C2"
+
+            });
+
+
+        </script>
+
+    <?php endif; ?><?php if (session()->getFlashdata('sucesso')): ?>
+
+        <script>
+
+            Swal.fire({
+
+                icon: "success",
+
+                title: "Cadastrado com sucesso!",
+
+                text: "O setor foi adicionado ao sistema.",
+
+                confirmButtonColor: "#0A66C2"
+
+            });
+
+        </script>
+
+    <?php endif; ?>
+
+
+    <?php if (session()->getFlashdata('sucesso_edicao')): ?>
+
+        <script>
+
+            Swal.fire({
+
+                icon: "success",
+
+                title: "Edição concluída!",
+
+                text: "O setor foi atualizado com sucesso.",
+
+                confirmButtonColor: "#0A66C2"
+
+            });
+
+        </script>
+
+    <?php endif; ?>
+
+
 </body>
+
 
 </html>

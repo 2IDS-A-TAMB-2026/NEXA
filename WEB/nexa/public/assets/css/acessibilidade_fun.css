@@ -1,0 +1,755 @@
+
+/* =========================================================
+   ACESSIBILIDADE NO HEADER
+   ========================================================= */
+
+.header-access {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    margin-right: 14px;
+}
+
+
+/* BOTÃO DA ENGRENAGEM */
+
+.gear-btn {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #e5e7eb;
+    color: #6b7280;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .3s ease,
+        box-shadow .25s ease;
+}
+
+
+/* hover */
+
+.gear-btn:hover {
+    background: #d1d5db;
+    color: #4b5563;
+
+    transform: rotate(35deg);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, .12);
+}
+
+
+/* =========================================================
+   MENU DE ACESSIBILIDADE
+   ========================================================= */
+/* =========================================================
+   MENU DE ACESSIBILIDADE — ABRE PARA A ESQUERDA
+   ========================================================= */
+
+.access-options {
+    position: absolute;
+
+    top: 52px;
+
+    /* faz o menu crescer para a esquerda */
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 10px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
+
+    opacity: 0;
+    visibility: hidden;
+
+    /*
+       começa um pouco para cima
+       e para a esquerda
+    */
+    transform:
+        translateX(-8px)
+        translateY(-8px)
+        scale(.96);
+
+    transform-origin: top right;
+
+    transition:
+        opacity .2s ease,
+        visibility .2s ease,
+        transform .2s ease;
+
+    z-index: 9999;
+}
+
+
+/* MENU ABERTO */
+
+.access-options.active {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translateX(0)
+        translateY(0)
+        scale(1);
+}
+
+/* =========================================================
+   BOTÕES DO MENU
+   ========================================================= */
+
+.access-btn {
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #f3f4f6;
+    color: #6b7280;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+.access-btn:hover {
+
+    background: #e5e7eb;
+
+    color: #374151;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.dark .gear-btn,
+.dark-mode .gear-btn {
+
+    background: #374151;
+    color: #d1d5db;
+}
+
+
+body.dark .gear-btn:hover,
+.dark-mode .gear-btn:hover {
+
+    background: #4b5563;
+    color: #ffffff;
+}
+
+
+body.dark .access-options,
+.dark-mode .access-options {
+
+    background: #1f2937;
+
+    border-color: #374151;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .4);
+}
+
+
+body.dark .access-btn,
+.dark-mode .access-btn {
+
+    background: #374151;
+    color: #d1d5db;
+}
+
+
+body.dark .access-btn:hover,
+.dark-mode .access-btn:hover {
+
+    background: #4b5563;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   ALTO CONTRASTE
+   ========================================================= */
+
+.alto-contraste .gear-btn {
+
+    background: #000;
+    color: #ffd600;
+
+    border: 2px solid #ffd600;
+}
+
+
+.alto-contraste .access-options {
+
+    background: #000;
+
+    border: 2px solid #ffd600;
+}
+
+
+.alto-contraste .access-btn {
+
+    background: #000;
+    color: #ffd600;
+
+    border: 1px solid #ffd600;
+}
+
+
+.alto-contraste .access-btn:hover {
+
+    background: #ffd600;
+    color: #000;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .header-access {
+        margin-right: 8px;
+    }
+
+    .gear-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .access-options {
+        right: -10px;
+
+        flex-wrap: wrap;
+
+        width: 170px;
+    }
+}
+
+
+/* ==========================================================
+   NEXA — MODO ESCURO
+========================================================== */
+
+body.dark-mode{
+    background:#0b1016;
+    color:#f1f5f9;
+}
+
+
+/* ==========================================================
+   ÁREA PRINCIPAL
+========================================================== */
+
+body.dark-mode .overlay{
+    background:#0b1016;
+}
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+body.dark-mode .sidebar{
+    background:#080d12 !important;
+}
+
+
+/* ==========================================================
+   IMAGEM DA CONSTRUÇÃO
+========================================================== */
+
+body.dark-mode .sidebar-construction{
+    opacity:.30 !important;
+
+    filter:
+        grayscale(35%)
+        brightness(.55)
+        contrast(1.05) !important;
+}
+
+
+/* ==========================================================
+   DEGRADÊ SOBRE A IMAGEM
+========================================================== */
+
+body.dark-mode .sidebar::after{
+    background:linear-gradient(
+        to bottom,
+
+        #080d12 0%,
+
+        rgba(8,13,18,.99) 12%,
+
+        rgba(8,13,18,.94) 27%,
+
+        rgba(8,13,18,.82) 43%,
+
+        rgba(8,13,18,.62) 60%,
+
+        rgba(8,13,18,.36) 76%,
+
+        rgba(8,13,18,.05) 100%
+    ) !important;
+}
+
+
+/* ==========================================================
+   LOGO / NEXA
+========================================================== */
+
+body.dark-mode .sidebar-brand-text strong{
+    color:#f5f7fa !important;
+}
+
+body.dark-mode .sidebar-brand-text span{
+    color:rgba(255,255,255,.72) !important;
+}
+
+
+/* ==========================================================
+   TÍTULOS DO MENU
+========================================================== */
+
+body.dark-mode .menu-title{
+    color:rgba(255,255,255,.55) !important;
+}
+
+
+/* ==========================================================
+   LINKS
+========================================================== */
+
+body.dark-mode .menu a{
+    background:transparent !important;
+    color:#e7edf4 !important;
+}
+
+body.dark-mode .menu a span{
+    color:#e7edf4 !important;
+}
+
+body.dark-mode .menu a i{
+    color:#d8e0e8 !important;
+}
+
+
+/* ==========================================================
+   HOVER
+========================================================== */
+
+body.dark-mode .menu a:hover{
+    background:rgba(255,255,255,.06) !important;
+}
+
+body.dark-mode .menu a:hover i,
+body.dark-mode .menu a:hover span{
+    color:#ffffff !important;
+}
+
+
+/* ==========================================================
+   ITEM ATIVO
+========================================================== */
+
+body.dark-mode .menu a.active{
+    background:#0878e5 !important;
+    color:#ffffff !important;
+}
+
+body.dark-mode .menu a.active i,
+body.dark-mode .menu a.active span{
+    color:#ffffff !important;
+}
+
+
+/* ==========================================================
+   LOGOUT
+========================================================== */
+
+body.dark-mode .logout-item{
+    background:rgba(255,255,255,.035) !important;
+
+    border:1px solid rgba(255,255,255,.16) !important;
+
+    color:#f1f5f9 !important;
+}
+
+body.dark-mode .logout-item i,
+body.dark-mode .logout-item span{
+    color:#f1f5f9 !important;
+}
+
+body.dark-mode .logout-item:hover{
+    background:rgba(255,255,255,.08) !important;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+body.dark-mode .dashboard-header{
+    background:#0b1016;
+
+    border-bottom:1px solid #202a34;
+
+    box-shadow:0 2px 18px rgba(0,0,0,.35);
+}
+
+body.dark-mode .header-left h1{
+    color:#1685f5;
+}
+
+body.dark-mode .header-left span{
+    color:#d5dde6;
+}
+
+body.dark-mode .profile-info strong{
+    color:#f1f5f9;
+}
+
+body.dark-mode .profile-info small{
+    color:#8996a5;
+}
+
+body.dark-mode .profile:hover{
+    background:#151c24;
+}
+
+
+/* ==========================================================
+   CARD PRINCIPAL
+========================================================== */
+
+body.dark-mode .card{
+    background:#10161d;
+    border:1px solid #202a34;
+    box-shadow:0 10px 25px rgba(0,0,0,.30);
+}
+
+
+/* ==========================================================
+   TÍTULO DO CALENDÁRIO
+========================================================== */
+
+body.dark-mode .calendar-title h2{
+    color:#f1f5f9;
+}
+
+body.dark-mode .calendar-title span{
+    color:#96a4b4;
+}
+
+
+/* ==========================================================
+   ÍCONE DO CALENDÁRIO
+========================================================== */
+
+body.dark-mode .calendar-icon{
+    background:#0A66C2;
+    color:#ffffff;
+}
+
+
+/* ==========================================================
+   CABEÇALHO DO CALENDÁRIO
+========================================================== */
+
+body.dark-mode .calendar-header strong{
+    color:#1685f5;
+}
+
+body.dark-mode .calendar-header small{
+    color:#d5dde6;
+}
+
+
+/* ==========================================================
+   BOTÕES DO CALENDÁRIO
+========================================================== */
+
+body.dark-mode .calendar-header button{
+    background:#151c24;
+    color:#1685f5;
+    border:1px solid #2a3540;
+    box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+
+body.dark-mode .calendar-header button:hover{
+    background:#202a34;
+}
+
+
+/* ==========================================================
+   DIAS
+========================================================== */
+
+body.dark-mode .dia{
+    background:#171e26;
+    color:#1685f5;
+}
+
+body.dark-mode .dia:hover{
+    background:#202a34;
+}
+
+
+/* ==========================================================
+   LEGENDA
+========================================================== */
+
+body.dark-mode .legend{
+    color:#d5dde6;
+}
+
+
+/* ==========================================================
+   DICAS
+========================================================== */
+
+body.dark-mode .card.dicas{
+    background:#10161d;
+    border:1px solid #202a34;
+}
+
+body.dark-mode .card.dicas h3{
+    color:#1685f5;
+}
+
+
+/* ==========================================================
+   CARDS DAS DICAS
+========================================================== */
+
+body.dark-mode .card.dicas li{
+    background:#151c24;
+    border:1px solid #26313d;
+    color:#f1f5f9;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+body.dark-mode .card.dicas li:hover{
+    background:#1c2630;
+    box-shadow:0 12px 25px rgba(10,102,194,.15);
+}
+
+
+/* ==========================================================
+   ÍCONES DAS DICAS
+========================================================== */
+
+body.dark-mode .card.dicas li i{
+    background:#102b47;
+    color:#1685f5;
+}
+
+body.dark-mode .card.dicas li:hover i{
+    background:#0A66C2;
+    color:#ffffff;
+}
+
+/* ==========================================================
+   PERFIL — MODO ESCURO
+========================================================== */
+
+body.dark .perfil-esquerda,
+body.dark .perfil-direita {
+    color: #f1f5f9;
+}
+
+
+/* ==========================================================
+   ÁREA PRINCIPAL DO PERFIL
+========================================================== */
+
+body.dark .perfil-direita {
+    background: #10161d;
+    border: 1px solid #202a34;
+    box-shadow: 0 10px 25px rgba(0,0,0,.30);
+}
+
+
+/* ==========================================================
+   CÍRCULO DO CAPACETE
+========================================================== */
+
+body.dark .fundo-capacete {
+    background: #151c24;
+}
+
+body.dark .circulo {
+    background: #0A66C2;
+    box-shadow: 0 8px 25px rgba(10,102,194,.25);
+}
+
+
+/* ÍCONE DO CAPACETE */
+
+body.dark .perfil-direita > i.fa-helmet-safety {
+    color: #ffffff;
+    background: #0A66C2;
+}
+
+
+/* ==========================================================
+   SUBTÍTULOS
+========================================================== */
+
+body.dark .subtitle {
+    color: #f1f5f9;
+}
+
+
+/* ==========================================================
+   CAMPOS
+========================================================== */
+
+body.dark .input-box {
+    background: #171e26;
+    border: 1px solid #293542;
+    color: #f1f5f9;
+    box-shadow: none;
+}
+
+
+/* ÍCONES DOS CAMPOS */
+
+body.dark .input-box > i,
+body.dark .input-box i {
+    color: #1685f5;
+}
+
+
+/* INPUTS */
+
+body.dark .input-box input {
+    background: transparent;
+    color: #f1f5f9;
+}
+
+body.dark .input-box input::placeholder {
+    color: #7f8c9b;
+}
+
+
+/* INPUT DESABILITADO */
+
+body.dark .input-box input:disabled {
+    color: #d5dde6;
+    opacity: 1;
+}
+
+
+/* ==========================================================
+   CAMPOS EDITÁVEIS
+========================================================== */
+
+body.dark .input-box.editable-field {
+    background: #1b2530;
+    border-color: #0A66C2;
+}
+
+body.dark .input-box.editable-field input {
+    color: #ffffff;
+}
+
+
+/* ==========================================================
+   LABELS DE SENHA
+========================================================== */
+
+body.dark .campo label {
+    color: #d5dde6;
+}
+
+
+/* ==========================================================
+   EPI
+========================================================== */
+
+body.dark .input-box strong {
+    color: #f1f5f9;
+}
+
+body.dark .input-box small {
+    color: #9aa8b8;
+}
+
+
+/* IMAGEM DO EPI */
+
+body.dark .input-box img {
+    border-color: #354250 !important;
+}
+
+
+/* ==========================================================
+   ERROS
+========================================================== */
+
+body.dark .input-box.error {
+    border-color: #f44336;
+}
+
+body.dark .error-text {
+    color: #ff6b6b;
+}
+
+
+/* ==========================================================
+   BOTÕES
+========================================================== */
+
+body.dark .btn.editar,
+body.dark .btn.salvar {
+    background: #0A66C2;
+    color: #ffffff;
+}
+
+body.dark .btn.editar:hover,
+body.dark .btn.salvar:hover {
+    background: #0878e5;
+}

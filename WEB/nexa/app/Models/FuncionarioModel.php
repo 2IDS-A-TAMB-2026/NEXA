@@ -74,4 +74,5 @@ class FuncionarioModel extends Model
 
         return null;
     }
+    
 }

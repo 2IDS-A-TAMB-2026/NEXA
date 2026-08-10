@@ -1,145 +1,4 @@
-/* ===== LOGO PADRÃO (MODO CLARO) ===== */
-.logo-dark {
-    display: none;
-}
 
-.logo-light {
-    display: block;
-}
-
-/* ===== MODO ESCURO ===== */
-body.dark-mode .logo-light {
-    display: none;
-}
-
-body.dark-mode .logo-dark {
-    display: block;
-}
-
-body.dark-mode {
-    background: #0b2012;
-    color: #e5e7eb;
-}
-
-body.dark-mode .topbar {
-    background: #0f172a;
-    border-bottom: 1px solid #1e293b;
-}
-
-.btn-som {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-
-    background: rgba(0, 0, 0, 0.6);
-    border: none;
-    color: #fff;
-
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-som:hover {
-    background: rgba(0, 0, 0, 0.9);
-    transform: scale(1.1);
-}
-
-body.dark-mode .menu a {
-    color: #cbd5e1;
-}
-
-body.dark-mode .solution,
-body.dark-mode .value,
-body.dark-mode .block,
-body.dark-mode .team-card {
-    background: #111827;
-    color: #e5e7eb;
-}
-
-body.dark-mode .hero {
-    background: linear-gradient(135deg, #0b3a6b, #0f172a);
-}
-
-body.dark-mode .visao_comp {
-    background: #111827;
-    color: #e5e7eb;
-}
-
-/* =========================
-   🔥 ALTO CONTRASTE FORTE
-   ========================= */
-body.alto-contraste {
-    background: #000 !important;
-    color: #ffd400 !important;
-}
-
-/* textos gerais */
-body.alto-contraste p,
-body.alto-contraste h1,
-body.alto-contraste h2,
-body.alto-contraste h3,
-body.alto-contraste span,
-body.alto-contraste a {
-    color: #ffd400 !important;
-}
-
-/* TOPBAR */
-body.alto-contraste .topbar {
-    background: #000 !important;
-    border-bottom: 2px solid #ffd400 !important;
-}
-
-/* MENU */
-body.alto-contraste .menu a {
-    color: #ffd400 !important;
-}
-
-/* HERO */
-body.alto-contraste .hero {
-    background: #000 !important;
-}
-
-/* CARDS (REMOVE BRANCO COMPLETAMENTE) */
-body.alto-contraste .solution,
-body.alto-contraste .value,
-body.alto-contraste .block,
-body.alto-contraste .team-card,
-body.alto-contraste .visao_comp {
-    background: #000 !important;
-    border: 2px solid #ffd400 !important;
-    color: #ffd400 !important;
-    box-shadow: none !important;
-}
-
-/* FOOTER */
-body.alto-contraste footer {
-    background: #000 !important;
-    border-top: 2px solid #ffd400 !important;
-}
-
-/* BOTÕES */
-body.alto-contraste .btn-primary {
-    background: #ffd400 !important;
-    color: #000 !important;
-}
-
-body.alto-contraste .btn-secondary {
-    background: transparent !important;
-    border: 2px solid #ffd400 !important;
-    color: #ffd400 !important;
-}
-
-body {
-    font-size: 1rem;
-}
 
 :root {
     --primary: #0a66c2;
@@ -214,8 +73,8 @@ a {
     border: 1px solid #0a66c2;
     color: #0a66c2;
 
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
 
     border-radius: 10px;
 
@@ -234,77 +93,12 @@ a {
     transform: translateY(-2px);
 }
 
-html {
-    font-size: 100%;
-}
 
 .menu-left {
     display: flex;
     align-items: center;
 
     gap: 25px;
-}
-
-/* PADRÃO PARA TODOS OS BOTÕES */
-body.alto-contraste button,
-body.alto-contraste .btn-primary,
-body.alto-contraste .btn-secondary,
-body.alto-contraste .access-btnindex,
-body.alto-contraste .button {
-    background: transparent !important;
-    color: yellow !important;
-    border-color: #ffd400 !important;
-    transform: translateY(-2px);
-    box-shadow: yellow;
-}
-
-/* HOVER PADRÃO PARA TODOS OS BOTÕES */
-body.alto-contraste button:hover,
-body.alto-contraste .btn-primary:hover,
-body.alto-contraste .btn-secondary:hover,
-body.alto-contraste .access-btnindex:hover,
-body.alto-contraste .button:hover {
-    background: #ffd400 !important;
-    color: #000 !important;
-    border-color: #ffd400 !important;
-    transform: translateY(-2px);
-}
-
-/* MENU HOVER EM ALTO CONTRASTE */
-body.alto-contraste .menu a {
-    background: transparent !important;
-    color: #ffd400 !important;
-}
-
-/* remove qualquer fundo no hover */
-body.alto-contraste .menu a:hover {
-    background: transparent !important;
-    color: #ffd400 !important;
-}
-
-/* LINHA AMARELA */
-body.alto-contraste .menu a::after {
-    background: #ffd400 !important;
-}
-
-/* BOTÃO ENTRAR - SOMBRA AMARELA */
-body.alto-contraste .menu .button {
-    border: 2px solid #ffd400 !important;
-    color: #ffd400 !important;
-    background: transparent !important;
-    box-shadow: 0 0 8px #ffd400 !important;
-}
-
-/* HOVER DO ENTRAR */
-body.alto-contraste .menu .button:hover {
-    background: #ffd400 !important;
-    color: #000 !important;
-    box-shadow: 0 0 12px #ffd400 !important;
-}
-
-/* animação da linha */
-body.alto-contraste .menu a:hover::after {
-    width: 100%;
 }
 
 /* grupo da esquerda */
@@ -326,21 +120,6 @@ body.alto-contraste .menu a:hover::after {
     margin-left: 15px;
 }
 
-
-body.alto-contraste i,
-body.alto-contraste .fa,
-body.alto-contraste .fas,
-body.alto-contraste .far,
-body.alto-contraste .fab {
-    color: #ffd400 !important;
-}
-
-/* evita botão esmagar */
-.access-btnindex {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
-}
 
 .menu a {
     position: relative;
@@ -504,7 +283,6 @@ section p {
     font-size: 17px;
     line-height: 1.8;
 }
-
 /* ===== FEATURES ===== */
 .features {
     display: grid;
@@ -639,7 +417,227 @@ footer a {
 footer a:hover {
     color: #fff;
 }
+/* =========================================================
+   CAPACETE CAINDO + IMPACTO
+   ========================================================= */
 
+footer {
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-helmet {
+    position: absolute;
+
+    right: 100px;
+
+    /* começa acima do footer */
+    top: -90px;
+
+    width: 100px;
+    height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    animation: quedaCapacete 5s ease-in infinite;
+}
+
+
+/* CAPACETE */
+
+.footer-helmet > i {
+    font-size: 70px;
+
+    color: #3232aac9;
+
+    filter:
+        drop-shadow(
+            0 7px 5px rgba(0, 0, 0, .3)
+        );
+}
+
+
+/* =========================================================
+   QUEDA
+   ========================================================= */
+
+@keyframes quedaCapacete {
+
+    /* começa fora */
+    0% {
+        transform:
+            translateY(-20px)
+            rotate(-12deg);
+
+        opacity: 0;
+    }
+
+    /* aparece */
+    8% {
+        opacity: 1;
+    }
+
+    /* CAINDO */
+    38% {
+        transform:
+            translateY(245px)
+            rotate(18deg);
+
+        opacity: 1;
+    }
+
+    /* impacto */
+    44% {
+        transform:
+            translateY(232px)
+            rotate(-8deg);
+    }
+
+    /* pequena quicada */
+    49% {
+        transform:
+            translateY(245px)
+            rotate(4deg);
+    }
+
+    /* fica parado */
+    60% {
+        transform:
+            translateY(245px)
+            rotate(0deg);
+
+        opacity: 1;
+    }
+
+    /* desaparece */
+    100% {
+        transform:
+            translateY(245px)
+            rotate(0deg);
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   RISQUINHOS DE IMPACTO
+   ========================================================= */
+
+.impact-lines {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 100px;
+    height: 100px;
+
+    transform: translate(-50%, -50%);
+
+    pointer-events: none;
+}
+
+
+/* cada risquinho */
+
+.impact-lines span {
+    position: absolute;
+
+    width: 20px;
+    height: 3px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    opacity: 0;
+
+    transform-origin: left center;
+
+    animation: impacto 5s ease-out infinite;
+}
+
+
+/* posições */
+
+.impact-lines span:nth-child(1) {
+    left: 5px;
+    top: 45px;
+    transform: rotate(180deg);
+}
+
+.impact-lines span:nth-child(2) {
+    left: 15px;
+    top: 20px;
+    transform: rotate(225deg);
+}
+
+.impact-lines span:nth-child(3) {
+    left: 50px;
+    top: 8px;
+    transform: rotate(270deg);
+}
+
+.impact-lines span:nth-child(4) {
+    left: 82px;
+    top: 20px;
+    transform: rotate(315deg);
+}
+
+.impact-lines span:nth-child(5) {
+    left: 92px;
+    top: 50px;
+    transform: rotate(0deg);
+}
+
+.impact-lines span:nth-child(6) {
+    left: 50px;
+    top: 90px;
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   ANIMAÇÃO DOS RISQUINHOS
+   ========================================================= */
+
+@keyframes impacto {
+
+    /* invisível enquanto cai */
+    0%,
+    39% {
+        opacity: 0;
+
+        transform:
+            scale(.2)
+            rotate(var(--angle));
+    }
+
+    /* APARECE NO IMPACTO */
+    43% {
+        opacity: 1;
+    }
+
+    /* espalha */
+    50% {
+        opacity: 0;
+
+        transform:
+            scale(1.3)
+            translateX(10px);
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
 .social {
     display: flex;
     gap: 15px;
@@ -767,34 +765,9 @@ footer a:hover {
     line-height: 1.7;
 }
 
-.solutions {
-    margin-top: 50px;
-    display: grid;
-    /* Alterado de auto-fit para 3 fixo */
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-}
 
 
 
-/* Adicione isso logo abaixo do bloco .solutions */
-.blocks,
-.values {
-    margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-}
-
-/* Estilo para os cards internos (caso não tenha definido) */
-.block,
-.value {
-    background: #fff;
-    padding: 30px;
-    border-radius: 22px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
-    text-align: center;
-}
 
 /* É bom adicionar um ajuste para telas menores (celular), 
    senão os 3 blocos vão ficar espremidos no mobile */
@@ -823,163 +796,6 @@ footer a:hover {
 }
 
 
-/* =========================
-   🌙 DARK MODE COMPLETO REAL
-   ========================= */
-
-body.dark-mode {
-    background: #000 !important;
-    color: #e5e7eb !important;
-}
-
-/* ===== TOPO ===== */
-body.dark-mode .topbar {
-    background: #000 !important;
-    border-bottom: 1px solid #222 !important;
-}
-
-/* ===== MENU ===== */
-body.dark-mode .menu a {
-    color: #e5e7eb !important;
-}
-
-/* hover menu */
-body.dark-mode .menu a:hover {
-    color: #60a5fa !important;
-}
-
-/* linha animada */
-body.dark-mode .menu a::after {
-    background: #60a5fa !important;
-}
-
-/* ===== BOTÃO ENTRAR ===== */
-body.dark-mode .menu .button {
-    background: transparent !important;
-    color: #60a5fa !important;
-    border: 2px solid #60a5fa !important;
-    box-shadow: 0 0 8px #60a5fa !important;
-}
-
-body.dark-mode .menu .button:hover {
-    background: #60a5fa !important;
-    color: #000 !important;
-    box-shadow: 0 0 15px #60a5fa !important;
-}
-
-/* ===== HERO ===== */
-body.dark-mode .hero {
-    background: linear-gradient(135deg, #000, #020617) !important;
-}
-
-body.dark-mode #paragrafo_inst {
-    color: #cbd5e1 !important;
-}
-
-/* ===== CARDS GERAIS ===== */
-body.dark-mode .solution,
-body.dark-mode .value,
-body.dark-mode .block,
-body.dark-mode .team-card,
-body.dark-mode .visao_comp {
-    background: #0a0a0a !important;
-    color: #e5e7eb !important;
-    border: 1px solid #1f2937 !important;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6) !important;
-}
-
-/* hover dos cards */
-body.dark-mode .solution:hover,
-body.dark-mode .value:hover,
-body.dark-mode .block:hover,
-body.dark-mode .team-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 0 25px rgba(96, 165, 250, 0.3);
-}
-
-/* textos internos */
-body.dark-mode p {
-    color: #9ca3af !important;
-}
-
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3 {
-    color: #f9fafb !important;
-}
-
-/* ===== BOTÕES ===== */
-body.dark-mode .btn-primary {
-    background: #60a5fa !important;
-    color: #000 !important;
-}
-
-body.dark-mode .btn-primary:hover {
-    box-shadow: 0 0 15px #60a5fa !important;
-}
-
-body.dark-mode .btn-secondary {
-    background: transparent !important;
-    border: 2px solid #60a5fa !important;
-    color: #60a5fa !important;
-}
-
-body.dark-mode .btn-secondary:hover {
-    background: #60a5fa !important;
-    color: #000 !important;
-}
-
-/* ===== ACESSIBILIDADE BOTÕES ===== */
-body.dark-mode .access-btnindex {
-    border: 1px solid #60a5fa !important;
-    color: #60a5fa !important;
-}
-
-body.dark-mode .access-btnindex:hover {
-    background: #60a5fa !important;
-    color: #000 !important;
-}
-
-/* ===== VIDEO ===== */
-body.dark-mode .video-container {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* ===== FOOTER ===== */
-body.dark-mode footer {
-    background: #000 !important;
-    border-top: 1px solid #222 !important;
-}
-
-body.dark-mode footer p,
-body.dark-mode footer a {
-    color: #9ca3af !important;
-}
-
-body.dark-mode footer a:hover {
-    color: #60a5fa !important;
-}
-
-/* redes sociais */
-body.dark-mode .social a {
-    background: #111 !important;
-    color: #60a5fa !important;
-}
-
-body.dark-mode .social a:hover {
-    background: #60a5fa !important;
-    color: #000 !important;
-}
-
-/* ===== SCROLLBAR ===== */
-body.dark-mode ::-webkit-scrollbar-thumb {
-    background: #60a5fa;
-}
-
-/* TEXTO NEXA NO DARK MODE */
-body.dark-mode .logo span {
-    color: #ffffff !important;
-}
 
 
 /*APARTIR DAQUI NINGUEM SE RESPONSABILIZA :P*/

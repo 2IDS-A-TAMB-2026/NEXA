@@ -2,750 +2,1731 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXA | Cadastro de EPI's</title>
+
+    <title>NEXA | Cadastro de EPIs</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/epi.css') ?>">
 
-    <style>
-        .option-funci {
-            border-radius: 5px;
-            border: none;
-        }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        /* Estilo base dos textos de erro */
-        .error-text {
-            display: none;
-            color: #d32f2f !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            margin-top: 5px !important;
-            margin-bottom: 10px !important;
-            font-family: 'Inter', sans-serif !important;
-        }
-
-        .error-text.active {
-            display: block !important;
-        }
-
-        /* 🔥 REGRA DO CONTORNO VERMELHO */
-        .input-error {
-            border: 2px solid #d32f2f !important;
-        }
-
-        /* ========================================================
-           INPUT FILE (UPLOAD DE IMAGEM BONITO)
-           ======================================================== */
-        .file-input-wrapper {
-            position: relative;
-            width: 100%;
-            height: 58px;
-            background: #eceff1;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            padding: 0 18px;
-            cursor: pointer;
-            overflow: hidden;
-            margin-bottom: 15px !important;
-            box-sizing: border-box;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-input-wrapper i.fa-camera {
-            color: #0066cc !important;
-            font-size: 20px !important;
-            margin-right: 12px !important;
-        }
-
-        .file-input-text {
-            font-size: 18px;
-            color: #757575;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* ========================================================
-           SELECT DE FUNCIONÁRIO 
-           ======================================================== */
-        .busca-funcionario-container {
-            width: 100% !important;
-            margin-bottom: 15px !important;
-        }
-
-        .select-input-box {
-            width: 100% !important;
-            height: 58px !important;
-            background: #eceff1 !important;
-            border-radius: 15px !important;
-            display: flex !important;
-            align-items: center !important;
-            padding: 0 18px !important;
-            position: relative !important;
-            box-sizing: border-box;
-        }
-
-        .select-input-box select {
-            width: 100% !important;
-            height: 100% !important;
-            background: transparent !important;
-            border: none !important;
-            outline: none !important;
-            font-size: 18px !important;
-            color: #475569 !important;
-            cursor: pointer !important;
-            -webkit-appearance: none !important;
-            -moz-appearance: none !important;
-            appearance: none !important;
-            padding-left: 32px !important;
-            padding-right: 35px !important;
-        }
-
-        .select-input-box i.fa-search {
-            position: absolute !important;
-            left: 18px !important;
-            color: #0066cc !important;
-            font-size: 20px !important;
-            pointer-events: none !important;
-        }
-
-        .select-input-box .fa-chevron-down {
-            position: absolute !important;
-            right: 18px !important;
-            color: #0066cc !important;
-            font-size: 16px !important;
-            pointer-events: none !important;
-        }
-
-        /* ========================================================
-           💥 BLOCO BRANCO OTIMIZADO COM MAIS ESPAÇO PARA LINHAS
-           ======================================================== */
-
-        .right-box {
-            width: 100% !important;
-            max-width: 100% !important;
-            flex: 1 !important;
-
-            height: 600px !important;
-
-            display: flex !important;
-            flex-direction: column !important;
-        }
-
-        /* =========================
-        ACESSIBILIDADE - GLOBAL
-        ========================= */
-
-        html {
-            font-size: 16px;
-            transition: font-size 0.2s ease;
-        }
-
-        body {
-            transition: all 0.3s ease;
-        }
-
-        /* =========================
-        MODO NOTURNO
-        ========================= */
-        .dark-mode {
-            background: #0b1220 !important;
-            color: #e5e7eb !important;
-        }
-
-        .dark-mode .left-box,
-        .dark-mode .right-box,
-        .dark-mode .table-container,
-        .dark-mode .input-box,
-        .dark-mode .file-input-wrapper,
-        .dark-mode .select-input-box,
-        .dark-mode th,
-        .dark-mode tr,
-        .dark-mode .tabela-epi tr,
-        .dark-mode .overlay {
-            background-color: #111827 !important;
-            color: #e5e7eb !important;
-        }
-        .dark-mode .tabela-epi{border-color: #1e4b75;}
-
-        /* =========================
-        ALTO CONTRASTE
-        ========================= */
-        .high-contrast {
-            background: #000 !important;
-            color: #ffff00 !important;
-        }
-
-        /* textos */
-        .high-contrast h1,
-        .high-contrast h2,
-        .high-contrast h3,
-        .high-contrast p,
-        .high-contrast span,
-        .high-contrast td,
-        .high-contrast th,
-        .high-contrast label {
-            color: #ffff00 !important;
-        }
-
-        /* caixas */
-        .high-contrast .left-box,
-        .high-contrast .right-box,
-        .high-contrast .table-container,
-        .high-contrast .input-box,
-        .high-contrast .file-input-wrapper,
-        .high-contrast .select-input-box {
-            background: #000 !important;
-            border: 2px solid #ffff00 !important;
-        }
-
-        /* botões */
-        .high-contrast button,
-        .high-contrast .btn {
-            background: #000 !important;
-            color: #ffff00 !important;
-            border: 2px solid #ffff00 !important;
-        }
-
-        /* links */
-        .high-contrast a {
-            color: #ffff00 !important;
-        }
-
-
-
-        /* From Uiverse.io by cssbuttons-io */
-        button {
-            font-size: 17px;
-            padding: 1em 2.7em;
-            font-weight: 500;
-            background: #0A66c2;
-            color: white;
-            border: none;
-            position: relative;
-            overflow: hidden;
-            border-radius: 0.6em;
-            cursor: pointer;
-        }
-
-        .gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            border-radius: 0.6em;
-            margin-top: -0.25em;
-            background-image: linear-gradient(rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0.3));
-        }
-
-        .label {
-            position: relative;
-            top: -1px;
-        }
-
-        .transition {
-            transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-            transition-duration: 500ms;
-            background-color: #1e4b75;
-            border-radius: 9999px;
-            width: 0;
-            height: 0;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        button:hover .transition {
-            width: 14em;
-            height: 14em;
-        }
-
-        button:active {
-            transform: scale(0.97);
-        }
-        
-        #lista {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-
-            flex: 1;
-            overflow-y: auto;
-
-            min-height: 0;
-        }
-
-        #lista::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #lista::-webkit-scrollbar-thumb {
-            background: #0A66c2;
-            border-radius: 10px;
-        }
-
-        #lista::-webkit-scrollbar-track {
-            background: #e5e7eb;
-        }
-
-        .lista-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-
-        .lista-left {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-        }
-
-        .lista-left i {
-            font-size: 30px;
-            color: #0A66c2;
-        }
-
-        .lista-info h3 {
-            margin-bottom: 8px;
-            color: #1e293b;
-        }
-
-        .lista-info p {
-            margin: 4px 0;
-            color: #64748b;
-        }
-
-        .lista-actions {
-            display: flex;
-            gap: 15px;
-            font-size: 20px;
-        }
-
-        .lista-actions .edit {
-            color: #0A66c2;
-            cursor: pointer;
-        }
-
-        .lista-actions .delete {
-            color: #ef4444;
-            cursor: pointer;
-        }
-        .access-bar{
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-
-            display: flex;
-            gap: 10px;
-        }
-    </style>
 </head>
 
-<body class="has-bg-image">
 
-    <aside class="sidebar">
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+   <aside class="sidebar">
+
+    <!-- FUNDO -->
+    <img
+        class="sidebar-construction"
+        src="<?= base_url('assets/images/construcao.jpg') ?>"
+        alt=""
+    >
+
+    <!-- CONTEÚDO -->
+    <div class="sidebar-content">
+
         <div class="sidebar-logo">
-            <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>" class="logo">
-        </div>
 
-        <nav class="menu">
-            <a href="<?= base_url('/dashboard') ?>"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a>
-            <a href="<?= base_url('/dashboard_camera') ?>"><i class="fas fa-video"></i> <span>Dashboard de
-                    Câmeras</span></a>
-            <a href="<?= base_url('/ocorrencia') ?>"><i class="fas fa-exclamation-triangle"></i>
-                <span>Ocorrências</span></a>
-            <a href="<?= base_url('/cadastro-funcionario') ?>"><i class="fas fa-users"></i> <span>Cadastro
-                    funcionários</span></a>
-            <a href="<?= base_url('/epi') ?>" class="active"><i class="fas fa-helmet-safety"></i> <span>Cadastro
-                    EPIs</span></a>
-            <a href="<?= base_url('/Camera') ?>"><i class="fas fa-camera"></i> <span>Cadastro Câmeras</span></a>
-            <a href="<?= base_url('/setor') ?>"><i class="fas fa-building"></i> <span>Cadastro Setores</span></a>
-            <a href="<?= base_url('/administrador') ?>"><i class="fas fa-user"></i> <span>Perfil</span></a>
-        </nav>
+    <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
 
-        <a href="<?= base_url('/logout-admin') ?>" class="logout-item">
-            <i class="fas fa-sign-out-alt"></i> <span>Sair</span>
-        </a>
-    </aside>
-
-    <div class="access-bar">
-        <button class="access-btn" onclick="Acessibilidade.toggleContraste()"><i class="fas fa-adjust"></i></button>
-        <button class="access-btn" onclick="Acessibilidade.toggleDark()"><i class="fas fa-moon"></i></button>
-        <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">A+</button>
-        <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">A-</button>
-        <button class="access-btn" onclick="Acessibilidade.lerPagina()"><i class="fas fa-volume-up"></i></button>
+    <div class="sidebar-brand-text">
+        <strong>NEXA</strong>
+        <span>Segurança é prioridade</span>
     </div>
 
-    <div class="overlay">
-        <div class="page-header"></div>
+</div>
 
 
+        <nav class="menu">
 
-        <?php if (session()->getFlashdata('erro_epi')): ?>
-            <div class="alert alert-danger">
-                <?= session()->getFlashdata('erro_epi') ?>
+            <div class="menu-title">PRINCIPAL</div>
+
+            <a href="<?= base_url('/dashboard') ?>" >
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="<?= base_url('/dashboard_camera') ?>">
+                <i class="fas fa-video"></i>
+                <span>Dashboard de Câmeras</span>
+            </a>
+
+            <a href="<?= base_url('/ocorrencia') ?>">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Ocorrências</span>
+            </a>
+
+
+            <div class="menu-title">CADASTROS</div>
+
+            <a href="<?= base_url('/cadastro-funcionario') ?>">
+                <i class="fas fa-users"></i>
+                <span>Cadastro Funcionários</span>
+            </a>
+
+            <a href="<?= base_url('/epi') ?>" class="active">
+                <i class="fas fa-helmet-safety" ></i>
+                <span>Cadastro EPIs</span>
+            </a>
+
+            <a href="<?= base_url('/Camera') ?>">
+                <i class="fas fa-camera"></i>
+                <span>Cadastro Câmeras</span>
+            </a>
+
+            <a href="<?= base_url('/setor') ?>">
+                <i class="fas fa-building"></i>
+                <span>Cadastro Setores</span>
+            </a>
+
+
+            <div class="menu-title">CONTA</div>
+
+            <a href="<?= base_url('/administrador') ?>">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+            </a>
+
+        </nav>
+
+
+        <a href="<?= base_url('/') ?>" class="logout-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair do Sistema</span>
+        </a>
+
+    </div>
+
+</aside>
+
+    <!-- ================= HEADER ================= -->
+
+
+    <header class="dashboard-header">
+
+
+        <div class="header-left">
+
+
+            <div class="header-title">
+
+                <h1>
+                    Cadastro de EPIs
+                </h1>
+
+
+                <p>
+                    Gerencie os equipamentos de proteção individual da sua empresa
+                </p>
+
+
             </div>
-        <?php endif; ?>
 
-        <?php if (session()->getFlashdata('errors')): ?>
-            <?php $errors = session()->getFlashdata('errors'); ?>
 
-            <?php foreach ($errors as $erro): ?>
-                <div class="alert alert-danger">
-                    <?= $erro ?>
+        </div>
+
+
+
+        <div class="header-right">
+
+
+            <a href="<?= base_url('/administrador') ?>" class="profile">
+
+
+                <div class="profile-avatar">
+
+                    <?= strtoupper(substr(session()->get('nome'), 0, 1)) ?>
+
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
 
 
-        <div class="content-grid">
-            <div class="left-box">
-                <h1>Cadastro de EPIs</h1>
-                <div class="subtitle">Informações dos EPIs</div>
+
+                <div class="profile-info">
+
+                    <strong>
+                        <?= esc(session()->get('nome')) ?>
+                    </strong>
+
+
+                    <span>
+                        NEXA SOLUÇÕES
+                    </span>
+
+
+                </div>
+
+
+
+
+
+            </a>
+
+
+
+        </div>
+
+
+    </header>
+
+
+
+
+    <!-- ================= ACESSIBILIDADE ================= -->
+
+
+    <div class="access-menu">
+
+
+        <button class="gear-btn" onclick="toggleAccessMenu()">
+
+            <i class="fas fa-cog"></i>
+
+        </button>
+
+
+
+        <div class="access-options" id="accessOptions">
+
+
+            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+
+                <i class="fas fa-adjust"></i>
+
+            </button>
+
+
+            <button class="access-btn" onclick="Acessibilidade.toggleDark()">
+
+                <i class="fas fa-moon"></i>
+
+            </button>
+
+
+
+            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+
+                A+
+
+            </button>
+
+
+
+            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+
+                A-
+
+            </button>
+
+
+
+            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+
+                <i class="fas fa-volume-up"></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- ================= CONTEÚDO ================= -->
+
+
+    <div class="overlay">
+
+
+        <div class="content-container">
+
+
+
+            <!-- ================= CADASTRO ================= -->
+
+
+            <div class="cadastro-box">
+
+
+                <div class="cadastro-topo">
+
+
+                    <div class="cadastro-info">
+
+
+                        <div class="camera-icon-bg">
+
+                            <i id="epiIconeCadastro" class="fas fa-helmet-safety"></i>
+
+                        </div>
+
+
+
+                        <div>
+
+
+                            <h2>
+                                Cadastrar Novo EPI
+                            </h2>
+
+
+                            <p>
+                                Preencha as informações para adicionar um novo equipamento ao sistema.
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="camera-ilustracao">
+
+
+                        <img src="<?= base_url('assets/images/oculos.png') ?>">
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="subtitle">
+
+                    Informações
+
+                </div>
+
+
+
+
+
                 <form method="post" action="<?= base_url('/epi/inserir') ?>" id="inserir_epi"
                     enctype="multipart/form-data">
 
-                    <div class="form-group">
-                        <div class="input-box">
-                            <i class="fas fa-helmet-safety"></i>
-                            <input type="text" id="nome_epi" name="nome_epi" placeholder="Nome do EPI">
-                        </div>
-                        <div class="error-text" id="erro-nome"></div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="input-box">
-                            <i class="fas fa-file-alt"></i>
-                            <input type="text" id="des_epi" name="des_epi" placeholder="Descrição">
-                        </div>
-                        <div class="error-text" id="erro-des"></div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="file-input-wrapper">
-                            <i class="fas fa-camera"></i>
-                            <span class="file-input-text" id="file-label">Selecionar Imagem do EPI</span>
-                            <input type="file" id="imagem_epi" name="imagem_epi" onchange="atualizarNomeArquivo(this)">
-                        </div>
-                        <div class="error-text" id="erro-img"></div>
-                    </div>
+                    <div class="form-grid">
 
-                    <div class="form-group">
-                        <div class="busca-funcionario-container">
-                            <div class="select-input-box">
-                                <i class="fas fa-search"></i>
-                                <select id="funcionario" name="FK_CPF_FUNCIONARIO">
-                                    <option value="">Selecione um funcionário</option>
-                                    <?php foreach ($funcionarios as $f): ?>
-                                        <option value="<?= $f['CPF'] ?>"><?= $f['NOME_COMPLETO'] ?></option>
-                                    <?php endforeach; ?>
+
+
+                        <div class="form-group">
+
+
+                            <p class="p-card">
+                                Nome do EPI
+                            </p>
+
+
+
+                            <div class="input-box select">
+
+
+                                <i id="iconeCadastroEpi" class="fas fa-helmet-safety"></i>
+
+                                <select id="nome_epi" name="nome_epi">
+
+
+                                    <option value="">
+                                        Selecione o EPI
+                                    </option>
+
+
+                                    <option value="Capacete">
+                                        Capacete
+                                    </option>
+
+
+                                    <option value="Luvas">
+                                        Luvas
+                                    </option>
+
+
+                                    <option value="Óculos de proteção">
+                                        Óculos de proteção
+                                    </option>
+
+
+                                    <option value="Botas de segurança">
+                                        Botas de segurança
+                                    </option>
+
+
+                                    <option value="Máscara">
+                                        Máscara
+                                    </option>
+
+
+                                    <option value="Colete">
+                                        Colete
+                                    </option>
+
+
+                                    <option value="Protetor auricular">
+                                        Protetor auricular
+                                    </option>
+
+
                                 </select>
-                                <i class="fas fa-chevron-down"></i>
+
+
                             </div>
+
+
+                            <div class="error-text"></div>
+
+
                         </div>
-                        <div class="error-text" id="erro-funci"></div>
+
+
+
+
+
+                        <div class="form-group">
+
+
+                            <p class="p-card">
+                                Imagem do EPI
+                            </p>
+
+
+
+                            <div class="input-box">
+
+
+                                <i class="fas fa-image"></i>
+
+
+                                <input type="file" id="imagem_epi" name="imagem_epi">
+
+
+
+                            </div>
+
+
+                            <div class="error-text"></div>
+
+
+                        </div>
+
+
+
                     </div>
 
-                    <br>
-                    <div class="btn-area">
-                        <button>
-                            <span class="transition"></span>
-                            <span class="gradient"></span>
-                            <span class="label">Cadastrar</span>
-                        </button>
+                    <!-- DESCRIÇÃO -->
+
+                    <div class="form-group">
+
+
+                        <p class="p-card">
+                            Descrição do EPI
+                        </p>
+
+
+
+                        <div class="input-box">
+
+
+                            <i class="fas fa-align-left"></i>
+
+
+                            <textarea id="des_epi" name="des_epi"
+                                placeholder="Descreva o equipamento, finalidade e recomendações de uso..."></textarea>
+
+
+                        </div>
+
+
+
+                        <div class="error-text"></div>
+
+
                     </div>
+
+
+
+
+
+                    <div class="btn-area">
+
+
+                        <button type="submit">
+
+
+                            <i class="fas fa-plus"></i>
+
+                            Cadastrar
+
+
+                        </button>
+
+
+                    </div>
+
+
 
                 </form>
+
+
             </div>
 
-            <div class="right-box">
-    <h2>EPI's Cadastrados</h2>
 
-    <div id="lista">
 
-        <?php if (empty($epis)): ?>
-            <p id="mensagemVazia">Nenhum EPI registrado</p>
-        <?php else: ?>
 
-            <?php foreach ($epis as $e): ?>
-                <div class="lista-card">
 
-                    <div class="lista-left">
-                        <?php
-                        $icone = "fa-helmet-safety";
+            <!-- ================= LISTAGEM ================= -->
 
-                        $nome = strtolower(trim($e['NOME_EPI']));
 
-                        if (strpos($nome, 'luva') !== false) {
-                            $icone = "fa-hand";
-                        }
-                        elseif (
-                            strpos($nome, 'oculos') !== false ||
-                            strpos($nome, 'óculos') !== false
-                        ) {
-                            $icone = "fa-glasses";
-                        }
-                        elseif (strpos($nome, 'bota') !== false) {
-                            $icone = "fa-shoe-prints";
-                        }
-                         elseif (strpos($nome, 'máscara') !== false || strpos($nome, 'mascara') !== false) {
-                            $icone = "fa-head-side-mask";
-                        } elseif (strpos($nome, 'colete') !== false) {
-                            $icone = "fa-vest";
-                        } elseif (strpos($nome, 'protetor auricular') !== false) {
-                            $icone = "fa-ear-listen";
-                        }
+            <div class="listagem-box">
 
-                        ?>
 
-                        <i class="fas <?= $icone ?>"></i>
-                        
-                        <div class="lista-info">
-                            <h3><?= $e['NOME_EPI'] ?></h3>
-                            <p>ID: <?= $e['ID'] ?></p>
-                            <p>Descrição: <?= $e['DESCRICAO_EPI'] ?></p>
-                            <p>Funcionário: <?= $e['FK_CPF_FUNCIONARIO'] ?></p>
-                            <p>Imagem: <?= $e['IMAGEM_EPI'] ?></p>
+
+                <div class="listagem-header">
+
+
+                    <div>
+
+
+                        <h2>
+                            EPIs Cadastrados
+                        </h2>
+
+
+                        <p>
+                            Gerencie todos os equipamentos cadastrados no sistema.
+                        </p>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="table-tools">
+
+
+
+                        <div class="search-box">
+
+
+                            <i class="fas fa-search"></i>
+
+
+                            <input type="text" id="pesquisaEpi" placeholder="Pesquisar EPI...">
+
+
                         </div>
-                    </div>
 
-                    <div class="lista-actions">
 
-                        <i class="fas fa-pen edit"
-                            title="Editar"
-                            onclick="editarEpi(
-                                <?= $e['ID'] ?>,
-                                '<?= esc($e['NOME_EPI']) ?>',
-                                '<?= esc($e['DESCRICAO_EPI']) ?>',
-                                '<?= $e['FK_CPF_FUNCIONARIO'] ?>'
-                            )">
-                        </i>
 
-                        <a href="<?= base_url('epi/excluir/' . $e['ID']) ?>">
-                            <i class="fas fa-trash delete" title="Excluir"></i>
-                        </a>
+                        <button class="filter-btn">
+
+
+                            <i class="fas fa-filter"></i>
+
+
+                        </button>
+
+
 
                     </div>
+
+
 
                 </div>
-            <?php endforeach; ?>
 
-        <?php endif; ?>
 
-    </div>
-</div>
+
+
+
+
+                <div class="table-wrapper">
+
+
+                    <table class="table-cameras">
+
+
+                        <colgroup>
+
+                            <col style="width:25%">
+                            <col style="width:25%">
+                            <col style="width:25%">
+                            <col style="width:25%">
+
+                        </colgroup>
+
+
+
+
+                        <thead>
+
+
+                            <tr>
+
+
+
+
+                                <th>
+                                    EPI
+                                </th>
+
+
+                                <th>
+                                    Descrição
+                                </th>
+
+
+                                <th>
+                                    Imagem
+                                </th>
+
+
+                                <th>
+                                    Ações
+                                </th>
+
+
+                            </tr>
+
+
+                        </thead>
+
+
+
+
+                        <tbody id="lista">
+
+
+                        </tbody>
+
+
+
+                    </table>
+
+
+
+                </div>
+
+
+
+
+
+
+                <!-- ================= RODAPÉ ================= -->
+
+
+                <div class="table-footer">
+
+
+
+                    <div class="rows-page">
+
+
+                        Mostrar
+
+
+                        <select id="linhasPagina">
+
+
+                            <option value="5" selected>
+                                5
+                            </option>
+
+
+                            <option value="10">
+                                10
+                            </option>
+
+
+                            <option value="20">
+                                20
+                            </option>
+
+
+                        </select>
+
+
+
+                        por página
+
+
+                    </div>
+
+
+
+
+                    <div id="infoTabela">
+
+
+                        Mostrando 0 de 0
+
+
+                    </div>
+
+
+
+
+
+                    <div class="pagination">
+
+
+                        <button id="anterior">
+
+
+                            <i class="fas fa-chevron-left"></i>
+
+
+                        </button>
+
+
+
+                        <span id="paginaAtual">
+                            1
+                        </span>
+
+
+
+
+                        <button id="proximo">
+
+
+                            <i class="fas fa-chevron-right"></i>
+
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+            </div>
+
+
+
+
+
         </div>
+
     </div>
+
+
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
     <script>
-        let fontSize = 16;
 
-        const Acessibilidade = {
 
-            toggleContraste: function () {
-                document.body.classList.toggle("high-contrast");
-            },
+        let epis = <?= json_encode(
+            $epis ?? [],
+            JSON_HEX_TAG |
+            JSON_HEX_AMP |
+            JSON_HEX_APOS |
+            JSON_HEX_QUOT
+        ) ?>;
 
-            toggleDark: function () {
-                document.body.classList.toggle("dark-mode");
-            },
 
-            aumentarFonte: function () {
-                fontSize += 1;
-                if (fontSize > 24) fontSize = 24;
-                document.documentElement.style.fontSize = fontSize + "px";
-            },
 
-            diminuirFonte: function () {
-                fontSize -= 1;
-                if (fontSize < 12) fontSize = 12;
-                document.documentElement.style.fontSize = fontSize + "px";
-            },
+        let episFiltrados = [...epis];
 
-            lerPagina: function () {
-                let texto = document.body.innerText;
-                let fala = new SpeechSynthesisUtterance(texto);
-                fala.lang = "pt-BR";
-                speechSynthesis.cancel();
-                speechSynthesis.speak(fala);
-            }
+
+        let paginaAtual = 1;
+
+
+        let linhasPorPagina = 5;
+
+
+
+
+
+        window.onload = function () {
+
+
+            renderizar();
+
+
+            iniciarEventos();
+
+
         };
-    </script>
-</body>
 
-<script src="assets/js/permissions.js"></script>
-<script src="assets/js/acessibilidade.js"></script>
 
-<script>
-    function actualizarNomeArquivo(input) {
-        let label = document.getElementById('file-label');
-        if (input.files && input.files.length > 0) {
-            label.textContent = input.files[0].name;
-            label.style.color = "#1e293b";
-        } else {
-            label.textContent = "Selecionar Imagem do EPI";
-            label.style.color = "#757575";
+
+
+
+        function iniciarEventos() {
+
+
+
+            document
+                .getElementById("pesquisaEpi")
+                .addEventListener("input", function () {
+
+
+                    paginaAtual = 1;
+
+
+                    aplicarPesquisa();
+
+
+                });
+
+
+
+
+
+
+            document
+                .getElementById("linhasPagina")
+                .addEventListener("change", function () {
+
+
+                    linhasPorPagina =
+                        parseInt(this.value);
+
+
+
+                    paginaAtual = 1;
+
+
+                    renderizar();
+
+
+
+                });
+
+
+
+
+
+
+            document
+                .getElementById("anterior")
+                .onclick = function () {
+
+
+                    if (paginaAtual > 1) {
+
+
+                        paginaAtual--;
+
+
+                        renderizar();
+
+
+                    }
+
+
+                };
+
+
+
+
+
+
+
+            document
+                .getElementById("proximo")
+                .onclick = function () {
+
+
+
+                    let totalPaginas =
+                        Math.ceil(
+                            episFiltrados.length /
+                            linhasPorPagina
+                        );
+
+
+
+                    if (paginaAtual < totalPaginas) {
+
+
+                        paginaAtual++;
+
+
+                        renderizar();
+
+
+                    }
+
+
+
+                };
+
+
+
+
+
         }
-    }
 
-    let erro_nome = document.getElementById('erro-nome');
-    let erro_des = document.getElementById('erro-des');
-    let erro_img = document.getElementById('erro-img');
-    let erro_funci = document.getElementById('erro-funci');
 
-    document.getElementById('inserir_epi').addEventListener('submit', function (event) {
-        let nomeInput = document.getElementById('nome_epi');
-        let desInput = document.getElementById('des_epi');
-        const imagemInput = document.getElementById('imagem_epi');
-        const funcionarioInput = document.getElementById('funcionario');
 
-        let boxNome = nomeInput.closest('.input-box');
-        let boxDes = desInput.closest('.input-box');
-        let boxImg = imagemInput.closest('.file-input-wrapper');
-        let boxFunci = funcionarioInput.closest('.select-input-box');
 
-        [erro_nome, erro_des, erro_img, erro_funci].forEach(div => {
-            div.innerHTML = "";
-            div.classList.remove('active');
+
+
+        function aplicarPesquisa() {
+
+
+
+            let texto =
+                document
+                    .getElementById("pesquisaEpi")
+                    .value
+                    .toLowerCase()
+                    .trim();
+
+
+
+
+            episFiltrados =
+                epis.filter(epi => {
+
+
+
+                    return (
+
+
+
+                        String(epi.ID)
+                            .toLowerCase()
+                            .includes(texto)
+
+
+
+                        ||
+
+
+
+                        String(epi.NOME_EPI)
+                            .toLowerCase()
+                            .includes(texto)
+
+
+
+                        ||
+
+
+
+                        String(epi.DESCRICAO_EPI)
+                            .toLowerCase()
+                            .includes(texto)
+
+
+
+                        ||
+
+
+
+                        String(epi.IMAGEM_EPI)
+                            .toLowerCase()
+                            .includes(texto)
+
+
+
+                    );
+
+
+
+                });
+
+
+
+            renderizar();
+
+
+
+        }
+
+
+        function iconeEpi(nome) {
+
+            nome = nome.toLowerCase();
+
+
+            if (nome.includes("capacete")) {
+                return "fa-helmet-safety";
+            }
+
+
+            if (nome.includes("luva")) {
+                return "fa-mitten";
+            }
+
+
+            if (nome.includes("óculos") || nome.includes("oculos")) {
+                return "fa-glasses";
+            }
+
+
+            if (nome.includes("bota")) {
+                return "fa-shoe-prints";
+            }
+
+
+            if (nome.includes("máscara") || nome.includes("mascara")) {
+                return "fa-mask-face";
+            }
+
+
+            if (nome.includes("colete")) {
+                return "fa-vest";
+            }
+
+
+            if (nome.includes("protetor auricular")) {
+                return "fa-headphones";
+            }
+
+
+            // caso não encontre
+            return "fa-shield-halved";
+
+        }
+
+        document.getElementById("nome_epi").addEventListener("change", function () {
+
+            let icone = document.getElementById("iconeCadastroEpi");
+
+            icone.className =
+                "fas " + iconeEpi(this.value);
+
         });
-        [boxNome, boxDes, boxImg, boxFunci].forEach(box => {
-            if (box) box.classList.remove('input-error');
-        });
 
-        if (nomeInput.value.trim() === "") {
-            event.preventDefault();
-            erro_nome.textContent = "Este campo é obrigatório.";
-            erro_nome.classList.add('active');
-            if (boxNome) boxNome.classList.add('input-error');
-            return;
+
+        function renderizar() {
+
+
+            let lista =
+                document.getElementById("lista");
+
+
+
+            lista.innerHTML = "";
+
+
+
+
+            if (episFiltrados.length === 0) {
+
+
+                lista.innerHTML = `
+
+
+<tr>
+
+
+<td colspan="5" class="mensagem-vazia">
+
+
+<i class="fas fa-helmet-safety"></i>
+
+
+<br><br>
+
+
+Nenhum EPI encontrado.
+
+
+
+</td>
+
+
+</tr>
+
+
+`;
+
+
+
+                atualizarRodape(0, 0, 0);
+
+
+                return;
+
+
+            }
+
+
+
+
+
+            let inicio =
+                (paginaAtual - 1)
+                *
+                linhasPorPagina;
+
+
+
+            let fim =
+                inicio + linhasPorPagina;
+
+
+
+            let pagina =
+                episFiltrados.slice(
+                    inicio,
+                    fim
+                );
+
+
+
+
+
+
+            pagina.forEach(e => {
+
+
+
+                lista.innerHTML += `
+
+
+<tr>
+
+
+
+<td>
+
+
+<i class="fas ${iconeEpi(e.NOME_EPI)}"
+style="color:#0A66C2;margin-right:8px;">
+</i>
+
+
+${e.NOME_EPI}
+
+
+</td>
+
+
+
+<td>
+
+${e.DESCRICAO_EPI}
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+${e.IMAGEM_EPI
+                        ?
+                        `<img 
+src="<?= base_url('uploads/epis/') ?>${e.IMAGEM_EPI}"
+class="epi-img-table">`
+                        :
+                        `<span style="color:#94a3b8">
+Sem imagem
+</span>`
+                    }
+
+</td>
+
+
+
+<td>
+
+
+<div class="table-actions">
+
+
+<button class="table-action edit"
+onclick="editarEpi(${e.ID})">
+
+
+<i class="fas fa-pen"></i>
+
+
+</button>
+
+
+
+
+
+<button class="table-action delete"
+onclick="excluirEpi(${e.ID})">
+
+
+<i class="fas fa-trash"></i>
+
+
+</button>
+
+
+
+</div>
+
+
+
+</td>
+
+
+
+</tr>
+
+
+`;
+
+
+
+            });
+
+
+
+
+            atualizarRodape(
+
+
+                inicio + 1,
+
+
+                Math.min(
+                    fim,
+                    episFiltrados.length
+                ),
+
+
+                episFiltrados.length
+
+
+            );
+
+
+
         }
 
-        if (desInput.value.trim() === "") {
-            event.preventDefault();
-            erro_des.textContent = "Este campo é obrigatório.";
-            erro_des.classList.add('active');
-            if (boxDes) boxDes.classList.add('input-error');
-            return;
+
+
+
+        function atualizarRodape(inicio, fim, total) {
+
+
+
+            document
+                .getElementById("infoTabela")
+                .innerHTML =
+                `Mostrando ${inicio} a ${fim} de ${total}`;
+
+
+
+
+            document
+                .getElementById("paginaAtual")
+                .innerHTML =
+                paginaAtual;
+
+
+
+
+
+            let totalPaginas =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        total /
+                        linhasPorPagina
+                    )
+                );
+
+
+
+
+            document
+                .getElementById("anterior")
+                .disabled =
+                paginaAtual === 1;
+
+
+
+
+            document
+                .getElementById("proximo")
+                .disabled =
+                paginaAtual >= totalPaginas;
+
+
+
         }
 
-        if (imagemInput.files.length === 0) {
-            event.preventDefault();
-            erro_img.textContent = "Este campo é obrigatório.";
-            erro_img.classList.add('active');
-            if (boxImg) boxImg.classList.add('input-error');
-            return;
-        }
 
-        if (funcionarioInput.value === "") {
-            event.preventDefault();
-            erro_funci.textContent = "Este campo é obrigatório.";
-            erro_funci.classList.add('active');
-            if (boxFunci) boxFunci.classList.add('input-error');
-            return;
-        }
-    });
-</script>
+        // ==========================================================
+        // EDITAR EPI
+        // ==========================================================
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        function editarEpi(id) {
 
-<script>
-    function editarEpi(id, nome, descricao, funcionario) {
-        Swal.fire({
-            title: 'Editar EPI',
 
-            html: `
-            <input id="swal_nome"
-                class="swal2-input"
-                placeholder="Nome"
-                value="${nome}">
+            const epi = epis.find(e => e.ID == id);
 
-            <input id="swal_descricao"
-                class="swal2-input"
-                placeholder="Descrição"
-                value="${descricao}">
+
+            if (!epi) return;
+
+
+
+            Swal.fire({
+
+                title: 'Editar EPI',
+
+                width: 600,
+
+
+                html: `
+
+
+        <select id="swalNome"
+        class="swal2-select">
+
+
+        <option value="Capacete">
+        Capacete
+        </option>
+
+
+        <option value="Luvas">
+        Luvas
+        </option>
+
+
+        <option value="Óculos de proteção">
+        Óculos de proteção
+        </option>
+
+
+        <option value="Botas de segurança">
+        Botas de segurança
+        </option>
+
+
+        <option value="Máscara">
+        Máscara
+        </option>
+
+
+        <option value="Colete">
+        Colete
+        </option>
+
+
+        <option value="Protetor auricular">
+        Protetor auricular
+        </option>
+
+
+        </select>
+
+
+
+        <textarea
+        id="swalDescricao"
+        class="swal2-textarea"
+        placeholder="Descrição">
+
+        ${epi.DESCRICAO_EPI}
+
+        </textarea>
+
+
         `,
 
-            showCancelButton: true,
-            confirmButtonText: 'Salvar',
 
-            preConfirm: () => {
+                didOpen() {
 
-                const nomeNovo =
-                    document.getElementById('swal_nome').value;
 
-                const descricaoNova =
-                    document.getElementById('swal_descricao').value;
+                    document
+                        .getElementById("swalNome")
+                        .value = epi.NOME_EPI;
 
-                if (!nomeNovo || !descricaoNova) {
-                    Swal.showValidationMessage(
-                        'Preencha todos os campos'
-                    );
-                    return false;
+
+                },
+
+
+                showCancelButton: true,
+
+
+                confirmButtonText: "Salvar",
+
+
+                cancelButtonText: "Cancelar",
+
+
+
+                preConfirm() {
+
+
+                    let nome =
+                        document
+                            .getElementById("swalNome")
+                            .value;
+
+
+
+                    let descricao =
+                        document
+                            .getElementById("swalDescricao")
+                            .value.trim();
+
+
+
+
+                    if (descricao === "") {
+
+
+                        Swal.showValidationMessage(
+                            "Informe a descrição do EPI."
+                        );
+
+
+                        return false;
+
+                    }
+
+
+
+                    return {
+
+                        nome,
+                        descricao
+
+                    };
+
+
                 }
 
-                return {
-                    nome: nomeNovo,
-                    descricao: descricaoNova
-                };
-            }
 
-        }).then((result) => {
 
-            if (result.isConfirmed) {
-                const form = document.createElement('form');
+            }).then(result => {
 
-                form.method = 'POST';
+
+                if (!result.isConfirmed)
+                    return;
+
+
+
+                const dados = result.value;
+
+
+
+
+                const form = document.createElement("form");
+
+
+                form.method = "POST";
+
 
                 form.action =
-                    '<?= base_url('epi/atualizar') ?>/' + id;
+                    `<?= base_url('/epi/atualizar/') ?>/${id}`;
+
+
+
 
                 form.innerHTML = `
-                <input type="hidden"
-                    name="NOME_EPI"
-                    value="${result.value.nome}">
 
-                <input type="hidden"
-                    name="DESCRICAO_EPI"
-                    value="${result.value.descricao}">
 
-                <input type="hidden"
-                    name="FK_CPF_FUNCIONARIO"
-                    value="${funcionario}">
-            `;
+        <input type="hidden"
+        name="nome_epi"
+        value="${dados.nome}">
+
+
+        <input type="hidden"
+        name="des_epi"
+        value="${dados.descricao}">
+
+
+        `;
+
+
 
                 document.body.appendChild(form);
 
+
                 form.submit();
-            }
 
-        });
-    }
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+        // ==========================================================
+        // EXCLUIR EPI
+        // ==========================================================
+
+
+        function excluirEpi(id) {
+
+
+
+            Swal.fire({
+
+
+                title: "Excluir EPI?",
+
+
+                text: "Essa ação não poderá ser desfeita.",
+
+
+                icon: "warning",
+
+
+                showCancelButton: true,
+
+
+                confirmButtonText: "Excluir",
+
+
+                cancelButtonText: "Cancelar"
+
+
+
+            }).then(result => {
+
+
+                if (result.isConfirmed) {
+
+
+                    window.location.href =
+                        `<?= base_url('/epi/excluir/') ?>/${id}`;
+
+
+                }
+
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+
+        // ==========================================================
+        // VALIDAÇÃO DO CADASTRO
+        // ==========================================================
+
+        document
+            .getElementById("inserir_epi")
+            .addEventListener("submit", function (e) {
+
+                let ok = true;
+
+                const nome = document.getElementById("nome_epi");
+                const imagem = document.getElementById("imagem_epi");
+                const descricao = document.getElementById("des_epi");
+
+                [nome, imagem, descricao].forEach(clearError);
+
+                if (!nome.value.trim()) {
+                    setError(nome, "Campo obrigatório");
+                    ok = false;
+                }
+
+                if (imagem.files.length === 0) {
+                    setError(imagem, "Campo obrigatório");
+                    ok = false;
+                }
+
+                if (!descricao.value.trim()) {
+                    setError(descricao, "Campo obrigatório");
+                    ok = false;
+                }
+
+                if (!ok) {
+
+                    e.preventDefault();
+
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Campos obrigatórios",
+                        text: "Preencha todos os campos destacados.",
+                        confirmButtonColor: "#0A66C2"
+                    });
+
+                }
+
+            });
+
+
+
+        function setError(input, msg) {
+
+
+
+            const group =
+                input.closest(".form-group");
+
+
+
+            if (!group)
+                return;
+
+
+
+            const box =
+                group.querySelector(".input-box");
+
+
+
+            if (box)
+                box.classList.add("error");
+
+
+
+            const erro =
+                group.querySelector(".error-text");
+
+
+
+            if (erro)
+                erro.innerHTML = msg;
+
+
+
+        }
+
+
+
+
+
+
+
+        function clearError(input) {
+
+
+
+            const group =
+                input.closest(".form-group");
+
+
+
+            if (!group)
+                return;
+
+
+
+            const box =
+                group.querySelector(".input-box");
+
+
+
+            if (box)
+                box.classList.remove("error");
+
+
+
+            const erro =
+                group.querySelector(".error-text");
+
+
+
+            if (erro)
+                erro.innerHTML = "";
+
+
+
+        }
+
+
+
+
+
+
+        // ==========================================================
+        // ACESSIBILIDADE
+        // ==========================================================
+
+
+
+        function toggleAccessMenu() {
+
+
+            const menu =
+                document.getElementById("accessOptions");
+
+
+
+            menu.style.display =
+                menu.style.display === "flex"
+                    ?
+                    "none"
+                    :
+                    "flex";
+
+
+        }
+
+
+
+
+
+    </script>
+<?php if (session()->getFlashdata('sucesso')): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Sucesso!',
+    text: '<?= session()->getFlashdata('sucesso'); ?>',
+    confirmButtonColor: '#0A66C2'
+});
 </script>
+<?php endif; ?>
 
-
+    <?php if (session()->getFlashdata('error')): ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: '<?= session()->getFlashdata('error'); ?>',
+                confirmButtonColor: '#0A66C2'
+            });
+        </script>
+    <?php endif; ?>
+</body>
 
 </html>

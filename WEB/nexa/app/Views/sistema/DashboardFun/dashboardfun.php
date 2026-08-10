@@ -7,106 +7,229 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('/assets/css/style_funci.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('/assets/css/acessibilidade.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('/assets/css/acessibilidade_fun.css') ?>">
     <link rel="stylesheet" href="<?= base_url('/assets/css/dashboard_fun.css') ?>">
 
     <!-- ICONES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <style>
-        
-        .sidebar-top {
-            position: relative;
-            height: 160px;
-            background: url('<?= base_url("assets/images/slide1.jpg") ?>') center/cover;
-            display: flex;
-            align-items: flex-end;
-            padding: 20px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        
-    </style>
+   
 </head>
 
 <body>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-            <div class="sidebar-top">
-                <span>NEXA</span>
-            </div>
-            <nav class="menu">
-                        <a href="<?= base_url('/dashboardfun') ?>">
-                            <i class="fas fa-th-large"></i>
-                            Dashboard
-                         </a>
-                    <a href="<?= base_url('/camera_analise') ?>">
-                        <i class="fas fa-camera"></i>
-                          Análise EPI
-                    </a>
-            <a href="<?= base_url('/perfilfun') ?>">
-                <i class="fas fa-user"></i>
-                Perfil
-            </a>            
-            </nav>
+  
+<aside class="sidebar">
 
-        <a href="<?= base_url('/') ?>" class="logout-item" onclick="logout()">
+
+    <!-- FUNDO -->
+
+    <img
+        class="sidebar-construction"
+        src="<?= base_url('assets/images/construcao.jpg') ?>"
+        alt=""
+    >
+
+
+    <!-- CONTEÚDO -->
+
+    <div class="sidebar-content">
+
+
+        <!-- LOGO -->
+
+        <div class="sidebar-logo">
+
+            <img
+                src="<?= base_url('assets/images/logo_escura_transparente.png') ?>"
+                alt="NEXA"
+            >
+
+            <div class="sidebar-brand-text">
+
+                <strong>NEXA</strong>
+
+                <span>
+                    Segurança é prioridade
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <!-- PRINCIPAL -->
+
+            <div class="menu-title">
+                PRINCIPAL
+            </div>
+
+
+            <!-- DASHBOARD -->
+
+            <a href="<?= base_url('/dashboardfun') ?>" class="active">
+
+                <i class="fas fa-chart-line"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- DASHBOARD CÂMERAS -->
+
+            <a href="<?= base_url('/camera_analise') ?>">
+
+                <i class="fas fa-video"></i>
+
+                <span>
+                    Análise de EPI
+                </span>
+
+            </a>
+
+
+           
+            <!-- =================================================
+                 CONTA
+            ================================================== -->
+
+            <div class="menu-title">
+                CONTA
+            </div>
+
+
+            <!-- PERFIL -->
+
+            <a href="<?= base_url('/perfilfun') ?>">
+
+                <i class="fas fa-user"></i>
+
+                <span>
+                    Perfil
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- =================================================
+             SAIR
+        ================================================== -->
+
+        <a
+            href="<?= base_url('/') ?>"
+            class="logout-item"
+        >
+
             <i class="fas fa-sign-out-alt"></i>
-            Sair
+
+            <span>
+                Sair do Sistema
+            </span>
+
         </a>
 
-    </aside>
+
+    </div>
+
+</aside>
 
     <div class="overlay">
 
         <!-- MAIN -->
         <div class="main">
 
-            <!-- MENU ACESSIBILIDADE -->
-        <div class="access-menu">
+         
+<header class="dashboard-header">
 
-    <button class="gear-btn" onclick="toggleAccessMenu()">
-        <i class="fas fa-cog"></i>
-    </button>
+    <div class="header-left">
+        <h1>Bem-vindo,</h1>
+        <span><?= session()->get('nome_fun') ?></span>
+    </div>
+<div class="header-right">
 
-    <div class="access-options" id="accessOptions">
+ <a href="<?= base_url('/perfilfun') ?>" class="profile">
 
-        <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
-            <i class="fas fa-adjust"></i>
+    <div class="profile-avatar">
+        <?= strtoupper(substr(session()->get('nome_fun'),0,1)) ?>
+    </div>
+
+    <div class="profile-info">
+        <strong><?= session()->get('nome_fun') ?></strong>
+        <small>NEXA SOLUÇÕES</small>
+    </div>
+
+</a>
+
+    <div class="access-menu">
+
+        <button class="gear-btn" onclick="toggleAccessMenu()">
+            <i class="fas fa-cog"></i>
         </button>
 
-        <button class="access-btn" onclick="toggleDark()">
-            <i class="fas fa-moon"></i>
-        </button>
+        <div class="access-options" id="accessOptions">
 
-        <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
-            A+
-        </button>
+            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+                <i class="fas fa-adjust"></i>
+            </button>
 
-        <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
-            A-
-        </button>
+            <button class="access-btn" onclick="toggleDark()">
+                <i class="fas fa-moon"></i>
+            </button>
 
-        <button class="access-btn" onclick="Acessibilidade.lerPagina()">
-            <i class="fas fa-volume-up"></i>
-        </button>
+            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+                A+
+            </button>
+
+            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+                A-
+            </button>
+
+            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+                <i class="fas fa-volume-up"></i>
+            </button>
+
+        </div>
 
     </div>
 
 </div>
+</header>
 
-            <header>
-              <h1>Bem-vindo,
-               </h1>
-               <p>  <?= session()->get('nome') ?></p>
-            </header>
 
-            <div class="grid">
+
 
                 <!-- CALENDÁRIO -->
+                 <div class="grid">
                 <div class="card">
+                    <div class="calendar-title">
+
+<div class="calendar-icon">
+<i class="fa-solid fa-calendar-days"></i>
+</div>
+
+<div>
+
+<h2>Calendário</h2>
+
+<span>Visualize os dias e suas atividades</span>
+
+</div>
+
+</div>
 
                     <div class="calendar-header">
 
@@ -120,6 +243,7 @@
                         <button onclick="mudarMes(1)">▶</button>
 
                     </div>
+                 
 
                     <div class="dias" id="dias"></div>
 
@@ -162,6 +286,7 @@
                     </ul>
 
                 </div>
+</div>
 
             </div>
 

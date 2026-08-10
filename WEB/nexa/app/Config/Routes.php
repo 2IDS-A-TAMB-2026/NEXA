@@ -53,10 +53,19 @@ $routes->get(
     ['filter' => 'auth']
 );
 $routes->get('/Cadastro_Fun/novo', 'FuncionarioController::novo');
-$routes->post('/Cadastro_Fun/inserir', 'FuncionarioController::inserir');
-$routes->post('Cadastro_Fun/editar', 'FuncionarioController::editar');
-$routes->get('/Cadastro_Fun/excluir/(:any)', 'FuncionarioController::excluir/$1');
+$routes->post(
+    '/Cadastro_Fun/inserir',
+    'CadastroFunController::inserir'
+);
+$routes->post(
+    '/Cadastro_Fun/editar',
+    'CadastroFunController::editar'
+);
 
+$routes->get(
+    '/Cadastro_Fun/excluir/(:any)',
+    'CadastroFunController::excluir/$1'
+);
 
 // =====================================================
 // ROTAS DO PERFIL ADM
@@ -73,7 +82,7 @@ $routes->get(
     ['filter' => 'auth']
 );
 
-//testando (é por causa dele que o redirecionamento dps de salvar dados ta dando errado)
+//testando
 $routes->get('/sistema/administrador/index', 'AdministradorController::index');
 
 $routes->get('/administrador/novo', 'AdministradorController::novo');
@@ -391,4 +400,33 @@ $routes->get(
 $routes->post(
     '/salvar-nova-senha',
     'RecuperarSenhaController::salvarNovaSenha'
+);
+
+
+// =====================================================
+// ROTAS DE CAM ADM
+// =====================================================
+
+$routes->get('/cam-adm', 'CamAdmController::index');
+
+$routes->post('/cam-adm/inserir', 'CamAdmController::inserir');
+
+$routes->post('/cam-adm/atualizar/(:num)', 'CamAdmController::atualizar/$1');
+
+$routes->get('/cam-adm/excluir/(:num)', 'CamAdmController::excluir/$1');
+
+$routes->get('/cam-adm/editar/(:num)', 'CamAdmController::editar/$1');
+
+
+
+
+//editar fun
+$routes->post(
+'/Cadastro_Fun/editar/(:any)',
+'CadastroFunController::editar/$1'
+);
+
+$routes->post(
+    'Cadastro_Fun/verificarCPF',
+    'CadastroFunController::verificarCPF'
 );

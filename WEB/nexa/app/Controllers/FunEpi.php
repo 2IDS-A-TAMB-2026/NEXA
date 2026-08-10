@@ -1,80 +1,75 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\FunEpiModel;
+use App\Models\FunEpi;
 
 class FunEpiController extends BaseController
 {
-    protected $FunEpiModel;
+    protected $funEpiModel;
 
     public function __construct()
     {
-        $this->FunEpiModel = new FunEpiModel();
+        $this->funEpiModel = new FunEpi();
     }
 
-    // LISTAGEM
     public function index()
     {
-        $dados['FunEpi'] =
-            $this->FunEpiModel->findAll();
+        $dados['funEpi'] = $this->funEpiModel
+            ->join(
+                'FUNCIONARIO',
+                'FUNCIONARIO.CPF = FUN_EPI.FK_FUNCIONARIO_CPF'
+            )
+            ->join(
+                'EPI',
+                'EPI.ID = FUN_EPI.FK_EPI_ID'
+            )
+            ->findAll();
 
-        return view('FunEpi/index', $dados);
+        return view('fun_epi/index', $dados);
     }
 
-    // FORM NOVO
     public function novo()
     {
         return view('fun_epi/novo');
     }
 
-    // INSERIR
     public function inserir()
     {
         $dados = [
-            'FK_EPI_ID' =>
-                $this->request->getPost('FK_EPI_ID'),
-
-            'FK_FUNCI_CPF' =>
-                $this->request->getPost('FK_FUNCI_CPF')
+            'FK_FUNCIONARIO_CPF' => $this->request->getPost('FK_FUNCIONARIO_CPF'),
+            'FK_EPI_ID' => $this->request->getPost('FK_EPI_ID')
         ];
 
-        $this->FunEpiModel->insert($dados);
+        $this->funEpiModel->insert($dados);
 
         return redirect()->to('/fun_epi');
     }
 
-    // FORM EDITAR
     public function editar($id)
     {
-        $dados['funEpi'] =
-            $this->FunEpiModel->find($id);
+        $dados['funEpi'] = $this->funEpiModel->find($id);
 
         return view('fun_epi/editar', $dados);
     }
 
-    // ATUALIZAR
     public function atualizar($id)
     {
         $dados = [
-            'FK_EPI_ID' =>
-                $this->request->getPost('FK_EPI_ID'),
-
-            'FK_ADMINISTRADOR_CPF' =>
-                $this->request->getPost('FK_FUNCI_CPF')
+            'FK_FUNCIONARIO_CPF' => $this->request->getPost('FK_FUNCIONARIO_CPF'),
+            'FK_EPI_ID' => $this->request->getPost('FK_EPI_ID')
         ];
 
-        $this->FunEpiModel->update($id, $dados);
+        $this->funEpiModel->update($id, $dados);
 
         return redirect()->to('/fun_epi');
     }
 
-    // EXCLUIR
     public function excluir($id)
     {
-        $this->FunEpiModel->delete($id);
+        $this->funEpiModel->delete($id);
 
         return redirect()->to('/fun_epi');
     }
 }
-?>

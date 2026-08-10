@@ -13,7 +13,7 @@ class LoginFunController extends BaseController
 
     public function autenticar()
     {
-        $email = $this->request->getPost('email');
+        $email = $this->request->getPost('email_fun');
         $senha = $this->request->getPost('senha');
 
         $model = new LoginFunModel();
@@ -23,13 +23,13 @@ class LoginFunController extends BaseController
 
         if ($funcionario) {
 
-        if (password_verify($senha, $funcionario['SENHA'])) {
+        if ($senha == $funcionario['SENHA']) { 
 
                 session()->set([
 
-                    'cpf' => $funcionario['CPF'],
-                    'nome' => $funcionario['NOME_COMPLETO'],
-                    'email' => $funcionario['EMAIL_CORPORATIVO'],
+                    'cpf_fun' => $funcionario['CPF'],
+                    'nome_fun' => $funcionario['NOME_COMPLETO'],
+                    'email_fun' => $funcionario['EMAIL_CORPORATIVO'],
                     'logado_fun' => true
 
                 ]);

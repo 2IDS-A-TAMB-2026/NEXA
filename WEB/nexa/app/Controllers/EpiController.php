@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Controllers;
-
+use App\Models\EpiAdmModel;
+use App\Models\AdministradorModel;
 use App\Controllers\BaseController;
 use App\Models\EpiModel;
-use App\Models\FuncionarioModel;
+//use App\Models\FuncionarioModel;
 
 class EpiController extends BaseController
 {
@@ -18,10 +19,29 @@ class EpiController extends BaseController
     // LISTAGEM
     public function index()
     {
-        $funcionarioModel = new FuncionarioModel();
+        //$funcionarioModel = new FuncionarioModel();
 
-        $dados['epis'] = $this->epiModel->findAll();
-        $dados['funcionarios'] = $funcionarioModel->findAll();
+        $modelAdm = new AdministradorModel();
+$modelEpiAdm = new EpiAdmModel();
+
+$cpf = session()->get("cpf");
+
+$dados_adm = $modelAdm->find($cpf);
+
+// busca IDs dos EPIs do administrador logado
+$episAdm = $modelEpiAdm
+    ->where('FK_ADMINISTRADOR_CPF', $cpf)
+    ->findAll();
+
+$ids = array_column($episAdm, 'FK_EPI_ADM');
+
+if (!empty($ids)) {
+    $dados['epis'] = $this->epiModel
+        ->whereIn('ID', $ids)
+        ->findAll();
+} else {
+    $dados['epis'] = [];
+}
 
         return view('sistema/Epi/index', $dados);
     }
@@ -48,37 +68,38 @@ class EpiController extends BaseController
             'NOME_EPI' => $this->request->getPost('nome_epi'),
             'IMAGEM_EPI' => $nomeImagem,
             'DESCRICAO_EPI' => $this->request->getPost('des_epi'),
-            'FK_CPF_FUNCIONARIO' => $this->request->getPost('FK_CPF_FUNCIONARIO')
+            //'FK_CPF_FUNCIONARIO' => $this->request->getPost('FK_CPF_FUNCIONARIO')
         ];
 
-        $exists = $this->epiModel
-            ->where('NOME_EPI', $dados['NOME_EPI'])
-            ->where('FK_CPF_FUNCIONARIO', $dados['FK_CPF_FUNCIONARIO'])
-            ->first();
+        
+        
+    
+      if (!$this->epiModel->insert($dados)) {
+    return redirect()->back()
+        ->withInput()
+        ->with('errors', $this->epiModel->errors());
+}
 
-        if ($exists) {
-            return redirect()->back()
-                ->withInput()
-                ->with('erro_epi', 'Este funcionário já possui esse EPI.');
-        }
+$idEpi = $this->epiModel->getInsertID();
 
-        if (!$this->epiModel->insert($dados)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('errors', $this->epiModel->errors());
-        }
+$modelEpiAdm = new EpiAdmModel();
 
-        return redirect()->to('/epi')
-            ->with('sucesso', 'EPI cadastrado com sucesso!');
+$modelEpiAdm->insert([
+    'FK_EPI_ADM' => $idEpi,
+    'FK_ADMINISTRADOR_CPF' => session()->get('cpf')
+]);
+
+return redirect()->to('/epi')
+    ->with('sucesso', 'EPI cadastrado com sucesso!');
     }
 
 
     public function atualizar($id)
     {
         $dados = [
-            'NOME_EPI' => $this->request->getPost('NOME_EPI'),
-            'DESCRICAO_EPI' => $this->request->getPost('DESCRICAO_EPI'),
-            'FK_CPF_FUNCIONARIO' => $this->request->getPost('FK_CPF_FUNCIONARIO')
+            'NOME_EPI' => $this->request->getPost('nome_epi'),
+            'DESCRICAO_EPI' => $this->request->getPost('des_epi'),
+            //'FK_CPF_FUNCIONARIO' => $this->request->getPost('FK_CPF_FUNCIONARIO')
         ];
 
         $this->epiModel->update($id, $dados);

@@ -16,28 +16,36 @@ class DashboardCameraModel extends Model
         'FK_ID_SETOR'
     ];
 
-    public function listarCameras($filtro = null)
-    {
-        $builder = $this->db->table('CAMERA c');
+   public function listarCameras($filtro = null, $cnpjEmpresa = null)
+{
+    $builder = $this->db->table('CAMERA c');
 
-        $builder->select('
-            c.*,
-            s.NOME AS SETOR
-        ');
+    $builder->select('
+        c.*,
+        s.NOME AS SETOR
+    ');
 
-        $builder->join(
-            'SETOR s',
-            's.ID = c.FK_ID_SETOR',
-            'left'
+    $builder->join(
+        'SETOR s',
+        's.ID = c.FK_ID_SETOR',
+        'left'
+    );
+
+    // FILTRO DA EMPRESA LOGADA
+    if ($cnpjEmpresa) {
+        $builder->where(
+            'c.FK_CNPJ_EMPRESA',
+            $cnpjEmpresa
         );
-
-        if (!empty($filtro)) {
-            $builder->groupStart()
-                    ->like('c.IDENTIFICADOR_CAMERA', $filtro)
-                    ->orLike('s.NOME', $filtro)
-                    ->groupEnd();
-        }
-
-        return $builder->get()->getResultArray();
     }
+
+    if (!empty($filtro)) {
+        $builder->groupStart()
+                ->like('c.IDENTIFICADOR_CAMERA', $filtro)
+                ->orLike('s.NOME', $filtro)
+                ->groupEnd();
+    }
+
+    return $builder->get()->getResultArray();
+}
 }

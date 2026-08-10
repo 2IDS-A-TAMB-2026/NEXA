@@ -2,108 +2,224 @@
 
 namespace App\Controllers;
 
+use App\Controllers\BaseController;
 use App\Models\CameraModel;
 use App\Models\SetorModel;
+use App\Models\EmpresaModel;
+use App\Models\AdministradorModel;
 
 class CameraController extends BaseController
 {
+    /**
+     * Exibe a tela de cadastro e a listagem das câmeras.
+     */
     public function index()
     {
         $modelCamera = new CameraModel();
         $modelSetor = new SetorModel();
+        $modelEmpresa = new EmpresaModel();
+        $modelAdministrador = new AdministradorModel();
 
-        $cameras['cameras'] = $modelCamera->findAll();
-        $cameras['setor'] = $modelSetor->findAll();
+        // Recupera o administrador logado
+        $cpf = session()->get('cpf');
 
-        return view('sistema/Camera/index', $cameras);
+        if (!$cpf) {
+            return redirect()->to('/login');
+        }
+
+        $dados_adm = $modelAdministrador->find($cpf);
+
+        if (!$dados_adm) {
+            return redirect()->to('/login')
+                ->with('error', 'Administrador não encontrado.');
+        }
+
+        // Recupera o CNPJ da empresa vinculada ao administrador
+        $cnpjEmpresa = $dados_adm['FK_CNPJ_EMPRESA'];
+
+        // Busca a empresa
+        $empresa = $modelEmpresa->find($cnpjEmpresa);
+
+        if (!$empresa) {
+            return redirect()->back()
+                ->with('error', 'Empresa não encontrada.');
+        }
+
+        // Busca somente as câmeras da empresa do administrador logado
+        $cameras = $modelCamera
+            ->where('FK_CNPJ_EMPRESA', $cnpjEmpresa)
+            ->findAll();
+
+        // Busca somente os setores da empresa
+        $setores = $modelSetor
+            ->where('FK_CNPJ_EMPRESA', $cnpjEmpresa)
+            ->findAll();
+
+        $dados = [
+            'cameras' => $cameras,
+            'setor'   => $setores,
+            'empresa' => $empresa
+        ];
+
+        return view('sistema/Camera/index', $dados);
     }
 
-    public function novo()
-    {
-        $modelCamera = new CameraModel();
-        $modelSetor = new SetorModel();
 
-        $cameras['cameras'] = $modelCamera->findAll();
-        $cameras['setor'] = $modelSetor->findAll();
-
-        return view('sistema/Camera/index', $cameras);
-    }
-
+    /**
+     * Cadastra uma nova câmera.
+     */
     public function inserir()
     {
-        $model = new CameraModel();
+        $modelCamera = new CameraModel();
+        $modelAdministrador = new AdministradorModel();
 
-        // Remove a máscara do CNPJ antes de inserir no banco
-        $cnpjLimpo = preg_replace('/\D/', '', $this->request->getPost('CNPJ'));
+        // Recupera o administrador logado
+        $cpf = session()->get('cpf');
 
-        $model->insert([
-            'IDENTIFICADOR_CAMERA' => $this->request->getPost('nome'),
-            'STATUS'               => $this->request->getPost('status'),
-            'FK_ID_SETOR'          => $this->request->getPost('idSetor'),
-            'FK_CNPJ_EMPRESA'      => $cnpjLimpo
-        ]);
+        if (!$cpf) {
+            return redirect()->to('/login');
+        }
 
-        return redirect()->to(base_url('/Camera'));
+        $dados_adm = $modelAdministrador->find($cpf);
+
+        if (!$dados_adm) {
+            return redirect()->back()
+                ->with('error', 'Administrador não encontrado.');
+        }
+
+        // Dados enviados pelo formulário
+        $nome = trim($this->request->getPost('nome'));
+        $status = trim($this->request->getPost('status'));
+        $idSetor = trim($this->request->getPost('idSetor'));
+
+        // Validação básica
+        if ($nome === '' || $status === '' || $idSetor === '') {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Preencha todos os campos obrigatórios.');
+        }
+
+        // CNPJ da empresa do administrador logado
+        $cnpjEmpresa = $dados_adm['FK_CNPJ_EMPRESA'];
+
+        // Dados que serão inseridos
+        $dados = [
+            'IDENTIFICADOR_CAMERA' => $nome,
+            'STATUS'               => $status,
+            'FK_ID_SETOR'          => $idSetor,
+            'FK_CNPJ_EMPRESA'      => $cnpjEmpresa
+        ];
+
+        // Tenta inserir
+        if (!$modelCamera->insert($dados)) {
+
+            return redirect()->back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Não foi possível cadastrar a câmera.'
+                );
+        }
+
+        return redirect()->to(base_url('/Camera'))
+            ->with(
+                'success',
+                'Câmera cadastrada com sucesso!'
+            );
     }
 
+
+    /**
+     * Abre a tela de edição.
+     */
     public function editar($id)
     {
         $modelCamera = new CameraModel();
         $modelSetor = new SetorModel();
+        $modelEmpresa = new EmpresaModel();
 
-        $cameras['cameras'] = $modelCamera->findAll();
-        $cameras['camera']  = $modelCamera->find($id);
-        $cameras['setor']   = $modelSetor->findAll();
+        $dados = [
+            'cameras' => $modelCamera->findAll(),
+            'camera'  => $modelCamera->find($id),
+            'setor'   => $modelSetor->findAll(),
+            'empresa' => $modelEmpresa->findAll()
+        ];
 
-        return view('sistema/Camera/index', $cameras);
+        return view('sistema/Camera/index', $dados);
     }
 
+
+    /**
+     * Atualiza uma câmera.
+     */
     public function atualizar($id)
     {
-        $model = new CameraModel();
+        $modelCamera = new CameraModel();
+        $modelAdministrador = new AdministradorModel();
 
-        // 1. Pega o valor digitado no formulário
-        $cnpjPost = $this->request->getPost('cnpj');
+        $cpf = session()->get('cpf');
 
-        // 2. Limpa o CNPJ para checar apenas números
-        $cnpjLimpo = preg_replace('/\D/', '', $cnpjPost);
-
-        // 3. Descobre qual formato está gravado no banco de dados da empresa
-        $db = \Config\Database::connect();
-        
-        // Testa primeiro o CNPJ apenas com números
-        $empresa = $db->table('empresa')->where('CNPJ', $cnpjLimpo)->get()->getRow();
-        $cnpjFinal = $cnpjLimpo;
-
-        // Se não achou, testa se a empresa foi cadastrada com a máscara original (pontos/traços)
-        if (!$empresa) {
-            $empresa = $db->table('empresa')->where('CNPJ', $cnpjPost)->get()->getRow();
-            $cnpjFinal = $cnpjPost;
+        if (!$cpf) {
+            return redirect()->to('/login');
         }
 
-        // 4. Se não achou de nenhum dos dois jeitos, impede o erro 1452 e avisa o usuário
-        if (!$empresa) {
+        $dados_adm = $modelAdministrador->find($cpf);
+
+        if (!$dados_adm) {
             return redirect()->back()
-                             ->withInput()
-                             ->with('error', "O CNPJ '{$cnpjPost}' não existe na tabela de empresas. Cadastre a empresa primeiro.");
+                ->with('error', 'Administrador não encontrado.');
         }
 
-        // 5. Executa a atualização usando o CNPJ correto que o banco validou
-        $model->update($id, [
-            'IDENTIFICADOR_CAMERA' => $this->request->getPost('nome'),
-            'STATUS'               => $this->request->getPost('status'),
-            'FK_ID_SETOR'          => $this->request->getPost('idSetor'),
-            'FK_CNPJ_EMPRESA'      => $cnpjFinal
-        ]);
+        $nome = trim($this->request->getPost('nome'));
+        $status = trim($this->request->getPost('status'));
+        $idSetor = trim($this->request->getPost('idSetor'));
 
-        return redirect()->to(base_url('/Camera'))->with('success', 'Câmera atualizada com sucesso!');
+        if ($nome === '' || $status === '' || $idSetor === '') {
+            return redirect()->back()
+                ->with('error', 'Preencha todos os campos obrigatórios.');
+        }
+
+        $dados = [
+            'IDENTIFICADOR_CAMERA' => $nome,
+            'STATUS'               => $status,
+            'FK_ID_SETOR'          => $idSetor,
+            'FK_CNPJ_EMPRESA'      => $dados_adm['FK_CNPJ_EMPRESA']
+        ];
+
+        if (!$modelCamera->update($id, $dados)) {
+
+            return redirect()->back()
+                ->with('error', 'Não foi possível atualizar a câmera.');
+        }
+
+        return redirect()->to(base_url('/Camera'))
+            ->with(
+                'success',
+                'Câmera atualizada com sucesso!'
+            );
     }
 
+
+    /**
+     * Exclui uma câmera.
+     */
     public function excluir($id)
     {
-        $model = new CameraModel();
-        $model->delete($id);
+        $modelCamera = new CameraModel();
 
-        return redirect()->to(base_url('/Camera'));
+        if (!$modelCamera->delete($id)) {
+
+            return redirect()->back()
+                ->with(
+                    'error',
+                    'Não foi possível excluir a câmera.'
+                );
+        }
+
+        return redirect()->to(base_url('/Camera'))
+            ->with(
+                'success',
+                'Câmera excluída com sucesso!'
+            );
     }
 }

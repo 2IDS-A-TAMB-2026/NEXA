@@ -1,0 +1,201 @@
+/* ==========================================================
+   NEXA — MODO ESCURO
+========================================================== */
+
+body.dark-mode{
+    background:#0b1016;
+    color:#f1f5f9;
+}
+
+
+/* ==========================================================
+   ÁREA PRINCIPAL
+========================================================== */
+
+body.dark-mode .overlay{
+    background:#0b1016;
+}
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+body.dark-mode .sidebar{
+    background:#080d12 !important;
+}
+
+
+/* ==========================================================
+   IMAGEM DA CONSTRUÇÃO
+========================================================== */
+
+body.dark-mode .sidebar-construction{
+    opacity:.30 !important;
+
+    filter:
+        grayscale(35%)
+        brightness(.55)
+        contrast(1.05) !important;
+}
+
+
+/* ==========================================================
+   DEGRADÊ SOBRE A IMAGEM
+========================================================== */
+
+body.dark-mode .sidebar::after{
+    background:linear-gradient(
+        to bottom,
+
+        #080d12 0%,
+
+        rgba(8,13,18,.99) 12%,
+
+        rgba(8,13,18,.94) 27%,
+
+        rgba(8,13,18,.82) 43%,
+
+        rgba(8,13,18,.62) 60%,
+
+        rgba(8,13,18,.36) 76%,
+
+        rgba(8,13,18,.05) 100%
+    ) !important;
+}
+
+
+/* ==========================================================
+   LOGO / NEXA
+========================================================== */
+
+body.dark-mode .sidebar-brand-text strong{
+    color:#f5f7fa !important;
+}
+
+body.dark-mode .sidebar-brand-text span{
+    color:rgba(255,255,255,.72) !important;
+}
+
+
+/* ==========================================================
+   TÍTULOS DO MENU
+========================================================== */
+
+body.dark-mode .menu-title{
+    color:rgba(255,255,255,.55) !important;
+}
+
+
+/* ==========================================================
+   LINKS
+========================================================== */
+
+body.dark-mode .menu a{
+    background:transparent !important;
+    color:#e7edf4 !important;
+}
+
+body.dark-mode .menu a span{
+    color:#e7edf4 !important;
+}
+
+body.dark-mode .menu a i{
+    color:#d8e0e8 !important;
+}
+
+
+/* ==========================================================
+   HOVER
+========================================================== */
+
+body.dark-mode .menu a:hover{
+    background:rgba(255,255,255,.06) !important;
+}
+
+body.dark-mode .menu a:hover i,
+body.dark-mode .menu a:hover span{
+    color:#ffffff !important;
+}
+
+
+/* ==========================================================
+   ITEM ATIVO
+========================================================== */
+
+body.dark-mode .menu a.active{
+    background:#0878e5 !important;
+    color:#ffffff !important;
+}
+
+body.dark-mode .menu a.active i,
+body.dark-mode .menu a.active span{
+    color:#ffffff !important;
+}
+
+
+/* ==========================================================
+   LOGOUT
+========================================================== */
+
+body.dark-mode .logout-item{
+    background:rgba(255,255,255,.035) !important;
+
+    border:1px solid rgba(255,255,255,.16) !important;
+
+    color:#f1f5f9 !important;
+}
+
+body.dark-mode .logout-item i,
+body.dark-mode .logout-item span{
+    color:#f1f5f9 !important;
+}
+
+body.dark-mode .logout-item:hover{
+    background:rgba(255,255,255,.08) !important;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+body.dark-mode .dashboard-header{
+    background:#0b1016;
+
+    border-bottom:1px solid #202a34;
+
+    box-shadow:0 2px 18px rgba(0,0,0,.35);
+}
+
+body.dark-mode .header-left h1{
+    color:#1685f5;
+}
+
+body.dark-mode .header-left span{
+    color:#d5dde6;
+}
+
+body.dark-mode .profile-info strong{
+    color:#f1f5f9;
+}
+
+body.dark-mode .profile-info small{
+    color:#8996a5;
+}
+
+body.dark-mode .profile:hover{
+    background:#151c24;
+}
+
+
+/* ==========================================================
+   CARD PRINCIPAL
+========================================================== */
+
+body.dark-mode .card{
+    background:#10161d;
+    border:1px solid #202a34;
+    box-shadow:0 10px 25px rgba(0,0,0,.30);
+}
+

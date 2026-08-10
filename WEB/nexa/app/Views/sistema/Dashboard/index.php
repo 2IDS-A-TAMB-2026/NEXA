@@ -7,31 +7,52 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ICONES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
-
     <link rel="stylesheet" href="<?= base_url('/assets/css/style_geral.css') ?>">
-
     <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
 
-    <!-- CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+
+   <aside class="sidebar">
+
+    <!-- FUNDO -->
+    <img
+        class="sidebar-construction"
+        src="<?= base_url('assets/images/construcao.jpg') ?>"
+        alt=""
+    >
+
+    <!-- CONTEÚDO -->
+    <div class="sidebar-content">
 
         <div class="sidebar-logo">
-            <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
-        </div>
+
+    <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
+
+    <div class="sidebar-brand-text">
+        <strong>NEXA</strong>
+        <span>Segurança é prioridade</span>
+    </div>
+
+</div>
+
 
         <nav class="menu">
+
+            <div class="menu-title">PRINCIPAL</div>
 
             <a href="<?= base_url('/dashboard') ?>" class="active">
                 <i class="fas fa-chart-line"></i>
@@ -48,9 +69,12 @@
                 <span>Ocorrências</span>
             </a>
 
+
+            <div class="menu-title">CADASTROS</div>
+
             <a href="<?= base_url('/cadastro-funcionario') ?>">
                 <i class="fas fa-users"></i>
-                <span>Cadastro funcionários</span>
+                <span>Cadastro Funcionários</span>
             </a>
 
             <a href="<?= base_url('/epi') ?>">
@@ -68,6 +92,9 @@
                 <span>Cadastro Setores</span>
             </a>
 
+
+            <div class="menu-title">CONTA</div>
+
             <a href="<?= base_url('/administrador') ?>">
                 <i class="fas fa-user"></i>
                 <span>Perfil</span>
@@ -75,330 +102,284 @@
 
         </nav>
 
+
         <a href="<?= base_url('/') ?>" class="logout-item">
             <i class="fas fa-sign-out-alt"></i>
-            <span>Sair</span>
+            <span>Sair do Sistema</span>
         </a>
 
-    </aside>
+    </div>
 
-    <!-- ACESSIBILIDADE -->
-    <div class="access-bar">
-
-        <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
-            <i class="fas fa-adjust"></i>
+</aside>
+    <div class="access-menu">
+        <button class="gear-btn" onclick="toggleAccessMenu()">
+            <i class="fas fa-cog"></i>
         </button>
 
-        <button class="access-btn" onclick="toggleDark()">
-            <i class="fas fa-moon"></i>
-        </button>
+        <div class="access-options" id="accessOptions">
+            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+                <i class="fas fa-adjust"></i>
+            </button>
 
-        <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
-            A+
-        </button>
+            <button class="access-btn" onclick="toggleDark()">
+                <i class="fas fa-moon"></i>
+            </button>
 
-        <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
-            A-
-        </button>
+            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+                A+
+            </button>
 
-        <button class="access-btn" onclick="Acessibilidade.lerPagina()">
-            <i class="fas fa-volume-up"></i>
-        </button>
+            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+                A-
+            </button>
 
+            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
     </div>
 
     <div class="overlay">
+        <div class="main">
+             <header class="dashboard-header">
 
-        <header>
 
-            <h1>Dashboard</h1>
+            <!-- ESQUERDA -->
 
-            <p>
+            <div class="header-left">
 
-                Bem-vindo,
-                <?= session()->get('nome') ?>
+                <div class="header-title">
 
-            </p>
+                    <h1>
+                       Dashboard
+                    </h1>
+
+                    <p>
+                        Acompanhe as principais analises da sua empresa
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DIREITA
+            ================================================== -->
+
+            <div class="header-right">
+
+
+                <a
+                    href="<?= base_url('/administrador') ?>"
+                    class="profile"
+                >
+
+
+                    <!-- AVATAR -->
+
+                    <div class="profile-avatar">
+
+                        <?= strtoupper(
+                            substr(
+                                session()->get('nome'),
+                                0,
+                                1
+                            )
+                        ) ?>
+
+                    </div>
+
+
+                    <!-- INFORMAÇÕES -->
+
+                    <div class="profile-info">
+
+                        <strong>
+
+                            <?= esc(
+                                session()->get('nome')
+                            ) ?>
+
+                        </strong>
+
+                        <span>
+                            NEXA SOLUÇÕES
+                        </span>
+
+                    </div>
+
+
+                </a>
+
+            </div>
+
 
         </header>
 
-        <!-- METRICAS -->
-        <div class="metrics">
 
-            <div class="metric">
-
-                <div class="metric-icon pessoas">
-                    <i class="fas fa-users"></i>
+        <div class="content">
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-icon pessoas">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Pessoas analisadas hoje</h4>
+                    <span><?= $pessoasHoje ?></span>
                 </div>
 
-                <h4>Pessoas analisadas hoje</h4>
-                <span><?= $pessoasHoje ?></span>
-
-            </div>
-
-            <div class="metric">
-
-                <div class="metric-icon conformidade">
-                    <i class="fas fa-shield-alt"></i>
+                <div class="metric">
+                    <div class="metric-icon conformidade">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Conformidade</h4>
+                    <span style="color:green;"><?= $conformidade ?>%</span>
                 </div>
 
-                <h4>Conformidade</h4>
-                <span style="color:green;">
-                    <?= $conformidade ?>%
-                </span>
-
-            </div>
-
-            <div class="metric">
-
-                <div class="metric-icon alerta">
-                    <i class="fas fa-triangle-exclamation"></i>
+                <div class="metric">
+                    <div class="metric-icon alerta">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+                    <h4>Alertas ativos</h4>
+                    <span style="color:red;"><?= $alertas ?></span>
                 </div>
 
-                <h4>Alertas ativos</h4>
-                <span style="color:red;">
-                    <?= $alertas ?>
-                </span>
-
+                <div class="metric">
+                    <div class="metric-icon camera">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h4>Câmeras ativas</h4>
+                    <span><?= $camerasAtivas ?></span>
+                </div>
             </div>
 
-            <div class="metric">
-
-                <div class="metric-icon camera">
-                    <i class="fas fa-video"></i>
+            <div class="graficos-grid">
+                <div class="card">
+                    <h3>Controle diário de EPIs</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoBarra"></canvas>
+                    </div>
                 </div>
 
-                <h4>Câmeras ativas</h4>
-                <span><?= $camerasAtivas ?></span>
+                <div class="card">
+                    <h3>EPIs mais ausentes</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoPizza"></canvas>
+                    </div>
+                </div>
 
+                <div class="card">
+                    <h3>Ocorrências por câmera</h3>
+                    <div class="chart-container">
+                        <canvas id="linhaChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Funcionários por Setor</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoSetores"></canvas>
+                    </div>
+                </div>
             </div>
-
         </div>
-
-        <!-- GRAFICOS -->
-        <div class="graficos-grid">
-
-            <!-- GRAFICO 1 -->
-            <div class="card">
-                <h3>Controle diário de EPIs</h3>
-
-                <div class="chart-container">
-                    <canvas id="graficoBarra"></canvas>
-                </div>
-            </div>
-
-            <!-- GRAFICO 2 -->
-            <div class="card">
-                <h3>Funcionários Verificados</h3>
-
-                <div class="chart-container">
-                    <canvas id="graficoPizza"></canvas>
-                </div>
-            </div>
-
-            <!-- GRAFICO 3 -->
-            <div class="card">
-                <h3>Controle Semanal de EPIs</h3>
-
-                <div class="chart-container">
-                    <canvas id="linhaChart"></canvas>
-                </div>
-            </div>
-
-            <!-- GRAFICO 4 -->
-            <div class="card">
-                <h3>Funcionários por Setor</h3>
-
-                <div class="chart-container">
-                    <canvas id="graficoSetores"></canvas>
-                </div>
-            </div>
-
-        </div>
-
     </div>
+</div>
 
-    </div>
+    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
+    
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
 
-    <!-- SCRIPTS -->
     <script>
-
         new Chart(document.getElementById('graficoBarra'), {
-
             type: 'bar',
-
             data: {
-                labels: [
-                    'Conforme',
-                    'Não Conforme',
-                    'Parcial'
-                ],
-
+                labels: ['Conforme', 'Não Conforme'],
                 datasets: [{
                     label: 'EPIs',
-
-                    data: [
-                        <?= $conforme ?>,
-                        <?= $naoConforme ?>,
-                        <?= $parcial ?>
-                    ],
-
-                    backgroundColor: [
-                        '#04b507',
-                        '#c7040e',
-                        'orange'
-                    ]
+                    data: [<?= $conforme ?>, <?= $naoConforme ?>],
+                    backgroundColor: ['#04b507', '#c7040e'],
                 }]
             },
-
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
+                plugins: { legend: { display: false } }
             }
-
         });
 
-        new Chart(document.getElementById('graficoPizza'), {
+      new Chart(document.getElementById('graficoPizza'), {
+    type: "doughnut",
+    data: {
+        labels: <?= $nomesEpi ?>,
+        datasets: [{
+            data: <?= $totaisEpi ?>,
+            backgroundColor: [
+                '#0A66c2',
+                '#04b507',
+                '#f59e0b',
+                '#c7040e',
+                '#8b5cf6'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
 
-            type: 'doughnut',
-
-            data: {
-
-                labels: [
-                    'Verificados',
-                    'Faltaram'
-                ],
-
-                datasets: [{
-                    data: [
-                        <?= $verificados ?>,
-                        <?= $faltaram ?>
-                    ],
-
-                    backgroundColor: [
-                        '#04b507',
-                        '#c7040e'
-                    ]
-                }]
-            },
-
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                }
+  new Chart(document.getElementById('linhaChart'), {
+    type: 'bar',
+    data: {
+        labels: <?= $nomesCamera ?>,
+        datasets: [{
+            label: 'Ocorrências',
+            data: <?= $totalOcorrencias ?>,
+            backgroundColor: '#0A66c2'
+        }]
+    },
+    options: {
+        indexAxis: 'y', // barra horizontal
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                beginAtZero: true
             }
-
-        });
-
-        new Chart(document.getElementById('linhaChart'), {
-
-            type: 'line',
-
-            data: {
-
-                labels: [
-                    'Seg',
-                    'Ter',
-                    'Qua',
-                    'Qui',
-                    'Sex'
-                ],
-
-                datasets: [{
-
-                    label: 'Uso Correto de EPIs',
-
-                    data: [
-                        12,
-                        19,
-                        15,
-                        22,
-                        18
-                    ],
-
-                    borderColor: '#0a66c2',
-
-                    backgroundColor:
-                        'rgba(10,102,194,0.15)',
-
-                    tension: 0.4,
-
-                    fill: true
-                }]
-            },
-
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-
-        });
-
+        }
+    }
+});
         const nomesSetores = <?= $nomesSetores ?>;
         const totaisSetores = <?= $totaisSetores ?>;
-
-        // Gera uma cor diferente para cada setor
         const cores = [];
 
         for (let i = 0; i < nomesSetores.length; i++) {
-
-            const luminosidade =
-                25 + (i * 45 / nomesSetores.length);
-
-            cores.push(
-                `hsl(210, 85%, ${luminosidade}%)`
-            );
-
+            const luminosidade = 25 + (i * 45 / nomesSetores.length);
+            cores.push(`hsl(210, 85%, ${luminosidade}%)`);
         }
 
         new Chart(document.getElementById('graficoSetores'), {
-
             type: 'pie',
-
             data: {
-
                 labels: nomesSetores,
-
                 datasets: [{
                     label: 'Funcionários',
-
                     data: totaisSetores,
-
                     backgroundColor: cores,
-
                     borderColor: '#ffffff',
                     borderWidth: 2
                 }]
             },
-
             options: {
-
                 responsive: true,
                 maintainAspectRatio: false,
-
                 plugins: {
-
-                    legend: {
-                        display: false
-                    },
-
+                   legend: {
+    display: true,
+    position: 'bottom'
+},
                     tooltip: {
                         callbacks: {
                             label: function (context) {
@@ -408,17 +389,17 @@
                     }
                 }
             }
-
         });
 
         function toggleDark() {
             document.body.classList.toggle('dark-mode');
         }
 
+        /* Abre/Fecha as opções da engrenagem */
+        function toggleAccessMenu() {
+            const options = document.getElementById('accessOptions');
+            options.style.display = options.style.display === 'flex' ? 'none' : 'flex';
+        }
     </script>
-
-    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
-
 </body>
-
 </html>

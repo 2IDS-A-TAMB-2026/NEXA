@@ -6,81 +6,64 @@
     <meta charset="UTF-8">
     <title>Dashboard de Câmeras</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet"
-          href="<?= base_url('assets/css/acessibilidade.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
 
-    <link rel="stylesheet"
-          href="<?= base_url('assets/css/style_geral.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
 
-    <link rel="stylesheet"
-          href="<?= base_url('assets/css/dashboard_camera.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/dashboard_camera.css') ?>">
 
-    <style>
-    body{
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 16px;
-    }
-
-    header h1{
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-
-    header p{
-        font-size: 16px;
-        color: #666;
-        margin-bottom: 30px;
-    }
-
-    .camera-card{
-        font-size: 16px;
-    }
-
-    .camera-nome{
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .setor{
-        font-size: 15px;
-    }
-
-    .texto-status{
-        font-size: 14px;
-    }
-</style>
+  
 
 </head>
 
 <body>
+<aside class="sidebar">
 
-<!-- SIDEBAR -->
-  <aside class="sidebar">
+    <!-- FUNDO -->
+    <img
+        class="sidebar-construction"
+        src="<?= base_url('assets/images/construcao.jpg') ?>"
+        alt=""
+    >
+
+    <!-- CONTEÚDO -->
+    <div class="sidebar-content">
 
         <div class="sidebar-logo">
-            <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
-        </div>
+
+    <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
+
+    <div class="sidebar-brand-text">
+        <strong>NEXA</strong>
+        <span>Segurança é prioridade</span>
+    </div>
+
+</div>
+
 
         <nav class="menu">
+
+            <div class="menu-title">PRINCIPAL</div>
 
             <a href="<?= base_url('/dashboard') ?>">
                 <i class="fas fa-chart-line"></i>
                 <span>Dashboard</span>
             </a>
 
-            <a href="<?= base_url('/dashboard_camera') ?>"class="active">
+            <a href="<?= base_url('/dashboard_camera') ?>"  class="active">
                 <i class="fas fa-video"></i>
                 <span>Dashboard de Câmeras</span>
             </a>
 
-            <a href="<?= base_url('/ocorrencia') ?>" >
+            <a href="<?= base_url('/ocorrencia') ?>">
                 <i class="fas fa-exclamation-triangle"></i>
                 <span>Ocorrências</span>
             </a>
+
+
+            <div class="menu-title">CADASTROS</div>
 
             <a href="<?= base_url('/cadastro-funcionario') ?>">
                 <i class="fas fa-users"></i>
@@ -102,6 +85,9 @@
                 <span>Cadastro Setores</span>
             </a>
 
+
+            <div class="menu-title">CONTA</div>
+
             <a href="<?= base_url('/administrador') ?>">
                 <i class="fas fa-user"></i>
                 <span>Perfil</span>
@@ -109,120 +95,209 @@
 
         </nav>
 
+
         <a href="<?= base_url('/') ?>" class="logout-item">
             <i class="fas fa-sign-out-alt"></i>
-            <span>Sair</span>
+            <span>Sair do Sistema</span>
         </a>
 
-    </aside>
+    </div>
 
-<!-- ACESSIBILIDADE -->
-<div class="access-bar">
+</aside>
 
-    <button class="access-btn">
-        <i class="fas fa-adjust"></i>
-    </button>
+        <div class="main">
 
-    <button class="access-btn">
-        <i class="fas fa-moon"></i>
-    </button>
+        <!-- MENU ACESSIBILIDADE -->
+        <div class="access-menu">
 
-    <button class="access-btn">A+</button>
-
-    <button class="access-btn">A-</button>
-
-    <button class="access-btn">
-        <i class="fas fa-volume-up"></i>
-    </button>
-
-</div>
-<div class="overlay">
-
-    <header>
-
-        <h1>Dashboard de Câmeras</h1>
-
-        <p style="color:white;">
-            Monitoramento das câmeras cadastradas
-        </p>
-
-    </header>
-
-    <form method="GET">
-
-        <div class="filtros">
-
-            <input
-                type="text"
-                name="buscar"
-                placeholder="Pesquisar câmera ou setor..."
-                value="<?= isset($buscar) ? $buscar : '' ?>">
-
-            <button
-                type="submit"
-                class="btn-filtrar">
-
-                Filtrar
-
+            <button class="gear-btn" onclick="toggleAccessMenu()">
+                <i class="fas fa-cog"></i>
             </button>
+
+            <div class="access-options" id="accessOptions">
+
+                <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+                    <i class="fas fa-adjust"></i>
+                </button>
+
+                <button class="access-btn" onclick="toggleDark()">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+                    A+
+                </button>
+
+                <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+                    A-
+                </button>
+
+                <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+
+            </div>
 
         </div>
 
-    </form>
 
-    <div class="cameras-grid">
 
-        <?php foreach($cameras as $camera): ?>
+        <header class="dashboard-header">
 
-            <div class="camera-card">
 
-                <div class="camera-icon">
-                    <i class="fas fa-video"></i>
-                </div>
+            <!-- ESQUERDA -->
 
-                <div class="camera-nome">
-                    <?= $camera['IDENTIFICADOR_CAMERA'] ?>
-                </div>
+            <div class="header-left">
 
-                <div class="setor">
-                    <?= $camera['SETOR'] ?>
-                </div>
+                <div class="header-title">
 
-                <div class="status-box">
+                    <h1>
+                       Dashboard de Câmeras
+                    </h1>
 
-                    <?php if(strtoupper($camera['STATUS']) == 'ATIVA'): ?>
-
-                        <span class="status ativo"></span>
-
-                        <span class="texto-status">
-                            Ativa
-                        </span>
-
-                    <?php else: ?>
-
-                        <span class="status inativo"></span>
-
-                        <span class="texto-status">
-                            Inativa
-                        </span>
-
-                    <?php endif; ?>
+                    <p>
+                        Acompanhe as câmeras da sua empresa
+                    </p>
 
                 </div>
 
             </div>
 
-        <?php endforeach; ?>
+
+            <!-- =================================================
+                 DIREITA
+            ================================================== -->
+
+            <div class="header-right">
+
+
+                <a
+                    href="<?= base_url('/administrador') ?>"
+                    class="profile"
+                >
+
+
+                    <!-- AVATAR -->
+
+                    <div class="profile-avatar">
+
+                        <?= strtoupper(
+                            substr(
+                                session()->get('nome'),
+                                0,
+                                1
+                            )
+                        ) ?>
+
+                    </div>
+
+
+                    <!-- INFORMAÇÕES -->
+
+                    <div class="profile-info">
+
+                        <strong>
+
+                            <?= esc(
+                                session()->get('nome')
+                            ) ?>
+
+                        </strong>
+
+                        <span>
+                            NEXA SOLUÇÕES
+                        </span>
+
+                    </div>
+
+
+                </a>
+
+            </div>
+
+
+        </header>
+
+
+        <form method="GET">
+
+            <div class="filtros">
+
+                <input type="text" name="buscar" placeholder="Pesquisar câmera ou setor..."
+                    value="<?= isset($buscar) ? $buscar : '' ?>">
+
+                <button type="submit" class="btn-filtrar">
+
+                    Filtrar
+
+                </button>
+
+            </div>
+
+        </form>
+
+        <div class="cameras-grid">
+
+            <?php foreach ($cameras as $camera): ?>
+
+                <div class="camera-card">
+
+                    <div class="camera-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+
+                    <div class="camera-nome">
+                        <?= $camera['IDENTIFICADOR_CAMERA'] ?>
+                    </div>
+
+                    <div class="setor">
+                        <?= $camera['SETOR'] ?>
+                    </div>
+
+                    <div class="status-box">
+
+                        <?php if (strtoupper($camera['STATUS']) == 'ATIVA' || strtoupper($camera['STATUS']) == 'ATIVO'): ?>
+
+                            <span class="status ativo"></span>
+
+                            <span class="texto-status">
+                                Ativa
+                            </span>
+
+                        <?php else: ?>
+
+                            <span class="status inativo"></span>
+
+                            <span class="texto-status">
+                                Inativa
+                            </span>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+
+        
 
     </div>
 
-    <footer>
-        © 2026 – NEXA | Segurança no centro
-    </footer>
+    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
 
-</div>
-
-<script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
+    <script>
+        // Função global auxiliar para o Dark Mode funcionar em conjunto
+        function toggleDark() {
+            document.body.classList.toggle('dark-mode');
+            if (typeof atualizarLogo === 'function') {
+                atualizarLogo();
+            }
+        }
+    </script>
 
 </body>
+
 </html>

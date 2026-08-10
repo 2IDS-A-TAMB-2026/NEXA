@@ -1,133 +1,417 @@
-.overlay {
-    margin-left: 270px;
-    min-height: 100vh;
-    width: calc(100% - 270px);
+/* =========================================================
+   SIDEBAR NEXA
+========================================================= */
 
-    overflow-y: auto;
-
-   background: rgba(45, 141, 238, 0.25); /* mais leve */
-    padding: 35px;
-}
-
-.overlaydc{
-    margin-left:270px;
-    width:calc(100% - 270px);
-    background: rgba(45, 141, 238, 0.25); /* mais leve */
-    padding:35px;
-}
-/* SIDEBAR */
 .sidebar {
-    width: 270px;
-    background: #0f2a44;
-    color: #fff;
+    position: fixed !important;
 
-    position: fixed; /* 🔥 fixa */
-    top: 0;
-    left: 0;
+    top: 0 !important;
+    left: 0 !important;
 
-    height: 100vh; /* ocupa tela inteira */
-    display: flex;
-    flex-direction: column;
+    width: 270px !important;
+    height: 100vh !important;
 
-  
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: #06294a !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 1000 !important;
 }
 
 
+/* =========================================================
+   FUNDO DA CONSTRUÇÃO
+========================================================= */
 
-.sidebar h1 {
-    text-align: center;
-    margin-bottom: 30px;
+.sidebar-construction {
+    position: absolute !important;
+
+    left: 0 !important;
+    bottom: 0 !important;
+
+    width: 270px !important;
+
+    height: 330px !important;
+
+    object-fit: cover !important;
+
+    object-position: center bottom !important;
+
+    opacity: .38 !important;
+
+    z-index: 1 !important;
+
+    pointer-events: none !important;
 }
 
-.sidebar a {
-    display: block;
-    padding: 10px;
-    margin-bottom: 8px;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
+/* =========================================================
+   DEGRADÊ POR CIMA DA IMAGEM
+========================================================= */
+
+/* =========================================================
+   DEGRADÊ SOBRE A IMAGEM
+========================================================= */
+
+.sidebar::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    width: 100% !important;
+    height: 55% !important;
+
+    background: linear-gradient(
+        to bottom,
+
+        #06294a 0%,
+
+        rgba(6, 41, 74, .97) 12%,
+
+        rgba(6, 41, 74, .88) 27%,
+
+        rgba(6, 41, 74, .68) 43%,
+
+        rgba(6, 41, 74, .42) 60%,
+
+        rgba(6, 41, 74, .18) 76%,
+
+        rgba(6, 41, 74, 0) 100%
+    ) !important;
+
+    z-index: 2 !important;
+
+    pointer-events: none !important;
 }
 
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.sidebar-content {
+    position: relative !important;
+
+    z-index: 5 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    box-sizing: border-box !important;
+
+padding: 28px 18px 16px;}
 
 
+/* =========================================================
+   LOGO
+========================================================= */
+/* =========================================================
+   LOGO + NEXA
+========================================================= */
 
 .sidebar-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 0; /* ↓ antes 25px */
-}
-.sidebar-logo img {
-    width: 120px; /* ↓ levemente menor */
-    margin: 0 auto;
-    display: block;
+    width: 100% !important;
+
+    height: 58px !important;
+
+    margin: 0 0 20px 0 !important;
+
+    padding: 0 10px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 11px !important;
+
+    box-sizing: border-box !important;
 }
 
+.sidebar-logo img {
+    width: 46px !important;
+
+    height: 46px !important;
+
+    max-width: 46px !important;
+
+    flex-shrink: 0 !important;
+
+    display: block !important;
+
+    object-fit: contain !important;
+}
+
+
+/* Texto ao lado da logo */
+
+.sidebar-brand-text {
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    justify-content: center !important;
+
+    min-width: 0 !important;
+}
+
+.sidebar-brand-text strong {
+    display: block !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    color: #ffffff !important;
+
+    font-family: Arial, sans-serif !important;
+
+    font-size: 24px !important;
+
+    font-weight: 700 !important;
+
+    line-height: 25px !important;
+
+    letter-spacing: .5px !important;
+}
+
+.sidebar-brand-text span {
+    display: block !important;
+
+    margin-top: 3px !important;
+
+    color: rgba(255,255,255,.78) !important;
+
+    font-family: Arial, sans-serif !important;
+
+    font-size: 9px !important;
+
+    font-weight: 400 !important;
+
+    line-height: 12px !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
 
 .menu {
-    display: flex;
-    flex-direction: column;
-    padding: 8px 12px; /* ↓ antes 25px 18px */
-    flex: 1;
-    gap: 4px; /* ↓ antes 14px */
+    width: 100% !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    gap: 0px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
 }
 
-/* ITENS DO MENU */
+
+/* =========================================================
+   TÍTULOS
+========================================================= */
+
+.menu-title {
+    width: auto !important;
+
+    height: auto !important;
+
+    margin: 7px 10px 10px !important;
+    padding: 0 !important;
+
+    color: rgba(255, 255, 255, 0.62) !important;
+
+    font-family: Arial, sans-serif !important;
+
+    font-size: 11px !important;
+
+    font-weight: 500 !important;
+
+    line-height: 16px !important;
+
+    letter-spacing: 0.2px !important;
+
+    text-transform: uppercase !important;
+}
+
+.menu-title:not(:first-child) {
+    margin-top: 27px !important;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
 .menu a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    width: 100% !important;
 
-    padding: 9px 11px; /* ↓ antes 16px 18px */
-    border-radius: 12px;
+    box-sizing: border-box !important;
 
-    color: #cbd5e1;
-    text-decoration: none;
+    display: flex !important;
 
-    transition: 0.2s;
-    font-size: 15px; /* ↓ leve ajuste */
+    align-items: center !important;
+
+
+    border-radius: 10px !important;
+
+    background: transparent !important;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
+
+    font-family: Arial, sans-serif !important;
+
+   
+    font-weight: 500 !important;
+
+    transition: background .2s ease !important;
+
+        width: 100% !important;
+
+    height: 39px !important;
+    min-height: 39px !important;
+
+    padding: 0 15px !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 14px !important;
+
+    border-radius: 8px !important;
+
+    font-size: 13px !important;
 }
-.menu i {
-    font-size: 15px; /* ↓ antes 18px */
-    width: 18px;
-    text-align: center;
+/* =========================================================
+   ÍCONES
+========================================================= */
+
+.menu a i {
+    width: 22px !important;
+
+    min-width: 22px !important;
+
+    margin: 0 !important;
+
+    color: rgba(255,255,255,.88) !important;
+
+    font-size: 17px !important;
+
+    text-align: center !important;
 }
 
+
+/* =========================================================
+   TEXTO
+========================================================= */
+
+.menu a span {
+    color: #ffffff !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.menu a:hover {
+    background: rgba(255,255,255,.08) !important;
+}
+
+
+/* =========================================================
+   ATIVO
+========================================================= */
 
 .menu a.active {
-    background: #0a66c2;
-    color: #fff;
-    font-weight: bold;
-    border-left: 4px solid #19aaed; /* detalhe visual moderno */
+    background: #0878e5 !important;
+
+    color: #ffffff !important;
+
+    box-shadow: none !important;
 }
 
-.menu a.active i {
-    color: #fff;
+.menu a.active i,
+.menu a.active span {
+    color: #ffffff !important;
 }
-/* SAIR */
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
 .logout-item {
-    margin: 10px 12px 30px 12px; /* 🔥 sobe ele */
-    padding: 12px;
+    width: 100% !important;
 
-    border-radius: 10px;
+    height: 50px !important;
 
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    min-height: 50px !important;
 
-    color: #cbd5e1;
-    text-decoration: none;
+    margin-top: auto !important;
 
-    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 0 17px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 16px !important;
+
+    border: 1px solid rgba(255,255,255,.25) !important;
+
+    border-radius: 9px !important;
+
+    background: rgba(3, 29, 52, .30) !important;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
+
+    font-size: 14px !important;
+
+    font-weight: 600 !important;
 }
-/* LOGO DO SAIR */
+
 .logout-item i {
-    font-size: 16px;
+    width: 22px !important;
+
+    min-width: 22px !important;
+
+    color: #ffffff !important;
+
+    font-size: 18px !important;
+
+    text-align: center !important;
+}
+
+.logout-item span {
+    color: #ffffff !important;
 }
 
 .logout-item:hover {
-    background: #dc2626;
-    color: #fff;
-}     
-
-
+    background: rgba(255,255,255,.08) !important;
+}

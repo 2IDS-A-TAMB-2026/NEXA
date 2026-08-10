@@ -1,372 +1,688 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+   /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================================================
+           ÁREA PRINCIPAL
+        ========================================================= */
+
+        .overlay {
+            min-height: 100vh;
+
+            padding-top: 75px;
+            padding-left: 270px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+
+            background: #f4f7fb;
+        }
+
+
+        /* =========================================================
+           HEADER — MANTIDO DO SEGUNDO CÓDIGO
+        ========================================================= */
+
+        .dashboard-header {
+
+            position: fixed;
+
+            top: 0;
+            left: 270px;
+            right: 0;
+
+            height: 75px;
+
+            background: #fff;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 0 32px;
+
+            border-bottom: 1px solid #edf2f7;
+
+            box-shadow: 0 4px 20px rgba(15, 42, 68, .05);
+
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-title h1 {
+
+            color: #17325c;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            line-height: 1.1;
+        }
+
+        .header-title p {
+
+            margin-top: 6px;
+
+            color: #667085;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================================================
+           CARD PRINCIPAL
+        ========================================================= */
+
+        .card {
+
+            width: 95%;
+            max-width: 1100px;
+
+            background: #fff;
+
+            border-radius: 24px;
+
+            padding: 30px 55px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, .12);
+
+            position: relative;
+
+            overflow: hidden;
+           
+    transform: translateX(-100px);
 }
-
-/* FUNDO COM IMAGEM */
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg') no-repeat center/cover;
-}
+        
 
 
-/* SIDEBAR */
-.sidebar {
-    width: 270px;
-    background: #0f2a44;
-    color: #fff;
+        /* =========================================================
+           DETALHES DECORATIVOS
+        ========================================================= */
 
-    position: fixed;
-    /* 🔥 fixa */
-    top: 0;
-    left: 0;
+        .card::before {
 
-    height: 100vh;
-    /* ocupa tela inteira */
-    display: flex;
-    flex-direction: column;
+            content: "";
 
+            position: absolute;
 
-}
+            width: 180px;
+            height: 180px;
 
+            border-radius: 50%;
 
+            background: #f1f7ff;
 
-.sidebar h1 {
-    text-align: center;
-    margin-bottom: 30px;
-}
+            top: -100px;
+            right: -80px;
 
-.sidebar a {
-    display: block;
-    padding: 10px;
-    margin-bottom: 8px;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-}
+            z-index: 0;
+        }
 
 
+        /* =========================================================
+           CABEÇALHO DO PERFIL
+        ========================================================= */
 
-.sidebar-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 0;
-    /* ↓ antes 25px */
-}
+        .perfil-header {
 
-.sidebar-logo img {
-    width: 120px;
-    /* ↓ levemente menor */
-    margin: 0 auto;
-    display: block;
-}
+            display: flex;
 
+            justify-content: space-between;
 
-.menu {
-    display: flex;
-    flex-direction: column;
-    padding: 8px 12px;
-    /* ↓ antes 25px 18px */
-    flex: 1;
-    gap: 4px;
-    /* ↓ antes 14px */
-}
+            align-items: center;
 
-/* ITENS DO MENU */
-.menu a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+            margin-bottom: 35px;
 
-    padding: 9px 11px;
-    /* ↓ antes 16px 18px */
-    border-radius: 12px;
+            padding-bottom: 30px;
 
-    color: #cbd5e1;
-    text-decoration: none;
+            border-bottom: 1px solid #edf2f8;
 
-    transition: 0.2s;
-    font-size: 15px;
-    /* ↓ leve ajuste */
-}
+            position: relative;
 
-.menu i {
-    font-size: 15px;
-    /* ↓ antes 18px */
-    width: 18px;
-    text-align: center;
-}
+            overflow: hidden;
+
+            z-index: 1;
+        }
 
 
-.menu a.active {
-    background: #0a66c2;
-    color: #fff;
-    font-weight: bold;
-    border-left: 4px solid #19aaed;
-    /* detalhe visual moderno */
-}
+        /* =========================================================
+           ESQUERDA DO PERFIL
+        ========================================================= */
 
-.menu a.active i {
-    color: #fff;
-}
+        .perfil-esquerda {
 
-/* SAIR */
-.logout-item {
-    margin: 10px 12px 30px 12px;
-    /* 🔥 sobe ele */
-    padding: 12px;
+            display: flex;
 
-    border-radius: 10px;
+            align-items: center;
 
-    display: flex;
-    align-items: center;
-    gap: 10px;
+            gap: 18px;
 
-    color: #cbd5e1;
-    text-decoration: none;
-
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* LOGO DO SAIR */
-.logout-item i {
-    font-size: 16px;
-}
-
-.logout-item:hover {
-    background: #dc2626;
-    color: #fff;
-}
-
-/* CARD */
-.card {
-    margin-top: 40px;
-    width: 100%;
-    background: #f4f4f4;
-    border-radius: 25px;
-    padding: 40px;
-    margin: 40px auto;
-    max-width: 950px;
-}
-
-/* TITULO */
-.card h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #0a66c2;
-}
-
-/* SUBTITULO */
-.subtitle {
-    color: #1565c0;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-/* GRID */
-.form-grid {
-    display: grid;
-    /*grid-template-columns:1fr 1fr;
-    gap:15px;*/
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/* INPUT */
-.input-box {
-    background: #e6e6e6;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    padding: 15px;
-}
-
-.input-box i {
-    color: #1565c0;
-    margin-right: 10px;
-}
-
-.input-box input {
-    border: none;
-    background: transparent;
-    outline: none;
-    width: 100%;
-}
-
-/* FULL */
-.full {
-    grid-column: span 2;
-}
-
-/* BOTÃO */
-.btn {
-    margin-top: 25px;
-    width: 260px;
-    height: 55px;
-    border: none;
-    border-radius: 30px;
-    /*background: #1565c0;*/
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.btn:hover {
-    background: #0d4fa3;
-}
-
-#editar-perfil {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* Centraliza o form-grid horizontalmente */
-    width: 100%;
-}
-
-.form-grid {
-    width: 100%;
-    margin: auto;
-    max-width: 900px;
-}
-
-.card {
-    width: 100%;
-    max-width: 850px;
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-}
-
-.card h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #0f2a44;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.subtitle {
-    color: #0a66c2;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.card h3 {
-    font-size: 16px;
-    color: #0a66c2;
-    margin-left: 5px;
-    font-style: italic;
-}
-
-button {
-    font-size: 17px;
-    padding: 1em 2.7em;
-    font-weight: 500;
-    /*background: #0A66c2;*/
-    color: white;
-    border: none;
-    position: relative;
-    overflow: hidden;
-    border-radius: 0.6em;
-    cursor: pointer;
-}
-
-.gradient {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    border-radius: 0.6em;
-    margin-top: -0.25em;
-    background-image: linear-gradient(rgba(0, 0, 0, 0),
-            rgba(0, 0, 0, 0),
-            rgba(0, 0, 0, 0.3));
-}
-
-.label {
-    position: relative;
-    top: -1px;
-}
-
-.transition {
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    transition-duration: 500ms;
-    background-color: #1e4b75;
-    border-radius: 9999px;
-    width: 0;
-    height: 0;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-button:hover .transition {
-    width: 14em;
-    height: 14em;
-}
-
-button:active {
-    transform: scale(0.97);
-}
-
-/*==========================*/
-/*botao de salvar*/
+            z-index: 2;
+        }
 
 
-.salvar {
-    display: none;
-    background: #28a745;
+        /* =========================================================
+           AVATAR
+        ========================================================= */
 
-    font-size: 17px;
-    padding: 1em 2.7em;
-    font-weight: 500;
-    color: white;
-    border: none;
-    position: relative;
-    overflow: hidden;
-    border-radius: 0.6em;
-    cursor: pointer;
-}
+        .avatar {
 
-.salvar:hover {
-    background: #175f28;
-}
+            width: 75px;
+            height: 75px;
 
-.transition_salvar {
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    transition-duration: 500ms;
-    background-color: #175f28;
-    border-radius: 9999px;
-    width: 0;
-    height: 0;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
+            border-radius: 50%;
 
-.salvar:hover .transition_salvar {
-    width: 14em;
-    height: 14em;
-}
+            background: #0a66c2;
 
-.salvar:active {
-    transform: scale(0.97);
-}
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-size: 31px;
+
+            font-weight: bold;
+
+            color: white;
+
+            flex-shrink: 0;
+
+            box-shadow:
+                0 8px 20px rgba(10, 102, 194, .22);
+        }
+
+
+        /* =========================================================
+           TEXTO DO PERFIL
+        ========================================================= */
+
+        .perfil-info h1 {
+
+            font-size: 36px;
+
+            color: #12355b;
+
+            margin-bottom: 6px;
+
+            text-align: left;
+        }
+
+        .perfil-info p {
+
+            font-size: 16px;
+
+            color: #6c7a8e;
+
+            margin-bottom: 12px;
+        }
+
+        .linha {
+
+            display: block;
+
+            width: 60px;
+
+            height: 4px;
+
+            border-radius: 20px;
+
+            background: #0a66c2;
+        }
+
+
+        /* =========================================================
+           LADO DIREITO — CAPACETE
+        ========================================================= */
+
+        .perfil-direita {
+
+            position: relative;
+
+            width: 230px;
+            height: 145px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fundo-capacete {
+
+            position: absolute;
+
+            right: -50px;
+
+            width: 220px;
+            height: 220px;
+
+            background: #eef5ff;
+
+            border-radius: 50%;
+        }
+
+        .circulo {
+
+            position: absolute;
+
+            right: 20px;
+
+            width: 115px;
+            height: 115px;
+
+            border-radius: 50%;
+
+            background: rgba(10, 102, 194, .06);
+        }
+
+        .perfil-direita i {
+
+            font-size: 75px;
+
+            color: #0a66c2;
+
+            z-index: 2;
+
+            filter:
+                drop-shadow(
+                    0 10px 18px
+                    rgba(10, 102, 194, .25)
+                );
+        }
+
+
+        /* =========================================================
+           PONTILHADOS
+        ========================================================= */
+
+        .dots {
+
+            position: absolute;
+
+            width: 70px;
+            height: 70px;
+
+            background-image:
+                radial-gradient(
+                    #c9dcf9 1.5px,
+                    transparent 1.5px
+                );
+
+            background-size: 12px 12px;
+
+            opacity: .9;
+
+            z-index: 3;
+        }
+
+        .dots1 {
+
+            top: 15px;
+            left: 10px;
+        }
+
+        .dots2 {
+
+            bottom: 10px;
+            right: 10px;
+        }
+
+
+        /* =========================================================
+           SUBTÍTULOS
+        ========================================================= */
+
+        .subtitle {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: .5px;
+
+            text-transform: uppercase;
+
+            color: #0a66c2;
+
+            margin-top: 25px;
+
+            margin-bottom: 15px;
+        }
+
+        .subtitle i {
+
+            font-size: 15px;
+        }
+
+
+        /* =========================================================
+           FORMULÁRIO
+        ========================================================= */
+
+        #editar-perfil {
+
+            width: 100%;
+        }
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+
+            width: 100%;
+
+            margin: 0;
+        }
+
+        .full {
+
+            grid-column: span 2;
+        }
+
+
+        /* =========================================================
+           INPUT BOX
+        ========================================================= */
+
+        .input-box {
+
+            background: #f5f7fa;
+
+            border-radius: 12px;
+
+            padding: 14px 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            border: 1px solid #e1e6ec;
+
+            min-height: 52px;
+
+            transition: .2s;
+        }
+
+        .input-box i {
+
+            color: #0a66c2;
+
+            margin-right: 12px;
+
+            font-size: 16px;
+
+            width: 20px;
+
+            text-align: center;
+
+            flex-shrink: 0;
+        }
+
+        .input-box input {
+
+            border: none;
+
+            background: transparent;
+
+            outline: none;
+
+            width: 100%;
+
+            font-size: 15px;
+
+            color: #333;
+        }
+
+        .input-box input:disabled {
+
+            color: #4b5563;
+
+            cursor: default;
+        }
+
+
+        /* =========================================================
+           INPUT EDITÁVEL
+        ========================================================= */
+
+        #formulario-funcional .input-box {
+
+            background: #fff;
+
+            border-color: #d5dce5;
+        }
+
+        #formulario-funcional .input-box:focus-within {
+
+            border-color: #0a66c2;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(10, 102, 194, .12);
+        }
+
+
+        /* =========================================================
+           AVISOS
+        ========================================================= */
+
+        #clique-editar,
+        #mudar-senha,
+        #atencao {
+
+            display: block;
+
+            font-size: 13px;
+
+            color: #6c7a8e;
+
+            margin-bottom: 15px;
+        }
+
+        #clique-editar {
+
+            font-style: italic;
+        }
+
+        #atencao {
+
+            display: none;
+
+            padding: 10px 14px;
+
+            background: #fff8e6;
+
+            border: 1px solid #f3d58a;
+
+            border-radius: 10px;
+
+            color: #8a6500;
+        }
+
+        #mudar-senha {
+
+            display: none;
+
+            margin-top: 12px;
+
+            font-style: italic;
+        }
+
+
+        /* =========================================================
+           FORMULÁRIO DE EDIÇÃO
+        ========================================================= */
+
+        #formulario-funcional {
+
+            display: none;
+
+            width: 100%;
+        }
+
+
+        /* =========================================================
+           SENHA
+        ========================================================= */
+
+        #senhaBox,
+        #confirmarSenhaBox {
+
+            width: 100%;
+        }
+
+
+        /* =========================================================
+           BOTÕES
+        ========================================================= */
+
+        #botoes-edicao {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            margin-top: 30px;
+
+            width: 100%;
+        }
+
+        .btn {
+
+            border: none;
+
+            height: 48px;
+
+            min-width: 200px;
+
+            padding: 0 28px;
+
+            border-radius: 25px;
+
+            background: #0a66c2;
+
+            color: #fff;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                background .2s,
+                transform .1s;
+        }
+
+        .btn:hover {
+
+            background: #084d93;
+        }
+
+        .btn:active {
+
+            transform: scale(.98);
+        }
+
+
+        /* =========================================================
+           GRUPO DE AÇÕES
+        ========================================================= */
+
+        #grupo-acoes {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+        }
+
+        #grupo-acoes p {
+
+            display: none;
+        }
+
+
+        /* =========================================================
+           BOTÃO CANCELAR
+        ========================================================= */
+
+        #grupo-acoes .btn:first-child {
+
+            background: #eef2f7;
+
+            color: #344054;
+        }
+
+        #grupo-acoes .btn:first-child:hover {
+
+            background: #e2e8f0;
+        }
+
+
+        /* =========================================================
+           BOTÃO SALVAR
+        ========================================================= */
+
+        .btn.salvar {
+
+            background: #28a745;
+
+            color: #fff;
+
+            display: flex;
+        }
+
+        .btn.salvar:hover {
+
+            background: #1e7e34;
+        }
+
