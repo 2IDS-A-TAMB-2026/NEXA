@@ -89,13 +89,13 @@
         <div>
             <h1 id="safety">Safety at the <span id="core">Core</span></h1>
             <p id="paragrafo_inst" style="text-align: justify;">
-    A segurança do trabalho é um fator essencial para a proteção da vida,
-    a redução de acidentes e o cumprimento das normas regulamentadoras.
-    A NEXA utiliza visão computacional e análise de dados para monitorar
-    o uso correto de Equipamentos de Proteção Individual (EPIs) em tempo
-    real, promovendo ambientes de trabalho mais seguros, eficientes e
-    alinhados às exigências legais.
-</p>
+                A segurança do trabalho é um fator essencial para a proteção da vida,
+                a redução de acidentes e o cumprimento das normas regulamentadoras.
+                A NEXA utiliza visão computacional e análise de dados para monitorar
+                o uso correto de Equipamentos de Proteção Individual (EPIs) em tempo
+                real, promovendo ambientes de trabalho mais seguros, eficientes e
+                alinhados às exigências legais.
+            </p>
 
             <div class="hero-buttons">
                 <a href="<?= site_url('/login') ?>" class="btn-primary">Acessar Plataforma</a>

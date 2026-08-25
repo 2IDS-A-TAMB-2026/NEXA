@@ -1,0 +1,913 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333333;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* =========================================================
+   ESTRUTURA PRINCIPAL
+   ========================================================= */
+
+.login-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+/* LADO ESQUERDO */
+
+.left-side {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 4rem;
+    background: #000000;
+    overflow: hidden;
+}
+
+.video-carousel {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.video-carousel video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    transition: filter 0.3s ease;
+}
+
+.left-content {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    max-width: 480px;
+}
+
+.left-content .linha {
+    width: 50px;
+    height: 4px;
+    background-color: #0A66C2;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+}
+
+.left-content h2 {
+    font-size: 2.25rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.left-content h2 strong {
+    font-weight: 700;
+    display: block;
+}
+
+.left-content p {
+    font-size: 1.05rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+}
+
+
+/* LADO DIREITO */
+
+.right-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+    background-color: #ffffff;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.right-logo {
+    max-width: 160px;
+    height: auto;
+    margin-bottom: 2rem;
+}
+
+.login-form-area {
+    width: 100%;
+    max-width: 360px;
+}
+
+.titulo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.subtitulo {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+.erro-login {
+    background-color: #fee2e2;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #fecaca;
+}
+
+
+/* INPUTS */
+
+.input-box {
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.input-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 2.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    background-color: #f8fafc;
+    color: #1e293b;
+    transition: all 0.3s ease;
+}
+
+.input-box input:focus {
+    border-color: #0A66C2;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.15);
+}
+
+.input-box input:focus + i,
+.input-box input:focus ~ i {
+    color: #0A66C2;
+}
+
+
+/* BOTÃO LOGIN */
+
+.btn-login {
+    display: block;
+    width: auto;
+    min-width: 140px;
+    margin-left: auto;
+    align-self: flex-end;
+    margin-top: 0.5rem;
+    padding: 0.875rem 1.75rem;
+
+    background-color: #0A66C2;
+    color: #ffffff;
+    border: 2px solid #0A66C2;
+    border-radius: 8px;
+
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #084e96;
+    border-color: #084e96;
+    transform: translateY(-1px);
+}
+
+
+/* LINKS E RODAPÉ */
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.links a {
+    color: #0A66C2;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+/* =========================================================
+   MENU DE ACESSIBILIDADE
+   ========================================================= */
+
+.access-menu {
+    position: fixed !important;
+
+    top: 20px !important;
+    right: 80px !important;
+    left: auto !important;
+
+    width: auto !important;
+    height: 35px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    z-index: 99999 !important;
+}
+
+
+/* =========================================================
+   ENGRENAGEM — SEMPRE NO DIREITO
+   ========================================================= */
+.gear-btn {
+    position: relative !important;
+    order: 2 !important;
+    flex-shrink: 0 !important;
+
+    width: 35px !important;
+    height: 35px !important;
+
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+
+    color: #808080 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    cursor: pointer;
+    font-size: 20px;
+
+    /* animação da engrenagem */
+    transition:
+        transform 0.55s cubic-bezier(.34, 1.56, .64, 1),
+        color 0.25s ease;
+}
+
+
+/* ENGRENAGEM GIRANDO AO ABRIR */
+
+.access-menu:has(.access-options.active) .gear-btn {
+    transform: rotate(180deg);
+}
+.gear-btn:hover {
+    color: #555 !important;
+}
+
+
+/* =========================================================
+   OPÇÕES — SEMPRE À ESQUERDA DA ENGRENAGEM
+   ========================================================= */
+.access-options {
+    position: absolute !important;
+
+    top: 10% !important;
+    right: 40px !important;
+    left: auto !important;
+
+    width: max-content !important;
+    height: 35px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(-50%);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+
+.access-options.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* MENU ABERTO */
+
+
+/* =========================================================
+   ÍCONES
+   ========================================================= */
+.access-btn {
+    width: 32px !important;
+    height: 32px !important;
+
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+
+    background: transparent !important;
+
+    color: #0A66C2 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    cursor: pointer;
+    font-size: 16px;
+
+    /* estado inicial */
+    opacity: 0;
+
+    transform:
+        translateX(25px)
+        rotate(90deg)
+        scale(0.4);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.55s cubic-bezier(.34, 1.56, .64, 1),
+        color 0.15s ease;
+}
+
+/* =========================================================
+   ANIMAÇÃO DOS ÍCONES
+   ========================================================= */
+
+.access-options.active .access-btn {
+    opacity: 1;
+
+    transform:
+        translateX(0)
+        rotate(0deg)
+        scale(1);
+}
+
+
+/* Cada ícone entra em um momento diferente */
+
+.access-options.active .access-btn:nth-child(1) {
+    transition-delay: 0.05s;
+}
+
+.access-options.active .access-btn:nth-child(2) {
+    transition-delay: 0.10s;
+}
+
+.access-options.active .access-btn:nth-child(3) {
+    transition-delay: 0.15s;
+}
+
+.access-options.active .access-btn:nth-child(4) {
+    transition-delay: 0.20s;
+}
+
+.access-options.active .access-btn:nth-child(5) {
+    transition-delay: 0.25s;
+}
+
+
+.access-btn:hover {
+    background: transparent !important;
+    color: #084e96 !important;
+
+    transform: translateY(-3px) !important;
+}
+
+.access-btn:focus,
+.access-btn:active {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+/* SOMBRA DOS ÍCONES */
+
+.access-btn i {
+    font-size: 17px;
+
+    filter: drop-shadow(
+        0 2px 3px rgba(10, 102, 194, 0.20)
+    );
+}
+
+.access-btn:hover i {
+    filter: drop-shadow(
+        0 3px 4px rgba(10, 102, 194, 0.30)
+    );
+}
+
+ /* =========================================================
+    MODO ESCURO
+    ========================================================= */
+
+body.dark-mode,
+body.dark {
+    background-color: #0b1016;
+    color: #f1f5f9;
+}
+
+body.dark-mode .right-side,
+body.dark .right-side {
+    background-color: #0f172a;
+}
+
+body.dark-mode .titulo,
+body.dark .titulo {
+    color: #f8fafc;
+}
+
+body.dark-mode .subtitulo,
+body.dark .subtitulo {
+    color: #94a3b8;
+}
+
+body.dark-mode .input-box input,
+body.dark .input-box input {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-mode .input-box input::placeholder,
+body.dark .input-box input::placeholder {
+    color: #64748b;
+}
+
+body.dark-mode .input-box input:focus,
+body.dark .input-box input:focus {
+    border-color: #38bdf8;
+    background-color: #1e293b;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+body.dark-mode .input-box i,
+body.dark .input-box i {
+    color: #64748b;
+}
+
+body.dark-mode .btn-login,
+body.dark .btn-login {
+    background-color: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+}
+
+body.dark-mode .btn-login:hover,
+body.dark .btn-login:hover {
+    background-color: #0369a1;
+    border-color: #0369a1;
+}
+
+body.dark-mode .links a,
+body.dark .links a {
+    color: #38bdf8;
+}
+
+body.dark-mode .footer,
+body.dark .footer {
+    color: #64748b;
+}
+
+body.dark-mode .gear-btn,
+body.dark .gear-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .access-options,
+body.dark .access-options {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .access-btn,
+body.dark .access-btn {
+    background: transparent !important;
+    border: none !important;
+    color: #38bdf8 !important;
+}
+
+body.dark-mode .access-btn:hover,
+body.dark .access-btn:hover {
+    background: transparent !important;
+    color: #7dd3fc !important;
+}
+
+body.dark-mode .erro-login,
+body.dark .erro-login {
+    background-color: #450a0a;
+    color: #fca5a5;
+    border-color: #7f1d1d;
+}
+/* =========================================================
+   ALTO CONTRASTE
+   ========================================================= */
+
+body.alto-contraste,
+body.high-contrast,
+body.contraste {
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   TEXTOS
+   ========================================================= */
+
+body.alto-contraste *,
+body.high-contrast *,
+body.contraste * {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   LADO DIREITO
+   ========================================================= */
+
+body.alto-contraste .right-side,
+body.high-contrast .right-side,
+body.contraste .right-side {
+    background-color: #000000 !important;
+}
+
+
+/* =========================================================
+   TÍTULO E SUBTÍTULO
+   ========================================================= */
+
+body.alto-contraste .titulo,
+body.high-contrast .titulo,
+body.contraste .titulo,
+body.alto-contraste .subtitulo,
+body.high-contrast .subtitulo,
+body.contraste .subtitulo {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   TEXTO DO LADO ESQUERDO
+   ========================================================= */
+
+body.alto-contraste .left-content,
+body.high-contrast .left-content,
+body.contraste .left-content,
+
+body.alto-contraste .left-content h2,
+body.high-contrast .left-content h2,
+body.contraste .left-content h2,
+
+body.alto-contraste .left-content p,
+body.high-contrast .left-content p,
+body.contraste .left-content p {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   LINHA DECORATIVA
+   ========================================================= */
+
+body.alto-contraste .left-content .linha,
+body.high-contrast .left-content .linha,
+body.contraste .left-content .linha {
+    background-color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+body.alto-contraste .input-box input,
+body.high-contrast .input-box input,
+body.contraste .input-box input {
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* PLACEHOLDER */
+
+body.alto-contraste .input-box input::placeholder,
+body.high-contrast .input-box input::placeholder,
+body.contraste .input-box input::placeholder {
+    color: #FFFF00 !important;
+    opacity: 1 !important;
+}
+
+
+/* ÍCONES DOS INPUTS */
+
+body.alto-contraste .input-box i,
+body.high-contrast .input-box i,
+body.contraste .input-box i {
+    color: #FFFF00 !important;
+}
+
+
+/* FOCO DO INPUT */
+
+body.alto-contraste .input-box input:focus,
+body.high-contrast .input-box input:focus,
+body.contraste .input-box input:focus {
+    border-color: #FFFF00 !important;
+
+    box-shadow: 0 0 0 3px #FFFF00 !important;
+}
+
+
+
+/* =========================================================
+   BOTÃO LOGIN — ALTO CONTRASTE
+   ========================================================= */
+
+body.alto-contraste .btn-login,
+body.high-contrast .btn-login,
+body.contraste .btn-login {
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* HOVER */
+
+body.alto-contraste .btn-login:hover,
+body.high-contrast .btn-login:hover,
+body.contraste .btn-login:hover {
+    background-color: #FFFF00 !important;
+    color: #000000 !important;
+    border: 2px solid #FFFF00 !important;
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+body.alto-contraste .links a,
+body.high-contrast .links a,
+body.contraste .links a {
+    color: #FFFF00 !important;
+
+    text-decoration: underline !important;
+}
+
+
+/* =========================================================
+   RODAPÉ
+   ========================================================= */
+
+body.alto-contraste .footer,
+body.high-contrast .footer,
+body.contraste .footer {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   MENU DE ACESSIBILIDADE
+   ========================================================= */
+
+body.alto-contraste .gear-btn,
+body.high-contrast .gear-btn,
+body.contraste .gear-btn {
+    background: transparent !important;
+    color: #FFFF00 !important;
+
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+body.alto-contraste .access-options,
+body.high-contrast .access-options,
+body.contraste .access-options {
+    background: transparent !important;
+
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+body.alto-contraste .access-btn,
+body.high-contrast .access-btn,
+body.contraste .access-btn {
+    background: transparent !important;
+    color: #FFFF00 !important;
+
+    border: none !important;
+}
+
+
+body.alto-contraste .access-btn:hover,
+body.high-contrast .access-btn:hover,
+body.contraste .access-btn:hover {
+    background: transparent !important;
+    color: #FFFFFF !important;
+}
+
+
+/* =========================================================
+   MENSAGEM DE ERRO
+   ========================================================= */
+
+body.alto-contraste .erro-login,
+body.high-contrast .erro-login,
+body.contraste .erro-login {
+    background-color: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+body.alto-contraste .logo-light,
+body.high-contrast .logo-light,
+body.contraste .logo-light {
+    display: none !important;
+}
+
+body.alto-contraste .logo-dark,
+body.high-contrast .logo-dark,
+body.contraste .logo-dark {
+    display: block !important;
+}
+ /* =========================================================
+    RESPONSIVIDADE
+    ========================================================= */
+
+@media (max-width: 900px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .left-side {
+        display: none;
+    }
+
+    .right-side {
+        width: 100%;
+        height: 100vh;
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .access-menu {
+        top: 15px;
+        right: 15px;
+    }
+
+    .gear-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .access-options {
+        right: calc(100% + 5px);
+        flex-wrap: wrap;
+        width: 170px;
+    }
+}
+
+/* =========================================================
+   FORÇA BOTÃO LOGIN NO ALTO CONTRASTE
+   ========================================================= */
+
+body.alto-contraste .btn-login,
+body.high-contrast .btn-login,
+body.contraste .btn-login {
+    background: #000000 !important;
+    background-color: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+    border-color: #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* HOVER */
+
+body.alto-contraste .btn-login:hover,
+body.high-contrast .btn-login:hover,
+body.contraste .btn-login:hover {
+    background: #000000 !important;
+    background-color: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+    border-color: #FFFF00 !important;
+
+    box-shadow: none !important;
+
+    transform: translateY(-1px);
+}
+
+
+/* ACTIVE */
+
+body.alto-contraste .btn-login:active,
+body.high-contrast .btn-login:active,
+body.contraste .btn-login:active {
+    background: #000000 !important;
+    background-color: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+    border-color: #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+/* ==========================================================
+   CONFIGURAÇÕES VLIBRAS
+========================================================== */
+
+/* Esconde o botão/bolinha azul padrão do VLibras */
+[vw-access-button] {
+    display: none !important;
+}
+
+/* Garante que o avatar do robô fique visível por cima dos elementos */
+.vw-plugin-wrapper {
+    z-index: 999999 !important;
+}

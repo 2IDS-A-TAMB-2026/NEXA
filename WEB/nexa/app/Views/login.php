@@ -25,10 +25,6 @@
     >
 
     <!-- ACESSIBILIDADE -->
-    <link
-        rel="stylesheet"
-        href="<?= base_url('assets/css/acessibilidade.css') ?>"
-    >
 
     <link
         rel="stylesheet"
@@ -182,12 +178,20 @@
 
 
             <!-- LOGO -->
+   <div class="logo-container">
 
-            <img
-                class="right-logo"
-                src="<?= base_url('assets/images/logo-nexa.png') ?>"
-                alt="NEXA - Safety at the Core"
-            >
+    <img 
+        class="logo-light"
+        src="<?= base_url('assets/images/logo_transparente.png') ?>"
+        alt="NEXA - Safety at the Core"
+    >
+
+    <img 
+        class="logo-dark"
+        src="<?= base_url('assets/images/logo_escura.png') ?>"
+        alt="NEXA - Safety at the Core"
+    >
+</div>
 
 
             <div class="login-form-area">

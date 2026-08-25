@@ -507,7 +507,7 @@ body{
 
                 <div
                     class="resultado-item"
-                    id="colete">
+                    id="oculos">
                 </div>
 
             </div>
@@ -532,25 +532,75 @@ body{
 
 </div>
 
-
 <script>
 
 let analisando = false;
-
+let streamCamera = null;
 
 /* =========================
-INICIAR CAMERA
+   INICIAR CÂMERA
 ========================= */
 
 async function iniciarCamera(){
 
     const video = document.getElementById('camera');
 
+    try {
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            throw new Error(
+                'Seu navegador não permite acesso à câmera.'
+            );
+        }
+
+        streamCamera = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: 'user',
+                width: {
+                    ideal: 1280
+                },
+                height: {
+                    ideal: 720
+                }
+            },
+            audio: false
+        });
+
+        video.srcObject = streamCamera;
+
+        await video.play();
+
+        console.log('Câmera iniciada com sucesso.');
+
+    } catch (erro) {
+
+        console.error('Erro ao iniciar câmera:', erro);
+
+        document.querySelector('.record-status').innerHTML = `
+            <span style="
+                width:9px;
+                height:9px;
+                background:#ff4444;
+                border-radius:50%;
+                display:inline-block;
+            "></span>
+            Câmera indisponível
+        `;
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Câmera não disponível',
+            text: 'Permita o acesso à câmera no navegador para utilizar a análise de EPI.',
+            confirmButtonColor: '#0a66c2'
+        });
+
+    }
+
 }
 
 
 /* =========================
-ANÁLISE AUTOMÁTICA
+   ANÁLISE AUTOMÁTICA
 ========================= */
 
 async function analisarAutomatico(){
@@ -561,13 +611,28 @@ async function analisarAutomatico(){
 
     const video = document.getElementById('camera');
 
-    if(video.videoWidth === 0){
+    /*
+     * Verifica se a câmera realmente
+     * está transmitindo uma imagem.
+     */
+
+    if(
+        !video.srcObject ||
+        video.readyState < 2 ||
+        video.videoWidth === 0 ||
+        video.videoHeight === 0
+    ){
+        console.log('Câmera ainda não está pronta.');
         return;
     }
 
     analisando = true;
 
     try{
+
+        /* =========================
+           CRIAR IMAGEM DA CÂMERA
+        ========================= */
 
         const canvas = document.createElement('canvas');
 
@@ -576,21 +641,33 @@ async function analisarAutomatico(){
 
         const ctx = canvas.getContext('2d');
 
-        ctx.drawImage(video, 0, 0);
+        ctx.drawImage(
+            video,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
 
         const imagemBase64 =
-        canvas.toDataURL('image/jpeg');
+            canvas.toDataURL('image/jpeg', 0.85);
+
+
+        /* =========================
+           ENVIAR PARA O BACKEND
+        ========================= */
 
         const resposta = await fetch(
             '<?= base_url('camera_analise/analisar') ?>',
             {
-                method:'POST',
+                method: 'POST',
 
-                headers:{
-                    'Content-Type':'application/json'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
 
-                body:JSON.stringify({
+                body: JSON.stringify({
 
                     imagem: imagemBase64,
 
@@ -600,64 +677,94 @@ async function analisarAutomatico(){
             }
         );
 
-        const dados = await resposta.json();
 
-        console.log(dados);
+        /* =========================
+           VERIFICAR RESPOSTA
+        ========================= */
 
+     /* =========================
+   VERIFICAR RESPOSTA
+========================= */
+
+const textoResposta = await resposta.text();
+
+console.log('Resposta do servidor:', textoResposta);
+
+if (!resposta.ok) {
+
+    throw new Error(
+        `Erro HTTP ${resposta.status}: ${textoResposta}`
+    );
+}
+
+const dados = JSON.parse(textoResposta);
+
+console.log('Dados da IA:', dados);
+
+        /* =========================
+           MOSTRAR RESULTADO
+        ========================= */
 
         if(dados.status){
 
-            document.getElementById('resultado')
-            .style.display = 'block';
+            const resultado =
+                document.getElementById('resultado');
+
+            resultado.style.display = 'block';
 
 
             document.getElementById('mensagem')
-            .innerHTML = dados.mensagem;
+                .textContent =
+                dados.mensagem || 'Resultado da análise';
+
+
+            const epis = dados.epis || {};
 
 
             document.getElementById('capacete')
-            .innerHTML =
-            dados.epis.capacete
-            ? '✅ Capacete detectado'
-            : '❌ Capacete ausente';
+                .textContent =
+                epis.capacete
+                    ? '✅ Capacete detectado'
+                    : '❌ Capacete ausente';
 
 
             document.getElementById('luva')
-            .innerHTML =
-            dados.epis.luva
-            ? '✅ Luva detectada'
-            : '❌ Luva ausente';
+                .textContent =
+                epis.luva
+                    ? '✅ Luva detectada'
+                    : '❌ Luva ausente';
 
-
-            document.getElementById('colete')
-            .innerHTML =
-            dados.epis.colete
-            ? '✅ Colete detectado'
-            : '❌ Colete ausente';
-
+document.getElementById('oculos').innerHTML =
+    dados.epis.oculos
+        ? '✅ Óculos detectados'
+        : '❌ Óculos ausentes';
         }
 
+    } catch(erro){
 
-    }catch(erro){
+        console.error(
+            'Erro durante análise:',
+            erro
+        );
 
-        console.error(erro);
+    } finally {
+
+        analisando = false;
 
     }
-
-    analisando = false;
 
 }
 
 
 /* =========================
-BOTÃO MANUAL
+   BOTÃO MANUAL
 ========================= */
 
 const botao =
-document.querySelector('.btn-analisar');
+    document.querySelector('.btn-analisar');
 
 
-botao.addEventListener('click', ()=>{
+botao.addEventListener('click', function(){
 
     analisarAutomatico();
 
@@ -665,24 +772,53 @@ botao.addEventListener('click', ()=>{
 
 
 /* =========================
-INICIAR SISTEMA
+   INICIAR SISTEMA
 ========================= */
 
-iniciarCamera();
+document.addEventListener(
+    'DOMContentLoaded',
+    function(){
+
+        iniciarCamera();
+
+    }
+);
 
 
 /* =========================
-ANÁLISE AUTOMÁTICA
+   ANÁLISE AUTOMÁTICA
 ========================= */
-
 setInterval(
     analisarAutomatico,
     3000
 );
 
+
+/* =========================
+   ENCERRAR CÂMERA
+========================= */
+
+window.addEventListener(
+    'beforeunload',
+    function(){
+
+        if(streamCamera){
+
+            streamCamera
+                .getTracks()
+                .forEach(function(track){
+
+                    track.stop();
+
+                });
+
+        }
+
+    }
+);
+
 </script>
-
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

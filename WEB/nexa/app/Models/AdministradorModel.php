@@ -11,6 +11,7 @@ class AdministradorModel extends Model
     protected $primaryKey = 'CPF';
 
     protected $allowedFields = [
+        'NOME_COMPLETO',
         'EMAIL_CORPORATIVO',
         'SENHA',
         'TELEFONE',

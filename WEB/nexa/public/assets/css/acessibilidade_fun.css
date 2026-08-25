@@ -1,62 +1,241 @@
-
 /* =========================================================
    ACESSIBILIDADE NO HEADER
    ========================================================= */
 
+/* CONTAINER PAI DA ENGRENAGEM E MENU */
 .header-access {
-    position: relative;
-
+    position: relative !important;
     display: flex;
     align-items: center;
-
-    margin-right: 14px;
+    margin-right: 0.875rem;
 }
 
-
 /* BOTÃO DA ENGRENAGEM */
-
 .gear-btn {
-    width: 42px;
-    height: 42px;
-
+    width: 2.188rem;
+    height: 2.188rem;
     border: none;
-    border-radius: 50%;
-
-    background: #e5e7eb;
-    color: #6b7280;
-
+    outline: none;
+    background: transparent !important;
+    color: #808080;
     display: flex;
     align-items: center;
     justify-content: center;
-
+    padding: 0;
+    margin: 0;
     cursor: pointer;
-
-    font-size: 18px;
-
-    transition:
-        background .25s ease,
-        color .25s ease,
-        transform .3s ease,
-        box-shadow .25s ease;
+    font-size: 1.25rem;
+    transition: color .25s ease, transform .3s ease;
 }
 
-
-/* hover */
-
 .gear-btn:hover {
-    background: #d1d5db;
-    color: #4b5563;
+    background: transparent !important;
+    color: #555;
+    transform: rotate(30deg);
+}
 
-    transform: rotate(35deg);
+/* MENU DE ACESSIBILIDADE (FECHADO POR PADRÃO) */
+.access-options {
+    position: absolute !important;
+    top: calc(100% + 8px) !important; /* Surge logo abaixo da engrenagem */
+    right: 0 !important;              /* Cresce para a esquerda */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
+    
+    /* ESCONDIDO */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(-8px) scale(.96);
+    transform-origin: top right;
+    transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+    z-index: 99999 !important;
+}
 
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, .12);
+/* MENU ABERTO (QUANDO TEM A CLASSE .active) */
+.access-options.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+/* BOTÕES DENTRO DO MENU */
+.access-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    background: transparent !important;
+    color: #808080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: color .2s ease, transform .2s ease;
+}
+
+.access-btn:hover {
+    background: transparent !important;
+    color: #444;
+    transform: translateY(-2px);
+}
+
+.access-btn:focus,
+.access-btn:active {
+    background: transparent !important;
+    outline: none;
+    box-shadow: none;
+}
+
+/* DARK MODE - HEADER E ACESSIBILIDADE */
+body.dark .gear-btn,
+body.dark-mode .gear-btn {
+    background: #374151 !important;
+    color: #d1d5db !important;
+}
+
+body.dark .gear-btn:hover,
+body.dark-mode .gear-btn:hover {
+    background: #4b5563 !important;
+    color: #ffffff !important;
+}
+
+body.dark .access-options,
+body.dark-mode .access-options {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .4) !important;
+}
+
+body.dark .access-btn,
+body.dark-mode .access-btn {
+    background: #374151 !important;
+    color: #d1d5db !important;
+}
+
+body.dark .access-btn:hover,
+body.dark-mode .access-btn:hover {
+    background: #4b5563 !important;
+    color: #ffffff !important;
+}
+
+/* ALTO CONTRASTE - BOTÕES E MENU */
+body.alto-contraste .gear-btn,
+.alto-contraste .gear-btn {
+    background: #000000 !important;
+    color: #ffd600 !important;
+    border: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .access-options,
+.alto-contraste .access-options {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .access-btn,
+.alto-contraste .access-btn {
+    background: #000000 !important;
+    color: #ffd600 !important;
+    border: 1px solid #ffd600 !important;
+}
+
+body.alto-contraste .access-btn:hover,
+.alto-contraste .access-btn:hover {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .header-access {
+        margin-right: 8px;
+    }
+
+    .gear-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .access-options {
+        right: -10px !important;
+        flex-wrap: wrap;
+        width: 170px;
+    }
 }
 
 
 /* =========================================================
-   MENU DE ACESSIBILIDADE
+   2. MENU DE ACESSIBILIDADE (ESCONDIDO POR PADRÃO)
    ========================================================= */
+
+.access-options {
+    position: absolute !important;
+    top: 100% !important; /* Surge logo abaixo do botão da engrenagem */
+    right: 0 !important;   /* Alinha à direita da engrenagem */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.875rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
+    
+    /* ESCONDIDO POR PADRÃO */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none; /* Impede cliques quando invisível */
+    transform: translateY(-10px) scale(.95);
+    transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+    z-index: 99999 !important;
+}
+
+/* MOSTRA APENAS QUANDO RECEBE A CLASSE .active */
+.access-options.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(8px) scale(1) !important;
+}
+
+/* BOTÕES INTERNOS DO MENU */
+.access-btn {
+    width: 2.188rem;
+    height: 2.188rem;
+    border: none;
+    outline: none;
+    border-radius: 0.375rem;
+    background: transparent !important;
+    color: #808080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    font-size: 0.938rem;
+    font-weight: 600;
+    transition: color .2s ease, transform .2s ease;
+}
+
+.access-btn:hover {
+    background: transparent !important;
+    color: #444;
+    transform: translateY(-2px);
+}
+
 /* =========================================================
    MENU DE ACESSIBILIDADE — ABRE PARA A ESQUERDA
    ========================================================= */
@@ -67,7 +246,7 @@
     top: 52px;
 
     /* faz o menu crescer para a esquerda */
-    right: 0;
+    right: 30px;
 
     display: flex;
     align-items: center;
@@ -85,10 +264,6 @@
     opacity: 0;
     visibility: hidden;
 
-    /*
-       começa um pouco para cima
-       e para a esquerda
-    */
     transform:
         translateX(-8px)
         translateY(-8px)
@@ -120,126 +295,120 @@
 /* =========================================================
    BOTÕES DO MENU
    ========================================================= */
-
 .access-btn {
-
-    width: 38px;
-    height: 38px;
+    width: 35px;
+    height: 35px;
 
     border: none;
-    border-radius: 10px;
+    outline: none;
 
-    background: #f3f4f6;
-    color: #6b7280;
+    border-radius: 0;
+
+    background: transparent !important;
+
+    color: #808080;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    padding: 0;
+
     cursor: pointer;
 
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
 
     transition:
-        background .2s ease,
         color .2s ease,
         transform .2s ease;
 }
 
-
 .access-btn:hover {
+    background: transparent !important;
 
-    background: #e5e7eb;
-
-    color: #374151;
+    color: #444;
 
     transform: translateY(-2px);
 }
 
+.access-btn:focus,
+.access-btn:active {
+    background: transparent !important;
+    outline: none;
+    box-shadow: none;
+}
 
 /* =========================================================
-   DARK MODE
+   DARK MODE - HEADER
    ========================================================= */
 
 body.dark .gear-btn,
-.dark-mode .gear-btn {
-
+body.dark-mode .gear-btn {
     background: #374151;
     color: #d1d5db;
 }
 
 
 body.dark .gear-btn:hover,
-.dark-mode .gear-btn:hover {
-
+body.dark-mode .gear-btn:hover {
     background: #4b5563;
     color: #ffffff;
 }
 
 
 body.dark .access-options,
-.dark-mode .access-options {
-
+body.dark-mode .access-options {
     background: #1f2937;
 
     border-color: #374151;
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, .4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
 }
 
 
 body.dark .access-btn,
-.dark-mode .access-btn {
-
+body.dark-mode .access-btn {
     background: #374151;
     color: #d1d5db;
 }
 
 
 body.dark .access-btn:hover,
-.dark-mode .access-btn:hover {
-
+body.dark-mode .access-btn:hover {
     background: #4b5563;
     color: #ffffff;
 }
 
 
 /* =========================================================
-   ALTO CONTRASTE
+   ALTO CONTRASTE - BOTÕES E MENU DE ACESSIBILIDADE
    ========================================================= */
 
+body.alto-contraste .gear-btn,
 .alto-contraste .gear-btn {
-
-    background: #000;
-    color: #ffd600;
-
-    border: 2px solid #ffd600;
+    background: #000000 !important;
+    color: #ffd600 !important;
+    border: 2px solid #ffd600 !important;
 }
 
-
+body.alto-contraste .access-options,
 .alto-contraste .access-options {
-
-    background: #000;
-
-    border: 2px solid #ffd600;
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
 }
 
-
+body.alto-contraste .access-btn,
 .alto-contraste .access-btn {
-
-    background: #000;
-    color: #ffd600;
-
-    border: 1px solid #ffd600;
+    background: #000000 !important;
+    color: #ffd600 !important;
+    border: 1px solid #ffd600 !important;
 }
 
-
+body.alto-contraste .access-btn:hover,
 .alto-contraste .access-btn:hover {
-
-    background: #ffd600;
-    color: #000;
+    background: #ffd600 !important;
+    color: #000000 !important;
 }
 
 
@@ -248,7 +417,6 @@ body.dark .access-btn:hover,
    ========================================================= */
 
 @media (max-width: 768px) {
-
     .header-access {
         margin-right: 8px;
     }
@@ -261,9 +429,7 @@ body.dark .access-btn:hover,
 
     .access-options {
         right: -10px;
-
         flex-wrap: wrap;
-
         width: 170px;
     }
 }
@@ -273,483 +439,846 @@ body.dark .access-btn:hover,
    NEXA — MODO ESCURO
 ========================================================== */
 
-body.dark-mode{
-    background:#0b1016;
-    color:#f1f5f9;
+body.dark-mode {
+    background: #0b1016;
+    color: #f1f5f9;
 }
 
-
-/* ==========================================================
-   ÁREA PRINCIPAL
-========================================================== */
-
-body.dark-mode .overlay{
-    background:#0b1016;
+body.dark-mode .overlay {
+    background: #0b1016;
 }
 
-
-/* ==========================================================
-   SIDEBAR
-========================================================== */
-
-body.dark-mode .sidebar{
-    background:#080d12 !important;
+body.dark-mode .sidebar {
+    background: #080d12 !important;
 }
 
-
-/* ==========================================================
-   IMAGEM DA CONSTRUÇÃO
-========================================================== */
-
-body.dark-mode .sidebar-construction{
-    opacity:.30 !important;
-
-    filter:
-        grayscale(35%)
-        brightness(.55)
-        contrast(1.05) !important;
+body.dark-mode .sidebar-construction {
+    opacity: .30 !important;
+    filter: grayscale(35%) brightness(.55) contrast(1.05) !important;
 }
 
-
-/* ==========================================================
-   DEGRADÊ SOBRE A IMAGEM
-========================================================== */
-
-body.dark-mode .sidebar::after{
-    background:linear-gradient(
+body.dark-mode .sidebar::after {
+    background: linear-gradient(
         to bottom,
-
         #080d12 0%,
-
         rgba(8,13,18,.99) 12%,
-
         rgba(8,13,18,.94) 27%,
-
         rgba(8,13,18,.82) 43%,
-
         rgba(8,13,18,.62) 60%,
-
         rgba(8,13,18,.36) 76%,
-
         rgba(8,13,18,.05) 100%
     ) !important;
 }
 
+body.dark-mode .sidebar-brand-text strong { color: #f5f7fa !important; }
+body.dark-mode .sidebar-brand-text span { color: rgba(255,255,255,.72) !important; }
+body.dark-mode .menu-title { color: rgba(255,255,255,.55) !important; }
 
-/* ==========================================================
-   LOGO / NEXA
-========================================================== */
+body.dark-mode .menu a { background: transparent !important; color: #e7edf4 !important; }
+body.dark-mode .menu a span { color: #e7edf4 !important; }
+body.dark-mode .menu a i { color: #d8e0e8 !important; }
 
-body.dark-mode .sidebar-brand-text strong{
-    color:#f5f7fa !important;
-}
-
-body.dark-mode .sidebar-brand-text span{
-    color:rgba(255,255,255,.72) !important;
-}
-
-
-/* ==========================================================
-   TÍTULOS DO MENU
-========================================================== */
-
-body.dark-mode .menu-title{
-    color:rgba(255,255,255,.55) !important;
-}
-
-
-/* ==========================================================
-   LINKS
-========================================================== */
-
-body.dark-mode .menu a{
-    background:transparent !important;
-    color:#e7edf4 !important;
-}
-
-body.dark-mode .menu a span{
-    color:#e7edf4 !important;
-}
-
-body.dark-mode .menu a i{
-    color:#d8e0e8 !important;
-}
-
-
-/* ==========================================================
-   HOVER
-========================================================== */
-
-body.dark-mode .menu a:hover{
-    background:rgba(255,255,255,.06) !important;
-}
-
+body.dark-mode .menu a:hover { background: rgba(255,255,255,.06) !important; }
 body.dark-mode .menu a:hover i,
-body.dark-mode .menu a:hover span{
-    color:#ffffff !important;
-}
+body.dark-mode .menu a:hover span { color: #ffffff !important; }
 
-
-/* ==========================================================
-   ITEM ATIVO
-========================================================== */
-
-body.dark-mode .menu a.active{
-    background:#0878e5 !important;
-    color:#ffffff !important;
-}
-
+body.dark-mode .menu a.active { background: #0878e5 !important; color: #ffffff !important; }
 body.dark-mode .menu a.active i,
-body.dark-mode .menu a.active span{
-    color:#ffffff !important;
+body.dark-mode .menu a.active span { color: #ffffff !important; }
+
+body.dark-mode .logout-item {
+    background: rgba(255,255,255,.035) !important;
+    border: 1px solid rgba(255,255,255,.16) !important;
+    color: #f1f5f9 !important;
 }
-
-
-/* ==========================================================
-   LOGOUT
-========================================================== */
-
-body.dark-mode .logout-item{
-    background:rgba(255,255,255,.035) !important;
-
-    border:1px solid rgba(255,255,255,.16) !important;
-
-    color:#f1f5f9 !important;
-}
-
 body.dark-mode .logout-item i,
-body.dark-mode .logout-item span{
-    color:#f1f5f9 !important;
+body.dark-mode .logout-item span { color: #f1f5f9 !important; }
+body.dark-mode .logout-item:hover { background: rgba(255,255,255,.08) !important; }
+
+body.dark-mode .dashboard-header {
+    background: #0b1016;
+    border-bottom: 1px solid #202a34;
+    box-shadow: 0 2px 18px rgba(0,0,0,.35);
+}
+body.dark-mode .header-left h1 { color: #1685f5; }
+body.dark-mode .header-left span { color: #d5dde6; }
+body.dark-mode .profile-info strong { color: #f1f5f9; }
+body.dark-mode .profile-info small { color: #8996a5; }
+body.dark-mode .profile:hover { background: #151c24; }
+
+body.dark-mode .card {
+    background: #10161d;
+    border: 1px solid #202a34;
+    box-shadow: 0 10px 25px rgba(0,0,0,.30);
 }
 
-body.dark-mode .logout-item:hover{
-    background:rgba(255,255,255,.08) !important;
+body.dark-mode .calendar-title h2 { color: #f1f5f9; }
+body.dark-mode .calendar-title span { color: #96a4b4; }
+body.dark-mode .calendar-icon { background: #0A66C2; color: #ffffff; }
+
+body.dark-mode .calendar-header strong { color: #1685f5; }
+body.dark-mode .calendar-header small { color: #d5dde6; }
+body.dark-mode .calendar-header button {
+    background: #151c24;
+    color: #1685f5;
+    border: 1px solid #2a3540;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
 }
+body.dark-mode .calendar-header button:hover { background: #202a34; }
 
+body.dark-mode .dia { background: #171e26; color: #1685f5; }
+body.dark-mode .dia:hover { background: #202a34; }
 
-/* ==========================================================
-   HEADER
-========================================================== */
+body.dark-mode .legend { color: #d5dde6; }
 
-body.dark-mode .dashboard-header{
-    background:#0b1016;
-
-    border-bottom:1px solid #202a34;
-
-    box-shadow:0 2px 18px rgba(0,0,0,.35);
+body.dark-mode .card.dicas { background: #10161d; border: 1px solid #202a34; }
+body.dark-mode .card.dicas h3 { color: #1685f5; }
+body.dark-mode .card.dicas li {
+    background: #151c24;
+    border: 1px solid #26313d;
+    color: #f1f5f9;
+    box-shadow: 0 5px 15px rgba(0,0,0,.25);
 }
-
-body.dark-mode .header-left h1{
-    color:#1685f5;
+body.dark-mode .card.dicas li:hover {
+    background: #1c2630;
+    box-shadow: 0 12px 25px rgba(10,102,194,.15);
 }
+body.dark-mode .card.dicas li i { background: #102b47; color: #1685f5; }
+body.dark-mode .card.dicas li:hover i { background: #0A66C2; color: #ffffff; }
 
-body.dark-mode .header-left span{
-    color:#d5dde6;
-}
-
-body.dark-mode .profile-info strong{
-    color:#f1f5f9;
-}
-
-body.dark-mode .profile-info small{
-    color:#8996a5;
-}
-
-body.dark-mode .profile:hover{
-    background:#151c24;
-}
-
-
-/* ==========================================================
-   CARD PRINCIPAL
-========================================================== */
-
-body.dark-mode .card{
-    background:#10161d;
-    border:1px solid #202a34;
-    box-shadow:0 10px 25px rgba(0,0,0,.30);
-}
-
-
-/* ==========================================================
-   TÍTULO DO CALENDÁRIO
-========================================================== */
-
-body.dark-mode .calendar-title h2{
-    color:#f1f5f9;
-}
-
-body.dark-mode .calendar-title span{
-    color:#96a4b4;
-}
-
-
-/* ==========================================================
-   ÍCONE DO CALENDÁRIO
-========================================================== */
-
-body.dark-mode .calendar-icon{
-    background:#0A66C2;
-    color:#ffffff;
-}
-
-
-/* ==========================================================
-   CABEÇALHO DO CALENDÁRIO
-========================================================== */
-
-body.dark-mode .calendar-header strong{
-    color:#1685f5;
-}
-
-body.dark-mode .calendar-header small{
-    color:#d5dde6;
-}
-
-
-/* ==========================================================
-   BOTÕES DO CALENDÁRIO
-========================================================== */
-
-body.dark-mode .calendar-header button{
-    background:#151c24;
-    color:#1685f5;
-    border:1px solid #2a3540;
-    box-shadow:0 4px 12px rgba(0,0,0,.25);
-}
-
-body.dark-mode .calendar-header button:hover{
-    background:#202a34;
-}
-
-
-/* ==========================================================
-   DIAS
-========================================================== */
-
-body.dark-mode .dia{
-    background:#171e26;
-    color:#1685f5;
-}
-
-body.dark-mode .dia:hover{
-    background:#202a34;
-}
-
-
-/* ==========================================================
-   LEGENDA
-========================================================== */
-
-body.dark-mode .legend{
-    color:#d5dde6;
-}
-
-
-/* ==========================================================
-   DICAS
-========================================================== */
-
-body.dark-mode .card.dicas{
-    background:#10161d;
-    border:1px solid #202a34;
-}
-
-body.dark-mode .card.dicas h3{
-    color:#1685f5;
-}
-
-
-/* ==========================================================
-   CARDS DAS DICAS
-========================================================== */
-
-body.dark-mode .card.dicas li{
-    background:#151c24;
-    border:1px solid #26313d;
-    color:#f1f5f9;
-    box-shadow:0 5px 15px rgba(0,0,0,.25);
-}
-
-body.dark-mode .card.dicas li:hover{
-    background:#1c2630;
-    box-shadow:0 12px 25px rgba(10,102,194,.15);
-}
-
-
-/* ==========================================================
-   ÍCONES DAS DICAS
-========================================================== */
-
-body.dark-mode .card.dicas li i{
-    background:#102b47;
-    color:#1685f5;
-}
-
-body.dark-mode .card.dicas li:hover i{
-    background:#0A66C2;
-    color:#ffffff;
-}
 
 /* ==========================================================
    PERFIL — MODO ESCURO
 ========================================================== */
 
 body.dark .perfil-esquerda,
-body.dark .perfil-direita {
+body.dark .perfil-direita,
+body.dark-mode .perfil-esquerda,
+body.dark-mode .perfil-direita {
     color: #f1f5f9;
 }
 
-
-/* ==========================================================
-   ÁREA PRINCIPAL DO PERFIL
-========================================================== */
-
-body.dark .perfil-direita {
+body.dark .perfil-direita,
+body.dark-mode .perfil-direita {
     background: #10161d;
     border: 1px solid #202a34;
     box-shadow: 0 10px 25px rgba(0,0,0,.30);
 }
 
+body.dark .fundo-capacete,
+body.dark-mode .fundo-capacete { background: #151c24; }
 
-/* ==========================================================
-   CÍRCULO DO CAPACETE
-========================================================== */
-
-body.dark .fundo-capacete {
-    background: #151c24;
-}
-
-body.dark .circulo {
+body.dark .circulo,
+body.dark-mode .circulo {
     background: #0A66C2;
     box-shadow: 0 8px 25px rgba(10,102,194,.25);
 }
 
-
-/* ÍCONE DO CAPACETE */
-
-body.dark .perfil-direita > i.fa-helmet-safety {
+body.dark .perfil-direita > i.fa-helmet-safety,
+body.dark-mode .perfil-direita > i.fa-helmet-safety {
     color: #ffffff;
     background: #0A66C2;
 }
 
+body.dark .subtitle,
+body.dark-mode .subtitle { color: #f1f5f9; }
 
-/* ==========================================================
-   SUBTÍTULOS
-========================================================== */
-
-body.dark .subtitle {
-    color: #f1f5f9;
-}
-
-
-/* ==========================================================
-   CAMPOS
-========================================================== */
-
-body.dark .input-box {
+body.dark .input-box,
+body.dark-mode .input-box {
     background: #171e26;
     border: 1px solid #293542;
     color: #f1f5f9;
     box-shadow: none;
 }
 
-
-/* ÍCONES DOS CAMPOS */
-
 body.dark .input-box > i,
-body.dark .input-box i {
-    color: #1685f5;
-}
+body.dark .input-box i,
+body.dark-mode .input-box > i,
+body.dark-mode .input-box i { color: #1685f5; }
 
+body.dark .input-box input,
+body.dark-mode .input-box input { background: transparent; color: #f1f5f9; }
 
-/* INPUTS */
+body.dark .input-box input::placeholder,
+body.dark-mode .input-box input::placeholder { color: #7f8c9b; }
 
-body.dark .input-box input {
-    background: transparent;
-    color: #f1f5f9;
-}
+body.dark .input-box input:disabled,
+body.dark-mode .input-box input:disabled { color: #d5dde6; opacity: 1; }
 
-body.dark .input-box input::placeholder {
-    color: #7f8c9b;
-}
-
-
-/* INPUT DESABILITADO */
-
-body.dark .input-box input:disabled {
-    color: #d5dde6;
-    opacity: 1;
-}
-
-
-/* ==========================================================
-   CAMPOS EDITÁVEIS
-========================================================== */
-
-body.dark .input-box.editable-field {
+body.dark .input-box.editable-field,
+body.dark-mode .input-box.editable-field {
     background: #1b2530;
     border-color: #0A66C2;
 }
 
-body.dark .input-box.editable-field input {
-    color: #ffffff;
-}
+body.dark .input-box.editable-field input,
+body.dark-mode .input-box.editable-field input { color: #ffffff; }
 
+body.dark .campo label,
+body.dark-mode .campo label { color: #d5dde6; }
 
-/* ==========================================================
-   LABELS DE SENHA
-========================================================== */
+body.dark .input-box strong,
+body.dark-mode .input-box strong { color: #f1f5f9; }
 
-body.dark .campo label {
-    color: #d5dde6;
-}
+body.dark .input-box small,
+body.dark-mode .input-box small { color: #9aa8b8; }
 
+body.dark .input-box img,
+body.dark-mode .input-box img { border-color: #354250 !important; }
 
-/* ==========================================================
-   EPI
-========================================================== */
+body.dark .input-box.error,
+body.dark-mode .input-box.error { border-color: #f44336; }
 
-body.dark .input-box strong {
-    color: #f1f5f9;
-}
-
-body.dark .input-box small {
-    color: #9aa8b8;
-}
-
-
-/* IMAGEM DO EPI */
-
-body.dark .input-box img {
-    border-color: #354250 !important;
-}
-
-
-/* ==========================================================
-   ERROS
-========================================================== */
-
-body.dark .input-box.error {
-    border-color: #f44336;
-}
-
-body.dark .error-text {
-    color: #ff6b6b;
-}
-
-
-/* ==========================================================
-   BOTÕES
-========================================================== */
+body.dark .error-text,
+body.dark-mode .error-text { color: #ff6b6b; }
 
 body.dark .btn.editar,
-body.dark .btn.salvar {
+body.dark .btn.salvar,
+body.dark-mode .btn.editar,
+body.dark-mode .btn.salvar {
     background: #0A66C2;
     color: #ffffff;
 }
 
 body.dark .btn.editar:hover,
-body.dark .btn.salvar:hover {
+body.dark .btn.salvar:hover,
+body.dark-mode .btn.editar:hover,
+body.dark-mode .btn.salvar:hover {
     background: #0878e5;
+}
+
+
+/* ==========================================================
+   NEXA — ALTO CONTRASTE (PÁGINA DO FUNCIONÁRIO COMPLETA)
+========================================================== */
+
+body.alto-contraste {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.alto-contraste .overlay {
+    background: #000000 !important;
+}
+
+/* SIDEBAR ALTO CONTRASTE */
+body.alto-contraste .sidebar {
+    background: #000000 !important;
+    border-right: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .sidebar-construction {
+    filter: brightness(2) contrast(2) grayscale(100%) !important;
+    opacity: 0.15 !important;
+}
+
+body.alto-contraste .sidebar::after {
+    background: transparent !important;
+}
+
+body.alto-contraste .sidebar-brand-text strong {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .sidebar-brand-text span {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .menu-title {
+    color: #ffd600 !important;
+    font-weight: bold;
+}
+
+body.alto-contraste .menu a {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #ffd600 !important;
+    margin-bottom: 4px;
+}
+
+body.alto-contraste .menu a i,
+body.alto-contraste .menu a span {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .menu a:hover {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .menu a:hover i,
+body.alto-contraste .menu a:hover span {
+    color: #000000 !important;
+}
+
+body.alto-contraste .menu a.active {
+    background: #ffd600 !important;
+    color: #000000 !important;
+    font-weight: bold;
+}
+
+body.alto-contraste .menu a.active i,
+body.alto-contraste .menu a.active span {
+    color: #000000 !important;
+}
+
+body.alto-contraste .logout-item {
+    background: #000000 !important;
+    border: 2px solid #ff4d4d !important;
+    color: #ff4d4d !important;
+}
+
+body.alto-contraste .logout-item i,
+body.alto-contraste .logout-item span {
+    color: #ff4d4d !important;
+}
+
+body.alto-contraste .logout-item:hover {
+    background: #ff4d4d !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .logout-item:hover i,
+body.alto-contraste .logout-item:hover span {
+    color: #000000 !important;
+}
+
+/* HEADER ALTO CONTRASTE */
+body.alto-contraste .dashboard-header {
+    background: #000000 !important;
+    border-bottom: 2px solid #ffd600 !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .header-left h1 {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .header-left span {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .profile-info strong {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .profile-info small {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .profile:hover {
+    background: #1a1a1a !important;
+    outline: 1px solid #ffd600;
+}
+
+/* CARDS & CALENDÁRIO ALTO CONTRASTE */
+body.alto-contraste .card {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .calendar-title h2 {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .calendar-title span {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .calendar-icon {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .calendar-header strong {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .calendar-header small {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .calendar-header button {
+    background: #000000 !important;
+    color: #ffd600 !important;
+    border: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .calendar-header button:hover {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .dia {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #ffd600 !important;
+}
+
+body.alto-contraste .dia:hover {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .legend {
+    color: #ffffff !important;
+}
+
+/* DICAS ALTO CONTRASTE */
+body.alto-contraste .card.dicas {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .card.dicas h3 {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .card.dicas li {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .card.dicas li:hover {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .card.dicas li i {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .card.dicas li:hover i {
+    background: #000000 !important;
+    color: #ffd600 !important;
+}
+
+/* PERFIL ALTO CONTRASTE */
+body.alto-contraste .perfil-esquerda,
+body.alto-contraste .perfil-direita {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .perfil-direita {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .fundo-capacete {
+    background: #000000 !important;
+}
+
+body.alto-contraste .circulo {
+    background: #ffd600 !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .perfil-direita > i.fa-helmet-safety {
+    color: #000000 !important;
+    background: #ffd600 !important;
+}
+
+body.alto-contraste .subtitle {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .input-box {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+    color: #ffffff !important;
+}
+
+body.alto-contraste .input-box > i,
+body.alto-contraste .input-box i {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .input-box.editable-field {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .input-box.editable-field input {
+    color: #ffffff !important;
+}
+
+
+/* CAMPOS DE SENHA - TEXTO BRANCO */
+body.alto-contraste .seguranca-box .input-box {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .seguranca-box .input-box input {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .seguranca-box .input-box input::placeholder {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+body.alto-contraste .seguranca-box .input-box i {
+    color: #ffd600 !important;
+}
+
+
+body.alto-contraste .campo label {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .input-box.editable-field input {
+    color: #ffffff !important;
+}
+
+
+body.alto-contraste .input-box input::placeholder {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .input-box input:disabled {
+    color: #ffffff !important;
+    opacity: 1;
+}
+
+body.alto-contraste .input-box.editable-field {
+    background: #000000 !important;
+    border: 2px solid #ffd600 !important;
+}
+
+body.alto-contraste .input-box.editable-field input {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .campo label {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .input-box strong {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .input-box small {
+    color: #ffd600 !important;
+}
+
+body.alto-contraste .input-box img {
+    border-color: #ffd600 !important;
+}
+
+body.alto-contraste .input-box.error {
+    border: 2px solid #ff0000 !important;
+}
+
+body.alto-contraste .error-text {
+    color: #ff0000 !important;
+    font-weight: bold;
+}
+
+body.alto-contraste .btn.editar,
+body.alto-contraste .btn.salvar {
+    background: #ffd600 !important;
+    color: #000000 !important;
+    border: 2px solid #ffd600 !important;
+    font-weight: bold;
+}
+
+body.alto-contraste .btn.editar:hover,
+body.alto-contraste .btn.salvar:hover {
+    background: #000000 !important;
+    color: #ffd600 !important;
+}
+
+/* --- REGRA PADRÃO --- */
+.main-header {
+    background-color: #ffffff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* --- FORÇAR MODO ESCURO NO HEADER (Cobre Body, HTML e Data-Attributes) --- */
+body.dark .main-header,
+body.dark-mode .main-header,
+body.modo-escuro .main-header,
+html.dark .main-header,
+html.dark-mode .main-header,
+[data-theme="dark"] .main-header {
+    background-color: #111827 !important;
+    background: #111827 !important;
+    border-bottom-color: #1f2937 !important;
+}
+
+/* Cor dos textos do Header no Modo Escuro */
+body.dark .main-header *,
+body.dark-mode .main-header *,
+body.modo-escuro .main-header *,
+html.dark .main-header *,
+html.dark-mode .main-header *,
+[data-theme="dark"] .main-header * {
+    color: #f3f4f6 !important;
+}
+
+/* Destaque para o título no Modo Escuro */
+body.dark .header-title,
+body.dark-mode .header-title,
+body.modo-escuro .header-title,
+html.dark .header-title,
+[data-theme="dark"] .header-title {
+    color: #60a5fa !important;
+}
+
+/* --- MODO ALTO CONTRASTE --- */
+body.alto-contraste .main-header,
+body.contrast .main-header,
+[data-theme="contrast"] .main-header {
+    background-color: #000000 !important;
+    border-bottom: 2px solid #ffff00 !important;
+}
+
+body.alto-contraste .main-header *,
+body.contrast .main-header *,
+[data-theme="contrast"] .main-header * {
+    color: #ffff00 !important;
+}
+
+/* ==========================================================
+   CONFIGURAÇÕES VLIBRAS
+========================================================== */
+
+/* Esconde o botão/bolinha azul padrão do VLibras */
+[vw-access-button] {
+    display: none !important;
+}
+
+/* Garante que o avatar do robô fique visível por cima dos elementos */
+.vw-plugin-wrapper {
+    z-index: 999999 !important;
+}
+
+/* =========================================================
+   ALTO CONTRASTE — CAMPOS DE SEGURANÇA
+   ========================================================= */
+
+/* Texto dos campos de senha */
+body.alto-contraste .seguranca-box .input-box,
+body.alto-contraste .seguranca-box .input-box *,
+body.alto-contraste .seguranca-box .input-box input {
+    color: #ffffff !important;
+}
+
+/* Ícones continuam amarelos */
+body.alto-contraste .seguranca-box .input-box > i,
+body.alto-contraste .seguranca-box .input-box i {
+    color: #ffd600 !important;
+}
+
+/* Placeholder também branco */
+body.alto-contraste .seguranca-box .input-box input::placeholder {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* =========================================================
+   ALTO CONTRASTE — TEXTOS DOS CAMPOS
+   ========================================================= */
+
+/* Todos os textos dentro dos input-box ficam brancos */
+body.alto-contraste .input-box,
+body.alto-contraste .input-box *,
+body.alto-contraste .input-box input {
+    color: #ffffff !important;
+}
+
+/* Ícones ficam amarelos */
+body.alto-contraste .input-box > i,
+body.alto-contraste .input-box i {
+    color: #ffd600 !important;
+}
+
+/* Placeholder branco */
+body.alto-contraste .input-box input::placeholder {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* =========================================================
+   ALTO CONTRASTE — TÍTULOS E TEXTOS AZUIS
+   ========================================================= */
+
+body.alto-contraste .perfil-esquerda h1,
+body.alto-contraste .perfil-esquerda h2,
+body.alto-contraste .perfil-esquerda h3,
+body.alto-contraste .perfil-esquerda p,
+body.alto-contraste .perfil-esquerda span,
+body.alto-contraste .perfil-esquerda strong,
+body.alto-contraste .perfil-direita h1,
+body.alto-contraste .perfil-direita h2,
+body.alto-contraste .perfil-direita h3,
+body.alto-contraste .perfil-direita p,
+body.alto-contraste .perfil-direita span,
+body.alto-contraste .perfil-direita strong {
+    color: #ffd600 !important;
+}
+
+
+/* TÍTULO "PERFIL DO FUNCIONÁRIO" */
+body.alto-contraste .perfil-esquerda h1,
+body.alto-contraste .perfil-esquerda .titulo,
+body.alto-contraste .perfil-esquerda .title {
+    color: #ffd600 !important;
+}
+
+
+/* SUBTÍTULO */
+body.alto-contraste .perfil-esquerda .subtitle,
+body.alto-contraste .perfil-esquerda .subtitulo {
+    color: #ffd600 !important;
+}
+
+
+/* ÍCONES AZUIS */
+body.alto-contraste .perfil-esquerda i,
+body.alto-contraste .perfil-direita i {
+    color: #ffd600 !important;
+}
+
+
+/* CÍRCULO COM A LETRA */
+body.alto-contraste .circulo {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+
+/* LINHA AZUL ABAIXO DO TEXTO */
+body.alto-contraste .perfil-esquerda hr,
+body.alto-contraste .perfil-esquerda::after {
+    border-color: #ffd600 !important;
+    background-color: #ffd600 !important;
+}
+
+/* =========================================================
+   ALTO CONTRASTE — BOLA DO PERFIL
+   ========================================================= */
+
+body.alto-contraste .circulo {
+    background: #ffd600 !important;
+    color: #000000 !important;
+    border-color: #ffd600 !important;
+}
+
+body.alto-contraste .circulo * {
+    color: #000000 !important;
+}
+
+/* =========================================================
+   ALTO CONTRASTE — CÍRCULO DO PERFIL
+   ========================================================= */
+
+/* Força o círculo azul a ficar amarelo */
+body.alto-contraste .circulo,
+body.alto-contraste .fundo-capacete,
+body.alto-contraste .avatar,
+body.alto-contraste .foto-perfil {
+    background: #ffd600 !important;
+    background-color: #ffd600 !important;
+    border-color: #ffd600 !important;
+    box-shadow: none !important;
+}
+
+/* Letra F dentro do círculo */
+body.alto-contraste .circulo *,
+body.alto-contraste .fundo-capacete *,
+body.alto-contraste .avatar *,
+body.alto-contraste .foto-perfil * {
+    color: #000000 !important;
+}
+
+/* Caso a letra F seja um texto direto */
+body.alto-contraste .circulo {
+    color: #000000 !important;
+}
+
+/* =========================================================
+   ALTO CONTRASTE — PERFIL DO FUNCIONÁRIO
+   ========================================================= */
+
+/* TÍTULO */
+body.alto-contraste .header-left h1,
+body.alto-contraste .header-title {
+    color: #ffd600 !important;
+}
+
+/* SUBTÍTULO */
+body.alto-contraste .header-left span {
+    color: #ffd600 !important;
+}
+
+/* BOLA COM A LETRA "F" */
+body.alto-contraste .perfil-esquerda .circulo {
+    background: #ffd600 !important;
+    color: #000000 !important;
+}
+
+/* CASO O "F" TENHA OUTRO ELEMENTO */
+body.alto-contraste .circulo,
+body.alto-contraste .circulo * {
+    background-color: #ffd600 !important;
+    color: #000000 !important;
+}
+
+/* LINHA AZUL ABAIXO DO TEXTO */
+body.alto-contraste .perfil-esquerda::after,
+body.alto-contraste .perfil-esquerda .linha,
+body.alto-contraste .perfil-esquerda .linha-azul,
+body.alto-contraste .perfil-esquerda .underline,
+body.alto-contraste .perfil-esquerda hr {
+    background: #ffd600 !important;
+    background-color: #ffd600 !important;
+    border-color: #ffd600 !important;
+    color: #ffd600 !important;
+}
+
+/* SE A LINHA FOR FEITA COM BORDER */
+body.alto-contraste .header-left h1::after,
+body.alto-contraste .header-title::after {
+    background: #ffd600 !important;
+    border-color: #ffd600 !important;
+}
+
+/* GARANTE QUE ÍCONES/ELEMENTOS AZUIS DA ÁREA FIQUEM AMARELOS */
+body.alto-contraste .perfil-esquerda i,
+body.alto-contraste .perfil-esquerda svg {
+    color: #ffd600 !important;
+    fill: #ffd600 !important;
+}
+
+body.alto-contraste .circulo,
+body.alto-contraste .circulo * {
+    background-color: #ffd600 !important;
+    color: #000000 !important;
+}
+
+/* =========================================================
+   ALTO CONTRASTE — AVATAR DO PERFIL
+   ========================================================= */
+
+/* BOLA AMARELA */
+body.alto-contraste .perfil-esquerda .avatar {
+    background: #ffd600 !important;
+    background-color: #ffd600 !important;
+    
+    /* LETRA PRETA */
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
+/* LETRA F PRETA */
+body.alto-contraste .perfil-esquerda .avatar::first-letter {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
 }

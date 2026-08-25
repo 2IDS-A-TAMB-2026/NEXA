@@ -5,43 +5,34 @@
 
     <meta charset="UTF-8">
 
-    <title>NEXA | Funcionário</title>
+    <title>NEXA | Login</title>
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-
-    <!-- =====================================================
-         FONT
-    ====================================================== -->
-
+    <!-- FONT -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
-
-    <!-- =====================================================
-         ÍCONES
-    ====================================================== -->
-
+    <!-- ÍCONES -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     >
+
+    <!-- ACESSIBILIDADE -->
+    
 
     <link
         rel="stylesheet"
         href="<?= base_url('assets/css/acessibilidade_login.css') ?>"
     >
 
-
-    <!-- =====================================================
-         CSS DO LOGIN
-    ====================================================== -->
-
+    <!-- LOGIN -->
     <link
         rel="stylesheet"
         href="<?= base_url('assets/css/login_funcionario.css') ?>"
@@ -54,9 +45,66 @@
 
 
     <!-- =====================================================
-         MENU DE ACESSIBILIDADE
+         ACESSIBILIDADE
     ====================================================== -->
 
+    <div class="access-menu">
+
+        <button
+            class="gear-btn"
+            onclick="toggleAccessMenu()"
+        >
+            <i class="fas fa-cog"></i>
+        </button>
+
+
+        <div
+            class="access-options"
+            id="accessOptions"
+        >
+
+            <button
+                class="access-btn"
+                onclick="Acessibilidade.toggleContraste()"
+            >
+                <i class="fas fa-adjust"></i>
+            </button>
+
+
+            <button
+                class="access-btn"
+                onclick="toggleDark()"
+            >
+                <i class="fas fa-moon"></i>
+            </button>
+
+
+            <button
+                class="access-btn"
+                onclick="Acessibilidade.aumentarFonte()"
+            >
+                A+
+            </button>
+
+
+            <button
+                class="access-btn"
+                onclick="Acessibilidade.diminuirFonte()"
+            >
+                A-
+            </button>
+
+
+            <button
+                class="access-btn"
+                onclick="Acessibilidade.lerPagina()"
+            >
+                <i class="fas fa-volume-up"></i>
+            </button>
+
+        </div>
+
+    </div>
 
 
     <!-- =====================================================
@@ -153,13 +201,22 @@
                  LOGO
             ================================================== -->
 
-            <img
-                class="right-logo"
-                src="<?= base_url('assets/images/logo-nexa.png') ?>"
-                alt="NEXA - Safety at the Core"
-            >
+          
+            <div class="logo-container">
 
-
+                <img 
+                    class="logo-light"
+                    src="<?= base_url('assets/images/logo_transparente.png') ?>"
+                    alt="NEXA - Safety at the Core"
+                >
+        
+                <img 
+                    class="logo-dark"
+                    src="<?= base_url('assets/images/logo_escura.png') ?>"
+                    alt="NEXA - Safety at the Core"
+                >
+        
+            </div>
             <!-- ÁREA DO FORMULÁRIO -->
 
             <div class="login-form-area">
@@ -229,7 +286,7 @@
                             name="email_fun"
                             placeholder="E-mail corporativo"
                             autocomplete="email"
-                            required
+                            
                         >
 
 
@@ -252,7 +309,7 @@
                             name="senha"
                             placeholder="Senha"
                             autocomplete="current-password"
-                            required
+                            
                         >
 
 

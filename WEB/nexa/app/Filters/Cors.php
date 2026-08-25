@@ -12,10 +12,13 @@ class Cors implements FilterInterface
         RequestInterface $request,
         $arguments = null
     ) {
-        if (strtolower($request->getMethod()) === 'options') {
+        if ($request->getMethod() === 'options') {
             return service('response')
-                ->setStatusCode(200)
-                ->setHeader('Access-Control-Allow-Origin', '*')
+                ->setStatusCode(204)
+                ->setHeader(
+                    'Access-Control-Allow-Origin',
+                    '*'
+                )
                 ->setHeader(
                     'Access-Control-Allow-Headers',
                     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
@@ -33,7 +36,10 @@ class Cors implements FilterInterface
         $arguments = null
     ) {
         return $response
-            ->setHeader('Access-Control-Allow-Origin', '*')
+            ->setHeader(
+                'Access-Control-Allow-Origin',
+                '*'
+            )
             ->setHeader(
                 'Access-Control-Allow-Headers',
                 'Origin, X-Requested-With, Content-Type, Accept, Authorization'

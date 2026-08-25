@@ -12,7 +12,7 @@
     <title>Cadastro de Setor</title>
 
 
-    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade_adm.css') ?>">
 
     <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
 
@@ -140,6 +140,59 @@
 ====================================================== -->
 
 
+
+
+
+
+    <!-- ======================================================
+     ÁREA PRINCIPAL
+====================================================== -->
+
+
+    <div class="overlay">
+
+
+        <main class="main-content">
+
+
+
+
+
+            <!-- ======================================================
+     HEADER
+====================================================== -->
+
+
+            <header class="dashboard-header">
+
+
+                <div class="header-left">
+
+
+                    <div class="header-title">
+
+
+                        <h1>
+                            Cadastro de Setores
+                        </h1>
+
+
+                        <p>
+                            Gerencie os setores da sua empresa
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="header-right">
+                    
     <div class="access-menu">
 
 
@@ -198,58 +251,6 @@
 
     </div>
 
-
-
-
-
-    <!-- ======================================================
-     ÁREA PRINCIPAL
-====================================================== -->
-
-
-    <div class="overlay">
-
-
-        <main class="main-content">
-
-
-
-
-
-            <!-- ======================================================
-     HEADER
-====================================================== -->
-
-
-            <header class="dashboard-header">
-
-
-                <div class="header-left">
-
-
-                    <div class="header-title">
-
-
-                        <h1>
-                            Cadastro de Setores
-                        </h1>
-
-
-                        <p>
-                            Gerencie os setores da sua empresa
-                        </p>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-                <div class="header-right">
 
 
                     <a href="<?= base_url('/administrador') ?>" class="profile">

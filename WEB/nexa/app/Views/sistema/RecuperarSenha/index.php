@@ -2,406 +2,459 @@
 <html lang="pt-br">
 
 <head>
-<meta charset="UTF-8">
-<title>NEXA | Recuperar Senha</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
 
-<!-- CSS -->
-<link rel="stylesheet" href="assets/css/acessibilidade.css">
-<link rel="stylesheet" href="assets/css/acessibilidade_login.css">
+    <title>NEXA | Recuperar Senha</title>
 
-<!-- ICONES -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<style>
 
-:root{
-    --primary:#0A66C2;
-}
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
-}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
-/* ===== BODY ===== */
-.body_login{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#0057b8,#002f6c);
-    overflow:hidden;
-    position:relative;
-    padding:20px;
-}
 
-.body_login::before{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:
-    radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 40%),
-    radial-gradient(circle at bottom right, rgba(255,255,255,0.05), transparent 40%);
-}
+    <!-- =====================================================
+         ÍCONES
+    ====================================================== -->
 
-/* ===== ACESSIBILIDADE ===== */
-.access-bar{
-    position:absolute;
-    top:15px;
-    right:15px;
-    display:flex;
-    gap:10px;
-    z-index:10;
-}
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
 
-.access-btn{
-    width:40px;
-    height:40px;
-    border:none;
-    border-radius:12px;
-    background:#fff;
-    color:#0057b8;
-    font-size:14px;
-    cursor:pointer;
-    transition:.3s;
-    box-shadow:0 4px 10px rgba(0,0,0,0.15);
-}
 
-.access-btn:hover{
-    transform:translateY(-2px);
-}
+    <!-- =====================================================
+         CSS DE ACESSIBILIDADE E LOGIN
+    ====================================================== -->
 
-/* ===== CARD ===== */
-.recover-wrapper{
-    width:820px;
-    height:420px;
-    background:#fff;
-    border-radius:28px;
-    overflow:hidden;
-    display:flex;
-    box-shadow:0 20px 50px rgba(0,0,0,0.35);
-    position:relative;
-    z-index:2;
-}
+    <link
+        rel="stylesheet"
+        href="<?= base_url('assets/css/acessibilidade_login.css') ?>"
+    >
 
-/* ===== ESQUERDA ===== */
-.lado-esquerdo{
-    width:45%;
-    background:linear-gradient(145deg,#0057b8,#002f6c);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position:relative;
-}
+    <link
+        rel="stylesheet"
+        href="<?= base_url('assets/css/login_funcionario.css') ?>"
+    >
 
-.lado-esquerdo::before{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,0.06),
-        transparent
-    );
-}
+    <style>
+        /* Estilos mantidos para as mensagens de validação do JavaScript */
+        .error {
+            display: none;
+            color: #d9534f;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 10px;
+        }
 
-.logo-esquerda{
-    width:160px;
-    z-index:2;
-    filter:drop-shadow(0 0 15px rgba(255,255,255,0.25));
-    transition:.3s;
-}
+        .success {
+            display: none;
+            color: #5cb85c;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+    </style>
 
-.logo-esquerda:hover{
-    transform:scale(1.05);
-}
-
-/* ===== DIREITA ===== */
-.container{
-    width:55%;
-    background:#fff;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    padding:40px;
-}
-
-h2{
-    text-align:center;
-    font-size:30px;
-    font-weight:700;
-    color:#1f3c5b;
-    margin-bottom:14px;
-}
-
-p{
-    text-align:center;
-    font-size:14px;
-    color:#666;
-    margin-bottom:20px;
-}
-
-/* ===== INPUT ===== */
-.input-box{
-    position:relative;
-    margin-bottom:14px;
-}
-
-.input-box i{
-    position:absolute;
-    left:14px;
-    top:50%;
-    transform:translateY(-50%);
-    color:#0A66C2;
-    font-size:14px;
-}
-
-.input-box input{
-    width:100%;
-    height:46px;
-    border:2px solid #d1d5db;
-    border-radius:12px;
-    padding-left:42px;
-    font-size:14px;
-    outline:none;
-    transition:.3s;
-    background:#fff;
-}
-
-.input-box input:focus{
-    border-color:#0057b8;
-    box-shadow:0 0 10px rgba(0,87,184,0.2);
-}
-
-/* ===== BOTÃO ===== */
-.btn{
-    width:100%;
-    height:46px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(90deg,#0066d6,#003f96);
-    color:#fff;
-    font-size:17px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-    margin-top:4px;
-}
-
-.btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
-}
-
-/* ===== MENSAGENS ===== */
-.error{
-    display:none;
-    color:red;
-    text-align:center;
-    font-size:13px;
-    margin-top:10px;
-}
-
-.success{
-    display:none;
-    color:green;
-    text-align:center;
-    font-size:13px;
-    margin-top:10px;
-}
-
-/* ===== LINK ===== */
-a{
-    display:block;
-    text-align:center;
-    margin-top:16px;
-    font-size:14px;
-    color:var(--primary);
-    text-decoration:none;
-}
-
-a:hover{
-    text-decoration:underline;
-}
-
-/* ===== RESPONSIVO ===== */
-@media(max-width:900px){
-
-    .recover-wrapper{
-        width:100%;
-        height:auto;
-        flex-direction:column;
-    }
-
-    .lado-esquerdo,
-    .container{
-        width:100%;
-    }
-
-    .lado-esquerdo{
-        padding:35px 0;
-    }
-
-    .logo-esquerda{
-        width:130px;
-    }
-
-    .container{
-        padding:30px;
-    }
-
-    h2{
-        font-size:26px;
-    }
-
-}
-
-</style>
 </head>
 
-<body class="body_login">
 
-<!-- ACESSIBILIDADE -->
-<div class="access-bar">
+<body>
 
-    <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
-        <i class="fas fa-adjust"></i>
-    </button>
 
-    <button class="access-btn" onclick="toggleDark()">
-        <i class="fas fa-moon"></i>
-    </button>
+    <!-- =====================================================
+         MENU DE ACESSIBILIDADE
+    ====================================================== -->
 
-    <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
-        A+
-    </button>
+    <div class="access-bar" style="position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 10;">
 
-    <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
-        A-
-    </button>
-
-    <button class="access-btn" onclick="Acessibilidade.lerPagina()">
-        <i class="fas fa-volume-up"></i>
-    </button>
-
-</div>
-
-<!-- CARD -->
-<div class="recover-wrapper">
-
-    <!-- ESQUERDA -->
-    <div class="lado-esquerdo">
-
-            <img class="logo-esquerda" alt="Logo NEXA" src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
-      
-    </div>
-
-    <!-- DIREITA -->
-    <div class="container">
-
-        <h2>Recuperar Senha</h2>
-
-        <p>
-            Digite seu e-mail para continuar
-        </p>
-
-        <div class="input-box">
-
-            <i class="fas fa-envelope"></i>
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Seu e-mail"
-            >
-
-        </div>
-
-     <button class="btn" onclick="recuperarSenha()">
-            Continuar
+        <button class="access-btn" onclick="Acessibilidade.toggleContraste()" title="Alto Contraste">
+            <i class="fas fa-adjust"></i>
         </button>
 
-        <div class="error" id="erro">
-            E-mail não encontrado
-        </div>
+        <button class="access-btn" onclick="toggleDark()" title="Modo Escuro">
+            <i class="fas fa-moon"></i>
+        </button>
 
-        <div class="success" id="sucesso">
-            Redirecionando...
-        </div>
+        <button class="access-btn" onclick="Acessibilidade.aumentarFonte()" title="Aumentar Fonte">
+            A+
+        </button>
 
-      <a href="<?= base_url('loginfun') ?>">
-            Voltar para o login
-        </a>
+        <button class="access-btn" onclick="Acessibilidade.diminuirFonte()" title="Diminuir Fonte">
+            A-
+        </button>
+
+        <button class="access-btn" onclick="Acessibilidade.lerPagina()" title="Ler Página">
+            <i class="fas fa-volume-up"></i>
+        </button>
 
     </div>
 
-</div>
 
-<!-- SCRIPT -->
-<script>
+    <!-- =====================================================
+         CONTAINER PRINCIPAL
+    ====================================================== -->
 
-async function recuperarSenha(){
+    <div class="login-container">
 
-    const email = document.getElementById("email").value;
 
-    const erro = document.getElementById("erro");
-    const sucesso = document.getElementById("sucesso");
+        <!-- =================================================
+             LADO ESQUERDO
+        ================================================== -->
 
-    erro.style.display = "none";
-    sucesso.style.display = "none";
+        <div class="left-side">
 
-    if(!email){
 
-        erro.innerText = "Digite um e-mail";
-        erro.style.display = "block";
-        return;
+            <!-- =================================================
+                 CARROSSEL DE VÍDEOS
+            ================================================== -->
 
-    }
+            <div class="video-carousel">
 
-    try{
+                <video
+                    id="videoCarousel"
+                    autoplay
+                    muted
+                    playsinline
+                    preload="auto"
+                >
 
-      const resposta = await fetch(
-    "<?= site_url('recuperar/enviar') ?>",
-{
-    method: "POST",
-    headers:{
-        "Content-Type":"application/x-www-form-urlencoded"
-    },
-    body:`email=${encodeURIComponent(email)}`
-});
-        const texto = await resposta.text();
+                    <source
+                        src="<?= base_url('assets/videos/epi_construcao_1.mp4') ?>"
+                        type="video/mp4"
+                    >
 
-        if(texto === "sucesso"){
+                </video>
 
-            sucesso.innerText =
-            "E-mail enviado com sucesso";
+            </div>
 
-            sucesso.style.display = "block";
 
-        }else{
 
-            erro.innerText = texto;
-            erro.style.display = "block";
+            <!-- =================================================
+                 TEXTO SOBRE O VÍDEO
+            ================================================== -->
+
+            <div class="left-content">
+
+
+                <!-- LINHA DECORATIVA -->
+
+                <div class="linha"></div>
+
+
+                <!-- TÍTULO -->
+
+                <h2>
+
+                    Segurança
+
+                    <strong>
+                        em primeiro lugar.
+                    </strong>
+
+                </h2>
+
+
+                <!-- TEXTO -->
+
+                <p>
+
+                    Tecnologia e prevenção trabalhando
+                    juntas para um ambiente mais seguro.
+
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             LADO DIREITO
+        ================================================== -->
+
+        <div class="right-side">
+
+
+            <!-- =================================================
+                 LOGO
+            ================================================== -->
+
+            <div class="logo-container">
+
+                <img 
+                    class="logo-light"
+                    src="<?= base_url('assets/images/logo_transparente.png') ?>"
+                    alt="NEXA - Safety at the Core"
+                >
+        
+                <img 
+                    class="logo-dark"
+                    src="<?= base_url('assets/images/logo_escura.png') ?>"
+                    alt="NEXA - Safety at the Core"
+                >
+        
+            </div>
+
+
+            <!-- ÁREA DO FORMULÁRIO -->
+
+            <div class="login-form-area">
+
+
+                <!-- =================================================
+                     TÍTULO
+                ================================================== -->
+
+                <h1 class="titulo">
+
+                    Recuperar Senha
+
+                </h1>
+
+
+                <!-- =================================================
+                     SUBTÍTULO
+                ================================================== -->
+
+                <p class="subtitulo">
+
+                    Digite seu e-mail para continuar
+
+                </p>
+
+
+
+                <!-- =================================================
+                     FORMULÁRIO / CAMPO E-MAIL
+                ================================================== -->
+
+                <div class="input-box">
+
+                    <i class="fas fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Seu e-mail"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BOTÃO CONTINUAR
+                ================================================== -->
+
+                <button
+                    type="button"
+                    class="btn-login"
+                    onclick="recuperarSenha()"
+                >
+
+                    Continuar
+
+                </button>
+
+
+
+                <!-- =================================================
+                     MENSAGENS DE ERRO / SUCESSO
+                ================================================== -->
+
+                <div class="error" id="erro">
+
+                    E-mail não encontrado
+
+                </div>
+
+                <div class="success" id="sucesso">
+
+                    Redirecionando...
+
+                </div>
+
+
+
+                <!-- =================================================
+                     LINKS
+                ================================================== -->
+
+                <div class="links">
+
+                    <a href="<?= base_url('loginfun') ?>">
+
+                        Voltar para o login
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RODAPÉ
+                ================================================== -->
+
+                <div class="footer">
+
+                    © 2026 — NEXA
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT DE ACESSIBILIDADE
+    ====================================================== -->
+
+    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
+
+
+
+    <!-- =====================================================
+         CARROSSEL DE VÍDEOS
+    ====================================================== -->
+
+    <script>
+
+        const videos = [
+
+            "<?= base_url('assets/videos/epi_construcao_1.mp4') ?>",
+
+            "<?= base_url('assets/videos/epi_construcao_2.mp4') ?>",
+
+            "<?= base_url('assets/videos/epi_construcao_3.mp4') ?>",
+
+            "<?= base_url('assets/videos/epi_construcao_4.mp4') ?>"
+
+        ];
+
+
+        const videoCarousel =
+            document.getElementById('videoCarousel');
+
+
+        let videoAtual = 0;
+
+
+        videoCarousel.addEventListener('ended', function () {
+
+            videoAtual++;
+
+            if (videoAtual >= videos.length) {
+
+                videoAtual = 0;
+
+            }
+
+            videoCarousel.src = videos[videoAtual];
+
+            videoCarousel.load();
+
+            videoCarousel.play();
+
+        });
+
+    </script>
+
+
+
+    <!-- =====================================================
+         LÓGICA DE RECUPERAÇÃO DE SENHA
+    ====================================================== -->
+
+    <script>
+
+        async function recuperarSenha(){
+
+            const emailInput = document.getElementById("email");
+            const email = emailInput ? emailInput.value.trim() : "";
+
+            const erro = document.getElementById("erro");
+            const sucesso = document.getElementById("sucesso");
+
+            erro.style.display = "none";
+            sucesso.style.display = "none";
+
+            if(!email){
+
+                erro.innerText = "Digite um e-mail";
+                erro.style.display = "block";
+                return;
+
+            }
+
+            try{
+
+                const resposta = await fetch(
+                    "<?= site_url('recuperar/enviar') ?>",
+                    {
+                        method: "POST",
+                        headers:{
+                            "Content-Type":"application/x-www-form-urlencoded"
+                        },
+                        body:`email=${encodeURIComponent(email)}`
+                    }
+                );
+
+                if(!resposta.ok){
+                    erro.innerText = "Ocorreu um erro no servidor ao processar o e-mail.";
+                    erro.style.display = "block";
+                    return;
+                }
+
+                const texto = (await resposta.text()).trim();
+
+                if(texto === "sucesso"){
+
+                    sucesso.innerText = "E-mail enviado com sucesso";
+                    sucesso.style.display = "block";
+
+                }else{
+
+                    erro.innerText = texto;
+                    erro.style.display = "block";
+
+                }
+
+            }catch(e){
+
+                erro.innerText = "Erro ao conectar";
+                erro.style.display = "block";
+
+            }
 
         }
 
-    }catch(e){
+    </script>
 
-        erro.innerText = "Erro ao conectar";
-        erro.style.display = "block";
 
-    }
-
-}
-
-</script>
 </body>
+
 </html>

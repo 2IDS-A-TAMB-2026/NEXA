@@ -592,3 +592,114 @@ body{
     transition:.3s ease;
 
 }
+
+/* ==========================================
+   ACESSIBILIDADE - TAMANHO DA FONTE
+========================================== */
+
+/* Títulos */
+body.fonte-110 .header-left h1,
+body.fonte-120 .header-left h1,
+body.fonte-130 .header-left h1,
+body.fonte-140 .header-left h1 {
+    font-size: calc(27px * var(--escala-fonte)) !important;
+}
+
+
+/* Nome abaixo do Bem-vindo */
+body.fonte-110 .header-left span,
+body.fonte-120 .header-left span,
+body.fonte-130 .header-left span,
+body.fonte-140 .header-left span {
+    font-size: calc(13px * var(--escala-fonte)) !important;
+}
+
+
+/* Nome do funcionário */
+body.fonte-110 .profile-info strong,
+body.fonte-120 .profile-info strong,
+body.fonte-130 .profile-info strong,
+body.fonte-140 .profile-info strong {
+    font-size: calc(15px * var(--escala-fonte)) !important;
+}
+
+
+/* Empresa */
+body.fonte-110 .profile-info small,
+body.fonte-120 .profile-info small,
+body.fonte-130 .profile-info small,
+body.fonte-140 .profile-info small {
+    font-size: calc(11px * var(--escala-fonte)) !important;
+}
+
+
+/* Título Calendário */
+body.fonte-110 .calendar-title h2,
+body.fonte-120 .calendar-title h2,
+body.fonte-130 .calendar-title h2,
+body.fonte-140 .calendar-title h2 {
+    font-size: calc(24px * var(--escala-fonte)) !important;
+}
+
+
+/* Texto abaixo do Calendário */
+body.fonte-110 .calendar-title span,
+body.fonte-120 .calendar-title span,
+body.fonte-130 .calendar-title span,
+body.fonte-140 .calendar-title span {
+    font-size: calc(13px * var(--escala-fonte)) !important;
+}
+
+
+/* Mês */
+body.fonte-110 .calendar-header strong,
+body.fonte-120 .calendar-header strong,
+body.fonte-130 .calendar-header strong,
+body.fonte-140 .calendar-header strong {
+    font-size: calc(21px * var(--escala-fonte)) !important;
+}
+
+
+/* Ano */
+body.fonte-110 .calendar-header small,
+body.fonte-120 .calendar-header small,
+body.fonte-130 .calendar-header small,
+body.fonte-140 .calendar-header small {
+    font-size: calc(12px * var(--escala-fonte)) !important;
+}
+
+
+/* Dias do calendário */
+body.fonte-110 .dia,
+body.fonte-120 .dia,
+body.fonte-130 .dia,
+body.fonte-140 .dia {
+    font-size: calc(18px * var(--escala-fonte)) !important;
+}
+
+
+/* Legenda */
+body.fonte-110 .legend,
+body.fonte-120 .legend,
+body.fonte-130 .legend,
+body.fonte-140 .legend {
+    font-size: calc(13px * var(--escala-fonte)) !important;
+}
+
+
+/* Título Dicas */
+body.fonte-110 .card.dicas h3,
+body.fonte-120 .card.dicas h3,
+body.fonte-130 .card.dicas h3,
+body.fonte-140 .card.dicas h3 {
+    font-size: calc(25px * var(--escala-fonte)) !important;
+}
+
+
+/* Textos das dicas */
+body.fonte-110 .card.dicas li,
+body.fonte-120 .card.dicas li,
+body.fonte-130 .card.dicas li,
+body.fonte-140 .card.dicas li {
+    font-size: calc(15px * var(--escala-fonte)) !important;
+}

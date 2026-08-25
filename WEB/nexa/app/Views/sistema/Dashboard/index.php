@@ -11,10 +11,11 @@
 
     <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
     <link rel="stylesheet" href="<?= base_url('/assets/css/style_geral.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade_adm.css') ?>">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+   
 </head>
 
 <body>
@@ -40,14 +41,14 @@
 
         <div class="sidebar-logo">
 
-    <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
+            <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
 
-    <div class="sidebar-brand-text">
-        <strong>NEXA</strong>
-        <span>Segurança é prioridade</span>
-    </div>
+            <div class="sidebar-brand-text">
+                <strong>NEXA</strong>
+                <span>Segurança é prioridade</span>
+            </div>
 
-</div>
+        </div>
 
 
         <nav class="menu">
@@ -111,180 +112,138 @@
     </div>
 
 </aside>
-    <div class="access-menu">
-        <button class="gear-btn" onclick="toggleAccessMenu()">
-            <i class="fas fa-cog"></i>
-        </button>
-
-        <div class="access-options" id="accessOptions">
-            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
-                <i class="fas fa-adjust"></i>
-            </button>
-
-            <button class="access-btn" onclick="toggleDark()">
-                <i class="fas fa-moon"></i>
-            </button>
-
-            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
-                A+
-            </button>
-
-            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
-                A-
-            </button>
-
-            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
-                <i class="fas fa-volume-up"></i>
-            </button>
-        </div>
-    </div>
+    
 
     <div class="overlay">
         <div class="main">
-             <header class="dashboard-header">
+            <header class="dashboard-header">
 
-
-            <!-- ESQUERDA -->
-
-            <div class="header-left">
-
-                <div class="header-title">
-
-                    <h1>
-                       Dashboard
-                    </h1>
-
-                    <p>
-                        Acompanhe as principais analises da sua empresa
-                    </p>
-
+                <!-- ESQUERDA -->
+                <div class="header-left">
+                    <div class="header-title">
+                        <h1>Dashboard</h1>
+                        <p>Acompanhe as principais analises da sua empresa</p>
+                    </div>
                 </div>
 
+                <!-- DIREITA -->
+                <div class="header-right">
+                    <div class="access-menu">
+                        <div class="header-right">
+            <div class="access-menu">
+                <button class="gear-btn" onclick="toggleAccessMenu()" title="Acessibilidade">
+                    <i class="fas fa-cog"></i>
+                </button>
+
+                <div class="access-options" id="accessOptions">
+                    <button class="access-btn" onclick="Acessibilidade.toggleContraste()" title="Alto Contraste">
+                        <i class="fas fa-adjust"></i>
+                    </button>
+                    <button class="access-btn" onclick="toggleDark()" title="Modo Escuro">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="access-btn" onclick="Acessibilidade.aumentarFonte()" title="Aumentar Fonte">A+</button>
+                    <button class="access-btn" onclick="Acessibilidade.diminuirFonte()" title="Diminuir Fonte">A-</button>
+                    <button class="access-btn" onclick="Acessibilidade.lerPagina()" title="Ler Página">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
             </div>
 
-
-            <!-- =================================================
-                 DIREITA
-            ================================================== -->
-
-            <div class="header-right">
-
-
-                <a
-                    href="<?= base_url('/administrador') ?>"
-                    class="profile"
-                >
-
-
-                    <!-- AVATAR -->
-
-                    <div class="profile-avatar">
-
-                        <?= strtoupper(
-                            substr(
-                                session()->get('nome'),
-                                0,
-                                1
-                            )
-                        ) ?>
-
-                    </div>
-
-
-                    <!-- INFORMAÇÕES -->
-
-                    <div class="profile-info">
-
-                        <strong>
-
-                            <?= esc(
-                                session()->get('nome')
+                    <a href="<?= base_url('/administrador') ?>" class="profile">
+                        <!-- AVATAR -->
+                        <div class="profile-avatar">
+                            <?= strtoupper(
+                                substr(
+                                    session()->get('nome'),
+                                    0,
+                                    1
+                                )
                             ) ?>
+                        </div>
 
-                        </strong>
-
-                        <span>
-                            NEXA SOLUÇÕES
-                        </span>
-
-                    </div>
-
-
-                </a>
-
-            </div>
-
-
-        </header>
-
-
-        <div class="content">
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-icon pessoas">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h4>Pessoas analisadas hoje</h4>
-                    <span><?= $pessoasHoje ?></span>
+                        <!-- INFORMAÇÕES -->
+                        <div class="profile-info">
+                            <strong>
+                                <?= esc(
+                                    session()->get('nome')
+                                ) ?>
+                            </strong>
+                            <span>NEXA SOLUÇÕES</span>
+                        </div>
+                    </a>
                 </div>
 
-                <div class="metric">
-                    <div class="metric-icon conformidade">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h4>Conformidade</h4>
-                    <span style="color:green;"><?= $conformidade ?>%</span>
-                </div>
+            </header>
 
-                <div class="metric">
-                    <div class="metric-icon alerta">
-                        <i class="fas fa-triangle-exclamation"></i>
-                    </div>
-                    <h4>Alertas ativos</h4>
-                    <span style="color:red;"><?= $alertas ?></span>
-                </div>
 
-                <div class="metric">
-                    <div class="metric-icon camera">
-                        <i class="fas fa-video"></i>
+            <div class="content">
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-icon pessoas">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>Pessoas analisadas hoje</h4>
+                        <span><?= $pessoasHoje ?></span>
                     </div>
-                    <h4>Câmeras ativas</h4>
-                    <span><?= $camerasAtivas ?></span>
-                </div>
-            </div>
 
-            <div class="graficos-grid">
-                <div class="card">
-                    <h3>Controle diário de EPIs</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoBarra"></canvas>
+                    <div class="metric">
+                        <div class="metric-icon conformidade">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Conformidade</h4>
+                        <span style="color:green;"><?= $conformidade ?>%</span>
+                    </div>
+
+                    <div class="metric">
+                        <div class="metric-icon alerta">
+                            <i class="fas fa-triangle-exclamation"></i>
+                        </div>
+                        <h4>Alertas ativos</h4>
+                        <span style="color:red;"><?= $alertas ?></span>
+                    </div>
+
+                    <div class="metric">
+                        <div class="metric-icon camera">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h4>Câmeras ativas</h4>
+                        <span><?= $camerasAtivas ?></span>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h3>EPIs mais ausentes</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoPizza"></canvas>
+                <div class="graficos-grid">
+                    <div class="card">
+                        <h3>Controle diário de EPIs</h3>
+                        <div class="chart-container">
+                            <canvas id="graficoBarra"></canvas>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <h3>Ocorrências por câmera</h3>
-                    <div class="chart-container">
-                        <canvas id="linhaChart"></canvas>
+                    <div class="card">
+                        <h3>EPIs mais ausentes</h3>
+                        <div class="chart-container">
+                            <canvas id="graficoPizza"></canvas>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <h3>Funcionários por Setor</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoSetores"></canvas>
+                    <div class="card">
+                        <h3>Ocorrências por câmera</h3>
+                        <div class="chart-container">
+                            <canvas id="linhaChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Funcionários por Setor</h3>
+                        <div class="chart-container">
+                            <canvas id="graficoSetores"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
     
@@ -309,48 +268,49 @@
             }
         });
 
-      new Chart(document.getElementById('graficoPizza'), {
-    type: "doughnut",
-    data: {
-        labels: <?= $nomesEpi ?>,
-        datasets: [{
-            data: <?= $totaisEpi ?>,
-            backgroundColor: [
-                '#0A66c2',
-                '#04b507',
-                '#f59e0b',
-                '#c7040e',
-                '#8b5cf6'
-            ]
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
-
-  new Chart(document.getElementById('linhaChart'), {
-    type: 'bar',
-    data: {
-        labels: <?= $nomesCamera ?>,
-        datasets: [{
-            label: 'Ocorrências',
-            data: <?= $totalOcorrencias ?>,
-            backgroundColor: '#0A66c2'
-        }]
-    },
-    options: {
-        indexAxis: 'y', // barra horizontal
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                beginAtZero: true
+        new Chart(document.getElementById('graficoPizza'), {
+            type: "doughnut",
+            data: {
+                labels: <?= $nomesEpi ?>,
+                datasets: [{
+                    data: <?= $totaisEpi ?>,
+                    backgroundColor: [
+                        '#0A66c2',
+                        '#04b507',
+                        '#f59e0b',
+                        '#c7040e',
+                        '#8b5cf6'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
             }
-        }
-    }
-});
+        });
+
+        new Chart(document.getElementById('linhaChart'), {
+            type: 'bar',
+            data: {
+                labels: <?= $nomesCamera ?>,
+                datasets: [{
+                    label: 'Ocorrências',
+                    data: <?= $totalOcorrencias ?>,
+                    backgroundColor: '#0A66c2'
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
         const nomesSetores = <?= $nomesSetores ?>;
         const totaisSetores = <?= $totaisSetores ?>;
         const cores = [];
@@ -376,10 +336,10 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                   legend: {
-    display: true,
-    position: 'bottom'
-},
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
                     tooltip: {
                         callbacks: {
                             label: function (context) {
@@ -395,10 +355,10 @@
             document.body.classList.toggle('dark-mode');
         }
 
-        /* Abre/Fecha as opções da engrenagem */
+        /* Alterna a classe 'show' no menu de opções */
         function toggleAccessMenu() {
             const options = document.getElementById('accessOptions');
-            options.style.display = options.style.display === 'flex' ? 'none' : 'flex';
+            options.classList.toggle('show');
         }
     </script>
 </body>

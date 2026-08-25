@@ -322,29 +322,29 @@ border-radius:30px;
             font-weight: bold;
         }
 
-      .subtitle{
+        .subtitle{
 
-display:flex;
+    display:flex;
 
-align-items:center;
+    align-items:center;
 
-gap:10px;
+    gap:10px;
 
-font-size:13px;
+    font-size:13px;
 
-font-weight:700;
+    font-weight:700;
 
-letter-spacing:.5px;
+    letter-spacing:.5px;
 
-text-transform:uppercase;
+    text-transform:uppercase;
 
-color:#0A66C2;
+    color:#0A66C2;
 
-margin-top:25px;
+    margin-top:25px;
 
-margin-bottom:15px;
+    margin-bottom:15px;
 
-}
+    }
         /* Estrutura em Grid */
         .form-grid {
             display: grid;
@@ -492,3 +492,37 @@ margin-bottom:15px;
             background: #1e293b;
             border-color: #64748b;
         }
+
+        /* ==========================================
+        ALTO CONTRASTE - BORDAS AMARELAS
+        ========================================== */
+
+        body.alto-contraste .input-box {
+            border-color: #FFFF00 !important;
+        }
+
+        body.alto-contraste .input-box.editable-field {
+            border-color: #FFFF00 !important;
+        }
+
+        body.alto-contraste .input-box.editable-field:focus-within {
+            border-color: #FFFF00 !important;
+            box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.25) !important;
+        }
+
+        /* Ícones dos campos */
+        body.alto-contraste .input-box i {
+            color: #FFFF00 !important;
+        }
+
+        /* Textos dentro dos campos */
+        body.alto-contraste .input-box input,
+        body.alto-contraste .input-box span,
+        body.alto-contraste .input-box strong,
+        body.alto-contraste .input-box small,
+        body.alto-contraste .input-box label {
+            color: #FFFFFF !important;
+        }
+
+
+        

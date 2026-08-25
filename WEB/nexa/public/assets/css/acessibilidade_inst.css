@@ -152,163 +152,450 @@ body.alto-contraste .fab {
 /* =========================
    🌙 DARK MODE COMPLETO REAL
    ========================= */
+/* =========================================================
+   LOGO PADRÃO
+========================================================= */
+
+.logo-dark {
+    display: none;
+}
+
+.logo-light {
+    display: block;
+}
+
+
+/* =========================================================
+   ALTO CONTRASTE
+========================================================= */
+
+body.alto-contraste {
+    background: #000 !important;
+    color: #ffd400 !important;
+}
+
+/* Textos gerais */
+body.alto-contraste p,
+body.alto-contraste h1,
+body.alto-contraste h2,
+body.alto-contraste h3,
+body.alto-contraste span,
+body.alto-contraste a {
+    color: #ffd400 !important;
+}
+
+/* TOPBAR */
+body.alto-contraste .topbar {
+    background: #000 !important;
+    border-bottom: 2px solid #ffd400 !important;
+}
+
+/* MENU */
+body.alto-contraste .menu a {
+    background: transparent !important;
+    color: #ffd400 !important;
+}
+
+body.alto-contraste .menu a:hover {
+    background: transparent !important;
+    color: #ffd400 !important;
+}
+
+/* Linha do menu */
+body.alto-contraste .menu a::after {
+    background: #ffd400 !important;
+}
+
+body.alto-contraste .menu a:hover::after {
+    width: 100%;
+}
+
+/* HERO */
+body.alto-contraste .hero {
+    background: #000 !important;
+}
+
+/* CARDS */
+body.alto-contraste .solution,
+body.alto-contraste .value,
+body.alto-contraste .block,
+body.alto-contraste .team-card,
+body.alto-contraste .visao_comp {
+    background: #000 !important;
+    border: 2px solid #ffd400 !important;
+    color: #ffd400 !important;
+    box-shadow: none !important;
+}
+
+/* FOOTER */
+body.alto-contraste footer {
+    background: #000 !important;
+    border-top: 2px solid #ffd400 !important;
+}
+
+/* =========================================================
+   BOTÕES - ALTO CONTRASTE
+========================================================= */
+
+body.alto-contraste button,
+body.alto-contraste .btn-primary,
+body.alto-contraste .btn-secondary,
+body.alto-contraste .access-btnindex,
+body.alto-contraste .button {
+    background: transparent !important;
+    color: #ffd400 !important;
+    border-color: #ffd400 !important;
+}
+
+/* Botão primário */
+body.alto-contraste .btn-primary {
+    background: #ffd400 !important;
+    color: #000 !important;
+}
+
+/* Botão secundário */
+body.alto-contraste .btn-secondary {
+    background: transparent !important;
+    border: 2px solid #ffd400 !important;
+    color: #ffd400 !important;
+}
+
+/* Hover geral */
+body.alto-contraste button:hover,
+body.alto-contraste .btn-primary:hover,
+body.alto-contraste .btn-secondary:hover,
+body.alto-contraste .access-btnindex:hover,
+body.alto-contraste .button:hover {
+    background: #ffd400 !important;
+    color: #000 !important;
+    border-color: #ffd400 !important;
+}
+
+/* Botão entrar */
+body.alto-contraste .menu .button {
+    border: 2px solid #ffd400 !important;
+    color: #ffd400 !important;
+    background: transparent !important;
+    box-shadow: 0 0 8px #ffd400 !important;
+}
+
+body.alto-contraste .menu .button:hover {
+    background: #ffd400 !important;
+    color: #000 !important;
+    box-shadow: 0 0 12px #ffd400 !important;
+}
+
+/* Ícones */
+body.alto-contraste i,
+body.alto-contraste .fa,
+body.alto-contraste .fas,
+body.alto-contraste .far,
+body.alto-contraste .fab {
+    color: #ffd400 !important;
+}
+
+
+/* =========================================================
+   DARK MODE — BASE NEXA
+========================================================= */
 
 body.dark-mode {
-    background: #000 !important;
-    color: #e5e7eb !important;
+    background: #07111f !important;
+    color: #dbe5f0 !important;
 }
 
-/* ===== TOPO ===== */
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
 body.dark-mode .topbar {
-    background: #202225 !important;
-    border-bottom: 1px solid #222 !important;
+    background: #081522 !important;
+    border-bottom: 1px solid #1b2a3b !important;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, .35);
 }
 
-/* ===== MENU ===== */
+
+/* =========================================================
+   MENU
+========================================================= */
+
 body.dark-mode .menu a {
-    color: #e5e7eb !important;
+    background: transparent !important;
+    color: #dbe5f0 !important;
 }
 
-/* hover menu */
 body.dark-mode .menu a:hover {
+    background: rgba(37, 99, 235, .12) !important;
+    color: #ffffff !important;
+}
+
+/* Ícones do menu */
+body.dark-mode .menu a i {
+    color: #dbe5f0 !important;
+}
+
+body.dark-mode .menu a:hover i {
     color: #60a5fa !important;
 }
 
-/* linha animada */
+/* Linha animada */
 body.dark-mode .menu a::after {
-    background: #60a5fa !important;
+    background: #1685f5 !important;
 }
 
-/* ===== BOTÃO ENTRAR ===== */
+
+/* =========================================================
+   BOTÃO ENTRAR
+========================================================= */
+
 body.dark-mode .menu .button {
     background: transparent !important;
     color: #60a5fa !important;
     border: 2px solid #60a5fa !important;
-    box-shadow: 0 0 8px #60a5fa !important;
+    box-shadow: 0 0 8px rgba(96, 165, 250, .25) !important;
 }
 
 body.dark-mode .menu .button:hover {
     background: #60a5fa !important;
-    color: #000 !important;
-    box-shadow: 0 0 15px #60a5fa !important;
+    color: #07111f !important;
+    box-shadow: 0 0 15px rgba(96, 165, 250, .45) !important;
 }
 
-/* ===== HERO ===== */
+
+/* =========================================================
+   HERO
+========================================================= */
+
 body.dark-mode .hero {
-    background: linear-gradient(135deg, #000, #020617) !important;
+    background:
+        linear-gradient(
+            135deg,
+            #07111f 0%,
+            #081522 50%,
+            #0d1927 100%
+        ) !important;
 }
 
 body.dark-mode #paragrafo_inst {
-    color: #cbd5e1 !important;
+    color: #94a3b8 !important;
 }
 
-/* ===== CARDS GERAIS ===== */
+
+/* =========================================================
+   CARDS
+========================================================= */
+
 body.dark-mode .solution,
 body.dark-mode .value,
 body.dark-mode .block,
 body.dark-mode .team-card,
 body.dark-mode .visao_comp {
-    background: #202225 !important;
-    color: #e5e7eb !important;
-    border: 1px solid #1f2937 !important;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6) !important;
+    background: #0d1927 !important;
+    color: #dbe5f0 !important;
+    border: 1px solid #1b2a3b !important;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, .30) !important;
 }
 
-/* hover dos cards */
+
+/* =========================================================
+   HOVER DOS CARDS
+========================================================= */
+
 body.dark-mode .solution:hover,
 body.dark-mode .value:hover,
 body.dark-mode .block:hover,
-body.dark-mode .team-card:hover {
+body.dark-mode .team-card:hover,
+body.dark-mode .visao_comp:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 0 25px rgba(96, 165, 250, 0.3);
+
+    box-shadow:
+        0 15px 35px rgba(10, 102, 194, .18) !important;
 }
 
-/* textos internos */
+
+/* =========================================================
+   TEXTOS DOS CARDS
+========================================================= */
+
 body.dark-mode p {
-    color: #9ca3af !important;
+    color: #94a3b8 !important;
 }
 
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3 {
-    color: #f9fafb !important;
+    color: #f1f5f9 !important;
 }
 
-/* ===== BOTÕES ===== */
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: #dbe5f0 !important;
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
 body.dark-mode .btn-primary {
-    background: #60a5fa !important;
-    color: #000 !important;
+    background: #1685f5 !important;
+    color: #ffffff !important;
+    border-color: #1685f5 !important;
 }
 
 body.dark-mode .btn-primary:hover {
-    box-shadow: 0 0 15px #60a5fa !important;
+    background: #0A66C2 !important;
+    color: #ffffff !important;
+
+    box-shadow:
+        0 0 15px rgba(22, 133, 245, .35) !important;
 }
 
 body.dark-mode .btn-secondary {
     background: transparent !important;
-    border: 2px solid #60a5fa !important;
+    border: 2px solid #1685f5 !important;
     color: #60a5fa !important;
 }
 
 body.dark-mode .btn-secondary:hover {
-    background: #60a5fa !important;
-    color: #000 !important;
+    background: #1685f5 !important;
+    color: #ffffff !important;
 }
 
-/* ===== ACESSIBILIDADE BOTÕES ===== */
+
+/* =========================================================
+   BOTÕES DE ACESSIBILIDADE
+========================================================= */
+
 body.dark-mode .access-btnindex {
-    border: 1px solid #60a5fa !important;
+    background: transparent !important;
+    border: 1px solid #1685f5 !important;
     color: #60a5fa !important;
 }
 
 body.dark-mode .access-btnindex:hover {
-    background: #60a5fa !important;
-    color: #000 !important;
+    background: #1685f5 !important;
+    color: #ffffff !important;
 }
 
-/* ===== VIDEO ===== */
+
+/* =========================================================
+   VÍDEO
+========================================================= */
+
 body.dark-mode .video-container {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8) !important;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .55) !important;
 }
 
-/* ===== FOOTER ===== */
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
 body.dark-mode footer {
-    background: #202225 !important;
-    border-top: 1px solid #222 !important;
+    background: #081522 !important;
+    border-top: 1px solid #1b2a3b !important;
 }
 
 body.dark-mode footer p,
 body.dark-mode footer a {
-    color: #9ca3af !important;
+    color: #94a3b8 !important;
 }
 
 body.dark-mode footer a:hover {
     color: #60a5fa !important;
 }
 
-/* redes sociais */
+
+/* =========================================================
+   REDES SOCIAIS
+========================================================= */
+
 body.dark-mode .social a {
-    background: #111 !important;
+    background: #0d1927 !important;
+    border: 1px solid #1b2a3b !important;
     color: #60a5fa !important;
 }
 
 body.dark-mode .social a:hover {
-    background: #60a5fa !important;
-    color: #000 !important;
-}
-
-/* ===== SCROLLBAR ===== */
-body.dark-mode ::-webkit-scrollbar-thumb {
-    background: #60a5fa;
-}
-
-/* TEXTO NEXA NO DARK MODE */
-body.dark-mode .logo span {
+    background: #1685f5 !important;
     color: #ffffff !important;
 }
 
+
 /* =========================================================
-   ESCALA DE FONTE - ACESSIBILIDADE
+   LOGO / NEXA NO DARK MODE
+========================================================= */
+
+body.dark-mode .logo span {
+    color: #f1f5f9 !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+body.dark-mode ::-webkit-scrollbar {
+    width: 8px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #07111f;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #26384c;
+    border-radius: 10px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #34506d;
+}
+
+
+/* =========================================================
+   ÍCONES — DARK MODE
+========================================================= */
+
+body.dark-mode i,
+body.dark-mode .fa,
+body.dark-mode .fas,
+body.dark-mode .far,
+body.dark-mode .fab {
+    color: #dbe5f0;
+}
+
+
+/* =========================================================
+   ALTO CONTRASTE TEM PRIORIDADE
+========================================================= */
+
+body.alto-contraste.dark-mode {
+    background: #000 !important;
+    color: #ffd400 !important;
+}
+
+body.alto-contraste.dark-mode .topbar,
+body.alto-contraste.dark-mode .hero,
+body.alto-contraste.dark-mode footer,
+body.alto-contraste.dark-mode .solution,
+body.alto-contraste.dark-mode .value,
+body.alto-contraste.dark-mode .block,
+body.alto-contraste.dark-mode .team-card,
+body.alto-contraste.dark-mode .visao_comp {
+    background: #000 !important;
+    color: #ffd400 !important;
+}
+
+
+/* =========================================================
+   ESCALA DE FONTE — ACESSIBILIDADE
 ========================================================= */
 
 body.fonte-80 {
@@ -341,4 +628,17 @@ body.fonte-140 {
 
 body.fonte-150 {
     font-size: 150%;
+}
+/* ==========================================================
+   CONFIGURAÇÕES VLIBRAS
+========================================================== */
+
+/* Esconde o botão/bolinha azul padrão do VLibras */
+[vw-access-button] {
+    display: none !important;
+}
+
+/* Garante que o avatar do robô fique visível por cima dos elementos */
+.vw-plugin-wrapper {
+    z-index: 999999 !important;
 }

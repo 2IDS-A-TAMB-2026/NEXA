@@ -29,7 +29,7 @@
 
     <link
         rel="stylesheet"
-        href="<?= base_url('assets/css/acessibilidade.css') ?>"
+        href="<?= base_url('assets/css/acessibilidade_adm.css') ?>"
     >
 
     <link
@@ -261,6 +261,50 @@
      ACESSIBILIDADE
 ========================================================= -->
 
+
+
+<!-- =========================================================
+     ÁREA PRINCIPAL
+========================================================= -->
+
+<div class="overlay">
+
+
+    <div class="main">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+
+            <!-- ESQUERDA -->
+
+            <div class="header-left">
+
+                <div class="header-title">
+
+                    <h1>
+                        Ocorrências
+                    </h1>
+
+                    <p>
+                        Acompanhe as ocorrências da sua empresa
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DIREITA
+            ================================================== -->
+
+            <div class="header-right">
+                
 <div class="access-menu">
 
 
@@ -353,49 +397,6 @@
 
 </div>
 
-
-
-<!-- =========================================================
-     ÁREA PRINCIPAL
-========================================================= -->
-
-<div class="overlay">
-
-
-    <div class="main">
-
-
-        <!-- =================================================
-             HEADER
-        ================================================== -->
-
-        <header class="dashboard-header">
-
-
-            <!-- ESQUERDA -->
-
-            <div class="header-left">
-
-                <div class="header-title">
-
-                    <h1>
-                        Ocorrências
-                    </h1>
-
-                    <p>
-                        Acompanhe as ocorrências da sua empresa
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 DIREITA
-            ================================================== -->
-
-            <div class="header-right">
 
 
                 <a
@@ -866,7 +867,8 @@
 <!-- =========================================================
      JAVASCRIPT
 ========================================================= -->
-
+ <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
 <script>
 
 
@@ -1479,8 +1481,17 @@ mostrarPagina();
         'assets/js/acessibilidade.js'
     ) ?>"
 ></script>
-
+<!-- COMPONENTE VLIBRAS -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
 
 </body>
-
 </html>

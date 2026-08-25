@@ -1,246 +1,3 @@
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
-
-
-/* =========================================================
-   BODY
-========================================================= */
-
-body {
-    min-height: 100vh;
-    width: 100%;
-
-    background: #ffffff;
-
-    overflow: hidden;
-
-    position: relative;
-}
-
-
-/* =========================================================
-   CONTAINER PRINCIPAL
-========================================================= */
-
-.login-container {
-    width: 100%;
-    min-height: 100vh;
-
-    display: flex;
-
-    background: #ffffff;
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   LADO ESQUERDO — VÍDEO
-========================================================= */
-
-.left-side {
-    width: 50%;
-    min-height: 100vh;
-
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    overflow: hidden;
-
-    background: #064f9e;
-}
-
-
-/* =========================================================
-   VÍDEO
-========================================================= */
-
-.video-carousel {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    z-index: 0;
-}
-
-
-.video-carousel video {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-/* =========================================================
-   EFEITO AZUL SOBRE O VÍDEO
-========================================================= */
-
-.left-side::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 1;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0, 74, 153, 0.88) 0%,
-            rgba(0, 87, 184, 0.72) 55%,
-            rgba(0, 47, 108, 0.84) 100%
-        );
-}
-
-
-/* =========================================================
-   CONTEÚDO SOBRE O VÍDEO
-========================================================= */
-
-.left-content {
-    position: relative;
-
-    z-index: 2;
-
-    width: 75%;
-
-    margin-left: 9%;
-
-    color: #ffffff;
-}
-
-
-.left-content .linha {
-    width: 60px;
-    height: 4px;
-
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    margin-bottom: 25px;
-}
-
-
-.left-content h2 {
-    font-size: clamp(32px, 3.2vw, 52px);
-
-    font-weight: 400;
-
-    line-height: 1.12;
-
-    margin-bottom: 12px;
-}
-
-
-.left-content h2 strong {
-    display: block;
-
-    font-weight: 700;
-}
-
-
-.left-content p {
-    max-width: 500px;
-
-    font-size: clamp(15px, 1.25vw, 19px);
-
-    line-height: 1.6;
-
-    color: rgba(255, 255, 255, 0.94);
-}
-
-
-/* =========================================================
-   LOGO ANTIGA
-========================================================= */
-
-.logo-box {
-    display: none;
-}
-
-.logo-box img {
-    width: 180px;
-}
-
-
-/* =========================================================
-   LADO DIREITO
-========================================================= */
-
-.right-side {
-    width: calc(50% + 50px);
-    min-height: 100vh;
-
-    background: #ffffff;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    padding: 60px 8%;
-
-    position: relative;
-
-    z-index: 3;
-
-    /*
-       Faz o branco avançar
-       sobre o vídeo.
-    */
-    margin-left: -50px;
-
-    border-radius: 60px 0 0 60px;
-}
-
-
-/* =========================================================
-   ÁREA DO FORMULÁRIO
-========================================================= */
-
-.login-form-area {
-    width: 100%;
-
-    max-width: 470px;
-}
-
-
-/* =========================================================
-   LOGO NEXA
-========================================================= */
-
-.right-logo {
-    width: 200px;
-
-    object-fit: contain;
-
-    margin-bottom: 28px;
-}
 
 
 /* =========================================================
@@ -273,6 +30,315 @@ body {
 
     font-size: 15px;
 }
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+    min-height: 100vh;
+    width: 100%;
+    background: #ffffff;
+    overflow: hidden;
+    position: relative;
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+.access-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.gear-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0057b8;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    transition: 0.3s ease;
+}
+
+.gear-btn:hover {
+    transform: translateY(-2px);
+}
+
+.access-options {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: 0.25s ease;
+}
+
+.access-options.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.access-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0057b8;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+    transition: 0.3s ease;
+}
+
+.access-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CONTAINER PRINCIPAL
+========================================================= */
+
+.login-container {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+
+    background: #ffffff;
+
+    position: relative;
+    z-index: 1;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   LADO ESQUERDO
+========================================================= */
+
+.left-side {
+    width: 50%;
+    min-height: 100vh;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    overflow: hidden;
+
+    background: #064f9e;
+}
+
+
+/* =========================================================
+   VÍDEO
+========================================================= */
+
+.left-side video {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    z-index: 0;
+}
+
+
+/* =========================================================
+   EFEITO AZUL SOBRE O VÍDEO
+========================================================= */
+
+.left-side::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 74, 153, 0.88) 0%,
+            rgba(0, 87, 184, 0.72) 55%,
+            rgba(0, 47, 108, 0.82) 100%
+        );
+}
+
+
+/* =========================================================
+   CONTEÚDO DO LADO ESQUERDO
+========================================================= */
+
+.left-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 75%;
+
+    margin-left: 9%;
+
+    color: #ffffff;
+}
+
+
+/* Título */
+
+.left-content h2 {
+    font-size: clamp(32px, 3.2vw, 52px);
+
+    font-weight: 400;
+
+    line-height: 1.12;
+
+    margin-bottom: 8px;
+}
+
+.left-content h2 strong {
+    display: block;
+
+    font-weight: 700;
+}
+
+.logo-container {
+    width: 300px;
+    height: auto;
+    margin-bottom: 2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container img {
+    width: 60%;
+    height: auto;
+}
+
+.logo-dark {
+    display: none;
+}
+/* Texto */
+
+.left-content p {
+    max-width: 500px;
+
+    font-size: clamp(15px, 1.25vw, 19px);
+
+    line-height: 1.6;
+
+    color: rgba(255, 255, 255, 0.94);
+}
+
+
+/* Pequeno detalhe */
+
+.left-content .linha {
+    width: 60px;
+    height: 4px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   LOGO — CASO QUEIRA MANTER UMA LOGO NO LADO ESQUERDO
+========================================================= */
+
+.logo-box {
+    display: none;
+}
+
+.logo-box img {
+    width: 180px;
+}
+
+
+/* =========================================================
+   LADO DIREITO
+========================================================= */
+.right-side {
+    width: calc(50% + 45px);
+    min-height: 100vh;
+
+    background: #fff;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 60px 8%;
+
+    position: relative;
+    z-index: 3;
+
+    /* CURVA */
+    border-radius: 55px 0 0 55px;
+
+    margin-left: -45px;
+}
+
+/* =========================================================
+   LOGO NEXA
+========================================================= */
+
+.right-logo {
+    width: 200px;
+
+    margin-bottom: 30px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   ÁREA DO FORMULÁRIO
+========================================================= */
+
+.login-form-area {
+    width: 100%;
+    max-width: 470px;
+}
+
 
 
 /* =========================================================
@@ -312,12 +378,10 @@ body {
     margin-bottom: 16px;
 }
 
-
 .input-box i {
     position: absolute;
 
     left: 17px;
-
     top: 50%;
 
     transform: translateY(-50%);
@@ -328,7 +392,6 @@ body {
 
     z-index: 2;
 }
-
 
 .input-box input {
     width: 100%;
@@ -345,29 +408,26 @@ body {
 
     outline: none;
 
+    transition: 0.3s;
+
     color: #333333;
 
     background: #ffffff;
-
-    transition: 0.3s;
 }
-
 
 .input-box input::placeholder {
     color: #8b95a5;
 }
 
-
 .input-box input:focus {
     border-color: #0066d6;
 
-    box-shadow:
-        0 0 0 3px rgba(0, 102, 214, 0.10);
+    box-shadow: 0 0 0 3px rgba(0, 102, 214, 0.10);
 }
 
 
 /* =========================================================
-   BOTÃO
+   BOTÃO LOGIN
 ========================================================= */
 
 .btn-login {
@@ -379,12 +439,11 @@ body {
 
     border-radius: 14px;
 
-    background:
-        linear-gradient(
-            90deg,
-            #0066d6,
-            #003f96
-        );
+    background: linear-gradient(
+        90deg,
+        #0066d6,
+        #003f96
+    );
 
     color: #ffffff;
 
@@ -396,9 +455,8 @@ body {
 
     transition: 0.3s ease;
 
-    margin-top: 2px;
+    margin-top: 3px;
 }
-
 
 .btn-login:hover {
     transform: translateY(-2px);
@@ -406,7 +464,6 @@ body {
     box-shadow:
         0 8px 20px rgba(0, 63, 150, 0.25);
 }
-
 
 .btn-login:active {
     transform: translateY(0);
@@ -423,7 +480,6 @@ body {
     text-align: center;
 }
 
-
 .links a {
     display: block;
 
@@ -431,13 +487,10 @@ body {
 
     text-decoration: none;
 
-    margin-bottom: 9px;
-
     font-size: 14px;
 
     transition: 0.3s;
 }
-
 
 .links a:hover {
     color: #003f96;
@@ -453,7 +506,7 @@ body {
 .footer {
     text-align: center;
 
-    margin-top: 25px;
+    margin-top: 28px;
 
     color: #9ca3af;
 
@@ -471,26 +524,27 @@ body {
         overflow: auto;
     }
 
-
     .login-container {
         min-height: 100vh;
 
         flex-direction: column;
     }
 
-
-    /* VÍDEO */
-
     .left-side {
         width: 100%;
 
-        min-height: 40vh;
+        min-height: 42vh;
 
-        max-height: 430px;
+        max-height: 450px;
     }
 
+    .right-side {
+        width: 100%;
 
-    /* TEXTO */
+        min-height: 58vh;
+
+        padding: 45px 30px;
+    }
 
     .left-content {
         width: 80%;
@@ -498,54 +552,40 @@ body {
         margin-left: 8%;
     }
 
-
     .left-content h2 {
         font-size: 36px;
     }
 
-
-    /* ÁREA BRANCA */
-
-    .right-side {
-        width: 100%;
-
-        min-height: 60vh;
-
-        margin-left: 0;
-
-        padding: 45px 30px;
-
-        border-radius: 40px 40px 0 0;
-    }
-
-
     .right-logo {
-        width: 135px;
+        width: 130px;
 
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
 }
 
 
-/* =========================================================
-   CELULAR
-========================================================= */
-
 @media (max-width: 600px) {
 
-    .left-side {
-        min-height: 35vh;
+    .access-menu {
+        top: 12px;
+        left: 12px;
     }
 
+    .access-options {
+        flex-wrap: wrap;
+
+        max-width: 220px;
+    }
+
+    .left-side {
+        min-height: 36vh;
+    }
 
     .right-side {
-        min-height: 65vh;
+        min-height: 64vh;
 
         padding: 35px 22px;
-
-        border-radius: 32px 32px 0 0;
     }
-
 
     .left-content {
         width: 84%;
@@ -553,29 +593,48 @@ body {
         margin-left: 8%;
     }
 
-
     .left-content h2 {
         font-size: 29px;
     }
-
 
     .left-content p {
         font-size: 14px;
     }
 
-
     .titulo {
         font-size: 28px;
     }
-
 
     .right-logo {
         width: 115px;
     }
 
-
     .input-box input,
     .btn-login {
         height: 52px;
     }
+}
+
+
+.video-carousel {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    z-index: 0;
+}
+
+.video-carousel video {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    inset: 0;
 }

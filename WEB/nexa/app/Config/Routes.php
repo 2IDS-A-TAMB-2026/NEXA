@@ -430,3 +430,138 @@ $routes->post(
     'Cadastro_Fun/verificarCPF',
     'CadastroFunController::verificarCPF'
 );
+
+
+
+
+//===================================================
+// TESTE DO FLUTTER ALTAS CHANCES DE ERRO
+//===================================================
+
+
+// ============================================================
+// API NEXA - MOBILE
+// ============================================================
+$routes->options('api/login', function () {
+    return service('response')
+        ->setStatusCode(200);
+});
+// ------------------------------------------------------------
+// AUTENTICAÇÃO
+// ------------------------------------------------------------
+
+$routes->post(
+    'api/login',
+    'api\AuthController::login',
+    ['filter' => 'cors']
+);$routes->post('api/logout', 'api\AuthController::logout');
+
+
+// ------------------------------------------------------------
+// PERFIL DO FUNCIONÁRIO
+// ------------------------------------------------------------
+$routes->get(
+    'api/perfil/(:segment)',
+    'api\PerfilController::show/$1',
+    ['filter' => 'cors']
+);
+
+$routes->put(
+    'api/perfil/(:segment)',
+    'api\PerfilController::update/$1',
+    ['filter' => 'cors']
+);
+
+$routes->put(
+    'api/perfil/(:segment)/senha',
+    'api\PerfilController::senha/$1',
+    ['filter' => 'cors']
+);
+
+// ------------------------------------------------------------
+// DASHBOARD
+// ------------------------------------------------------------
+
+$routes->get(
+    'api/dashboard/(:segment)',
+    'api\DashboardController::index/$1',
+    ['filter' => 'cors']
+);
+
+// ------------------------------------------------------------
+// EPIs
+// ------------------------------------------------------------
+
+// EPIs pertencentes ao funcionário
+$routes->get(
+    'api/funcionarios/(:segment)/epis',
+    'api\EpiController::funcionario/$1'
+);
+
+// Histórico de verificações de EPI
+$routes->get(
+    'api/epis/verificacoes/(:segment)',
+    'api\EpiController::verificacoes/$1'
+);
+
+// EPI específico
+$routes->get(
+    'api/epis/(:num)',
+    'api\EpiController::show/$1'
+);
+
+
+// ------------------------------------------------------------
+// CÂMERAS
+// ------------------------------------------------------------
+
+// Todas as câmeras
+$routes->get(
+    'api/cameras',
+    'api\CameraController::index'
+);
+
+// Câmera específica
+$routes->get(
+    'api/cameras/(:num)',
+    'api\CameraController::show/$1'
+);
+
+// Última análise registrada da câmera
+$routes->post(
+    'api/cameras/(:num)/analisar',
+    'api\CameraController::analisar/$1',
+    ['filter' => 'cors']
+);
+
+
+// ------------------------------------------------------------
+// OCORRÊNCIAS
+// ------------------------------------------------------------
+
+// Ocorrências de um funcionário/
+$routes->get(
+    'api/ocorrencias/funcionario/(:segment)',
+    'api\OcorrenciaController::funcionario/$1'
+);
+
+// Ocorrência específica
+$routes->get(
+    'api/ocorrencias/(:num)',
+    'api\OcorrenciaController::show/$1'
+);
+
+
+$routes->options('api/(:any)', function () {
+    return service('response')
+        ->setStatusCode(200);
+});
+
+
+
+// API RFID
+
+$routes->post(
+    'api/rfid',
+    'api\RfidController::index'
+);

@@ -8,7 +8,7 @@
     <title>Cadastro de Câmeras</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/acessibilidade.css">
+    <link rel="stylesheet" href="assets/css/acessibilidade_adm.css">
     <link rel="stylesheet" href="assets/css/style_geral.css">
     <link rel="stylesheet" href="assets/css/cadastro_camera.css">
 
@@ -121,6 +121,34 @@
 </div>
 
 <div class="header-right">
+    <div class="access-menu">
+        <button class="gear-btn" onclick="toggleAccessMenu()">
+            <i class="fas fa-cog"></i>
+        </button>
+
+        <div class="access-options" id="accessOptions">
+            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+                <i class="fas fa-adjust"></i>
+            </button>
+
+            <button class="access-btn" onclick="toggleDark()">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+                A+
+            </button>
+
+            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+                A-
+            </button>
+
+            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+    </div>
+
 
     
       
@@ -165,34 +193,7 @@ NEXA SOLUÇÕES
 
 </header>
 
-    <div class="access-menu">
-        <button class="gear-btn" onclick="toggleAccessMenu()">
-            <i class="fas fa-cog"></i>
-        </button>
-
-        <div class="access-options" id="accessOptions">
-            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
-                <i class="fas fa-adjust"></i>
-            </button>
-
-            <button class="access-btn" onclick="toggleDark()">
-                <i class="fas fa-moon"></i>
-            </button>
-
-            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
-                A+
-            </button>
-
-            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
-                A-
-            </button>
-
-            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
-                <i class="fas fa-volume-up"></i>
-            </button>
-        </div>
-    </div>
-
+    
     <div class="overlay">
         <div class="content-container">
 

@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade_adm.css') ?>">
 
     <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
 
@@ -107,7 +107,37 @@
 
         <div class="main">
 
-        <!-- MENU ACESSIBILIDADE -->
+      
+
+
+        <header class="dashboard-header">
+
+
+            <!-- ESQUERDA -->
+
+            <div class="header-left">
+
+                <div class="header-title">
+
+                    <h1>
+                       Dashboard de Câmeras
+                    </h1>
+
+                    <p>
+                        Acompanhe as câmeras da sua empresa
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DIREITA
+            ================================================== -->
+
+            <div class="header-right">
+                  <!-- MENU ACESSIBILIDADE -->
         <div class="access-menu">
 
             <button class="gear-btn" onclick="toggleAccessMenu()">
@@ -140,35 +170,6 @@
 
         </div>
 
-
-
-        <header class="dashboard-header">
-
-
-            <!-- ESQUERDA -->
-
-            <div class="header-left">
-
-                <div class="header-title">
-
-                    <h1>
-                       Dashboard de Câmeras
-                    </h1>
-
-                    <p>
-                        Acompanhe as câmeras da sua empresa
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 DIREITA
-            ================================================== -->
-
-            <div class="header-right">
 
 
                 <a
@@ -297,7 +298,15 @@
             }
         }
     </script>
-
-</body>
-
-</html>
+<div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+    </body>
+    </html>

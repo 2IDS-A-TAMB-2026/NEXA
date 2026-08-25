@@ -1,27 +1,18 @@
 /* =========================================================
-   RESET
+   BASE & RESET
 ========================================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+:root {
+    --escala-fonte: 1; /* Valor padrão */
 }
 
-
-/* =========================================================
-   BODY
-========================================================= */
+html {
+    font-size: 16px;
+}
 
 body {
-    min-height: 100vh;
-    width: 100%;
-    background: #ffffff;
-    overflow: hidden;
-    position: relative;
+    /* Multiplica a fonte do body e de todos os filhos pela variável do JS */
+    font-size: calc(1rem * var(--escala-fonte, 1));
 }
-
 
 /* =========================================================
    ACESSIBILIDADE
@@ -41,7 +32,7 @@ body {
     border-radius: 12px;
     background: #ffffff;
     color: #0057b8;
-    font-size: 17px;
+    font-size: 1.0625rem; /* 17px */
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
     transition: 0.3s ease;
@@ -74,7 +65,7 @@ body {
     border-radius: 12px;
     background: #ffffff;
     color: #0057b8;
-    font-size: 16px;
+    font-size: 1rem; /* 16px */
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
     transition: 0.3s ease;
@@ -92,14 +83,10 @@ body {
 .login-container {
     width: 100%;
     min-height: 100vh;
-
     display: flex;
-
     background: #ffffff;
-
     position: relative;
     z-index: 1;
-
     overflow: hidden;
 }
 
@@ -111,57 +98,39 @@ body {
 .left-side {
     width: 50%;
     min-height: 100vh;
-
     position: relative;
-
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
     overflow: hidden;
-
     background: #064f9e;
 }
 
 
 /* =========================================================
-   VÍDEO
+   VÍDEO E OVERLAY
 ========================================================= */
 
 .left-side video {
     position: absolute;
-
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     z-index: 0;
 }
 
-
-/* =========================================================
-   EFEITO AZUL SOBRE O VÍDEO
-========================================================= */
-
 .left-side::after {
     content: "";
-
     position: absolute;
-
     inset: 0;
-
     z-index: 1;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0, 74, 153, 0.88) 0%,
-            rgba(0, 87, 184, 0.72) 55%,
-            rgba(0, 47, 108, 0.82) 100%
-        );
+    background: linear-gradient(
+        90deg,
+        rgba(0, 74, 153, 0.88) 0%,
+        rgba(0, 87, 184, 0.72) 55%,
+        rgba(0, 47, 108, 0.82) 100%
+    );
 }
 
 
@@ -171,65 +140,42 @@ body {
 
 .left-content {
     position: relative;
-
     z-index: 2;
-
     width: 75%;
-
     margin-left: 9%;
-
     color: #ffffff;
 }
 
-
-/* Título */
-
 .left-content h2 {
-    font-size: clamp(32px, 3.2vw, 52px);
-
+    font-size: 2.5rem; /* Substituído o clamp fixo */
     font-weight: 400;
-
     line-height: 1.12;
-
     margin-bottom: 8px;
 }
 
 .left-content h2 strong {
     display: block;
-
     font-weight: 700;
 }
 
-
-/* Texto */
-
 .left-content p {
     max-width: 500px;
-
-    font-size: clamp(15px, 1.25vw, 19px);
-
+    font-size: 1.0625rem; /* Substituído o clamp fixo */
     line-height: 1.6;
-
     color: rgba(255, 255, 255, 0.94);
 }
-
-
-/* Pequeno detalhe */
 
 .left-content .linha {
     width: 60px;
     height: 4px;
-
     border-radius: 10px;
-
     background: #ffffff;
-
     margin-bottom: 25px;
 }
 
 
 /* =========================================================
-   LOGO — CASO QUEIRA MANTER UMA LOGO NO LADO ESQUERDO
+   LOGO - ESQUERDA
 ========================================================= */
 
 .logo-box {
@@ -244,37 +190,25 @@ body {
 /* =========================================================
    LADO DIREITO
 ========================================================= */
+
 .right-side {
     width: calc(50% + 45px);
     min-height: 100vh;
-
     background: #fff;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     padding: 60px 8%;
-
     position: relative;
     z-index: 3;
-
-    /* CURVA */
     border-radius: 55px 0 0 55px;
-
     margin-left: -45px;
 }
 
-/* =========================================================
-   LOGO NEXA
-========================================================= */
-
 .right-logo {
     width: 200px;
-
     margin-bottom: 30px;
-
     object-fit: contain;
 }
 
@@ -288,45 +222,23 @@ body {
     max-width: 470px;
 }
 
-
-/* =========================================================
-   TÍTULO
-========================================================= */
-
 .titulo {
     text-align: center;
-
-    font-size: 32px;
-
+    font-size: 2rem; /* 32px */
     color: #0d2f5f;
-
     margin-bottom: 25px;
-
     font-weight: 700;
 }
 
-
-/* =========================================================
-   ERRO LOGIN
-========================================================= */
-
 .erro-login {
     width: 100%;
-
     background: #ffe5e5;
-
     color: #d90429;
-
     padding: 12px 15px;
-
     border-radius: 10px;
-
     margin-bottom: 15px;
-
     text-align: center;
-
-    font-size: 14px;
-
+    font-size: 0.875rem; /* 14px */
     font-weight: 600;
 }
 
@@ -337,46 +249,30 @@ body {
 
 .input-box {
     position: relative;
-
     width: 100%;
-
     margin-bottom: 16px;
 }
 
 .input-box i {
     position: absolute;
-
     left: 17px;
     top: 50%;
-
     transform: translateY(-50%);
-
     color: #9ca3af;
-
-    font-size: 16px;
-
+    font-size: 1rem; /* 16px */
     z-index: 2;
 }
 
 .input-box input {
     width: 100%;
-
     height: 56px;
-
     border: 2px solid #d1d5db;
-
     border-radius: 14px;
-
     padding: 0 18px 0 48px;
-
-    font-size: 15px;
-
+    font-size: 0.9375rem; /* 15px */
     outline: none;
-
     transition: 0.3s;
-
     color: #333333;
-
     background: #ffffff;
 }
 
@@ -386,7 +282,6 @@ body {
 
 .input-box input:focus {
     border-color: #0066d6;
-
     box-shadow: 0 0 0 3px rgba(0, 102, 214, 0.10);
 }
 
@@ -397,37 +292,25 @@ body {
 
 .btn-login {
     width: 100%;
-
     height: 56px;
-
     border: none;
-
     border-radius: 14px;
-
     background: linear-gradient(
         90deg,
         #0066d6,
         #003f96
     );
-
     color: #ffffff;
-
-    font-size: 18px;
-
+    font-size: 1.125rem; /* 18px */
     font-weight: 700;
-
     cursor: pointer;
-
     transition: 0.3s ease;
-
     margin-top: 3px;
 }
 
 .btn-login:hover {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 20px rgba(0, 63, 150, 0.25);
+    box-shadow: 0 8px 20px rgba(0, 63, 150, 0.25);
 }
 
 .btn-login:active {
@@ -436,46 +319,72 @@ body {
 
 
 /* =========================================================
-   LINKS
+   LINKS E FOOTER
 ========================================================= */
 
 .links {
     margin-top: 22px;
-
     text-align: center;
 }
 
 .links a {
     display: block;
-
     color: #0066d6;
-
     text-decoration: none;
-
-    font-size: 14px;
-
+    font-size: 0.875rem; /* 14px */
     transition: 0.3s;
 }
 
 .links a:hover {
     color: #003f96;
-
     text-decoration: underline;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 28px;
+    color: #9ca3af;
+    font-size: 0.8125rem; /* 13px */
 }
 
 
 /* =========================================================
-   FOOTER
+   CAROUSEL E OUTROS
 ========================================================= */
 
-.footer {
-    text-align: center;
+.video-carousel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
 
-    margin-top: 28px;
+.video-carousel video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    inset: 0;
+}
 
-    color: #9ca3af;
+.logo-container {
+    width: 300px;
+    height: auto;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    font-size: 13px;
+.logo-container img {
+    width: 60%;
+    height: auto;
+}
+
+.logo-dark {
+    display: none;
 }
 
 
@@ -491,39 +400,32 @@ body {
 
     .login-container {
         min-height: 100vh;
-
         flex-direction: column;
     }
 
     .left-side {
         width: 100%;
-
         min-height: 42vh;
-
         max-height: 450px;
     }
 
     .right-side {
         width: 100%;
-
         min-height: 58vh;
-
         padding: 45px 30px;
     }
 
     .left-content {
         width: 80%;
-
         margin-left: 8%;
     }
 
     .left-content h2 {
-        font-size: 36px;
+        font-size: 2.25rem; /* 36px */
     }
 
     .right-logo {
         width: 130px;
-
         margin-bottom: 20px;
     }
 }
@@ -538,7 +440,6 @@ body {
 
     .access-options {
         flex-wrap: wrap;
-
         max-width: 220px;
     }
 
@@ -548,26 +449,24 @@ body {
 
     .right-side {
         min-height: 64vh;
-
         padding: 35px 22px;
     }
 
     .left-content {
         width: 84%;
-
         margin-left: 8%;
     }
 
     .left-content h2 {
-        font-size: 29px;
+        font-size: 1.8125rem; /* 29px */
     }
 
     .left-content p {
-        font-size: 14px;
+        font-size: 0.875rem; /* 14px */
     }
 
     .titulo {
-        font-size: 28px;
+        font-size: 1.75rem; /* 28px */
     }
 
     .right-logo {
@@ -580,26 +479,11 @@ body {
     }
 }
 
-
-.video-carousel {
-    position: absolute;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    z-index: 0;
-}
-
-.video-carousel video {
-    position: absolute;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    inset: 0;
-}
+/* Classes de Acessibilidade geradas pelo seu JS */
+body.fonte-80  { font-size: 80%; }
+body.fonte-90  { font-size: 90%; }
+body.fonte-100 { font-size: 100%; }
+body.fonte-110 { font-size: 110%; }
+body.fonte-120 { font-size: 120%; }
+body.fonte-130 { font-size: 130%; }
+body.fonte-140 { font-size: 140%; }

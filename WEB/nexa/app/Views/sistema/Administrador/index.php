@@ -13,12 +13,22 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <link rel="stylesheet" href="assets/css/acessibilidade.css">
+    <!--<link rel="stylesheet" href="assets/css/acessibilidade_adm.css">
     <link rel="stylesheet" href="assets/css/style_geral.css">
 
+     Mantidos -->
+    <!--<link rel="stylesheet" href="assets/css/cadastro_camera.css">
+    <link rel="stylesheet" href="assets/css/perfil_admin.css">-->
+    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade_adm.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
+
     <!-- Mantidos -->
-    <link rel="stylesheet" href="assets/css/cadastro_camera.css">
-    <link rel="stylesheet" href="assets/css/perfil_admin.css">
+    <link rel="stylesheet" href="<?= base_url('assets/css/cadastro_camera.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/perfil_admin.css') ?>">
+
+<!--mudar icone?-->
+    
 
     
 </head>
@@ -113,7 +123,6 @@
 
                 <a
                     href="<?= base_url('/ocorrencia') ?>"
-                    class="active"
                 >
 
                     <i class="fas fa-exclamation-triangle"></i>
@@ -179,7 +188,7 @@
                 </div>
 
 
-                <a href="<?= base_url('/administrador') ?>">
+                <a href="<?= base_url('/administrador') ?>" class="active">
 
                     <i class="fas fa-user"></i>
 
@@ -218,6 +227,8 @@
 
     <div class="overlay">
 
+    
+
 
         <!-- =====================================================
              HEADER — MANTIDO
@@ -240,6 +251,102 @@
                 </div>
 
             </div>
+
+
+
+
+
+        <!--botao de acessibilidade TESTE que nao deu muito certo, o vlibras ta funcionando-->
+    <!-- BOTÃO CONFIGURAÇÕES -->
+
+            <button
+                class="gear-btn"
+                onclick="toggleAccessMenu()"
+            >
+        
+                <i class="fas fa-cog"></i>
+        
+            </button>
+        
+        
+            <!-- OPÇÕES -->
+        
+            <div
+                class="access-options"
+                id="accessOptions"
+            >
+        
+        
+                <!-- CONTRASTE -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.toggleContraste()"
+                    title="Alto contraste"
+                >
+        
+                    <i class="fas fa-adjust"></i>
+        
+                </button>
+        
+        
+                <!-- MODO ESCURO -->
+        
+                <button
+                    class="access-btn"
+                    onclick="toggleDark()"
+                    title="Modo escuro"
+                >
+        
+                    <i class="fas fa-moon"></i>
+        
+                </button>
+        
+        
+                <!-- AUMENTAR FONTE -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.aumentarFonte()"
+                    title="Aumentar fonte"
+                >
+        
+                    A+
+        
+                </button>
+        
+        
+                <!-- DIMINUIR FONTE -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.diminuirFonte()"
+                    title="Diminuir fonte"
+                >
+        
+                    A-
+        
+                </button>
+        
+        
+                <!-- LER PÁGINA -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.lerPagina()"
+                    title="Ler página"
+                >
+        
+                    <i class="fas fa-volume-up"></i>
+        
+                </button>
+        
+        
+            </div> 
+
+
+
+
 
         </header>
 
@@ -649,12 +756,13 @@
          SCRIPTS
     ========================================================== -->
 
-    <script src="assets/js/acessibilidade.js"></script>
+    <!--<script src="assets/js/acessibilidade.js"></script>-->
+    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
 
 
     <!-- VLibras -->
 
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script src="<?= base_url('https://vlibras.gov.br/app/vlibras-plugin.js')?>"></script>
 
     <script>
         new window.VLibras.Widget(
@@ -985,6 +1093,17 @@
 
     </script>
 
-</body>
+<!-- COMPONENTE VLIBRAS -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
 
+</body>
 </html>
