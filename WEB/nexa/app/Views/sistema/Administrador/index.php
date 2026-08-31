@@ -20,7 +20,7 @@
     <!--<link rel="stylesheet" href="assets/css/cadastro_camera.css">
     <link rel="stylesheet" href="assets/css/perfil_admin.css">-->
     <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade_adm.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade.css') ?>">
+    
     <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
 
     <!-- Mantidos -->

@@ -244,14 +244,11 @@ function carregarDarkModeSalvo() {
 // =========================
 
 function toggleAccessMenu() {
-
-    const options =
-        document.getElementById("accessOptions");
-
-    if (options) {
-
-        options.classList.toggle("active");
-    }
+    const options = document.getElementById('accessOptions');
+    if (!options) return;
+    
+    // Alterna a classe 'active' para abrir/fechar
+    options.classList.toggle('active');
 }
 
 

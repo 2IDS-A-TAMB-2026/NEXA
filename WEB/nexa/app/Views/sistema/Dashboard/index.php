@@ -10,109 +10,92 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('/assets/css/style_geral.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/style_geral.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/acessibilidade_adm.css') ?>">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-   
 </head>
 
 <body>
 
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-            <div class="vw-plugin-top-wrapper"></div>
-        </div>
-    </div>
+    <aside class="sidebar">
 
-   <aside class="sidebar">
+        <!-- FUNDO -->
+        <img
+            class="sidebar-construction"
+            src="<?= base_url('assets/images/construcao.jpg') ?>"
+            alt=""
+        >
 
-    <!-- FUNDO -->
-    <img
-        class="sidebar-construction"
-        src="<?= base_url('assets/images/construcao.jpg') ?>"
-        alt=""
-    >
+        <!-- CONTEÚDO -->
+        <div class="sidebar-content">
 
-    <!-- CONTEÚDO -->
-    <div class="sidebar-content">
-
-        <div class="sidebar-logo">
-
-            <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
-
-            <div class="sidebar-brand-text">
-                <strong>NEXA</strong>
-                <span>Segurança é prioridade</span>
+            <div class="sidebar-logo">
+                <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>">
+                <div class="sidebar-brand-text">
+                    <strong>NEXA</strong>
+                    <span>Segurança é prioridade</span>
+                </div>
             </div>
 
+            <nav class="menu">
+
+                <div class="menu-title">PRINCIPAL</div>
+
+                <a href="<?= base_url('/dashboard') ?>" class="active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="<?= base_url('/dashboard_camera') ?>">
+                    <i class="fas fa-video"></i>
+                    <span>Dashboard de Câmeras</span>
+                </a>
+
+                <a href="<?= base_url('/ocorrencia') ?>">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Ocorrências</span>
+                </a>
+
+                <div class="menu-title">CADASTROS</div>
+
+                <a href="<?= base_url('/cadastro-funcionario') ?>">
+                    <i class="fas fa-users"></i>
+                    <span>Cadastro Funcionários</span>
+                </a>
+
+                <a href="<?= base_url('/epi') ?>">
+                    <i class="fas fa-helmet-safety"></i>
+                    <span>Cadastro EPIs</span>
+                </a>
+
+                <a href="<?= base_url('/Camera') ?>">
+                    <i class="fas fa-camera"></i>
+                    <span>Cadastro Câmeras</span>
+                </a>
+
+                <a href="<?= base_url('/setor') ?>">
+                    <i class="fas fa-building"></i>
+                    <span>Cadastro Setores</span>
+                </a>
+
+                <div class="menu-title">CONTA</div>
+
+                <a href="<?= base_url('/administrador') ?>">
+                    <i class="fas fa-user"></i>
+                    <span>Perfil</span>
+                </a>
+
+            </nav>
+
+            <a href="<?= base_url('/') ?>" class="logout-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair do Sistema</span>
+            </a>
+
         </div>
 
-
-        <nav class="menu">
-
-            <div class="menu-title">PRINCIPAL</div>
-
-            <a href="<?= base_url('/dashboard') ?>" class="active">
-                <i class="fas fa-chart-line"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="<?= base_url('/dashboard_camera') ?>">
-                <i class="fas fa-video"></i>
-                <span>Dashboard de Câmeras</span>
-            </a>
-
-            <a href="<?= base_url('/ocorrencia') ?>">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span>Ocorrências</span>
-            </a>
-
-
-            <div class="menu-title">CADASTROS</div>
-
-            <a href="<?= base_url('/cadastro-funcionario') ?>">
-                <i class="fas fa-users"></i>
-                <span>Cadastro Funcionários</span>
-            </a>
-
-            <a href="<?= base_url('/epi') ?>">
-                <i class="fas fa-helmet-safety"></i>
-                <span>Cadastro EPIs</span>
-            </a>
-
-            <a href="<?= base_url('/Camera') ?>">
-                <i class="fas fa-camera"></i>
-                <span>Cadastro Câmeras</span>
-            </a>
-
-            <a href="<?= base_url('/setor') ?>">
-                <i class="fas fa-building"></i>
-                <span>Cadastro Setores</span>
-            </a>
-
-
-            <div class="menu-title">CONTA</div>
-
-            <a href="<?= base_url('/administrador') ?>">
-                <i class="fas fa-user"></i>
-                <span>Perfil</span>
-            </a>
-
-        </nav>
-
-
-        <a href="<?= base_url('/') ?>" class="logout-item">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Sair do Sistema</span>
-        </a>
-
-    </div>
-
-</aside>
-    
+    </aside>
 
     <div class="overlay">
         <div class="main">
@@ -122,33 +105,44 @@
                 <div class="header-left">
                     <div class="header-title">
                         <h1>Dashboard</h1>
-                        <p>Acompanhe as principais analises da sua empresa</p>
+                        <p>Acompanhe as principais análises da sua empresa</p>
                     </div>
                 </div>
 
                 <!-- DIREITA -->
                 <div class="header-right">
+                    <!-- MENU ACESSIBILIDADE (IGUAL AO DA PÁGINA DE CÂMERAS) -->
                     <div class="access-menu">
-                        <div class="header-right">
-            <div class="access-menu">
-                <button class="gear-btn" onclick="toggleAccessMenu()" title="Acessibilidade">
-                    <i class="fas fa-cog"></i>
-                </button>
 
-                <div class="access-options" id="accessOptions">
-                    <button class="access-btn" onclick="Acessibilidade.toggleContraste()" title="Alto Contraste">
-                        <i class="fas fa-adjust"></i>
-                    </button>
-                    <button class="access-btn" onclick="toggleDark()" title="Modo Escuro">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button class="access-btn" onclick="Acessibilidade.aumentarFonte()" title="Aumentar Fonte">A+</button>
-                    <button class="access-btn" onclick="Acessibilidade.diminuirFonte()" title="Diminuir Fonte">A-</button>
-                    <button class="access-btn" onclick="Acessibilidade.lerPagina()" title="Ler Página">
-                        <i class="fas fa-volume-up"></i>
-                    </button>
-                </div>
-            </div>
+                        <button class="gear-btn" onclick="toggleAccessMenu()">
+                            <i class="fas fa-cog"></i>
+                        </button>
+
+                        <div class="access-options" id="accessOptions">
+
+                            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+                                <i class="fas fa-adjust"></i>
+                            </button>
+
+                            <button class="access-btn" onclick="toggleDark()">
+                                <i class="fas fa-moon"></i>
+                            </button>
+
+                            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+                                A+
+                            </button>
+
+                            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+                                A-
+                            </button>
+
+                            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
 
                     <a href="<?= base_url('/administrador') ?>" class="profile">
                         <!-- AVATAR -->
@@ -175,7 +169,6 @@
                 </div>
 
             </header>
-
 
             <div class="content">
                 <div class="metrics">
@@ -245,10 +238,29 @@
         </div>
     </div>
 
+    <!-- SCRIPTS -->
     <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
-    
+
+    <script>
+        // Função global auxiliar para o Dark Mode
+        function toggleDark() {
+            document.body.classList.toggle('dark-mode');
+            if (typeof atualizarLogo === 'function') {
+                atualizarLogo();
+            }
+        }
+    </script>
+
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
 
     <script>
         new Chart(document.getElementById('graficoBarra'), {
@@ -350,16 +362,6 @@
                 }
             }
         });
-
-        function toggleDark() {
-            document.body.classList.toggle('dark-mode');
-        }
-
-        /* Alterna a classe 'show' no menu de opções */
-        function toggleAccessMenu() {
-            const options = document.getElementById('accessOptions');
-            options.classList.toggle('show');
-        }
     </script>
 </body>
 </html>

@@ -45,33 +45,40 @@
         }
 
         /* Menu HORIZONTAL posicionado à ESQUERDA da engrenagem */
-        .access-options {
-            display: none;
-            position: absolute;
-            right: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-right: 8px;
-            
-            flex-direction: row;
-            align-items: center;
-            gap: 6px;
-            
-            background-color: #ffffff;
-            padding: 4px 8px;
-            border-radius: 30px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-            border: 1px solid #e2e8f0;
-            z-index: 10;
-            white-space: nowrap;
-        }
+.access-options {
+    display: flex; /* Mantém a estrutura flexível */
+    visibility: hidden; /* Oculta sem quebrar o layout */
+    opacity: 0;
+    pointer-events: none; /* Desativa cliques quando oculto */
+    
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    margin-right: 8px;
+    
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    
+    background-color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 30px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e2e8f0;
+    z-index: 999; /* Garante que fique por cima de outros elementos */
+    white-space: nowrap;
+    
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
 
-        /* Exibição ativa via Classe */
-        .access-options.show {
-            display: flex;
-            animation: slideIn 0.2s ease-out forwards;
-        }
-
+/* Exibição ativa via Classe */
+.access-options.show {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto; /* Habilita cliques quando visível */
+    transform: translateY(-50%) translateX(0);
+}
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -128,10 +135,8 @@
 
     <!-- ================= SIDEBAR ================= -->
     <aside class="sidebar">
-        <!-- FUNDO -->
         <img class="sidebar-construction" src="<?= base_url('assets/images/construcao.jpg') ?>" alt="Fundo construção">
 
-        <!-- CONTEÚDO -->
         <div class="sidebar-content">
             <div class="sidebar-logo">
                 <img src="<?= base_url('assets/images/logo_escura_transparente.png') ?>" alt="Logo NEXA">
@@ -205,9 +210,7 @@
             </div>
         </div>
 
-        <!-- ================= DIREITA ================= -->
         <div class="header-right">
-            <!-- MENU ACESSIBILIDADE -->
             <div class="access-menu">
 
                 <div class="access-options" id="accessOptions">
@@ -306,7 +309,6 @@
                         </div>
                     </div>
 
-                    <!-- DESCRIÇÃO -->
                     <div class="form-group">
                         <p class="p-card">Descrição do EPI</p>
                         <div class="input-box">
@@ -337,7 +339,8 @@
                             <i class="fas fa-search"></i>
                             <input type="text" id="pesquisaEpi" placeholder="Pesquisar EPI...">
                         </div>
-                        <button class="filter-btn">
+                        <!-- Botão de filtro funcional -->
+                        <button class="filter-btn" id="btnFiltrarEpi" onclick="abrirModalFiltro()" title="Filtrar e Ordenar">
                             <i class="fas fa-filter"></i>
                         </button>
                     </div>
@@ -405,6 +408,7 @@
         let episFiltrados = [...epis];
         let paginaAtual = 1;
         let linhasPorPagina = 5;
+        let ordemAtual = 'asc';
 
         window.onload = function () {
             renderizar();
@@ -466,6 +470,40 @@
             renderizar();
         }
 
+        function abrirModalFiltro() {
+            Swal.fire({
+                title: 'Ordenar EPIs',
+                html: `
+                    <div style="text-align:left; font-size: 0.95rem;">
+                        <label style="display:block; margin-bottom:8px; font-weight:600;">Ordem Alfabética:</label>
+                        <select id="swalOrdem" class="swal2-select" style="width:100%; margin:0 0 15px 0;">
+                            <option value="asc" ${ordemAtual === 'asc' ? 'selected' : ''}>A-Z (Crescente)</option>
+                            <option value="desc" ${ordemAtual === 'desc' ? 'selected' : ''}>Z-A (Decrescente)</option>
+                        </select>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Aplicar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#0A66C2',
+                preConfirm: () => {
+                    return document.getElementById('swalOrdem').value;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ordemAtual = result.value;
+                    episFiltrados.sort((a, b) => {
+                        let nomeA = (a.NOME_EPI || '').toLowerCase();
+                        let nomeB = (b.NOME_EPI || '').toLowerCase();
+                        if (ordemAtual === 'asc') return nomeA.localeCompare(nomeB);
+                        return nomeB.localeCompare(nomeA);
+                    });
+                    paginaAtual = 1;
+                    renderizar();
+                }
+            });
+        }
+
         function iconeEpi(nome) {
             if (!nome) return "fa-shield-halved";
             nome = nome.toLowerCase();
@@ -485,7 +523,11 @@
         if (selectNomeEpi) {
             selectNomeEpi.addEventListener("change", function () {
                 let icone = document.getElementById("iconeCadastroEpi");
-                if (icone) icone.className = "fas " + iconeEpi(this.value);
+                let iconeTopo = document.getElementById("epiIconeCadastro");
+                let iconeClasse = "fas " + iconeEpi(this.value);
+                
+                if (icone) icone.className = iconeClasse;
+                if (iconeTopo) iconeTopo.className = iconeClasse;
             });
         }
 
@@ -498,8 +540,8 @@
             if (episFiltrados.length === 0) {
                 lista.innerHTML = `
                     <tr>
-                        <td colspan="4" class="mensagem-vazia">
-                            <i class="fas fa-helmet-safety"></i>
+                        <td colspan="4" class="mensagem-vazia" style="text-align:center; padding: 20px;">
+                            <i class="fas fa-helmet-safety" style="font-size: 2rem; color: #cbd5e1;"></i>
                             <br><br>
                             Nenhum EPI encontrado.
                         </td>
@@ -523,7 +565,7 @@
                         <td>${e.DESCRICAO_EPI || ''}</td>
                         <td>
                             ${e.IMAGEM_EPI
-                                ? `<img src="<?= base_url('uploads/epis/') ?>${e.IMAGEM_EPI}" class="epi-img-table">`
+                                ? `<img src="<?= base_url('uploads/epis/') ?>${e.IMAGEM_EPI}" class="epi-img-table" style="max-height:40px; border-radius:4px;">`
                                 : `<span style="color:#94a3b8">Sem imagem</span>`
                             }
                         </td>
@@ -572,7 +614,7 @@
                 title: 'Editar EPI',
                 width: 600,
                 html: `
-                    <select id="swalNome" class="swal2-select">
+                    <select id="swalNome" class="swal2-select" style="width:100%; margin-bottom: 10px;">
                         <option value="Capacete">Capacete</option>
                         <option value="Luvas">Luvas</option>
                         <option value="Óculos de proteção">Óculos de proteção</option>
@@ -581,7 +623,7 @@
                         <option value="Colete">Colete</option>
                         <option value="Protetor auricular">Protetor auricular</option>
                     </select>
-                    <textarea id="swalDescricao" class="swal2-textarea" placeholder="Descrição">${epi.DESCRICAO_EPI || ''}</textarea>
+                    <textarea id="swalDescricao" class="swal2-textarea" style="width:100%;" placeholder="Descrição">${epi.DESCRICAO_EPI || ''}</textarea>
                 `,
                 didOpen() {
                     document.getElementById("swalNome").value = epi.NOME_EPI;
@@ -589,6 +631,7 @@
                 showCancelButton: true,
                 confirmButtonText: "Salvar",
                 cancelButtonText: "Cancelar",
+                confirmButtonColor: "#0A66C2",
                 preConfirm() {
                     let nome = document.getElementById("swalNome").value;
                     let descricao = document.getElementById("swalDescricao").value.trim();
@@ -624,6 +667,7 @@
                 text: "Essa ação não poderá ser desfeita.",
                 icon: "warning",
                 showCancelButton: true,
+                confirmButtonColor: "#d33",
                 confirmButtonText: "Excluir",
                 cancelButtonText: "Cancelar"
             }).then(result => {
@@ -693,46 +737,29 @@
             if (erro) erro.innerHTML = "";
         }
 
-        function toggleAccessMenu() {
-            const menu = document.getElementById("accessOptions");
-            if (menu) {
-                menu.classList.toggle("show");
-            }
-        }
+        
 
-        function toggleDark() {
-            document.body.classList.toggle("dark-mode");
-        }
-
-        document.addEventListener("click", function (event) {
-            const container = document.querySelector(".access-menu");
-            const menu = document.getElementById("accessOptions");
-            if (container && menu && !container.contains(event.target)) {
-                menu.classList.remove("show");
-            }
-        });
-    </script>
 
     <?php if (session()->getFlashdata('sucesso')): ?>
-    <script>
+   
     Swal.fire({
         icon: 'success',
         title: 'Sucesso!',
         text: <?= json_encode(session()->getFlashdata('sucesso')); ?>,
         confirmButtonColor: '#0A66C2'
     });
-    </script>
+  
     <?php endif; ?>
 
     <?php if (session()->getFlashdata('error')): ?>
-    <script>
+
     Swal.fire({
         icon: 'error',
         title: 'Erro!',
         text: <?= json_encode(session()->getFlashdata('error')); ?>,
         confirmButtonColor: '#0A66C2'
     });
-    </script>
+
     <?php endif; ?>
 
     <!-- COMPONENTE VLIBRAS -->
@@ -742,11 +769,13 @@
             <div class="vw-plugin-top-wrapper"></div>
         </div>
     </div>
+  
     
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
     </script>
+
 
 </body>
 </html>

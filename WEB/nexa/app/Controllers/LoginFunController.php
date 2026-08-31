@@ -23,8 +23,7 @@ class LoginFunController extends BaseController
 
         if ($funcionario) {
 
-        if ($senha == $funcionario['SENHA']) { 
-
+if (password_verify($senha, $funcionario['SENHA'])) {
                 session()->set([
 
                     'cpf_fun' => $funcionario['CPF'],

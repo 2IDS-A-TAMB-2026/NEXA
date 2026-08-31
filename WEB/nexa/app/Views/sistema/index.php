@@ -36,6 +36,120 @@
             justify-content: center;
             display: flex;
         }
+       
+        /* Contêiner de Acessibilidade Posicionado */
+        .access-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Botão da Engrenagem */
+        .gear-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #4a5568;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 2;
+        }
+
+        .gear-btn:hover {
+            background-color: rgba(0, 0, 0, 0.06);
+            color: #1a202c;
+        }
+
+        /* Menu HORIZONTAL posicionado à ESQUERDA da engrenagem */
+.access-options {
+    display: flex; /* Mantém a estrutura flexível */
+    visibility: hidden; /* Oculta sem quebrar o layout */
+    opacity: 0;
+    pointer-events: none; /* Desativa cliques quando oculto */
+    
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    margin-right: 8px;
+    
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    
+    background-color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 30px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e2e8f0;
+    z-index: 999; /* Garante que fique por cima de outros elementos */
+    white-space: nowrap;
+    
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+/* Exibição ativa via Classe */
+.access-options.show {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto; /* Habilita cliques quando visível */
+    transform: translateY(-50%) translateX(0);
+}
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        /* Estilo dos Botões do Menu */
+        .access-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0A66C2;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .access-btn:hover {
+            background-color: #edf2f7;
+        }
+
+        /* Compatibilidade com Modo Escuro */
+        body.dark-mode .access-options {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .access-btn {
+            color: #63b3ed;
+        }
+
+        body.dark-mode .access-btn:hover {
+            background-color: #4a5568;
+        }
+
+        body.dark-mode .gear-btn {
+            color: #e2e8f0;
+        }
+    
     </style>
 </head>
 
@@ -443,6 +557,17 @@
 
 
     <script>
+
+        function toggleAccessMenu() {
+    const menu = document.getElementById("accessOptions");
+    if (menu) {
+        menu.classList.toggle("show");
+    }
+}      else {
+            menu.style.display = "flex";
+            menu.classList.add("show");
+        }
+        
         const slides = document.querySelectorAll('.carousel img');
         let index = 0;
 
