@@ -1,0 +1,1220 @@
+// ======================================================
+// NEXA - IoT RFID ESP32
+// RFID + Wi-Fi + API NEXA + LCD 1602
+// Identificação de Funcionário
+// ======================================================
+
+
+// ======================================================
+// BIBLIOTECAS
+// ======================================================
+
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+#include <SPI.h>
+#include <MFRC522.h>
+#include <LiquidCrystal.h>
+
+
+// ======================================================
+// CONFIGURAÇÃO DO WI-FI
+// ======================================================
+
+const char* ssid = "WIFI-EDUC";
+const char* password = "ac3ce7ss0-EDUC";
+
+
+// ======================================================
+// API NEXA
+// ======================================================
+
+const char* serverUrl =
+  "http://10.141.130.34/nexa/public/index.php/api/rfid";
+
+
+// ======================================================
+// PINOS DO RFID
+// ======================================================
+
+// SDA / SS
+#define RFID_SDA 5
+
+// Reset
+#define RFID_RST 22
+
+// Comunicação SPI
+#define RFID_SCK 18
+#define RFID_MISO 19
+#define RFID_MOSI 23
+
+
+// ======================================================
+// LEDS E BUZZER
+// ======================================================
+
+#define LED_VERDE 26
+#define LED_VERMELHO 27
+#define BUZZER 25
+
+
+// ======================================================
+// LCD 1602A-1
+// ======================================================
+
+#define LCD_RS 32
+#define LCD_E 33
+#define LCD_D4 27
+#define LCD_D5 14
+#define LCD_D6 15
+#define LCD_D7 13
+
+
+// ======================================================
+// LCD
+// ======================================================
+
+LiquidCrystal lcd(
+  LCD_RS,
+  LCD_E,
+  LCD_D4,
+  LCD_D5,
+  LCD_D6,
+  LCD_D7
+);
+
+
+// ======================================================
+// RFID
+// ======================================================
+
+MFRC522 leitorRFID(
+  RFID_SDA,
+  RFID_RST
+);
+
+
+// ======================================================
+// DADOS DO FUNCIONÁRIO
+// ======================================================
+
+String funcionarioCPF = "";
+String funcionarioNome = "";
+String funcionarioEmail = "";
+
+String empresaNome = "";
+String empresaCNPJ = "";
+
+String setorNome = "";
+String setorLocal = "";
+
+String cameraId = "";
+String cameraIdentificador = "";
+
+
+// ======================================================
+// LCD - APROXIME O CARTÃO
+// ======================================================
+
+void lcdAproximeCartao() {
+
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("APROXIME O");
+
+  lcd.setCursor(0, 1);
+  lcd.print("CARTAO!");
+}
+
+
+// ======================================================
+// LCD - PROCESSANDO
+// ======================================================
+
+void lcdProcessando() {
+
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("PROCESSANDO...");
+
+  lcd.setCursor(0, 1);
+  lcd.print("AGUARDE");
+}
+
+
+// ======================================================
+// LCD - ACESSO PERMITIDO
+// ======================================================
+
+void lcdAcessoPermitido() {
+
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("ACESSO PERMITIDO");
+
+  lcd.setCursor(0, 1);
+
+  if (funcionarioNome.length() <= 16) {
+
+    lcd.print(funcionarioNome);
+
+  } else {
+
+    lcd.print(
+      funcionarioNome.substring(0, 16)
+    );
+  }
+}
+
+
+// ======================================================
+// LCD - ACESSO NEGADO
+// ======================================================
+
+void lcdAcessoNegado() {
+
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("ACESSO NEGADO");
+
+  lcd.setCursor(0, 1);
+  lcd.print("CARTAO INVALIDO");
+}
+
+
+// ======================================================
+// FUNÇÃO PARA CONECTAR AO WI-FI
+// ======================================================
+
+void conectarWifi() {
+
+  Serial.println();
+  Serial.print("Conectando ao Wi-Fi");
+
+  WiFi.begin(
+    ssid,
+    password
+  );
+
+  int tentativas = 0;
+
+  while (
+    WiFi.status() != WL_CONNECTED
+  ) {
+
+    delay(500);
+
+    Serial.print(".");
+
+    tentativas++;
+
+    // Evita ficar preso para sempre
+    if (tentativas >= 30) {
+
+      Serial.println();
+      Serial.println(
+        "Falha ao conectar ao Wi-Fi."
+      );
+
+      return;
+    }
+  }
+
+  Serial.println();
+  Serial.println(
+    "Wi-Fi conectado!"
+  );
+
+  Serial.print(
+    "IP do ESP32: "
+  );
+
+  Serial.println(
+    WiFi.localIP()
+  );
+}
+
+
+// ======================================================
+// FUNÇÃO PARA LER UID
+// ======================================================
+
+String lerUID() {
+
+  String uid = "";
+
+  for (
+    byte i = 0;
+    i < leitorRFID.uid.size;
+    i++
+  ) {
+
+    // Adiciona zero antes de valores menores que 10
+    if (
+      leitorRFID.uid.uidByte[i] < 0x10
+    ) {
+
+      uid += "0";
+    }
+
+    // Adiciona byte hexadecimal
+    uid += String(
+      leitorRFID.uid.uidByte[i],
+      HEX
+    );
+
+    // Adiciona espaço
+    if (
+      i < leitorRFID.uid.size - 1
+    ) {
+
+      uid += " ";
+    }
+  }
+
+  // Coloca tudo em maiúsculo
+  uid.toUpperCase();
+
+  return uid;
+}
+
+
+// ======================================================
+// LIMPAR DADOS DO FUNCIONÁRIO
+// ======================================================
+
+void limparDadosFuncionario() {
+
+  funcionarioCPF = "";
+  funcionarioNome = "";
+  funcionarioEmail = "";
+
+  empresaNome = "";
+  empresaCNPJ = "";
+
+  setorNome = "";
+  setorLocal = "";
+
+  cameraId = "";
+  cameraIdentificador = "";
+}
+
+
+// ======================================================
+// INDICAR ACESSO LIBERADO
+// ======================================================
+
+void indicarSucesso() {
+
+  Serial.println();
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println(
+    "          ACESSO LIBERADO"
+  );
+
+  Serial.println(
+    "========================================"
+  );
+
+
+  // LCD
+  lcdAcessoPermitido();
+
+
+  // LED verde ligado
+  digitalWrite(
+    LED_VERDE,
+    HIGH
+  );
+
+
+  // LED vermelho desligado
+  digitalWrite(
+    LED_VERMELHO,
+    LOW
+  );
+
+
+  // Um bip
+  tone(
+    BUZZER,
+    1500
+  );
+
+  delay(200);
+
+  noTone(
+    BUZZER
+  );
+
+
+  // Mantém verde aceso
+  delay(1000);
+
+
+  // Desliga verde
+  digitalWrite(
+    LED_VERDE,
+    LOW
+  );
+}
+
+
+// ======================================================
+// INDICAR ACESSO NEGADO
+// ======================================================
+
+void indicarErro() {
+
+  Serial.println();
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println(
+    "           ACESSO NEGADO"
+  );
+
+  Serial.println(
+    "========================================"
+  );
+
+
+  // LCD
+  lcdAcessoNegado();
+
+
+  // Verde desligado
+  digitalWrite(
+    LED_VERDE,
+    LOW
+  );
+
+
+  // Vermelho ligado
+  digitalWrite(
+    LED_VERMELHO,
+    HIGH
+  );
+
+
+  // Três bips
+  for (
+    int i = 0;
+    i < 3;
+    i++
+  ) {
+
+    tone(
+      BUZZER,
+      500
+    );
+
+    delay(200);
+
+    noTone(
+      BUZZER
+    );
+
+    delay(150);
+  }
+
+
+  // Desliga vermelho
+  digitalWrite(
+    LED_VERMELHO,
+    LOW
+  );
+}
+
+
+// ======================================================
+// MOSTRAR DADOS DO FUNCIONÁRIO
+// ======================================================
+
+void mostrarFuncionario() {
+
+  Serial.println();
+
+  Serial.println(
+    "----------------------------------------"
+  );
+
+  Serial.println(
+    "       FUNCIONARIO IDENTIFICADO"
+  );
+
+  Serial.println(
+    "----------------------------------------"
+  );
+
+  Serial.print("CPF: ");
+  Serial.println(funcionarioCPF);
+
+  Serial.print("Nome: ");
+  Serial.println(funcionarioNome);
+
+  Serial.print("E-mail: ");
+  Serial.println(funcionarioEmail);
+
+  Serial.print("Empresa: ");
+  Serial.println(empresaNome);
+
+  Serial.print("CNPJ: ");
+  Serial.println(empresaCNPJ);
+
+  Serial.print("Setor: ");
+  Serial.println(setorNome);
+
+  Serial.print("Local: ");
+  Serial.println(setorLocal);
+
+  Serial.println(
+    "----------------------------------------"
+  );
+
+  Serial.print("Camera ID: ");
+  Serial.println(cameraId);
+
+  Serial.print("Camera: ");
+  Serial.println(cameraIdentificador);
+
+  Serial.println(
+    "----------------------------------------"
+  );
+}
+
+
+// ======================================================
+// ENVIAR RFID PARA A API
+// ======================================================
+
+bool enviarRFID(
+  String uid
+) {
+
+  // ----------------------------------------------------
+  // Verificar Wi-Fi
+  // ----------------------------------------------------
+
+  if (
+    WiFi.status() != WL_CONNECTED
+  ) {
+
+    Serial.println();
+    Serial.println(
+      "Wi-Fi desconectado."
+    );
+
+    conectarWifi();
+
+    if (
+      WiFi.status() != WL_CONNECTED
+    ) {
+
+      return false;
+    }
+  }
+
+
+  // Limpa dados antigos
+  limparDadosFuncionario();
+
+
+  // ----------------------------------------------------
+  // LCD PROCESSANDO
+  // ----------------------------------------------------
+
+  lcdProcessando();
+
+
+  // ----------------------------------------------------
+  // HTTP
+  // ----------------------------------------------------
+
+  HTTPClient http;
+
+  Serial.println();
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println(
+    "       CONSULTANDO API NEXA"
+  );
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.print(
+    "URL: "
+  );
+
+  Serial.println(
+    serverUrl
+  );
+
+
+  // Inicia conexão
+  http.begin(
+    serverUrl
+  );
+
+
+  // Header JSON
+  http.addHeader(
+    "Content-Type",
+    "application/json"
+  );
+
+
+  // ----------------------------------------------------
+  // MONTAR JSON
+  // ----------------------------------------------------
+
+  StaticJsonDocument<256> json;
+
+  json["uid"] = uid;
+
+  String corpoJson;
+
+  serializeJson(
+    json,
+    corpoJson
+  );
+
+
+  Serial.print(
+    "JSON enviado: "
+  );
+
+  Serial.println(
+    corpoJson
+  );
+
+
+  // ----------------------------------------------------
+  // POST
+  // ----------------------------------------------------
+
+  int codigoResposta =
+    http.POST(
+      corpoJson
+    );
+
+
+  Serial.print(
+    "Codigo HTTP: "
+  );
+
+  Serial.println(
+    codigoResposta
+  );
+
+
+  // ----------------------------------------------------
+  // ERRO DE CONEXÃO
+  // ----------------------------------------------------
+
+  if (
+    codigoResposta <= 0
+  ) {
+
+    Serial.print(
+      "Erro HTTP: "
+    );
+
+    Serial.println(
+      http.errorToString(
+        codigoResposta
+      )
+    );
+
+    http.end();
+
+    return false;
+  }
+
+
+  // ----------------------------------------------------
+  // PEGAR RESPOSTA
+  // ----------------------------------------------------
+
+  String resposta =
+    http.getString();
+
+
+  Serial.println();
+  Serial.println(
+    "Resposta da API:"
+  );
+
+  Serial.println(
+    resposta
+  );
+
+
+  // ----------------------------------------------------
+  // PARSE JSON
+  // ----------------------------------------------------
+
+  StaticJsonDocument<2048> respostaJson;
+
+  DeserializationError erro =
+    deserializeJson(
+      respostaJson,
+      resposta
+    );
+
+
+  if (
+    erro
+  ) {
+
+    Serial.println();
+
+    Serial.println(
+      "Erro ao interpretar JSON da API."
+    );
+
+    http.end();
+
+    return false;
+  }
+
+
+  // ----------------------------------------------------
+  // VERIFICAR ACESSO
+  // ----------------------------------------------------
+
+  bool sucesso =
+    respostaJson["sucesso"] |
+    false;
+
+  bool acesso =
+    respostaJson["acesso"] |
+    false;
+
+
+  // ====================================================
+  // ACESSO NEGADO
+  // ====================================================
+
+  if (
+    codigoResposta != 200 ||
+    !sucesso ||
+    !acesso
+  ) {
+
+    Serial.println();
+
+    Serial.println(
+      "ACESSO NEGADO."
+    );
+
+
+    const char* mensagem =
+      respostaJson["mensagem"] |
+      "Cartao nao autorizado.";
+
+
+    Serial.print(
+      "Motivo: "
+    );
+
+    Serial.println(
+      mensagem
+    );
+
+
+    http.end();
+
+    return false;
+  }
+
+
+  // ====================================================
+  // FUNCIONÁRIO
+  // ====================================================
+
+  JsonObject funcionario =
+    respostaJson["funcionario"];
+
+
+  funcionarioCPF =
+    funcionario["cpf"] |
+    "";
+
+  funcionarioNome =
+    funcionario["nome"] |
+    "";
+
+  funcionarioEmail =
+    funcionario["email"] |
+    "";
+
+
+  // ====================================================
+  // EMPRESA
+  // ====================================================
+
+  JsonObject empresa =
+    respostaJson["empresa"];
+
+
+  empresaNome =
+    empresa["nome"] |
+    "";
+
+  empresaCNPJ =
+    empresa["cnpj"] |
+    "";
+
+
+  // ====================================================
+  // SETOR
+  // ====================================================
+
+  JsonObject setor =
+    respostaJson["setor"];
+
+
+  setorNome =
+    setor["nome"] |
+    "";
+
+  setorLocal =
+    setor["local"] |
+    "";
+
+
+  // ====================================================
+  // CÂMERA
+  // ====================================================
+
+  JsonObject camera =
+    respostaJson["camera"];
+
+
+  if (
+    !camera.isNull()
+  ) {
+
+    cameraId =
+      camera["id"] |
+      "";
+    
+    cameraIdentificador =
+      camera["identificador"] |
+      "";
+  }
+
+
+  // ====================================================
+  // MOSTRAR FUNCIONÁRIO
+  // ====================================================
+
+  mostrarFuncionario();
+
+
+  // ====================================================
+  // PRÓXIMA ETAPA
+  // ====================================================
+
+  JsonObject proximaEtapa =
+    respostaJson["proximaEtapa"];
+
+
+  const char* acao =
+    proximaEtapa["acao"] |
+    "";
+
+
+  Serial.println();
+
+  Serial.println(
+    "----------------------------------------"
+  );
+
+  Serial.println(
+    "PROXIMA ETAPA"
+  );
+
+  Serial.println(
+    "----------------------------------------"
+  );
+
+  Serial.print(
+    "Acao: "
+  );
+
+  Serial.println(
+    acao
+  );
+
+  Serial.print(
+    "Camera ID: "
+  );
+
+  Serial.println(
+    cameraId
+  );
+
+  Serial.print(
+    "Camera: "
+  );
+
+  Serial.println(
+    cameraIdentificador
+  );
+
+  Serial.println(
+    "----------------------------------------"
+  );
+
+
+  // Finaliza HTTP
+  http.end();
+
+
+  // ====================================================
+  // ACESSO LIBERADO
+  // ====================================================
+
+  return true;
+}
+
+
+// ======================================================
+// SETUP
+// ======================================================
+
+void setup() {
+
+  // ----------------------------------------------------
+  // SERIAL
+  // ----------------------------------------------------
+
+  Serial.begin(
+    115200
+  );
+
+  delay(1000);
+
+
+  // ----------------------------------------------------
+  // PINOS
+  // ----------------------------------------------------
+
+  pinMode(
+    LED_VERDE,
+    OUTPUT
+  );
+
+  pinMode(
+    LED_VERMELHO,
+    OUTPUT
+  );
+
+  pinMode(
+    BUZZER,
+    OUTPUT
+  );
+
+
+  // LEDs inicialmente desligados
+  digitalWrite(
+    LED_VERDE,
+    LOW
+  );
+
+  digitalWrite(
+    LED_VERMELHO,
+    LOW
+  );
+
+
+  // ----------------------------------------------------
+  // LCD
+  // ----------------------------------------------------
+
+  lcd.begin(
+    16,
+    2
+  );
+
+
+  lcd.clear();
+
+  lcd.setCursor(
+    0,
+    0
+  );
+
+  lcd.print(
+    "NEXA"
+  );
+
+  lcd.setCursor(
+    0,
+    1
+  );
+
+  lcd.print(
+    "Iniciando..."
+  );
+
+
+  delay(2000);
+
+
+  // ----------------------------------------------------
+  // SPI
+  // ----------------------------------------------------
+
+  /*
+     SCK  -> GPIO 18
+     MISO -> GPIO 19
+     MOSI -> GPIO 23
+     SDA  -> GPIO 5
+  */
+
+  SPI.begin(
+    RFID_SCK,
+    RFID_MISO,
+    RFID_MOSI,
+    RFID_SDA
+  );
+
+
+  // ----------------------------------------------------
+  // RFID
+  // ----------------------------------------------------
+
+  leitorRFID.PCD_Init();
+
+  delay(500);
+
+
+  // ----------------------------------------------------
+  // MENSAGENS
+  // ----------------------------------------------------
+
+  Serial.println();
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println(
+    "             NEXA IoT"
+  );
+
+  Serial.println(
+    "          LEITOR RFID ESP32"
+  );
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println();
+
+  Serial.println(
+    "RFID inicializado."
+  );
+
+
+  // ----------------------------------------------------
+  // WI-FI
+  // ----------------------------------------------------
+
+  conectarWifi();
+
+
+  // ----------------------------------------------------
+  // PRONTO
+  // ----------------------------------------------------
+
+  Serial.println();
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println(
+    "       SISTEMA PRONTO"
+  );
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println(
+    "Aproxime o cartao ou tag RFID..."
+  );
+
+  Serial.println();
+
+
+  // LCD
+  lcdAproximeCartao();
+}
+
+
+// ======================================================
+// LOOP
+// ======================================================
+
+void loop() {
+
+  // ====================================================
+  // WI-FI
+  // ====================================================
+
+  if (
+    WiFi.status() != WL_CONNECTED
+  ) {
+
+    Serial.println();
+
+    Serial.println(
+      "Wi-Fi desconectado."
+    );
+
+    conectarWifi();
+
+    return;
+  }
+
+
+  // ====================================================
+  // VERIFICAR CARTÃO
+  // ====================================================
+
+  if (
+    !leitorRFID.PICC_IsNewCardPresent()
+  ) {
+
+    return;
+  }
+
+
+  // ====================================================
+  // LER CARTÃO
+  // ====================================================
+
+  if (
+    !leitorRFID.PICC_ReadCardSerial()
+  ) {
+
+    return;
+  }
+
+
+  // ====================================================
+  // LER UID
+  // ====================================================
+
+  String uidLido =
+    lerUID();
+
+
+  Serial.println();
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.println(
+    "          CARTAO DETECTADO"
+  );
+
+  Serial.println(
+    "========================================"
+  );
+
+  Serial.print(
+    "UID: "
+  );
+
+  Serial.println(
+    uidLido
+  );
+
+
+  // ====================================================
+  // PROCESSANDO
+  // ====================================================
+
+  lcdProcessando();
+
+
+  // Pequena pausa para o LCD mostrar
+  delay(300);
+
+
+  // ====================================================
+  // ENVIAR PARA API
+  // ====================================================
+
+  bool acessoLiberado =
+    enviarRFID(
+      uidLido
+    );
+
+
+  // ====================================================
+  // RESULTADO
+  // ====================================================
+
+  if (
+    acessoLiberado
+  ) {
+
+    indicarSucesso();
+
+  } else {
+
+    indicarErro();
+  }
+
+
+  // ====================================================
+  // FINALIZAR RFID
+  // ====================================================
+
+  leitorRFID.PICC_HaltA();
+
+  leitorRFID.PCD_StopCrypto1();
+
+
+  // ====================================================
+  // EVITAR LEITURA DUPLICADA
+  // ====================================================
+
+  delay(1500);
+
+
+  // ====================================================
+  // VOLTAR PARA TELA INICIAL
+  // ====================================================
+
+  lcdAproximeCartao();
+
+
+  Serial.println();
+
+  Serial.println(
+    "Aproxime outro cartao ou tag..."
+  );
+}

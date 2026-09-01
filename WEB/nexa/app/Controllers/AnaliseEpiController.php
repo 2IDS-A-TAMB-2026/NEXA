@@ -303,6 +303,125 @@ class AnaliseEpiController extends BaseController
             $resultadoIA['predictions']
             ?? [];
 
+            /*
+ * =====================================================
+ * SEPARAR PESSOAS DOS EPIs
+ * =====================================================
+ */
+
+$pessoas = [];
+
+foreach ($predictions as $prediction) {
+
+    $classe = strtolower(
+        trim(
+            $prediction['class']
+            ?? $prediction['class_name']
+            ?? ''
+        )
+    );
+
+    if ($classe === 'person') {
+
+        $pessoas[] = $prediction;
+
+    }
+}
+
+
+
+/*
+ * =====================================================
+ * EPIs ENCONTRADOS POR PESSOA
+ * =====================================================
+ */
+
+$episPorPessoa = [];
+
+
+foreach ($pessoas as $indicePessoa => $pessoa) {
+
+    $episPorPessoa[$indicePessoa] = [];
+
+    foreach ($predictions as $prediction) {
+
+        $classe = strtolower(
+            trim(
+                $prediction['class']
+                ?? $prediction['class_name']
+                ?? ''
+            )
+        );
+
+
+        /*
+         * Ignora a própria pessoa.
+         */
+
+        if ($classe === 'person') {
+            continue;
+        }
+
+
+        /*
+         * Converte o nome da classe
+         * para o padrão NEXA.
+         */
+
+        $epiNormalizado =
+            $this->normalizarEpi($classe);
+
+
+        /*
+         * Verifica se esse objeto
+         * pertence à pessoa.
+         */
+
+        if (
+            $this->objetoPertenceAPessoa(
+                $prediction,
+                $pessoa
+            )
+        ) {
+
+            $episPorPessoa[$indicePessoa][] =
+                $epiNormalizado;
+
+        }
+
+    }
+
+
+    /*
+     * Remove duplicados.
+     */
+
+    $episPorPessoa[$indicePessoa] =
+        array_values(
+            array_unique(
+                $episPorPessoa[$indicePessoa]
+            )
+        );
+}
+/*
+ * =====================================================
+ * PESSOA ANALISADA
+ * =====================================================
+ */
+
+$episDaPessoa = [];
+
+if (!empty($pessoas)) {
+
+    /*
+     * Consideramos a primeira pessoa
+     * detectada como a pessoa analisada.
+     */
+
+    $episDaPessoa =
+        $episPorPessoa[0] ?? [];
+
+}
 
         /*
          * =====================================================
@@ -310,26 +429,20 @@ class AnaliseEpiController extends BaseController
          * =====================================================
          */
 
-        $classesDetectadas = [];
+    /*
+ * =====================================================
+ * CLASSES DETECTADAS NA PESSOA ANALISADA
+ * =====================================================
+ */
 
-        foreach ($predictions as $prediction) {
+$classesDetectadas = $episDaPessoa;
 
-            $classe = strtolower(
-                trim(
-                    $prediction['class']
-                    ?? $prediction['class_name']
-                    ?? ''
-                )
-            );
-
-            if ($classe !== '') {
-
-                $classesDetectadas[] =
-                    $this->normalizarEpi($classe);
-
-            }
-        }
-
+$classesDetectadas =
+    array_values(
+        array_unique(
+            $classesDetectadas
+        )
+    );
         /*
          * Remove duplicados.
          */
@@ -562,139 +675,292 @@ class AnaliseEpiController extends BaseController
      * NORMALIZAR NOME DO EPI
      * =========================================================
      */
-    private function normalizarEpi(string $nome): string
-    {
-        $nome = strtolower(trim($nome));
+ private function normalizarEpi(string $nome): string
+{
+    $nome = strtolower(trim($nome));
 
-        $nome = str_replace(
-            [
-                'á',
-                'à',
-                'ã',
-                'â',
-                'é',
-                'ê',
-                'í',
-                'ó',
-                'ô',
-                'õ',
-                'ú',
-                'ç'
-            ],
-            [
-                'a',
-                'a',
-                'a',
-                'a',
-                'e',
-                'e',
-                'i',
-                'o',
-                'o',
-                'o',
-                'u',
-                'c'
-            ],
-            $nome
-        );
+    /*
+     * =====================================================
+     * TRADUÇÃO DAS CLASSES DA ROBOFLOW
+     * PARA OS NOMES DO NEXA
+     * =====================================================
+     */
 
-        return $nome;
+    $mapa = [
+
+        // CAPACETE
+        'hard hat' => 'capacete',
+        'helmet' => 'capacete',
+        'capacete' => 'capacete',
+
+        // LUVAS
+        'gloves' => 'luvas',
+        'glove' => 'luvas',
+        'luvas' => 'luvas',
+        'luva' => 'luvas',
+
+        // ÓCULOS
+        'glasses' => 'oculos de protecao',
+        'protective glasses' => 'oculos de protecao',
+        'safety glasses' => 'oculos de protecao',
+        'oculos' => 'oculos de protecao',
+        'oculos de protecao' => 'oculos de protecao',
+
+        // BOTAS
+        'safety shoes' => 'botas de seguranca',
+        'safety shoe' => 'botas de seguranca',
+        'boots' => 'botas de seguranca',
+        'boot' => 'botas de seguranca',
+        'botas' => 'botas de seguranca',
+        'botas de seguranca' => 'botas de seguranca',
+
+        // MÁSCARA
+        'mask' => 'mascara',
+        'masks' => 'mascara',
+        'mascara' => 'mascara',
+
+        // COLETE
+        'safety vest' => 'colete',
+        'vest' => 'colete',
+        'colete' => 'colete',
+
+        // PROTETOR AURICULAR
+        'ear muffs' => 'protetor auricular',
+        'ear muff' => 'protetor auricular',
+        'ear protection' => 'protetor auricular',
+        'protetor auricular' => 'protetor auricular'
+    ];
+
+    /*
+     * Se encontrou no mapa,
+     * retorna o nome padronizado.
+     */
+
+    if (isset($mapa[$nome])) {
+
+        return $mapa[$nome];
+
     }
 
 
+    /*
+     * Remove acentos caso o nome não esteja
+     * diretamente no mapa.
+     */
+
+    $nome = str_replace(
+        [
+            'á',
+            'à',
+            'ã',
+            'â',
+            'é',
+            'ê',
+            'í',
+            'ó',
+            'ô',
+            'õ',
+            'ú',
+            'ç'
+        ],
+        [
+            'a',
+            'a',
+            'a',
+            'a',
+            'e',
+            'e',
+            'i',
+            'o',
+            'o',
+            'o',
+            'u',
+            'c'
+        ],
+        $nome
+    );
+
+    
+
+
+    return $nome;
+}
+
+
+
+private function objetoPertenceAPessoa(
+    array $epi,
+    array $pessoa
+): bool {
+
+    /*
+     * Coordenadas da pessoa
+     */
+
+    $pessoaX = (float) ($pessoa['x'] ?? 0);
+    $pessoaY = (float) ($pessoa['y'] ?? 0);
+
+    $pessoaW = (float) ($pessoa['width'] ?? 0);
+    $pessoaH = (float) ($pessoa['height'] ?? 0);
+
+
+    /*
+     * Coordenadas do EPI
+     */
+
+    $epiX = (float) ($epi['x'] ?? 0);
+    $epiY = (float) ($epi['y'] ?? 0);
+
+    $epiW = (float) ($epi['width'] ?? 0);
+    $epiH = (float) ($epi['height'] ?? 0);
+
+
+    /*
+     * Centro do EPI
+     */
+
+    $centroEpiX =
+        $epiX;
+
+    $centroEpiY =
+        $epiY;
+
+
+    /*
+     * Algumas respostas da Roboflow
+     * usam x/y como centro da bounding box.
+     *
+     * Então verificamos o centro diretamente.
+     */
+
+    $limiteEsquerdo =
+        $pessoaX - ($pessoaW / 2);
+
+    $limiteDireito =
+        $pessoaX + ($pessoaW / 2);
+
+    $limiteSuperior =
+        $pessoaY - ($pessoaH / 2);
+
+    $limiteInferior =
+        $pessoaY + ($pessoaH / 2);
+
+
+    return (
+        $centroEpiX >= $limiteEsquerdo &&
+        $centroEpiX <= $limiteDireito &&
+        $centroEpiY >= $limiteSuperior &&
+        $centroEpiY <= $limiteInferior
+    );
+}
     /**
      * =========================================================
      * CHAMAR ROBOFLOW
      * =========================================================
      */
-    private function analisarComRoboflow(string $imagem)
-    {
-        $apiKey = env('ROBOFLOW_API_KEY');
+private function analisarComRoboflow(string $imagem)
+{
+    $apiKey = trim((string) env('ROBOFLOW_API_KEY'));
 
-        if (empty($apiKey)) {
-
-            throw new \Exception(
-                'ROBOFLOW_API_KEY não configurada no .env.'
-            );
-        }
-
-
-        $url =
-            'https://serverless.roboflow.com/' .
-            'nexaepi/workflows/nexa-epi';
-
-
-        $client = \Config\Services::curlrequest();
-
-
-        $resposta = $client->post(
-            $url,
-            [
-                'headers' => [
-                    'Content-Type' =>
-                        'application/json'
-                ],
-
-                'query' => [
-                    'api_key' =>
-                        $apiKey
-                ],
-
-                'json' => [
-                    'inputs' => [
-                        'image' => [
-                            'type' =>
-                                'base64',
-                            'value' =>
-                                preg_replace(
-                                    '#^data:image/\w+;base64,#i',
-                                    '',
-                                    $imagem
-                                )
-                        ]
-                    ]
-                ],
-
-                'http_errors' => false,
-
-                'timeout' => 60
-            ]
+    if (empty($apiKey)) {
+        throw new \Exception(
+            'ROBOFLOW_API_KEY não configurada no .env.'
         );
-
-
-        $statusCode =
-            $resposta->getStatusCode();
-
-        $corpo =
-            $resposta->getBody();
-
-
-        if ($statusCode < 200 || $statusCode >= 300) {
-
-            throw new \Exception(
-                'Roboflow retornou HTTP ' .
-                $statusCode .
-                ': ' .
-                $corpo
-            );
-        }
-
-
-        $resultado =
-            json_decode(
-                $corpo,
-                true
-            );
-
-
-        if (!is_array($resultado)) {
-
-            throw new \Exception(
-                'Resposta inválida da Roboflow.'
-            );
-        }
-
-
-        return $resultado;
     }
+
+    /*
+     * MODELO SH17
+     */
+    $modelUrl =
+        'https://detect.roboflow.com/' .
+        'nexaepi/sh17-hmkpl-p2fiz-1-rfdetr-small-t1';
+
+
+    /*
+     * Remove o prefixo da imagem Base64.
+     */
+    $imagemBase64 = preg_replace(
+        '#^data:image/\w+;base64,#i',
+        '',
+        $imagem
+    );
+
+    if (empty($imagemBase64)) {
+        throw new \Exception(
+            'Imagem Base64 inválida.'
+        );
+    }
+
+
+    $client = \Config\Services::curlrequest();
+
+
+    /*
+     * Envia a imagem diretamente para o modelo SH17.
+     */
+    $resposta = $client->post(
+        $modelUrl,
+        [
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Accept' => 'application/json'
+            ],
+
+            'query' => [
+                'api_key' => $apiKey
+            ],
+
+            'body' => $imagemBase64,
+
+            'http_errors' => false,
+
+            'timeout' => 60,
+
+            'connect_timeout' => 15
+        ]
+    );
+
+
+    $statusCode = $resposta->getStatusCode();
+
+    $corpo = $resposta->getBody();
+
+
+    log_message(
+        'error',
+        'Roboflow HTTP ' .
+        $statusCode .
+        ': ' .
+        $corpo
+    );
+
+
+    if ($statusCode < 200 || $statusCode >= 300) {
+
+        throw new \Exception(
+            'Roboflow retornou HTTP ' .
+            $statusCode .
+            ': ' .
+            $corpo
+        );
+    }
+
+
+    $resultado = json_decode(
+        $corpo,
+        true
+    );
+
+
+    if (!is_array($resultado)) {
+
+        throw new \Exception(
+            'Resposta inválida da Roboflow: ' .
+            $corpo
+        );
+    }
+
+
+    return $resultado;
+}
 }

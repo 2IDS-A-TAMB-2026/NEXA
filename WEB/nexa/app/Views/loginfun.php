@@ -383,19 +383,124 @@
 
     </div>
 
-
-
     <!-- =====================================================
          JAVASCRIPT DE ACESSIBILIDADE
     ====================================================== -->
 
-    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
+    <script>
+    alert("O HTML ESTÁ FUNCIONANDO!");
+    src="<?= base_url('assets/js/acessibilidade.js') ?>"
+    </script>
 
 
 
     <!-- =====================================================
          CARROSSEL DE VÍDEOS
     ====================================================== -->
+
+
+    <script>
+        (function () {
+
+            let verificandoRFID = false;
+
+            async function verificarRFID() {
+
+                // Evita duas consultas simultâneas
+                if (verificandoRFID) {
+                    return;
+                }
+
+                verificandoRFID = true;
+
+                try {
+
+                    const resposta = await fetch(
+                        '<?= base_url("api/rfid/status") ?>',
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            },
+                            cache: 'no-store'
+                        }
+                    );
+
+                    if (!resposta.ok) {
+                        return;
+                    }
+
+                    const dados = await resposta.json();
+
+                    console.log('RFID:', dados);
+
+                    // ==========================================
+                    // NOVO ACESSO DETECTADO
+                    // ==========================================
+
+                    if (
+                        dados.sucesso === true &&
+                        dados.novoAcesso === true
+                    ) {
+
+                        console.log(
+                            'RFID identificado:',
+                            dados.funcionario?.nome
+                        );
+
+                        console.log(
+                            'Câmera:',
+                            dados.camera?.identificador
+                        );
+
+                        // Evita executar novamente
+                        if (window.rfidRedirecionando) {
+                            return;
+                        }
+
+                        window.rfidRedirecionando = true;
+
+                        // Usa o redirect enviado pela API
+                        if (dados.redirect) {
+
+                            window.location.href = dados.redirect;
+
+                        } else {
+
+                            window.location.href =
+                                '<?= base_url("camera_analise") ?>';
+                        }
+                    }
+
+                } catch (erro) {
+
+                    console.error(
+                        'Erro ao consultar RFID:',
+                        erro
+                    );
+
+                } finally {
+
+                    verificandoRFID = false;
+                }
+            }
+
+
+            // ==========================================
+            // CONSULTAR RFID A CADA 1 SEGUNDO
+            // ==========================================
+
+            setInterval(
+                verificarRFID,
+                1000
+            );
+
+
+            // Faz uma consulta imediatamente
+            verificarRFID();
+
+        })();
+        </script>
 
     <script>
 

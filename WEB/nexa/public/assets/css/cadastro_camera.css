@@ -152,14 +152,158 @@ body{
    HEADER DIREITA
 ========================================================== */
 
-.header-right{
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative !important; /* Referência fixa para alinhamento à direita */
+    margin-left: auto;
+}
 
-    display:flex;
+/* CONTAINER DE ACESSIBILIDADE */
+.header-access {
+    display: flex;
+    align-items: center;
+}
 
-    align-items:center;
+.access-menu {
+    display: flex !important;
+    align-items: center !important;
+    z-index: 99999 !important;
+}
 
-    gap:24px;
+/* ENGRENAGEM (Transparente e cinza, alinhada à esquerda do perfil) */
+.gear-btn {
+    position: relative !important;
+    flex-shrink: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    background: transparent !important;
+    color: #64748b !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer;
+    font-size: 22px;
+    box-shadow: none !important;
+    padding: 6px;
+    transition: transform 0.4s ease, color 0.2s ease;
+}
 
+.access-menu:has(.access-options.active) .gear-btn,
+.access-menu.active .gear-btn {
+    transform: rotate(90deg);
+}
+
+.gear-btn:hover {
+    background: transparent !important;
+    color: #17325c !important;
+}
+
+/* CAIXA FLUTUANTE DE ACESSIBILIDADE (Alinhada perfeitamente à borda direita) */
+/* CAIXA FLUTUANTE DE ACESSIBILIDADE */
+.access-options {
+    position: fixed !important;
+    top: 70px !important; /* Distância do topo da tela */
+    right: 35px !important; /* Encosta perfeitamente na margem direita do header */
+    left: auto !important;
+    width: max-content !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 12px 24px !important;
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    z-index: 99999 !important;
+}
+
+.access-options.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+}
+
+/* BOTÕES DE ACESSIBILIDADE */
+.access-btn {
+    width: auto !important;
+    height: auto !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #475569 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.25s ease, transform 0.25s ease, color 0.15s ease;
+}
+
+.access-btn:hover {
+    background: transparent !important;
+    color: #000000 !important;
+}
+
+.access-options.active .access-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.access-options.active .access-btn:nth-child(1) { transition-delay: 0.03s; }
+.access-options.active .access-btn:nth-child(2) { transition-delay: 0.06s; }
+.access-options.active .access-btn:nth-child(3) { transition-delay: 0.09s; }
+.access-options.active .access-btn:nth-child(4) { transition-delay: 0.12s; }
+.access-options.active .access-btn:nth-child(5) { transition-delay: 0.15s; }
+
+/* PERFIL */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.profile-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #0A66C2;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info strong {
+    color: #17325c;
+    font-size: 15px;
+}
+
+.profile-info span {
+    color: #94a3b8;
+    font-size: 13px;
 }
 
 .notification-btn{
@@ -1388,4 +1532,115 @@ body{
 
     text-decoration:none;
 
+}
+
+/* ==========================================================
+   MODO ESCURO (SEM MUDAR TAMANHO, TUDO REDONDINHO)
+========================================================== */
+
+body.modo-escuro .access-options,
+body.dark-mode .access-options,
+[data-theme="dark"] .access-options {
+    background: #1c2536 !important;
+    border: 1px solid #2d3d54 !important;
+    border-radius: 50px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.modo-escuro .access-btn,
+body.dark-mode .access-btn,
+[data-theme="dark"] .access-btn {
+    color: #94a3b8 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.modo-escuro .access-btn:hover,
+body.dark-mode .access-btn:hover,
+[data-theme="dark"] .access-btn:hover {
+    color: #3b82f6 !important;
+    background: #2a374e !important;
+}
+
+body.modo-escuro .gear-btn,
+body.dark-mode .gear-btn,
+[data-theme="dark"] .gear-btn {
+    background: #0a66c2 !important;
+    color: #ffffff !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.modo-escuro .btn-limpar,
+body.dark-mode .btn-limpar {
+    background: #0a66c2 !important;
+    color: #ffffff !important;
+    border: 1px solid transparent !important;
+    border-radius: 50px !important;
+}
+
+body.modo-escuro .pagina-btn.ativa,
+body.dark-mode .pagina-btn.ativa {
+    background: #0a66c2 !important;
+    border-color: #0a66c2 !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+}
+
+
+/* ==========================================================
+   MODO ALTO CONTRASTE (SEM MUDAR TAMANHO, TUDO REDONDINHO)
+========================================================== */
+
+body.alto-contraste .access-options,
+body.contraste .access-options,
+[data-theme="alto-contraste"] .access-options {
+    background: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50px !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .access-btn,
+body.contraste .access-btn,
+[data-theme="alto-contraste"] .access-btn {
+    color: #ffff00 !important;
+    background: #000000 !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.alto-contraste .access-btn:hover,
+body.contraste .access-btn:hover,
+[data-theme="alto-contraste"] .access-btn:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .gear-btn,
+body.contraste .gear-btn,
+[data-theme="alto-contraste"] .gear-btn {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50% !important;
+}
+
+body.alto-contraste .btn-limpar,
+body.contraste .btn-limpar,
+[data-theme="alto-contraste"] .btn-limpar {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50px !important;
+}
+
+body.alto-contraste .pagina-btn.ativa,
+body.contraste .pagina-btn.ativa,
+[data-theme="alto-contraste"] .pagina-btn.ativa {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50% !important;
 }

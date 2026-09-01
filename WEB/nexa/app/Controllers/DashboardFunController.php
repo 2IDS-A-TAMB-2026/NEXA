@@ -12,7 +12,7 @@ class DashboardFunController extends BaseController
             return redirect()->to('/loginfun');
         }
 
-        $cpf = session()->get('cpf');
+        $cpf = session()->get('cpf_fun');
 
         $funcionarioModel = new FuncionarioModel();
         $ocorrenciaModel = new OcorrenciaModel();

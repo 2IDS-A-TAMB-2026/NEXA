@@ -17,7 +17,7 @@ class App extends BaseConfig
      * E.g., http://example.com/
      */
    // Substitua 'nome-do-seu-projeto' pelo nome real da pasta do seu sistema
-    public string $baseURL = 'http://10.141.130.38/nexa/public/';
+    public string $baseURL = 'http://10.141.130.34/nexa/public/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

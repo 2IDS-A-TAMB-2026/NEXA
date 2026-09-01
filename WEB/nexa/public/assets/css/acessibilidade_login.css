@@ -911,3 +911,159 @@ body.contraste .btn-login:active {
 .vw-plugin-wrapper {
     z-index: 999999 !important;
 }
+
+/* =========================================================
+   ACESSIBILIDADE - CONTROLE DE TAMANHO DA FONTE
+   ========================================================= */
+
+/*
+   O JavaScript cria:
+   --escala-fonte
+
+   100% = tamanho normal
+   110% = fonte maior
+   120% = fonte maior
+   130% = fonte maior
+   140% = fonte maior
+
+   IMPORTANTE:
+   O tamanho das caixas, imagens e layout NÃO muda.
+*/
+
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
+.titulo {
+    font-size: calc(32px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   SUBTÍTULO
+   ========================================================= */
+
+.subtitulo {
+    font-size: calc(15px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   TEXTO DO LADO ESQUERDO
+   ========================================================= */
+
+.left-content h2 {
+    font-size: calc(
+        clamp(32px, 3.2vw, 52px)
+        * var(--escala-fonte, 1)
+    );
+}
+
+.left-content p {
+    font-size: calc(
+        clamp(15px, 1.25vw, 19px)
+        * var(--escala-fonte, 1)
+    );
+}
+
+
+/* =========================================================
+   MENSAGEM DE ERRO
+   ========================================================= */
+
+.erro-login {
+    font-size: calc(14px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   ÍCONE DOS INPUTS
+   ========================================================= */
+
+.input-box i {
+    font-size: calc(16px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.input-box input {
+    font-size: calc(15px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   BOTÃO LOGIN
+   ========================================================= */
+
+.btn-login {
+    font-size: calc(18px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+.links a {
+    font-size: calc(14px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    font-size: calc(13px * var(--escala-fonte, 1));
+}
+
+
+/* =========================================================
+   BOTÕES DE ACESSIBILIDADE
+   NÃO ALTERAR
+   ========================================================= */
+
+.access-btn,
+.gear-btn {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .left-content h2 {
+        font-size: calc(
+            36px * var(--escala-fonte, 1)
+        );
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .left-content h2 {
+        font-size: calc(
+            29px * var(--escala-fonte, 1)
+        );
+    }
+
+    .left-content p {
+        font-size: calc(
+            14px * var(--escala-fonte, 1)
+        );
+    }
+
+    .titulo {
+        font-size: calc(
+            28px * var(--escala-fonte, 1)
+        );
+    }
+}

@@ -1,11 +1,18 @@
 /* ==========================================================
-   RESET
+   RESET / VARIÁVEIS DINÂMICAS DE TEMA
 ========================================================== */
+
+:root {
+    --primary-color: #0a66c2;
+    --primary-hover: #0757a7;
+    --btn-text: #ffffff;
+    --border-color: #dfe7f1;
+}
 
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
     font-family: 'Inter', Arial, sans-serif;
 }
 
@@ -20,19 +27,13 @@
     left: 270px;
     right: 0;
     height: 75px;
-
     background: #fff;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 0 32px;
-
     border-bottom: 1px solid #edf2f7;
-
     box-shadow: 0 4px 20px rgba(15, 42, 68, .05);
-
     z-index: 100;
 }
 
@@ -61,15 +62,126 @@
 
 
 /* ==========================================================
-   HEADER DIREITA
+   HEADER DIREITA & ACESSIBILIDADE
 ========================================================== */
 
 .header-right {
     display: flex;
     align-items: center;
     gap: 24px;
+    position: relative !important;
+    margin-left: auto;
 }
 
+.header-access {
+    display: flex;
+    align-items: center;
+}
+
+.access-menu {
+    display: flex !important;
+    align-items: center !important;
+    z-index: 99999 !important;
+}
+
+/* BOTÃO ENGRENAGEM (FIXADO FIXO E REDONDINHO) */
+.gear-btn {
+    position: relative !important;
+    flex-shrink: 0 !important;
+    width: 40px !important;
+    height: 40px !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+    outline: none !important;
+    background: #0a66c2 !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    padding: 0 !important;
+    transition: transform 0.4s ease, background 0.2s ease;
+}
+
+.access-menu:has(.access-options.active) .gear-btn,
+.access-menu.active .gear-btn {
+    transform: rotate(90deg);
+}
+
+.gear-btn:hover {
+    background: #0757a7 !important;
+}
+
+/* CAIXA FLUTUANTE DE ACESSIBILIDADE (REDONDINHA) */
+.access-options {
+    position: fixed !important;
+    top: 70px !important;
+    right: 32px !important;
+    left: auto !important;
+    width: max-content !important;
+    height: 48px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 0 16px !important;
+    background: #ffffff !important;
+    border: 1px solid #dfe7f1 !important;
+    border-radius: 50px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    z-index: 99999 !important;
+}
+
+.access-options.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+}
+
+/* BOTÕES INTERNOS DE ACESSIBILIDADE */
+.access-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    color: #475569 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.25s ease, transform 0.25s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.access-btn:hover {
+    background: #f1f5f9 !important;
+    color: #000000 !important;
+}
+
+.access-options.active .access-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.access-options.active .access-btn:nth-child(1) { transition-delay: 0.03s; }
+.access-options.active .access-btn:nth-child(2) { transition-delay: 0.06s; }
+.access-options.active .access-btn:nth-child(3) { transition-delay: 0.09s; }
+.access-options.active .access-btn:nth-child(4) { transition-delay: 0.12s; }
+.access-options.active .access-btn:nth-child(5) { transition-delay: 0.15s; }
+
+/* PERFIL */
 .profile {
     display: flex;
     align-items: center;
@@ -81,18 +193,15 @@
 .profile-avatar {
     width: 44px;
     height: 44px;
-
     border-radius: 50%;
-
-    background: #174ea6;
+    background: var(--primary-color);
     color: #fff;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-size: 17px;
     font-weight: 700;
+    transition: background 0.3s ease;
 }
 
 .profile-info {
@@ -118,42 +227,30 @@
 .overlay {
     margin-left: 270px;
     width: calc(100% - 270px);
-
     padding: 105px 32px 40px;
-
     min-height: 100vh;
-
     background: #f7faff;
 }
 
 
 /* ==========================================================
-   FILTROS
+   FILTROS E BOTÃO LIMPAR (REDONDINHO)
 ========================================================== */
 
 .filtros {
     width: 100%;
-
     background: #fff;
-
     border-radius: 20px;
-
     padding: 18px;
-
     border: 1px solid #e5edf7;
-
     box-shadow: 0 8px 25px rgba(15, 42, 68, .05);
-
     display: grid;
-
     grid-template-columns:
         minmax(260px, 1.5fr)
         minmax(180px, .7fr)
         minmax(170px, .6fr)
         auto;
-
     gap: 14px;
-
     margin-bottom: 24px;
 }
 
@@ -161,69 +258,42 @@
 .filtros select {
     width: 100%;
     height: 50px;
-
-    padding: 0 16px;
-
+    padding: 0 20px;
     background: #fff;
-
-    border: 1px solid #dfe7f1;
-
-    border-radius: 13px;
-
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
     outline: none;
-
     font-size: 14px;
-
     color: #334155;
-
     transition: .2s;
 }
 
 .filtros input:focus,
 .filtros select:focus {
-    border-color: #0a66c2;
-
-    box-shadow:
-        0 0 0 4px rgba(10, 102, 194, .08);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(10, 102, 194, .08);
 }
-
-
-/* ==========================================================
-   BOTÃO LIMPAR
-========================================================== */
 
 .btn-limpar {
     height: 50px;
-
-    padding: 0 25px;
-
-    border: none;
-
-    border-radius: 13px;
-
-    background: #0a66c2;
-
-    color: white;
-
+    padding: 0 28px;
+    border: 1px solid transparent;
+    border-radius: 50px !important;
+    background: var(--primary-color);
+    color: var(--btn-text);
     font-weight: 600;
-
     cursor: pointer;
-
-    transition: .25s;
+    transition: background 0.3s ease, transform 0.25s ease;
 }
 
 .btn-limpar:hover {
-    background: #0757a7;
+    background: var(--primary-hover);
     transform: translateY(-2px);
 }
 
 
 /* ==========================================================
-   LISTA DE OCORRÊNCIAS
-========================================================== */
-
-/* ==========================================================
-   LISTA DE OCORRÊNCIAS
+   LISTA DE OCORRÊNCIAS & CARDS
 ========================================================== */
 
 .ocorrencias {
@@ -233,391 +303,60 @@
     width: 100%;
 }
 
-
-/* ==========================================================
-   CARD
-========================================================== */
-
 .card {
     position: relative;
-
     width: 100%;
     min-height: 112px;
-
     background: #fff;
-
-    border-radius: 17px;
-
+    border-radius: 20px;
     padding: 17px 20px;
-
     border: 1px solid #e5edf7;
-
     border-left: 4px solid;
-
-    box-shadow:
-        0 5px 18px rgba(15, 42, 68, .05);
-
+    box-shadow: 0 5px 18px rgba(15, 42, 68, .05);
     transition: .25s;
-
     overflow: hidden;
 }
 
 .card:hover {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 10px 25px rgba(15, 42, 68, .10);
+    box-shadow: 0 10px 25px rgba(15, 42, 68, .10);
 }
 
-
-/* ==========================================================
-   STATUS DO CARD
-========================================================== */
-
-.violacao {
-    border-left-color: #ef233c;
-}
-
-.conforme {
-    border-left-color: #22a559;
-}
-
-
-/* ==========================================================
-   CABEÇALHO / ÍCONE
-========================================================== */
+.violacao { border-left-color: #ef233c; }
+.conforme { border-left-color: #22a559; }
 
 .card-header {
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
     margin-bottom: 13px;
-
     font-size: 15px;
-
     font-weight: 700;
 }
-
-
-/* Ícone */
 
 .card-header i {
     width: 42px;
     height: 42px;
-
     min-width: 42px;
-
-    border-radius: 12px;
-
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 19px;
 }
 
-
-/* Violação */
-
-.violacao .card-header {
-    color: #dc2626;
-}
-
+.violacao .card-header { color: #dc2626; }
 .violacao .card-header i {
     color: #fff;
     background: #ef233c;
-
-    box-shadow:
-        0 4px 10px rgba(239, 35, 60, .20);
+    box-shadow: 0 4px 10px rgba(239, 35, 60, .20);
 }
 
-
-/* Conforme */
-
-.conforme .card-header {
-    color: #15803d;
-}
-
+.conforme .card-header { color: #15803d; }
 .conforme .card-header i {
     color: #fff;
     background: #22a559;
-
-    box-shadow:
-        0 4px 10px rgba(34, 165, 89, .20);
-}
-
-
-/* ==========================================================
-   CÂMERA
-========================================================== */
-
-.card-header > div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.card-header small {
-    color: #94a3b8;
-
-    font-size: 11px;
-
-    font-weight: 500;
-}
-
-
-/* ==========================================================
-   INFORMAÇÕES
-========================================================== */
-
-.info-grid {
-    display: grid;
-
-    grid-template-columns:
-        1.1fr
-        1fr
-        1.2fr
-        1fr;
-
-    align-items: center;
-
-    width: 100%;
-
-    margin-top: 2px;
-}
-
-
-/* Cada campo */
-
-.info-grid > div {
-    min-height: 38px;
-
-    padding: 2px 20px;
-
-    border-left: 1px solid #edf1f6;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    gap: 3px;
-
-    color: #17325c;
-
-    font-size: 13px;
-
-    font-weight: 600;
-}
-
-
-/* Primeiro campo */
-
-.info-grid > div:first-child {
-    border-left: none;
-    padding-left: 0;
-}
-
-
-/* Títulos */
-
-.info-grid strong {
-    color: #7b8ba3;
-
-    font-size: 11px;
-
-    font-weight: 500;
-}
-
-
-/* ==========================================================
-   EPIS
-========================================================== */
-
-.epi-box {
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    margin-top: 12px;
-
-    padding-top: 10px;
-
-    border-top: 1px solid #edf1f6;
-}
-
-.ok,
-.fail {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    padding: 6px 11px;
-
-    border-radius: 18px;
-
-    font-size: 11px;
-
-    font-weight: 600;
-}
-
-.ok {
-    background: #eaf8ef;
-    color: #15803d;
-}
-
-.fail {
-    background: #fff0f0;
-    color: #dc2626;
-}
-
-
-/* ==========================================================
-   PAGINAÇÃO
-========================================================== */
-
-.paginacao {
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 8px;
-
-    margin-top: 25px;
-
-    margin-bottom: 20px;
-}
-
-.pagina-btn {
-    width: 42px;
-    height: 42px;
-
-    border: 1px solid #dfe7f1;
-
-    background: #fff;
-
-    color: #17325c;
-
-    border-radius: 10px;
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: .2s;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-}
-
-.pagina-btn:hover {
-    border-color: #0a66c2;
-
-    color: #0a66c2;
-
-    transform: translateY(-1px);
-}
-
-.pagina-btn.ativa {
-    background: #0a66c2;
-
-    border-color: #0a66c2;
-
-    color: #fff;
-
-    box-shadow:
-        0 5px 12px rgba(10,102,194,.20);
-}
-
-.pagina-btn:disabled {
-    opacity: .45;
-
-    cursor: not-allowed;
-
-    transform: none;
-}
-
-
-footer {
-    margin-top: 30px;
-
-    color: #7b8ba3;
-
-    font-size: 13px;
-
-    text-align: center;
-}
-
-
-/* ==========================================================
-   RESPONSIVIDADE
-========================================================== */
-
-@media (max-width: 1100px) {
-
-    .filtros {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .info-grid > div:nth-child(3) {
-        border-left: none;
-    }
-}
-
-
-@media (max-width: 750px) {
-
-    .dashboard-header {
-        left: 0;
-    }
-
-    .overlay {
-        margin-left: 0;
-        width: 100%;
-        padding: 95px 18px 30px;
-    }
-
-    .filtros {
-        grid-template-columns: 1fr;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .info-grid > div {
-        border-left: none;
-        border-top: 1px solid #edf1f6;
-
-        padding: 10px 0;
-    }
-
-    .info-grid > div:first-child {
-        border-top: none;
-    }
-
-    .profile-info {
-        display: none;
-    }
+    box-shadow: 0 4px 10px rgba(34, 165, 89, .20);
 }
 
 .card-header > div {
@@ -632,145 +371,276 @@ footer {
     color: #94a3b8;
 }
 
+.info-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.2fr 1fr;
+    align-items: center;
+    width: 100%;
+    margin-top: 2px;
+}
+
+.info-grid > div {
+    min-height: 38px;
+    padding: 2px 20px;
+    border-left: 1px solid #edf1f6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    color: #17325c;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.info-grid > div:first-child {
+    border-left: none;
+    padding-left: 0;
+}
+
+.info-grid strong {
+    color: #7b8ba3;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.epi-box {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #edf1f6;
+}
+
+.ok, .fail {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.ok { background: #eaf8ef; color: #15803d; }
+.fail { background: #fff0f0; color: #dc2626; }
+
+
 /* ==========================================================
-   PAGINAÇÃO
+   PAGINAÇÃO (REDONDINHA)
 ========================================================== */
 
 .paginacao-container {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     margin-top: 22px;
-
     margin-bottom: 20px;
-
     width: 100%;
 }
 
-
 .itens-por-pagina {
     display: flex;
-
     align-items: center;
-
     gap: 8px;
-
     color: #64748b;
-
     font-size: 13px;
 }
-
 
 .itens-por-pagina select {
     height: 38px;
-
     min-width: 65px;
-
-    padding: 0 10px;
-
-    border: 1px solid #dfe7f1;
-
-    border-radius: 9px;
-
+    padding: 0 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
     background: #fff;
-
     color: #17325c;
-
     font-size: 13px;
-
     font-weight: 600;
-
     outline: none;
-
     cursor: pointer;
 }
-
-
-.itens-por-pagina select:focus {
-    border-color: #0a66c2;
-
-    box-shadow:
-        0 0 0 3px rgba(10,102,194,.08);
-}
-
 
 .paginacao {
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     gap: 7px;
 }
 
-
 .pagina-btn {
     width: 38px;
-
     height: 38px;
-
-    border: 1px solid #dfe7f1;
-
+    border: 1px solid var(--border-color);
     background: #fff;
-
     color: #17325c;
-
-    border-radius: 9px;
-
+    border-radius: 50% !important;
     font-size: 13px;
-
     font-weight: 600;
-
     cursor: pointer;
-
     transition: .2s;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 }
 
-
 .pagina-btn:hover {
-    border-color: #0a66c2;
-
-    color: #0a66c2;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
-
 
 .pagina-btn.ativa {
-    background: #0a66c2;
-
-    border-color: #0a66c2;
-
-    color: #fff;
-
-    box-shadow:
-        0 4px 10px rgba(10,102,194,.18);
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--btn-text);
+    box-shadow: 0 4px 10px rgba(0,0,0,.18);
 }
-
 
 .pagina-btn:disabled {
     opacity: .4;
-
     cursor: not-allowed;
 }
 
+footer {
+    margin-top: 30px;
+    color: #7b8ba3;
+    font-size: 13px;
+    text-align: center;
+}
 
-/* RESPONSIVO */
+
+/* ==========================================================
+   RESPONSIVIDADE
+========================================================== */
+
+@media (max-width: 1100px) {
+    .filtros { grid-template-columns: 1fr 1fr; }
+    .info-grid { grid-template-columns: 1fr 1fr; }
+    .info-grid > div:nth-child(3) { border-left: none; }
+}
+
+@media (max-width: 750px) {
+    .dashboard-header { left: 0; }
+    .overlay { margin-left: 0; width: 100%; padding: 95px 18px 30px; }
+    .filtros { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .info-grid > div { border-left: none; border-top: 1px solid #edf1f6; padding: 10px 0; }
+    .info-grid > div:first-child { border-top: none; }
+    .profile-info { display: none; }
+}
 
 @media (max-width: 600px) {
+    .paginacao-container { flex-direction: column; gap: 15px; }
+}
 
-    .paginacao-container {
-        flex-direction: column;
 
-        gap: 15px;
-    }
+/* ==========================================================
+   MODO ESCURO (SEM MUDAR TAMANHO, TUDO REDONDINHO)
+========================================================== */
 
+body.modo-escuro .access-options,
+body.dark-mode .access-options,
+[data-theme="dark"] .access-options {
+    background: #1c2536 !important;
+    border: 1px solid #2d3d54 !important;
+    border-radius: 50px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.modo-escuro .access-btn,
+body.dark-mode .access-btn,
+[data-theme="dark"] .access-btn {
+    color: #94a3b8 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.modo-escuro .access-btn:hover,
+body.dark-mode .access-btn:hover,
+[data-theme="dark"] .access-btn:hover {
+    color: #3b82f6 !important;
+    background: #2a374e !important;
+}
+
+body.modo-escuro .gear-btn,
+body.dark-mode .gear-btn,
+[data-theme="dark"] .gear-btn {
+    background: #0a66c2 !important;
+    color: #ffffff !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.modo-escuro .btn-limpar,
+body.dark-mode .btn-limpar {
+    background: #0a66c2 !important;
+    color: #ffffff !important;
+    border: 1px solid transparent !important;
+    border-radius: 50px !important;
+}
+
+body.modo-escuro .pagina-btn.ativa,
+body.dark-mode .pagina-btn.ativa {
+    background: #0a66c2 !important;
+    border-color: #0a66c2 !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+}
+
+
+/* ==========================================================
+   MODO ALTO CONTRASTE (SEM MUDAR TAMANHO, TUDO REDONDINHO)
+========================================================== */
+
+body.alto-contraste .access-options,
+body.contraste .access-options,
+[data-theme="alto-contraste"] .access-options {
+    background: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50px !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .access-btn,
+body.contraste .access-btn,
+[data-theme="alto-contraste"] .access-btn {
+    color: #ffff00 !important;
+    background: #000000 !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.alto-contraste .access-btn:hover,
+body.contraste .access-btn:hover,
+[data-theme="alto-contraste"] .access-btn:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .gear-btn,
+body.contraste .gear-btn,
+[data-theme="alto-contraste"] .gear-btn {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50% !important;
+}
+
+body.alto-contraste .btn-limpar,
+body.contraste .btn-limpar,
+[data-theme="alto-contraste"] .btn-limpar {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50px !important;
+}
+
+body.alto-contraste .pagina-btn.ativa,
+body.contraste .pagina-btn.ativa,
+[data-theme="alto-contraste"] .pagina-btn.ativa {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50% !important;
 }

@@ -75,7 +75,6 @@
     <!-- =====================================================
          MENU DE ACESSIBILIDADE
     ====================================================== -->
-
     <div class="access-bar" style="position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 10;">
 
         <button class="access-btn" onclick="Acessibilidade.toggleContraste()" title="Alto Contraste">

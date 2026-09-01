@@ -299,5 +299,129 @@
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
     </script>
+
+
+    <script>
+
+        // =====================================================
+        // NEXA RFID - LOGIN AUTOMÁTICO
+        // =====================================================
+
+        let verificandoRFID = false;
+
+        async function verificarRFID() {
+
+            if (verificandoRFID) {
+                return;
+            }
+
+            verificandoRFID = true;
+
+            try {
+
+                const resposta = await fetch(
+                    '<?= base_url("api/rfid/status") ?>',
+                    {
+                        method: 'GET',
+
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+
+                        cache: 'no-store'
+                    }
+                );
+
+
+                if (!resposta.ok) {
+
+                    console.log(
+                        'Erro ao consultar RFID:',
+                        resposta.status
+                    );
+
+                    return;
+                }
+
+
+                const dados =
+                    await resposta.json();
+
+
+                console.log(
+                    'Status RFID:',
+                    dados
+                );
+
+
+                // =================================================
+                // NENHUM CARTÃO
+                // =================================================
+
+                if (
+                    !dados.novoAcesso
+                ) {
+
+                    return;
+                }
+
+
+                // =================================================
+                // FUNCIONÁRIO IDENTIFICADO
+                // =================================================
+
+                console.log(
+                    'Funcionário identificado:',
+                    dados.funcionario.nome
+                );
+
+
+                console.log(
+                    'Câmera:',
+                    dados.camera?.identificador
+                );
+
+
+                // =================================================
+                // REDIRECIONAR
+                // =================================================
+
+                if (
+                    dados.redirect
+                ) {
+
+                    window.location.href =
+                        dados.redirect;
+
+                }
+
+            } catch (erro) {
+
+                console.error(
+                    'Erro ao verificar RFID:',
+                    erro
+                );
+
+            } finally {
+
+                verificandoRFID = false;
+            }
+        }
+
+
+        // =====================================================
+        // VERIFICAR A CADA 1 SEGUNDO
+        // =====================================================
+
+        setInterval(
+            verificarRFID,
+            1000
+        );
+
+
+        // Primeira verificação
+        verificarRFID();
+
+        </script>
 </body>
 </html>

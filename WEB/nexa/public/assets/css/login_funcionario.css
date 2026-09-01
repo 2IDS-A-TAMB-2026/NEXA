@@ -638,3 +638,57 @@ body {
 
     inset: 0;
 }
+
+/* =========================================
+   ACESSIBILIDADE - TAMANHO DA FONTE
+========================================= */
+
+body.fonte-110 {
+    font-size: 110%;
+}
+
+body.fonte-120 {
+    font-size: 120%;
+}
+
+body.fonte-130 {
+    font-size: 130%;
+}
+
+body.fonte-140 {
+    font-size: 140%;
+}
+
+body.fonte-90 {
+    font-size: 90%;
+}
+
+body.fonte-80 {
+    font-size: 80%;
+}
+
+
+/* Elementos que usam tamanho fixo */
+body.fonte-110 .titulo {
+    font-size: 35px;
+}
+
+body.fonte-120 .titulo {
+    font-size: 38px;
+}
+
+body.fonte-130 .titulo {
+    font-size: 42px;
+}
+
+body.fonte-140 .titulo {
+    font-size: 45px;
+}
+
+body.fonte-90 .titulo {
+    font-size: 29px;
+}
+
+body.fonte-80 .titulo {
+    font-size: 26px;
+}

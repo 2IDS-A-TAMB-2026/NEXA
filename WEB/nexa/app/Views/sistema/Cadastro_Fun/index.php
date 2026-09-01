@@ -614,7 +614,7 @@
                                 placeholder="Nome completo"
                                 value="<?= old('NOME_COMPLETO') ?>"
                                 oninput="validarNome(this)"
-                                required
+                                
                             >
 
                         </div>
@@ -645,7 +645,7 @@
                                 maxlength="14"
                                 oninput="maskCPF(this)"
                                 value="<?= old('CPF') ?>"
-                                required
+                                
                             >
 
                         </div>
@@ -674,7 +674,7 @@
                                 name="DATA_NASCIMENTO"
                                 max="<?= date('Y-m-d') ?>"
                                 value="<?= old('DATA_NASCIMENTO') ?>"
-                                required
+                                
                             >
 
                         </div>
@@ -703,7 +703,7 @@
                                 name="EMAIL_CORPORATIVO"
                                 placeholder="E-mail corporativo"
                                 value="<?= old('EMAIL_CORPORATIVO') ?>"
-                                required
+                                
                             >
 
                         </div>
@@ -787,7 +787,7 @@
                             <select
                                 id="id_setor"
                                 name="FK_ID_SETOR"
-                                required
+                                
                             >
 
                                 <option value="">
@@ -842,7 +842,7 @@
                                 name="SENHA"
                                 minlength="6"
                                 placeholder="Senha (mínimo 6 caracteres)"
-                                required
+                                
                             >
 
                         </div>
@@ -871,7 +871,7 @@
                                 name="CONFIRMAR_SENHA"
                                 minlength="6"
                                 placeholder="Confirmar senha"
-                                required
+                                
                             >
 
                         </div>
@@ -3197,7 +3197,7 @@ function atualizarBonecoEPI() {
                             type="text"
                             id="edit_nome"
                             name="NOME_COMPLETO"
-                            required
+                            
                         >
 
                     </div>
@@ -3246,7 +3246,7 @@ function atualizarBonecoEPI() {
                             type="date"
                             id="edit_nascimento"
                             name="DATA_NASCIMENTO"
-                            required
+                            
                         >
 
                     </div>
@@ -3271,7 +3271,7 @@ function atualizarBonecoEPI() {
                             type="email"
                             id="edit_email"
                             name="EMAIL_CORPORATIVO"
-                            required
+                            
                         >
 
                     </div>
@@ -3345,7 +3345,7 @@ function atualizarBonecoEPI() {
                         <select
                             id="edit_setor"
                             name="FK_ID_SETOR"
-                            required
+                            
                         >
 
                             <option value="">
@@ -4020,7 +4020,7 @@ function atualizarBonecoEPI() {
 
             }
 
-a
+
             /* =====================================================
                ALERTAS DE RETORNO DO PHP
             ===================================================== */

@@ -906,36 +906,25 @@ async function analisarAutomatico() {
                 `;
 
             } else {
+epis.forEach(function(epi) {
 
-                epis.forEach(function(epi) {
+    // Se o EPI foi detectado
+    if (epi.detectado) {
 
-                    const item =
-                        document.createElement(
-                            'div'
-                        );
+        const item =
+            document.createElement('div');
 
+        item.className =
+            'resultado-item';
 
-                    item.className =
-                        'resultado-item';
+        item.textContent =
+            `✅ ${epi.nome} detectado`;
 
+        lista.appendChild(item);
 
-                    if (epi.detectado) {
+    }
 
-                        item.textContent =
-                            `✅ ${epi.nome} detectado`;
-
-                    } else {
-
-                        item.textContent =
-                            `❌ ${epi.nome} ausente`;
-
-                    }
-
-
-                    lista.appendChild(item);
-
-                });
-
+});
             }
 
 
@@ -1052,15 +1041,6 @@ document.addEventListener(
 /* =========================================================
    ANÁLISE AUTOMÁTICA
 ========================================================= */
-
-setInterval(
-
-    analisarAutomatico,
-
-    3000
-
-);
-
 
 /* =========================================================
    ENCERRAR CÂMERA

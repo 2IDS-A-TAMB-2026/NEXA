@@ -559,9 +559,27 @@ $routes->options('api/(:any)', function () {
 
 
 
-// API RFID
+// =====================================================
+// API RFID NEXA
+// =====================================================
+
+$routes->get(
+    'api/rfid',
+    'RfidController::index'
+);
 
 $routes->post(
     'api/rfid',
-    'api\RfidController::index'
+    'RfidController::index'
+);
+
+
+// =====================================================
+// STATUS DO RFID
+// FRONTEND CONSULTA
+// =====================================================
+
+$routes->get(
+    'api/rfid/status',
+    'RfidController::status'
 );

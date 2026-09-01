@@ -1,12 +1,4 @@
-// =========================
-// ACESSIBILIDADE GLOBAL
-// =========================
-
 const Acessibilidade = {
-
-    // =========================
-    // TAMANHO DA FONTE
-    // =========================
 
     tamanhoFonte: 100,
     limiteMaximo: 140,
@@ -14,90 +6,67 @@ const Acessibilidade = {
     passo: 10,
 
 
-    // =========================
-    // ALTO CONTRASTE
-    // =========================
-
-    toggleContraste() {
-
-        document.body.classList.toggle("alto-contraste");
-
-        const contrasteAtivo =
-            document.body.classList.contains("alto-contraste");
-
-        localStorage.setItem(
-            "altoContrasteNexa",
-            contrasteAtivo
-        );
-
-        atualizarLogo();
-    },
-
-
-    carregarContrasteSalvo() {
-
-        const contrasteSalvo =
-            localStorage.getItem("altoContrasteNexa");
-
-        if (contrasteSalvo === "true") {
-
-            document.body.classList.add("alto-contraste");
-
-        } else {
-
-            document.body.classList.remove("alto-contraste");
-        }
-    },
-
-
-    // =========================
+    // =========================================
     // AUMENTAR FONTE
-    // =========================
+    // =========================================
 
-    aumentarFonte() {
+    aumentarFonte: function () {
+
+        console.log("A+ CLICADO");
 
         if (this.tamanhoFonte < this.limiteMaximo) {
-
             this.tamanhoFonte += this.passo;
-
-            this.aplicarFonte();
         }
+
+        this.aplicarFonte();
     },
 
 
-    // =========================
+    // =========================================
     // DIMINUIR FONTE
-    // =========================
+    // =========================================
 
-    diminuirFonte() {
+    diminuirFonte: function () {
+
+        console.log("A- CLICADO");
 
         if (this.tamanhoFonte > this.limiteMinimo) {
-
             this.tamanhoFonte -= this.passo;
-
-            this.aplicarFonte();
         }
+
+        this.aplicarFonte();
     },
 
 
-    // =========================
-    // APLICAR TAMANHO DA FONTE
-    // =========================
+    // =========================================
+    // APLICAR FONTE
+    // =========================================
 
-    aplicarFonte() {
+    aplicarFonte: function () {
 
-        // Calcula a escala atual
         const escala = this.tamanhoFonte / 100;
 
+        console.log(
+            "Tamanho atual:",
+            this.tamanhoFonte + "%"
+        );
 
-        // Cria a variável que será usada pelo CSS
+
+        // Variável CSS
         document.documentElement.style.setProperty(
             "--escala-fonte",
             escala
         );
 
 
-        // Remove todas as classes anteriores
+        // Guarda a escala no HTML
+        document.documentElement.setAttribute(
+            "data-escala-fonte",
+            this.tamanhoFonte
+        );
+
+
+        // Remove classes anteriores
         document.body.classList.remove(
             "fonte-80",
             "fonte-90",
@@ -109,13 +78,71 @@ const Acessibilidade = {
         );
 
 
-        // Adiciona somente a classe atual
+        // Adiciona a classe atual
         document.body.classList.add(
-            `fonte-${this.tamanhoFonte}`
+            "fonte-" + this.tamanhoFonte
         );
 
 
-        // Salva a configuração
+        // =========================================
+        // FORÇA O TAMANHO DOS TEXTOS
+        // =========================================
+
+        const textos = document.querySelectorAll(
+            "body *:not(.access-btn):not(.gear-btn)"
+        );
+
+
+        textos.forEach(function (elemento) {
+
+            if (
+                elemento.tagName === "SCRIPT" ||
+                elemento.tagName === "STYLE"
+            ) {
+                return;
+            }
+
+
+            // Guarda o tamanho original apenas uma vez
+            if (
+                !elemento.hasAttribute(
+                    "data-fonte-original"
+                )
+            ) {
+
+                const tamanho =
+                    window.getComputedStyle(
+                        elemento
+                    ).fontSize;
+
+                elemento.setAttribute(
+                    "data-fonte-original",
+                    tamanho
+                );
+            }
+
+
+            const original =
+                parseFloat(
+                    elemento.getAttribute(
+                        "data-fonte-original"
+                    )
+                );
+
+
+            if (!isNaN(original)) {
+
+                elemento.style.setProperty(
+                    "font-size",
+                    (original * escala) + "px",
+                    "important"
+                );
+            }
+
+        });
+
+
+        // Salva a preferência
         localStorage.setItem(
             "tamanhoFonteNexa",
             this.tamanhoFonte
@@ -123,211 +150,255 @@ const Acessibilidade = {
     },
 
 
-    // =========================
+    // =========================================
     // CARREGAR FONTE SALVA
-    // =========================
+    // =========================================
 
-    carregarFonteSalva() {
+    carregarFonteSalva: function () {
 
-        const fonteSalva =
-            localStorage.getItem("tamanhoFonteNexa");
+        const salva =
+            localStorage.getItem(
+                "tamanhoFonteNexa"
+            );
 
 
-        if (fonteSalva) {
+        if (salva) {
 
-            this.tamanhoFonte =
-                parseInt(fonteSalva);
+            const valor =
+                parseInt(salva);
 
-        } else {
 
-            this.tamanhoFonte = 100;
+            if (
+                valor >= this.limiteMinimo &&
+                valor <= this.limiteMaximo
+            ) {
+
+                this.tamanhoFonte = valor;
+            }
         }
 
 
-        // Calcula a escala salva
-        const escala = this.tamanhoFonte / 100;
-
-
-        // Define a variável CSS
-        document.documentElement.style.setProperty(
-            "--escala-fonte",
-            escala
-        );
-
-
-        // Remove possíveis classes antigas
-        document.body.classList.remove(
-            "fonte-80",
-            "fonte-90",
-            "fonte-100",
-            "fonte-110",
-            "fonte-120",
-            "fonte-130",
-            "fonte-140"
-        );
-
-
-        // Aplica a classe da fonte salva
-        document.body.classList.add(
-            `fonte-${this.tamanhoFonte}`
-        );
+        if (document.body) {
+            this.aplicarFonte();
+        }
     },
 
 
-    // =========================
-    // LEITOR DE TELA
-    // =========================
+    // =========================================
+    // ALTO CONTRASTE
+    // =========================================
 
-    lerPagina() {
+    toggleContraste: function () {
+
+        document.body.classList.toggle(
+            "alto-contraste"
+        );
+
+
+        const ativo =
+            document.body.classList.contains(
+                "alto-contraste"
+            );
+
+
+        localStorage.setItem(
+            "altoContrasteNexa",
+            ativo
+        );
+
+
+        atualizarLogo();
+    },
+
+
+    // =========================================
+    // CARREGAR CONTRASTE
+    // =========================================
+
+    carregarContrasteSalvo: function () {
+
+        const salvo =
+            localStorage.getItem(
+                "altoContrasteNexa"
+            );
+
+
+        if (salvo === "true") {
+
+            document.body.classList.add(
+                "alto-contraste"
+            );
+        }
+    },
+
+
+    // =========================================
+    // LEITOR DE TELA
+    // =========================================
+
+    lerPagina: function () {
 
         window.speechSynthesis.cancel();
 
-        const texto = document.body.innerText;
 
-        const speech =
-            new SpeechSynthesisUtterance(texto);
+        const texto =
+            document.body.innerText;
 
-        speech.lang = "pt-BR";
 
-        speech.rate = 1.1;
+        const fala =
+            new SpeechSynthesisUtterance(
+                texto
+            );
 
-        window.speechSynthesis.speak(speech);
+
+        fala.lang = "pt-BR";
+        fala.rate = 1.1;
+
+
+        window.speechSynthesis.speak(
+            fala
+        );
     }
+
 };
 
 
-
-// =========================
+// =========================================
 // DARK MODE
-// =========================
+// =========================================
 
 function toggleDark() {
 
-    document.body.classList.toggle("dark-mode");
+    document.body.classList.toggle(
+        "dark-mode"
+    );
 
-    const darkAtivo =
-        document.body.classList.contains("dark-mode");
 
     localStorage.setItem(
         "darkModeNexa",
-        darkAtivo
+        document.body.classList.contains(
+            "dark-mode"
+        )
     );
+
 
     atualizarLogo();
 }
 
 
-
-// =========================
-// CARREGAR DARK MODE SALVO
-// =========================
+// =========================================
+// CARREGAR DARK MODE
+// =========================================
 
 function carregarDarkModeSalvo() {
 
-    const darkSalvo =
-        localStorage.getItem("darkModeNexa");
+    const salvo =
+        localStorage.getItem(
+            "darkModeNexa"
+        );
 
-    if (darkSalvo === "true") {
 
-        document.body.classList.add("dark-mode");
+    if (salvo === "true") {
 
-    } else {
-
-        document.body.classList.remove("dark-mode");
+        document.body.classList.add(
+            "dark-mode"
+        );
     }
 }
 
 
-
-// =========================
+// =========================================
 // MENU DE ACESSIBILIDADE
-// =========================
+// =========================================
 
 function toggleAccessMenu() {
-    const options = document.getElementById('accessOptions');
-    if (!options) return;
-    
-    // Alterna a classe 'active' para abrir/fechar
-    options.classList.toggle('active');
+
+    const menu =
+        document.getElementById(
+            "accessOptions"
+        );
+
+
+    if (menu) {
+
+        menu.classList.toggle(
+            "active"
+        );
+    }
 }
 
 
-
-// =========================
+// =========================================
 // ATUALIZAR LOGO
-// =========================
+// =========================================
 
 function atualizarLogo() {
 
     const logoLight =
-        document.querySelector(".logo-light");
+        document.querySelector(
+            ".logo-light"
+        );
+
 
     const logoDark =
-        document.querySelector(".logo-dark");
+        document.querySelector(
+            ".logo-dark"
+        );
 
-
-    // Se a página não tiver as logos,
-    // não faz nada.
 
     if (!logoLight || !logoDark) {
-
         return;
     }
 
 
-    const darkAtivo =
-        document.body.classList.contains("dark-mode");
+    const dark =
+        document.body.classList.contains(
+            "dark-mode"
+        );
 
-    const contrasteAtivo =
-        document.body.classList.contains("alto-contraste");
+
+    const contraste =
+        document.body.classList.contains(
+            "alto-contraste"
+        );
 
 
-    // =========================
-    // MODO ESCURO / CONTRASTE
-    // =========================
-
-    if (darkAtivo || contrasteAtivo) {
+    if (dark || contraste) {
 
         logoLight.style.display = "none";
-
         logoDark.style.display = "block";
 
-    }
-
-
-    // =========================
-    // MODO CLARO
-    // =========================
-
-    else {
+    } else {
 
         logoLight.style.display = "block";
-
         logoDark.style.display = "none";
     }
 }
 
 
-
-// =========================
+// =========================================
 // INICIALIZAÇÃO
-// =========================
+// =========================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    // 1. Carrega tamanho da fonte
-    Acessibilidade.carregarFonteSalva();
-
-
-    // 2. Carrega modo escuro
-    carregarDarkModeSalvo();
-
-
-    // 3. Carrega alto contraste
-    Acessibilidade.carregarContrasteSalvo();
+        console.log(
+            "ACESSIBILIDADE NEXA ATIVADA"
+        );
 
 
-    // 4. Atualiza a logo
-    atualizarLogo();
+        Acessibilidade.carregarFonteSalva();
 
-});
+
+        carregarDarkModeSalvo();
+
+
+        Acessibilidade.carregarContrasteSalvo();
+
+
+        atualizarLogo();
+
+    }
+);

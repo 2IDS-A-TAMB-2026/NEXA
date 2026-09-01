@@ -9,2554 +9,1094 @@
     font-family:'Inter',Arial,sans-serif;
 }
 
-
 html,
 body{
-
     width:100%;
-
     min-height:100%;
-
 }
 
-
-
 body{
-
     background:linear-gradient(
         180deg,
         #ffffff 0%,
         #f8fafc 100%
     );
-
     color:#334155;
-
     overflow-x:hidden;
-
 }
-
-
 
 /* ==========================================================
    ÁREA PRINCIPAL
 ========================================================== */
 
-
 .overlay{
-
-
     margin-left:260px;
-
-
     width:calc(100% - 260px);
-
-
     min-height:100vh;
-
-
     padding:110px 35px 35px;
-
-
-
 }
-
-
 
 .main-content{
-
-
     width:100%;
-
-
 }
-
-
-
-
-
-
 
 /* ==========================================================
    HEADER
 ========================================================== */
 
-
 .dashboard-header{
-
-
     position:fixed;
-
-
     top:0;
-
-
     left:270px;
-
-
     right:0;
-
-
     height:75px;
-
-
     background:#fff;
-
-
     display:flex;
-
-
     justify-content:space-between;
-
-
     align-items:center;
-
-
     padding:0 32px;
-
-
     border-bottom:1px solid #edf2f7;
-
-
-    box-shadow:
-    0 4px 20px rgba(0,0,0,.05);
-
-
+    box-shadow:0 4px 20px rgba(0,0,0,.05);
     z-index:100;
-
-
-
 }
-
-
-
-
 
 .header-left{
-
-
     display:flex;
-
-
     align-items:center;
-
-
 }
-
-
 
 .header-title{
-
-
     display:flex;
-
-
     flex-direction:column;
-
-
 }
-
-
-
 
 .header-title h1{
-
-
     color:#17325c;
-
-
     font-size:21px;
-
-
     font-weight:700;
-
-
     line-height:1.1;
-
-
 }
-
-
 
 .header-title p{
-
-
     margin-top:6px;
-
-
     color:#667085;
-
-
     font-size:15px;
-
-
 }
-
-
-
-
 
 /* ==========================================================
    HEADER DIREITA
 ========================================================== */
 
-
 .header-right{
-
-
     display:flex;
-
-
     align-items:center;
-
-
     gap:24px;
-
-
 }
-
-
-
 
 .profile{
-
-
     display:flex;
-
-
     align-items:center;
-
-
     gap:14px;
-
-
     text-decoration:none;
-
-
     color:inherit;
-
-
 }
-
-
-
-
 
 .profile-avatar{
-
-
     width:42px;
-
-
     height:42px;
-
-
     border-radius:50%;
-
-
     background:#0A66C2;
-
-
     color:#fff;
-
-
     display:flex;
-
-
     justify-content:center;
-
-
     align-items:center;
-
-
     font-size:16px;
-
-
     font-weight:bold;
-
-
 }
-
-
-
-
 
 .profile-info{
-
-
     display:flex;
-
-
     flex-direction:column;
-
-
 }
-
-
 
 .profile-info strong{
-
-
     color:#17325c;
-
-
     font-size:15px;
-
-
 }
-
-
 
 .profile-info span{
-
-
     color:#94a3b8;
-
-
     font-size:13px;
-
-
 }
-
-
-
-
 
 /* ==========================================================
    CARDS
 ========================================================== */
 
-
 .cadastro-box,
 .listagem-box{
-
-
     width:100%;
-
-
     background:#fff;
-
-
     border-radius:22px;
-
-
     padding:28px;
-
-
     border:1px solid #edf2f7;
-
-
-    box-shadow:
-    0 8px 25px rgba(15,42,68,.06);
-
-
+    box-shadow:0 8px 25px rgba(15,42,68,.06);
     margin-bottom:35px;
-
-
 }
-
-
-
-
 
 /* ==========================================================
    CABEÇALHO CADASTRO
 ========================================================== */
 
-
 .cadastro-topo{
-
-
     display:flex;
-
-
     justify-content:space-between;
-
-
     align-items:center;
-
-
     margin:-10px 0 20px;
-
-
     padding-bottom:15px;
-
-
     border-bottom:1px solid #edf2f7;
-
-
 }
-
-
-
 
 .cadastro-info{
-
-
     display:flex;
-
-
     align-items:center;
-
-
     gap:18px;
-
-
 }
-
-
 
 .cadastro-info h2{
-
-
     color:#17325c;
-
-
     font-size:24px;
-
-
     font-weight:700;
-
-
     margin-bottom:8px;
-
-
 }
-
-
-
 
 .cadastro-info p{
-
-
     color:#64748b;
-
-
     font-size:15px;
-
-
 }
-
-
-
-
 
 /* ==========================================================
    ÍCONE
 ========================================================== */
 
-
 .camera-icon-bg{
-
-
     width:70px;
-
-
     height:70px;
-
-
     border-radius:18px;
-
-
-    background:
-    linear-gradient(
-    135deg,
-    #0A66C2,
-    #4D8DFF
-    );
-
-
+    background:linear-gradient(135deg, #0A66C2, #4D8DFF);
     display:flex;
-
-
     justify-content:center;
-
-
     align-items:center;
-
-
-    box-shadow:
-    0 15px 30px rgba(10,102,194,.25);
-
-
+    box-shadow:0 15px 30px rgba(10,102,194,.25);
 }
-
-
 
 .camera-icon-bg i{
-
-
     color:#fff;
-
-
     font-size:30px;
-
-
 }
-
-
-
-
-
-
 
 /* ==========================================================
    ILUSTRAÇÃO AO LADO DOS CAMPOS
 ========================================================== */
 
-
 .camera-ilustracao{
-
     width:40%;
-
     display:flex;
-
     justify-content:flex-end;
-
     align-items:center;
-
     padding-right:20px;
-
 }
 
-
-
 .camera-ilustracao img{
-
     width:430px;
-
     max-width:100%;
-    margin-left: 200px;
-
+    margin-left: auto; /* Corrigido de 200px para auto para não quebrar o layout */
 }
 
 /* ==========================================================
    SUBTÍTULO
 ========================================================== */
 
-
 .subtitle{
-
-
     color:#0A66C2;
-
-
     font-size:15px;
-
-
     font-weight:700;
-
-
     margin-bottom:20px;
-
-
 }
-
-
-
-
-
 
 /* ==========================================================
    FORMULÁRIO + IMAGEM
 ========================================================== */
 
 .form-grid{
-
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
     gap:50px;
-
     margin-bottom:20px;
-
 }
-
-
 
 .form-grid > .form-group{
-
     width:60%;
-
 }
-
-
 
 .p-card{
-
-
     margin-bottom:8px;
-
-
     font-size:14px;
-
-
     font-weight:600;
-
-
     color:#334155;
-
-
 }
-
-
-
-
 
 /* ==========================================================
    INPUTS
 ========================================================== */
 
-
 .input-box{
-
-
     width:100%;
-
-
     height:56px;
-
-
     background:#f1f5f9;
-
-
     border:1px solid transparent;
-
-
     border-radius:14px;
-
-
     display:flex;
-
-
     align-items:center;
-
-
     padding:0 18px;
-
-
     transition:.25s;
-
-
 }
-
-
-
-
 
 .input-box:hover{
-
-
     background:#edf2f7;
-
-
 }
-
-
-
-
 
 .input-box:focus-within{
-
-
     background:#fff;
-
-
     border-color:#0A66C2;
-
-
-    box-shadow:
-    0 0 0 4px rgba(10,102,194,.08);
-
-
+    box-shadow:0 0 0 4px rgba(10,102,194,.08);
 }
-
-
-
 
 .input-box i{
-
-
     color:#0A66C2;
-
-
     width:22px;
-
-
     margin-right:12px;
-
-
     font-size:17px;
-
-
 }
 
-
-
 .input-box input{
-
-
     width:100%;
-
-
     height:100%;
-
-
     border:none;
-
-
     outline:none;
-
-
     background:transparent;
-
-
     font-size:15px;
-
-
     color:#334155;
-
-
 }
 
 /* ==========================================================
    BOTÃO CADASTRAR
 ========================================================== */
 
-
 .btn-area{
-
     width:60%;
-
     display:flex;
-
     justify-content:center;
-
     margin-top:12px;
-
 }
-
-
 
 .btn-area button{
-
-
     width:220px;
-
-
     height:52px;
-
-
     border:none;
-
-
     border-radius:14px;
-
-
-    background:
-    linear-gradient(
-        135deg,
-        #0A66C2,
-        #1E88E5
-    );
-
-
+    background:linear-gradient(135deg, #0A66C2, #1E88E5);
     color:white;
-
-
     font-size:16px;
-
-
     font-weight:600;
-
-
     cursor:pointer;
-
-
     transition:.25s;
-
-
-    box-shadow:
-    0 10px 22px rgba(10,102,194,.22);
-
-
+    box-shadow:0 10px 22px rgba(10,102,194,.22);
 }
-
-
-
-
 
 .btn-area button:hover{
-
-
     transform:translateY(-2px);
-
-
-    box-shadow:
-    0 16px 30px rgba(10,102,194,.28);
-
-
+    box-shadow:0 16px 30px rgba(10,102,194,.28);
 }
-
-
-
-
 
 .btn-area button:active{
-
-
     transform:scale(.98);
-
-
 }
-
-
-
-
-
 
 /* ==========================================================
    CABEÇALHO LISTAGEM
 ========================================================== */
 
-
 .listagem-header{
-
-
     display:flex;
-
-
     justify-content:space-between;
-
-
     align-items:center;
-
-
     gap:20px;
-
-
     margin-bottom:25px;
-
-
 }
-
-
-
 
 .listagem-header h2{
-
-
     color:#17325c;
-
-
     font-size:24px;
-
-
     font-weight:700;
-
-
 }
-
-
-
 
 .listagem-header p{
-
-
     margin-top:6px;
-
-
     color:#64748b;
-
-
     font-size:14px;
-
-
 }
-
-
-
-
-
 
 /* ==========================================================
    FERRAMENTAS TABELA
 ========================================================== */
 
-
 .table-tools{
-
-
     display:flex;
-
-
     align-items:center;
-
-
     gap:12px;
-
-
 }
-
-
-
-
-
 
 /* ==========================================================
    PESQUISA
 ========================================================== */
 
-
 .search-box{
-
-
     width:300px;
-
-
     height:46px;
-
-
     display:flex;
-
-
     align-items:center;
-
-
     padding:0 16px;
-
-
     background:#f8fafc;
-
-
     border:1px solid #e2e8f0;
-
-
     border-radius:12px;
-
-
     transition:.25s;
-
-
 }
-
-
-
 
 .search-box:hover{
-
-
     border-color:#0A66C2;
-
-
 }
-
-
-
 
 .search-box:focus-within{
-
-
     background:#fff;
-
-
     border-color:#0A66C2;
-
-
-    box-shadow:
-    0 0 0 4px rgba(10,102,194,.08);
-
-
+    box-shadow:0 0 0 4px rgba(10,102,194,.08);
 }
-
-
-
-
 
 .search-box i{
-
-
     color:#94a3b8;
-
-
     margin-right:10px;
-
-
 }
-
-
-
-
 
 .search-box input{
-
-
     flex:1;
-
-
     border:none;
-
-
     outline:none;
-
-
     background:none;
-
-
     font-size:14px;
-
-
     color:#334155;
-
-
 }
-
-
-
 
 .search-box input::placeholder{
-
-
     color:#94a3b8;
-
-
 }
-
-
-
-
-
 
 /* ==========================================================
    BOTÃO FILTRO
 ========================================================== */
 
-
 .filter-btn{
-
-
     width:46px;
-
-
     height:46px;
-
-
     border:none;
-
-
     border-radius:12px;
-
-
     background:#0A66C2;
-
-
     color:#fff;
-
-
     cursor:pointer;
-
-
     transition:.25s;
-
-
 }
-
-
-
 
 .filter-btn:hover{
-
-
     background:#0854a0;
-
-
     transform:translateY(-2px);
-
-
-}
-
-
-
-
-
-
-
-/* ==========================================================
-   TABELA
-========================================================== */
-
-
-.table-wrapper{
-
-
-    width:100%;
-
-
-    overflow-x:auto;
-
-
-}
-
-
-
-
-
-.table-cameras{
-
-
-    width:100%;
-
-
-    border-collapse:collapse;
-
-
-    table-layout:fixed;
-
-
-}
-
-
-
-
-
-.table-cameras thead{
-
-
-    background:#f8fafc;
-
-
-}
-
-
-
-
-
-
-.table-cameras th{
-
-
-    padding:16px 18px;
-
-
-    text-align:left;
-
-
-    color:#64748b;
-
-
-    font-size:13px;
-
-
-    font-weight:700;
-
-
-    text-transform:uppercase;
-
-
-    border-bottom:1px solid #e5e7eb;
-
-
-}
-
-
-
-
-
-
-.table-cameras td{
-
-
-    padding:18px;
-
-
-    color:#334155;
-
-
-    font-size:14px;
-
-
-    border-bottom:1px solid #edf2f7;
-
-
-    vertical-align:middle;
-
-
-}
-
-
-
-
-
-
-
-.table-cameras tbody tr{
-
-
-    transition:.2s;
-
-
-}
-
-
-
-
-
-.table-cameras tbody tr:hover{
-
-
-    background:#f8fbff;
-
-
-}
-
-
-
-
-
-
-.table-cameras th:last-child,
-.table-cameras td:last-child{
-
-
-    text-align:center;
-
-
-}
-
-
-
-
-
-
-
-/* ==========================================================
-   INFORMAÇÃO DO SETOR
-========================================================== */
-
-
-.table-info{
-
-
-    display:flex;
-
-
-    align-items:center;
-
-
-    gap:15px;
-
-
-}
-
-
-
-
-
-.table-icon{
-
-
-    width:48px;
-
-
-    height:48px;
-
-
-    border-radius:14px;
-
-
-    background:#edf4ff;
-
-
-    display:flex;
-
-
-    justify-content:center;
-
-
-    align-items:center;
-
-
-    color:#0A66C2;
-
-
-    font-size:20px;
-
-
-    flex-shrink:0;
-
-
-}
-
-
-
-
-.table-info strong{
-
-
-    color:#17325c;
-
-
-    font-size:15px;
-
-
-    font-weight:600;
-
-
-}
-
-
-
-
-
-
-
-/* ==========================================================
-   AÇÕES
-========================================================== */
-
-
-.table-actions{
-
-
-    display:flex;
-
-
-    justify-content:center;
-
-
-    gap:10px;
-
-
-}
-
-
-
-
-
-.table-action{
-
-
-    width:36px;
-
-
-    height:36px;
-
-
-    border:none;
-
-
-    border-radius:10px;
-
-
-    display:flex;
-
-
-    justify-content:center;
-
-
-    align-items:center;
-
-
-    cursor:pointer;
-
-
-    transition:.25s;
-
-
-    text-decoration:none;
-
-
-}
-
-
-
-
-
-
-.table-action.edit{
-
-
-    background:#eaf3ff;
-
-
-    color:#0A66C2;
-
-
-}
-
-
-
-
-
-.table-action.delete{
-
-
-    background:#fff0f0;
-
-
-    color:#dc2626;
-
-
-}
-
-
-
-
-
-
-.table-action:hover{
-
-
-    transform:translateY(-2px);
-
-
-}
-
-
-
-
-
-
-
-/* ==========================================================
-   MENSAGEM VAZIA
-========================================================== */
-
-
-.mensagem-vazia{
-
-
-    text-align:center;
-
-
-    padding:45px;
-
-
-    color:#94a3b8;
-
-
-    font-size:15px;
-
-
-}
-
-
-
-
-
-.mensagem-vazia i{
-
-
-    font-size:40px;
-
-
-    margin-bottom:10px;
-
-
 }
 
 /* ==========================================================
    TABELA - PADRÃO CÂMERAS
 ========================================================== */
 
-
 .table-wrapper{
-
     width:100%;
-
     overflow-x:auto;
-
 }
-
 
 .table-cameras{
-
     width:100%;
-
     border-collapse:collapse;
-
     table-layout:fixed;
-
 }
-
-
-/* CABEÇALHO */
 
 .table-cameras thead{
-
     background:#f8fafc;
-
 }
-
 
 .table-cameras th{
-
     padding:16px 18px;
-
     text-align:left;
-
     color:#64748b;
-
     font-size:13px;
-
     font-weight:700;
-
     text-transform:uppercase;
-
     border-bottom:1px solid #e5e7eb;
-
 }
-
-
-/* CORPO */
 
 .table-cameras td{
-
     padding:18px;
-
     color:#334155;
-
     font-size:14px;
-
     border-bottom:1px solid #edf2f7;
-
     vertical-align:middle;
-
 }
-
 
 .table-cameras tbody tr{
-
     transition:.2s;
-
 }
-
 
 .table-cameras tbody tr:hover{
-
     background:#f8fbff;
-
 }
 
-
-
-/* ==========================================================
-   PRIMEIRA COLUNA - SETOR
-========================================================== */
-
-
-.table-info{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-}
-
-
-
-.table-icon{
-
-    width:48px;
-
-    height:48px;
-
-    border-radius:14px;
-
-    background:#eaf3ff;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    color:#0A66C2;
-
-    font-size:20px;
-
-    flex-shrink:0;
-
-}
-
-
-
-.table-info strong{
-
-    color:#17325c;
-
-    font-size:15px;
-
-    font-weight:700;
-
-}
-
-
-
-/* ==========================================================
-   LARGURA DAS COLUNAS
-========================================================== */
-
+/* LARGURA DAS COLUNAS */
 
 .table-cameras th:nth-child(1),
 .table-cameras td:nth-child(1){
-
     width:35%;
-
 }
-
-
 
 .table-cameras th:nth-child(2),
 .table-cameras td:nth-child(2){
-
     width:25%;
-
 }
-
-
 
 .table-cameras th:nth-child(3),
 .table-cameras td:nth-child(3){
-
     width:25%;
-
 }
-
-
 
 .table-cameras th:nth-child(4),
 .table-cameras td:nth-child(4){
-
     width:15%;
-
     text-align:center;
-
 }
 
+/* INFORMAÇÃO DO SETOR */
 
+.table-info{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
 
-/* ==========================================================
-   AÇÕES DA TABELA
-========================================================== */
+.table-icon{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    background:#eaf3ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#0A66C2;
+    font-size:20px;
+    flex-shrink:0;
+}
 
+.table-info strong{
+    color:#17325c;
+    font-size:15px;
+    font-weight:700;
+}
+
+/* AÇÕES DA TABELA */
 
 .table-actions{
-
     display:flex;
-
     justify-content:center;
-
     gap:10px;
-
 }
-
-
 
 .table-action{
-
     width:36px;
-
     height:36px;
-
     border:none;
-
     border-radius:10px;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     cursor:pointer;
-
     transition:.25s;
-
     text-decoration:none;
-
 }
-
-
 
 .table-action.edit{
-
     background:#eaf3ff;
-
     color:#0A66C2;
-
 }
-
-
 
 .table-action.delete{
-
     background:#fff0f0;
-
     color:#dc2626;
-
 }
-
-
 
 .table-action:hover{
-
     transform:translateY(-2px);
-
 }
-
-
 
 /* ==========================================================
    PAGINAÇÃO
 ========================================================== */
 
-
 .table-footer{
-
     margin-top:22px;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     gap:20px;
-
     flex-wrap:wrap;
-
 }
-
-
 
 #infoTabela{
-
     color:#64748b;
-
     font-size:14px;
-
 }
-
-
-
-/* BOTÕES */
 
 .pagination{
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     gap:10px;
-
 }
-
-
 
 .pagination button{
-
     width:38px;
-
     height:38px;
-
     border:none;
-
     border-radius:10px;
-
     background:#edf2f7;
-
     color:#334155;
-
     cursor:pointer;
-
     transition:.25s;
-
 }
-
-
 
 .pagination button:hover{
-
     background:#0A66C2;
-
     color:#fff;
-
 }
-
-
 
 .pagination button.active{
-
     background:#0A66C2;
-
     color:#fff;
-
 }
-
-
 
 .pagination button:disabled{
-
     opacity:.45;
-
     cursor:not-allowed;
-
 }
-
-
 
 /* ==========================================================
    MENSAGEM VAZIA
 ========================================================== */
 
-
-#mensagem-vazia{
-
+#mensagem-vazia,
+.mensagem-vazia{
     text-align:center;
-
     padding:45px;
-
     color:#94a3b8;
-
     font-size:15px;
-
 }
 
-
-
-#mensagem-vazia i{
-
+#mensagem-vazia i,
+.mensagem-vazia i{
     font-size:40px;
-
     margin-bottom:15px;
-
 }
-
-
 
 /* ==========================================================
-   SELECT / CONTROLE DE LINHAS (5,10,20)
+   SELECT / CONTROLE DE LINHAS
 ========================================================== */
 
-
 .rows-page{
-
     display:flex;
-
     align-items:center;
-
     gap:10px;
-
     color:#475569;
-
     font-size:14px;
-
 }
-
-
 
 .rows-page select{
-
     width:70px;
-
     height:38px;
-
     border-radius:10px;
-
     border:1px solid #dbe4f0;
-
     padding:0 10px;
-
     background:#fff;
-
     outline:none;
-
 }
 
-
-
 .rows-page select:focus{
-
     border-color:#0A66C2;
-
 }
 
 /* ==========================================================
    MODAL EDIÇÃO
 ========================================================== */
 
-
 .modal-bg{
-
     position:fixed;
-
     inset:0;
-
     background:rgba(15,23,42,.45);
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     z-index:9999;
-
 }
-
-
 
 .modal{
-
     width:450px;
-
     background:#fff;
-
     border-radius:22px;
-
     padding:32px;
-
-    box-shadow:
-    0 20px 50px rgba(15,23,42,.25);
-
+    box-shadow:0 20px 50px rgba(15,23,42,.25);
 }
-
-
 
 .modal h2{
-
     color:#17325c;
-
     font-size:24px;
-
     margin-bottom:25px;
-
 }
-
-
 
 .modal .form-group{
-
     margin-bottom:18px;
-
 }
-
-
 
 .modal .input-box{
-
     width:100%;
-
     height:52px;
-
     background:#f8fafc;
-
     border:1px solid #dbe4f0;
-
     border-radius:14px;
-
     display:flex;
-
     align-items:center;
-
     padding:0 16px;
-
 }
-
-
 
 .modal .input-box i{
-
     color:#0A66C2;
-
     margin-right:12px;
-
 }
-
-
 
 .modal .input-box input{
-
     width:100%;
-
     border:none;
-
     outline:none;
-
     background:transparent;
-
     font-size:15px;
-
 }
-
-
 
 .modal-buttons{
-
     display:flex;
-
     justify-content:flex-end;
-
     gap:12px;
-
     margin-top:25px;
-
 }
-
-
 
 .modal-buttons button{
-
     height:44px;
-
     padding:0 22px;
-
     border:none;
-
     border-radius:12px;
-
     cursor:pointer;
-
     font-weight:600;
-
     transition:.25s;
-
 }
-
-
 
 .modal-buttons button:first-child{
-
     background:#edf2f7;
-
     color:#475569;
-
 }
-
-
 
 .modal-buttons .save-btn{
-
     background:#0A66C2;
-
     color:white;
-
 }
-
-
 
 .modal-buttons button:hover{
-
     transform:translateY(-2px);
-
 }
-
-
 
 /* ==========================================================
    SWEET ALERT 2 - PADRÃO NEXA
 ========================================================== */
 
-
 .swal2-popup{
-
     border-radius:22px !important;
-
     padding:30px !important;
-
 }
-
-
 
 .swal2-title{
-
     color:#17325c !important;
-
     font-size:24px !important;
-
 }
-
-
 
 .swal2-html-container{
-
     color:#64748b !important;
-
 }
-
-
 
 .swal2-input{
-
     height:52px !important;
-
     border-radius:14px !important;
-
     border:1px solid #dbe4f0 !important;
-
     background:#f8fafc !important;
-
     font-size:15px !important;
-
 }
-
-
 
 .swal2-input:focus{
-
     border-color:#0A66C2 !important;
-
-    box-shadow:
-    0 0 0 4px rgba(10,102,194,.10)!important;
-
+    box-shadow:0 0 0 4px rgba(10,102,194,.10)!important;
 }
-
-
 
 .swal2-confirm{
-
     background:#0A66C2 !important;
-
     border-radius:12px !important;
-
     padding:12px 25px !important;
-
 }
-
-
 
 .swal2-cancel{
-
     border-radius:12px !important;
-
     padding:12px 25px !important;
-
 }
-
-
-
-
 
 /* ==========================================================
    SCROLL DA TABELA
 ========================================================== */
 
-
 .table-wrapper::-webkit-scrollbar{
-
     height:8px;
-
 }
-
-
 
 .table-wrapper::-webkit-scrollbar-thumb{
-
     background:#cbd5e1;
-
     border-radius:20px;
-
 }
-
-
 
 .table-wrapper::-webkit-scrollbar-track{
-
     background:transparent;
-
 }
-
-
 
 /* ==========================================================
    ACESSIBILIDADE
 ========================================================== */
 
-
 .access-menu{
-
     position:fixed;
-
     top:110px;
-
     right:20px;
-
     display:flex;
-
     flex-direction:row-reverse;
-
     align-items:center;
-
     gap:10px;
-
     z-index:999;
-
 }
-
-
 
 .gear-btn{
-
     width:46px;
-
     height:46px;
-
     border:none;
-
     border-radius:50%;
-
     background:#0A66C2;
-
     color:white;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     cursor:pointer;
-
-    box-shadow:
-    0 6px 18px rgba(0,0,0,.15);
-
+    box-shadow:0 6px 18px rgba(0,0,0,.15);
 }
-
-
 
 .gear-btn i{
-
     transition:.3s;
-
 }
-
-
 
 .gear-btn:hover i{
-
     transform:rotate(90deg);
-
 }
-
-
 
 .access-options{
-
     display:none;
-
     gap:8px;
-
 }
 
-
+/* ADICIONADO: classe para renderizar os botões quando a engrenagem for clicada */
+.access-options.active{
+    display:flex;
+}
 
 .access-btn{
-
     width:42px;
-
     height:42px;
-
     border:none;
-
     border-radius:50%;
-
     background:white;
-
     color:#0A66C2;
-
     cursor:pointer;
-
-    box-shadow:
-    0 4px 12px rgba(0,0,0,.12);
-
-}
-
-
-.input-modern.erro{
-
-    border-color:#dc2626;
-
-    background:#fff5f5;
-
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
 }
 
 /* ==========================================================
    ERRO DE VALIDAÇÃO
 ========================================================== */
 
-
+.input-modern.erro,
 .input-box.erro{
-
     border:1px solid #dc2626;
-
     background:#fff5f5;
-
 }
-
-
-/* ==========================================================
-   ERRO DE VALIDAÇÃO
-========================================================== */
-
-
-.input-box.erro{
-
-    border:1px solid #dc2626;
-
-    background:#fff5f5;
-
-}
-
-
 
 .input-box.erro i{
-
     color:#dc2626;
-
 }
 
-
-
 .error-text{
-
     min-height:18px;
-
     margin-top:6px;
-
     margin-left:8px;
-
     color:#dc2626;
-
     font-size:12px;
-
     font-weight:600;
-
 }
 
 /* ==========================================================
    RESPONSIVIDADE
 ========================================================== */
 
-
 @media(max-width:1200px){
-
-
     .cadastro-content{
-
         gap:30px;
-
     }
-
 
     .illustration-side{
-
         width:300px;
-
     }
-
 
     .illustration-side img{
-
         max-width:260px;
-
     }
-
-
 }
-
-
-
 
 @media(max-width:1000px){
-
-
     .main-content{
-
         padding:110px 25px 40px;
-
     }
-
 
     .cadastro-content{
-
         flex-direction:column;
-
         align-items:flex-start;
-
     }
-
 
     .form-side{
-
         width:100%;
-
         max-width:none;
-
     }
-
 
     .illustration-side{
-
         width:100%;
-
         justify-content:center;
-
     }
-
 
     .list-header{
-
         flex-direction:column;
-
         align-items:flex-start;
-
     }
-
 
     .search-modern{
-
         width:100%;
-
     }
-
-
 }
-
-
-
 
 @media(max-width:800px){
-
-
     .dashboard-header{
-
         left:0;
-
         height:auto;
-
         min-height:75px;
-
         padding:15px 20px;
-
     }
-
 
     .header-title h1{
-
         font-size:18px;
-
     }
-
 
     .header-title p{
-
         display:none;
-
     }
-
 
     .overlay{
-
         margin-left:0;
-
         width:100%;
-
         padding:100px 20px 30px;
-
     }
-
 
     .content-card{
-
         padding:22px;
-
         border-radius:20px;
-
     }
-
 
     .table-wrapper{
-
         overflow-x:auto;
-
     }
-
 
     .table-cameras{
-
         min-width:750px;
-
     }
-
 
     .table-footer{
-
         flex-direction:column;
-
         align-items:flex-start;
-
     }
-
-
 }
 
-
-
-
 @media(max-width:600px){
-
-
     .card-header{
-
         flex-direction:column;
-
         align-items:flex-start;
-
     }
-
 
     .card-header h2{
-
         font-size:22px;
-
     }
-
 
     .btn-primary{
-
         width:100%;
-
     }
-
 
     .modal{
-
         width:calc(100% - 40px);
-
         padding:25px;
-
     }
-
 
     .modal-buttons{
-
         flex-direction:column;
-
     }
-
 
     .modal-buttons button{
-
         width:100%;
-
     }
+}
 
+/* ==========================================================
+   MODO ESCURO
+========================================================== */
 
+body.modo-escuro .access-options,
+body.dark-mode .access-options,
+[data-theme="dark"] .access-options {
+    background: #1c2536 !important;
+    border: 1px solid #2d3d54 !important;
+    border-radius: 50px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.modo-escuro .access-btn,
+body.dark-mode .access-btn,
+[data-theme="dark"] .access-btn {
+    color: #94a3b8 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.modo-escuro .access-btn:hover,
+body.dark-mode .access-btn:hover,
+[data-theme="dark"] .access-btn:hover {
+    color: #3b82f6 !important;
+    background: #2a374e !important;
+}
+
+body.modo-escuro .gear-btn,
+body.dark-mode .gear-btn,
+[data-theme="dark"] .gear-btn {
+    background: #0a66c2 !important;
+    color: #ffffff !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.modo-escuro .btn-limpar,
+body.dark-mode .btn-limpar {
+    background: #0a66c2 !important;
+    color: #ffffff !important;
+    border: 1px solid transparent !important;
+    border-radius: 50px !important;
+}
+
+body.modo-escuro .pagina-btn.ativa,
+body.dark-mode .pagina-btn.ativa {
+    background: #0a66c2 !important;
+    border-color: #0a66c2 !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+}
+
+/* ==========================================================
+   MODO ALTO CONTRASTE
+========================================================== */
+
+body.alto-contraste .access-options,
+body.contraste .access-options,
+[data-theme="alto-contraste"] .access-options {
+    background: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50px !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .access-btn,
+body.contraste .access-btn,
+[data-theme="alto-contraste"] .access-btn {
+    color: #ffff00 !important;
+    background: #000000 !important;
+    border: 1px solid transparent !important;
+    border-radius: 50% !important;
+}
+
+body.alto-contraste .access-btn:hover,
+body.contraste .access-btn:hover,
+[data-theme="alto-contraste"] .access-btn:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+
+body.alto-contraste .gear-btn,
+body.contraste .gear-btn,
+[data-theme="alto-contraste"] .gear-btn {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50% !important;
+}
+
+body.alto-contraste .btn-limpar,
+body.contraste .btn-limpar,
+[data-theme="alto-contraste"] .btn-limpar {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50px !important;
+}
+
+body.alto-contraste .pagina-btn.ativa,
+body.contraste .pagina-btn.ativa,
+[data-theme="alto-contraste"] .pagina-btn.ativa {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    border-radius: 50% !important;
 }

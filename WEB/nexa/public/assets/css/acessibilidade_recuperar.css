@@ -1,0 +1,630 @@
+/* =========================================================
+   NEXA - RECUPERAR SENHA
+   CSS COMPLETO DA PÁGINA
+========================================================= */
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #ffffff;
+
+    color: #123b68;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   CONTAINER PRINCIPAL
+========================================================= */
+
+.login-container {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+}
+
+
+/* =========================================================
+   LADO ESQUERDO
+========================================================= */
+
+.left-side {
+    width: 45%;
+    min-height: 100vh;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    padding: 80px 10%;
+
+    background:
+        linear-gradient(
+            rgba(0, 83, 170, 0.88),
+            rgba(0, 83, 170, 0.88)
+        ),
+        url("../img/fundo-login.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+/* =========================================================
+   CONTEÚDO DO LADO ESQUERDO
+========================================================= */
+
+.left-content {
+    color: white;
+
+    max-width: 520px;
+}
+
+
+.left-content::before {
+    content: "";
+
+    display: block;
+
+    width: 65px;
+    height: 4px;
+
+    margin-bottom: 28px;
+
+    background: white;
+
+    border-radius: 5px;
+}
+
+
+.left-content h1 {
+    font-size: 3.2rem;
+
+    line-height: 1.08;
+
+    font-weight: 400;
+
+    margin-bottom: 20px;
+}
+
+
+.left-content h1 strong {
+    font-weight: 700;
+}
+
+
+.left-content p {
+    font-size: 1.2rem;
+
+    line-height: 1.55;
+
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   LADO DIREITO
+========================================================= */
+
+.right-side {
+    width: 55%;
+    min-height: 100vh;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 50px;
+}
+
+
+/* =========================================================
+   CARD / FORMULÁRIO
+========================================================= */
+
+.form-container {
+    width: 100%;
+    max-width: 550px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+    width: 120px;
+
+    margin: 0 auto 65px;
+
+    display: block;
+}
+
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.form-container h2 {
+    color: #123b68;
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+
+.form-container .subtitle {
+    color: #666666;
+
+    font-size: 1rem;
+
+    margin-bottom: 28px;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.form-group {
+    width: 100%;
+
+    margin-bottom: 16px;
+
+    position: relative;
+}
+
+
+.form-group input {
+    width: 100%;
+
+    height: 60px;
+
+    padding: 0 20px 0 52px;
+
+    border: 2px solid #d4d9df;
+
+    border-radius: 15px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #333333;
+
+    font-size: 1rem;
+
+    transition: 0.2s;
+}
+
+
+.form-group input:focus {
+    border-color: #0868d4;
+
+    box-shadow:
+        0 0 0 3px rgba(8, 104, 212, 0.12);
+}
+
+
+.form-group input::placeholder {
+    color: #9299a3;
+}
+
+
+/* =========================================================
+   ÍCONE DO INPUT
+========================================================= */
+
+.form-group i {
+    position: absolute;
+
+    left: 18px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #9ba6b5;
+
+    font-size: 16px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   BOTÃO CONTINUAR
+========================================================= */
+
+.btn-continuar {
+    width: 100%;
+
+    height: 60px;
+
+    margin-top: 2px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: linear-gradient(
+        90deg,
+        #0875df,
+        #0648a5
+    );
+
+    color: white;
+
+    font-size: 1.1rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.btn-continuar:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 15px rgba(0, 83, 170, 0.25);
+}
+
+
+.btn-continuar:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   LINK VOLTAR
+========================================================= */
+
+.voltar-login {
+    display: inline-block;
+
+    margin-top: 25px;
+
+    color: #005dcc;
+
+    font-size: 1rem;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+
+.voltar-login:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   RODAPÉ
+========================================================= */
+
+.footer {
+    margin-top: 35px;
+
+    color: #9ba1a8;
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   MENU DE ACESSIBILIDADE
+========================================================= */
+
+.access-menu {
+    position: fixed;
+
+    top: 15px;
+    right: 15px;
+
+    z-index: 99999;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+}
+
+
+/* =========================================================
+   ENGRENAGEM
+========================================================= */
+
+.gear-btn {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #0057b8;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.18);
+
+    transition: 0.2s;
+}
+
+
+.gear-btn:hover {
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   OPÇÕES DE ACESSIBILIDADE
+========================================================= */
+
+.access-options {
+    display: none;
+
+    gap: 8px;
+
+    margin-top: 8px;
+
+    align-items: center;
+}
+
+
+.access-options.active {
+    display: flex;
+}
+
+
+/* =========================================================
+   BOTÕES DE ACESSIBILIDADE
+========================================================= */
+
+.access-btn {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #0057b8;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.18);
+
+    transition: 0.2s;
+}
+
+
+.access-btn:hover {
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark-mode {
+    background: #121212;
+
+    color: #ffffff;
+}
+
+
+body.dark-mode .right-side {
+    background: #121212;
+}
+
+
+body.dark-mode .form-container h2 {
+    color: #ffffff;
+}
+
+
+body.dark-mode .form-container .subtitle {
+    color: #dddddd;
+}
+
+
+body.dark-mode .form-group input {
+    background: #1e1e1e;
+
+    color: #ffffff;
+
+    border-color: #555555;
+}
+
+
+body.dark-mode .form-group input::placeholder {
+    color: #bbbbbb;
+}
+
+
+body.dark-mode .footer {
+    color: #bbbbbb;
+}
+
+
+/* =========================================================
+   ALTO CONTRASTE
+========================================================= */
+
+body.alto-contraste {
+    background: #000000;
+
+    color: #ffffff;
+}
+
+
+body.alto-contraste .right-side {
+    background: #000000;
+}
+
+
+body.alto-contraste .form-container h2,
+body.alto-contraste .form-container .subtitle,
+body.alto-contraste .footer {
+    color: #ffffff;
+}
+
+
+body.alto-contraste .form-group input {
+    background: #000000;
+
+    color: #ffffff;
+
+    border: 2px solid #ffff00;
+}
+
+
+body.alto-contraste .form-group input:focus {
+    border-color: #ffff00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 0, 0.25);
+}
+
+
+body.alto-contraste .form-group i {
+    color: #ffff00;
+}
+
+
+body.alto-contraste .voltar-login {
+    color: #ffff00;
+}
+
+
+body.alto-contraste .gear-btn,
+body.alto-contraste .access-btn {
+    background: #000000;
+
+    color: #ffff00;
+
+    border: 2px solid #ffff00;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .login-container {
+        flex-direction: column;
+    }
+
+    .left-side {
+        width: 100%;
+
+        min-height: 35vh;
+
+        padding: 50px;
+    }
+
+    .right-side {
+        width: 100%;
+
+        min-height: 65vh;
+
+        padding: 40px 25px;
+    }
+
+    .left-content h1 {
+        font-size: 2.4rem;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .left-side {
+        padding: 35px 25px;
+    }
+
+    .left-content h1 {
+        font-size: 2rem;
+    }
+
+    .left-content p {
+        font-size: 1rem;
+    }
+
+    .right-side {
+        padding: 30px 20px;
+    }
+
+    .logo {
+        width: 100px;
+
+        margin-bottom: 40px;
+    }
+
+    .form-container h2 {
+        font-size: 1.7rem;
+    }
+
+}

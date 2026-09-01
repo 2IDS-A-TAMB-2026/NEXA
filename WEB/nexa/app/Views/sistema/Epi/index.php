@@ -761,6 +761,7 @@
     });
 
     <?php endif; ?>
+    </script>
 
     <!-- COMPONENTE VLIBRAS -->
     <div vw class="enabled">
