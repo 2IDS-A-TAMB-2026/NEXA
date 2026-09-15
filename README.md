@@ -124,7 +124,7 @@ Registro de ocorrências
 
 Listagem de funcionários  
 
-### Sprint 3 – 0% 
+### Sprint 3 – 100% 
 
 Integração com API  
 
@@ -146,7 +146,7 @@ Consulta de ocorrências
 
 Notificações  
 
-### Sprint 3 – 0% 
+### Sprint 3 – 100% 
 
 Integração completa com sistema  
 
@@ -162,7 +162,7 @@ Detecção de pessoas
 
 Reconhecimento de EPIs  
 
-### Sprint 3 – 0% 
+### Sprint 3 – 100% 
 
 Integração com câmeras e sistema  
 
@@ -314,7 +314,7 @@ Login screen (registration and password recovery)
 
 Home screen (system overview)  
 
-### Sprint 2 – 20% 
+### Sprint 2 – 100% 
 
 Dashboard with indicators  
 
@@ -322,7 +322,7 @@ Incident logging
 
 Employee listing  
 
-### Sprint 3 – 0% 
+### Sprint 3 – 100% 
 
 API integration  
 
@@ -338,13 +338,13 @@ Login
 
 Alert visualization  
 
-### Sprint 2 – 33% 
+### Sprint 2 – 100% 
 
 Incident consultation  
 
 Notifications  
 
-### Sprint 3 – 0% 
+### Sprint 3 – 100% 
 
 Full system integration  
 
@@ -356,11 +356,11 @@ Full system integration
 
 People detection  
 
-### Sprint 2 – 33% 
+### Sprint 2 – 100% 
 
 PPE recognition  
 
-### Sprint 3 – 0% 
+### Sprint 3 – 100% 
 
 Integration with cameras and system  
 
