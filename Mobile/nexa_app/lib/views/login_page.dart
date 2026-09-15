@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nexa_app/views/dashboard_page_fun.dart';
-import 'package:nexa_app/views/institucional_page.dart';
-import 'package:nexa_app/views/recuperar_senha_page.dart';
+import 'package:nexa_app/services/api_service.dart';
+import 'package:nexa_app/models/user_model.dart';
+
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLogin;
@@ -16,28 +16,62 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final senhaController = TextEditingController();
-
+bool carregandoLogin = false;
   String? erroEmail;
   String? erroSenha;
+Future<void> validar() async {
+  setState(() {
+    erroEmail = null;
+    erroSenha = null;
+  });
 
-  void validar() {
+  if (emailController.text.trim().isEmpty ||
+      !emailController.text.contains("@")) {
     setState(() {
-      erroEmail = null;
-      erroSenha = null;
+      erroEmail = "Digite um e-mail válido";
+    });
+    return;
+  }
 
-      if (emailController.text.isEmpty || !emailController.text.contains("@")) {
-        erroEmail = "Digite um e-mail válido";
-      }
+  if (senhaController.text.isEmpty ||
+      senhaController.text.length < 6) {
+    setState(() {
+      erroSenha = "Mínimo 6 caracteres";
+    });
+    return;
+  }
 
-      if (senhaController.text.isEmpty || senhaController.text.length < 6) {
-        erroSenha = "Mínimo 6 caracteres";
-      }
+  setState(() {
+    carregandoLogin = true;
+  });
 
-      if (erroEmail == null && erroSenha == null) {
-        widget.onLogin();
-      }
+  try {
+    final UserModel usuario =
+        await ApiService.login(
+      emailController.text.trim(),
+      senhaController.text,
+    );
+
+    usuarioLogado = usuario;
+
+    if (!mounted) return;
+
+    setState(() {
+      carregandoLogin = false;
+    });
+
+    widget.onLogin();
+  } catch (e) {
+    if (!mounted) return;
+
+    setState(() {
+      carregandoLogin = false;
+      erroEmail = e
+          .toString()
+          .replaceFirst('Exception: ', '');
     });
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -145,38 +179,48 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 20),
 
-                  ElevatedButton.icon(
-                    onPressed: validar,
-                    icon: const Icon(Icons.login, color: Colors.white),
-                    label: const Text(
-                      "Entrar",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      backgroundColor: const Color(0xFF0A66C2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                  ),
+                 ElevatedButton.icon(
+  onPressed: carregandoLogin ? null : validar,
+
+  icon: carregandoLogin
+      ? const SizedBox(
+          width: 22,
+          height: 22,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: Colors.white,
+          ),
+        )
+      : const Icon(
+          Icons.login,
+          color: Colors.white,
+        ),
+
+  label: Text(
+    carregandoLogin ? "Entrando..." : "Entrar",
+    style: const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+  ),
+
+  style: ElevatedButton.styleFrom(
+    minimumSize: const Size(
+      double.infinity,
+      50,
+    ),
+    backgroundColor: const Color(0xFF0A66C2),
+    disabledBackgroundColor: const Color(0xFF7AAEDC),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30),
+    ),
+  ),
+),
 
                   const SizedBox(height: 10),
 
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RecuperarSenhaPage(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Esqueci a senha",
-                      style: TextStyle(color: Color(0xFF0A66C2)),
-                    ),
-                  ),
+          
                 ],
               ),
             ),
@@ -291,20 +335,6 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 10),
 
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const RecuperarSenhaPage(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "Esqueci a senha",
-                          style: TextStyle(color: Color(0xFF0A66C2)),
-                        ),
-                      ),
                     ],
                   ),
                 ),

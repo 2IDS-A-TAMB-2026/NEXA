@@ -30,4 +30,12 @@ class AccessibilityController extends ChangeNotifier {
   void lerTexto(String texto) {
     // Sua lógica de áudio aqui
   }
+
+
+  bool altoContraste = false;
+
+void toggleHighContrast() {
+  altoContraste = !altoContraste;
+  notifyListeners();
+}
 }

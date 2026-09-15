@@ -30,10 +30,12 @@ environment:
 dependencies:
   mask_text_input_formatter: ^2.9.0
   flutter_tts: ^3.8.5
+  http: ^1.2.2
   flutter:
     sdk: flutter
   provider: ^6.0.5
   url_launcher: ^6.2.5  
+  video_player: ^2.9.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -78,6 +80,11 @@ flutter:
     - assets/model.tflite
     - assets/labels.txt
     - assets/escuro.png
+    - assets/epi_construcao_1.mp4
+    - assets/epi_construcao_2.mp4
+    - assets/epi_construcao_3.mp4
+    - assets/epi_construcao_4.mp4
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

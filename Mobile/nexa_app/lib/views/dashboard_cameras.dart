@@ -3,8 +3,8 @@ import 'package:nexa_app/views/institucional_page.dart';
 import 'package:nexa_app/views/profile_page.dart';
 import 'package:nexa_app/views/dashboard_page_fun.dart';
 
-class DashboardCamera extends StatelessWidget {
-  const DashboardCamera({super.key});
+class DashboardCameraPage extends StatelessWidget {
+  const DashboardCameraPage ({super.key});
 
   @override
   Widget build(BuildContext context) {
