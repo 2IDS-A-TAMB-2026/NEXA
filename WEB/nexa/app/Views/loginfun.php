@@ -344,14 +344,7 @@
 
                     <!-- RECUPERAÇÃO -->
 
-                    <a href="<?= base_url('recuperar') ?>">
-
-                        Esqueci minha senha
-
-                    </a>
-
-
-                    <!-- VOLTAR -->
+                   
 
                     <a href="<?= base_url('/') ?>">
 
@@ -388,7 +381,7 @@
     ====================================================== -->
 
     <script>
-    alert("O HTML ESTÁ FUNCIONANDO!");
+  
     src="<?= base_url('assets/js/acessibilidade.js') ?>"
     </script>
 

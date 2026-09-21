@@ -213,12 +213,53 @@
                         </div>
                     </div>
 
-                    <div class="card">
-                        <h3>EPIs mais ausentes</h3>
-                        <div class="chart-container">
-                            <canvas id="graficoPizza"></canvas>
-                        </div>
+                    <div class="card card-epis">
+    <h3>
+        <i class="fas fa-triangle-exclamation"></i>
+        EPIs mais ausentes no dia
+    </h3>
+
+    <div class="epis-lista">
+
+        <?php if (!empty($nomesEpi)): ?>
+
+            <?php foreach ($nomesEpi as $index => $epi): ?>
+
+                <div class="epi-item">
+
+                    <div class="epi-info">
+
+                        <div class="epi-icone">
+<i class="fas <?= esc($iconesEpi[$index]) ?>"></i>                        </div>
+
+                        <span>
+                            <?= esc($epi) ?>
+                        </span>
+
                     </div>
+
+                    <strong>
+                        <?= $totaisEpi[$index] ?>
+                    </strong>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        <?php else: ?>
+
+            <div class="epi-vazio">
+                <i class="fas fa-circle-check"></i>
+
+                <span>
+                    Nenhum EPI ausente hoje
+                </span>
+            </div>
+
+        <?php endif; ?>
+
+    </div>
+</div>
 
                     <div class="card">
                         <h3>Ocorrências por câmera</h3>
@@ -280,26 +321,7 @@
             }
         });
 
-        new Chart(document.getElementById('graficoPizza'), {
-            type: "doughnut",
-            data: {
-                labels: <?= $nomesEpi ?>,
-                datasets: [{
-                    data: <?= $totaisEpi ?>,
-                    backgroundColor: [
-                        '#0A66c2',
-                        '#04b507',
-                        '#f59e0b',
-                        '#c7040e',
-                        '#8b5cf6'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+      
 
         new Chart(document.getElementById('linhaChart'), {
             type: 'bar',

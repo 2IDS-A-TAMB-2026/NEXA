@@ -15,49 +15,103 @@ class AnaliseEpiController extends BaseController
      * TELA DE ANÁLISE
      * =========================================================
      */
-    public function index()
-    {
-        if (!session()->get('logado_fun')) {
-            return redirect()->to('/loginfun');
-        }
+  public function index()
+{
+    if (!session()->get('logado_fun')) {
+        return redirect()->to('/loginfun');
+    }
 
-        $cpf = session()->get('cpf_fun');
+    $cpf = session()->get('cpf_fun');
 
-        if (!$cpf) {
-            return redirect()->to('/loginfun');
-        }
+    if (!$cpf) {
+        return redirect()->to('/loginfun');
+    }
 
-        $funcionarioModel = new FuncionarioModel();
-        $cameraModel = new CameraModel();
+    $funcionarioModel = new FuncionarioModel();
+    $cameraModel = new CameraModel();
+    $funEpiModel = new FunEpi();
+    $epiModel = new EpiModel();
 
-        /*
-         * Busca o funcionário logado.
-         */
-        $funcionario = $funcionarioModel->find($cpf);
+    /*
+     * =========================================================
+     * BUSCAR FUNCIONÁRIO
+     * =========================================================
+     */
 
-        if (!$funcionario) {
-            session()->destroy();
+    $funcionario = $funcionarioModel->find($cpf);
 
-            return redirect()
-                ->to('/loginfun')
-                ->with('erro', 'Funcionário não encontrado.');
-        }
+    if (!$funcionario) {
 
-        /*
-         * Busca as câmeras do setor do funcionário.
-         */
-        $cameras = $cameraModel
-            ->where('FK_ID_SETOR', $funcionario['FK_ID_SETOR'])
-            ->where('FK_CNPJ_EMPRESA', $funcionario['FK_CNPJ_EMPRESA'])
-            ->findAll();
+        session()->destroy();
 
-        return view('sistema/analise_epi/index', [
-            'funcionario' => $funcionario,
-            'cameras' => $cameras
-        ]);
+        return redirect()
+            ->to('/loginfun')
+            ->with('erro', 'Funcionário não encontrado.');
     }
 
 
+    /*
+     * =========================================================
+     * BUSCAR CÂMERAS DO SETOR
+     * =========================================================
+     */
+
+    $cameras = $cameraModel
+        ->where('FK_ID_SETOR', $funcionario['FK_ID_SETOR'])
+        ->where('FK_CNPJ_EMPRESA', $funcionario['FK_CNPJ_EMPRESA'])
+        ->findAll();
+
+
+    /*
+     * =========================================================
+     * BUSCAR EPIs OBRIGATÓRIOS DO FUNCIONÁRIO
+     * =========================================================
+     */
+
+    $relacoesEpi = $funEpiModel
+        ->where('FK_FUNCIONARIO_CPF', $cpf)
+        ->findAll();
+
+
+    $idsEpi = [];
+
+    foreach ($relacoesEpi as $relacao) {
+
+        if (!empty($relacao['FK_EPI_ID'])) {
+
+            $idsEpi[] = $relacao['FK_EPI_ID'];
+
+        }
+    }
+
+
+    $episObrigatorios = [];
+
+    if (!empty($idsEpi)) {
+
+        $episObrigatorios = $epiModel
+            ->whereIn('ID', $idsEpi)
+            ->findAll();
+
+    }
+
+
+    /*
+     * =========================================================
+     * ENVIAR PARA A VIEW
+     * =========================================================
+     */
+
+    return view('sistema/analise_epi/index', [
+
+        'funcionario' => $funcionario,
+
+        'cameras' => $cameras,
+
+        'episObrigatorios' => $episObrigatorios
+
+    ]);
+}
     /**
      * =========================================================
      * ANALISAR IMAGEM
@@ -303,13 +357,32 @@ class AnaliseEpiController extends BaseController
             $resultadoIA['predictions']
             ?? [];
 
+
             /*
  * =====================================================
- * SEPARAR PESSOAS DOS EPIs
+ * PEGAR TODOS OS EPIs DETECTADOS
  * =====================================================
  */
 
-$pessoas = [];
+$classesDetectadas = [];
+
+
+/*
+ * Classes que NÃO são EPIs.
+ */
+
+$classesIgnoradas = [
+
+    'person',
+    'face',
+    'head',
+    'hands',
+    'hand',
+    'ear',
+    'tool'
+
+];
+
 
 foreach ($predictions as $prediction) {
 
@@ -321,121 +394,48 @@ foreach ($predictions as $prediction) {
         )
     );
 
-    if ($classe === 'person') {
 
-        $pessoas[] = $prediction;
-
-    }
-}
-
-
-
-/*
- * =====================================================
- * EPIs ENCONTRADOS POR PESSOA
- * =====================================================
- */
-
-$episPorPessoa = [];
-
-
-foreach ($pessoas as $indicePessoa => $pessoa) {
-
-    $episPorPessoa[$indicePessoa] = [];
-
-    foreach ($predictions as $prediction) {
-
-        $classe = strtolower(
-            trim(
-                $prediction['class']
-                ?? $prediction['class_name']
-                ?? ''
-            )
-        );
-
-
-        /*
-         * Ignora a própria pessoa.
-         */
-
-        if ($classe === 'person') {
-            continue;
-        }
-
-
-        /*
-         * Converte o nome da classe
-         * para o padrão NEXA.
-         */
-
-        $epiNormalizado =
-            $this->normalizarEpi($classe);
-
-
-        /*
-         * Verifica se esse objeto
-         * pertence à pessoa.
-         */
-
-        if (
-            $this->objetoPertenceAPessoa(
-                $prediction,
-                $pessoa
-            )
-        ) {
-
-            $episPorPessoa[$indicePessoa][] =
-                $epiNormalizado;
-
-        }
-
+    if (empty($classe)) {
+        continue;
     }
 
 
     /*
-     * Remove duplicados.
+     * Ignora partes do corpo e pessoa.
      */
 
-    $episPorPessoa[$indicePessoa] =
-        array_values(
-            array_unique(
-                $episPorPessoa[$indicePessoa]
-            )
-        );
+    if (
+        in_array(
+            $classe,
+            $classesIgnoradas,
+            true
+        )
+    ) {
+        continue;
+    }
+
+
+    /*
+     * Converte para o padrão NEXA.
+     */
+
+    $epiNormalizado =
+        $this->normalizarEpi($classe);
+
+
+    /*
+     * Adiciona apenas EPIs conhecidos.
+     */
+
+    $classesDetectadas[] =
+        $epiNormalizado;
+
 }
+
+
 /*
- * =====================================================
- * PESSOA ANALISADA
- * =====================================================
+ * Remove duplicados.
  */
-
-$episDaPessoa = [];
-
-if (!empty($pessoas)) {
-
-    /*
-     * Consideramos a primeira pessoa
-     * detectada como a pessoa analisada.
-     */
-
-    $episDaPessoa =
-        $episPorPessoa[0] ?? [];
-
-}
-
-        /*
-         * =====================================================
-         * 8. TRANSFORMAR DETECÇÕES DA IA
-         * =====================================================
-         */
-
-    /*
- * =====================================================
- * CLASSES DETECTADAS NA PESSOA ANALISADA
- * =====================================================
- */
-
-$classesDetectadas = $episDaPessoa;
 
 $classesDetectadas =
     array_values(
@@ -443,15 +443,55 @@ $classesDetectadas =
             $classesDetectadas
         )
     );
-        /*
-         * Remove duplicados.
-         */
-        $classesDetectadas =
-            array_values(
-                array_unique($classesDetectadas)
-            );
 
 
+/*
+ * DEBUG
+ */
+
+log_message(
+    'error',
+    'NEXA CONSIDEROU COMO EPI: ' .
+    json_encode(
+        $classesDetectadas,
+        JSON_UNESCAPED_UNICODE
+    )
+);
+
+
+
+            /*
+ * =====================================================
+ * DEBUG - CLASSES RECEBIDAS DA ROBOFLOW
+ * =====================================================
+ */
+
+$classesBrutas = [];
+
+foreach ($predictions as $prediction) {
+
+    $classe =
+        $prediction['class']
+        ?? $prediction['class_name']
+        ?? '';
+
+    if ($classe !== '') {
+
+        $classesBrutas[] = $classe;
+
+    }
+}
+
+log_message(
+    'error',
+    'ROBOFLOW DETECTOU: ' .
+    json_encode(
+        $classesBrutas,
+        JSON_UNESCAPED_UNICODE
+    )
+);
+
+    
         /*
          * =====================================================
          * 9. COMPARAR SOMENTE OS EPIs DO FUNCIONÁRIO
@@ -462,54 +502,152 @@ $classesDetectadas =
         $episAusentes = [];
 
         $resultadoEpis = [];
+        $detecoesEpi = [];
 
 
-        foreach ($episFuncionario as $epi) {
+       foreach ($episFuncionario as $epi) {
 
-            $nomeEpiBanco =
-                $epi['NOME_EPI'] ?? '';
+    $nomeEpiBanco =
+        $epi['NOME_EPI'] ?? '';
 
-            $nomeNormalizado =
-                $this->normalizarEpi($nomeEpiBanco);
-
-
-            /*
-             * A IA detectou esse EPI?
-             */
-            $detectado =
-                in_array(
-                    $nomeNormalizado,
-                    $classesDetectadas,
-                    true
-                );
+    $nomeNormalizado =
+        $this->normalizarEpi($nomeEpiBanco);
 
 
-            if ($detectado) {
+    /*
+     * =====================================================
+     * PROCURAR DETECÇÃO CORRESPONDENTE
+     * =====================================================
+     */
 
-                $episDetectados[] =
-                    $nomeEpiBanco;
+    $deteccaoEncontrada = null;
 
-            } else {
+    foreach ($predictions as $prediction) {
 
-                $episAusentes[] =
-                    $nomeEpiBanco;
+        $classe =
+            strtolower(
+                trim(
+                    $prediction['class']
+                    ?? $prediction['class_name']
+                    ?? ''
+                )
+            );
 
-            }
-
-
-            $resultadoEpis[] = [
-
-                'id' =>
-                    $epi['ID'],
-
-                'nome' =>
-                    $nomeEpiBanco,
-
-                'detectado' =>
-                    $detectado
-
-            ];
+        if (empty($classe)) {
+            continue;
         }
+
+
+        /*
+         * Ignora objetos que não são EPI
+         */
+
+        if (
+            in_array(
+                $classe,
+                $classesIgnoradas,
+                true
+            )
+        ) {
+            continue;
+        }
+
+
+        $epiDetectadoNormalizado =
+            $this->normalizarEpi($classe);
+
+
+        /*
+         * Verifica se é o EPI obrigatório
+         */
+
+        if ($epiDetectadoNormalizado !== $nomeNormalizado) {
+            continue;
+        }
+
+
+        /*
+         * Guarda a primeira detecção encontrada
+         */
+
+        $deteccaoEncontrada = [
+
+            'x' =>
+                (float) ($prediction['x'] ?? 0),
+
+            'y' =>
+                (float) ($prediction['y'] ?? 0),
+
+            'width' =>
+                (float) ($prediction['width'] ?? 0),
+
+            'height' =>
+                (float) ($prediction['height'] ?? 0),
+
+            'confianca' =>
+                (float) (
+                    $prediction['confidence']
+                    ?? $prediction['score']
+                    ?? 0
+                )
+
+        ];
+
+        break;
+    }
+
+
+    /*
+     * =====================================================
+     * VERIFICAR SE FOI DETECTADO
+     * =====================================================
+     */
+
+    $detectado =
+        $deteccaoEncontrada !== null;
+
+
+    /*
+     * =====================================================
+     * SE DETECTADO
+     * =====================================================
+     */
+
+    if ($detectado) {
+
+        $episDetectados[] =
+            $nomeEpiBanco;
+
+    } else {
+
+        $episAusentes[] =
+            $nomeEpiBanco;
+
+    }
+
+
+    /*
+     * =====================================================
+     * RESULTADO
+     * =====================================================
+     */
+
+    $resultadoEpis[] = [
+
+        'id' =>
+            $epi['ID'],
+
+        'nome' =>
+            $nomeEpiBanco,
+
+        'detectado' =>
+            $detectado,
+
+        'deteccao' =>
+            $deteccaoEncontrada
+
+    ];
+}
 
 
         /*
@@ -677,14 +815,42 @@ $classesDetectadas =
      */
  private function normalizarEpi(string $nome): string
 {
-    $nome = strtolower(trim($nome));
+    $nome = trim(mb_strtolower($nome, 'UTF-8'));
 
-    /*
-     * =====================================================
-     * TRADUÇÃO DAS CLASSES DA ROBOFLOW
-     * PARA OS NOMES DO NEXA
-     * =====================================================
-     */
+    // Remove acentos
+    $nome = strtr($nome, [
+        'á' => 'a',
+        'à' => 'a',
+        'ã' => 'a',
+        'â' => 'a',
+        'ä' => 'a',
+
+        'é' => 'e',
+        'è' => 'e',
+        'ê' => 'e',
+        'ë' => 'e',
+
+        'í' => 'i',
+        'ì' => 'i',
+        'î' => 'i',
+        'ï' => 'i',
+
+        'ó' => 'o',
+        'ò' => 'o',
+        'ô' => 'o',
+        'õ' => 'o',
+        'ö' => 'o',
+
+        'ú' => 'u',
+        'ù' => 'u',
+        'û' => 'u',
+        'ü' => 'u',
+
+        'ç' => 'c'
+    ]);
+
+    // Normaliza espaços
+    $nome = preg_replace('/\s+/', ' ', $nome);
 
     $mapa = [
 
@@ -699,10 +865,12 @@ $classesDetectadas =
         'luvas' => 'luvas',
         'luva' => 'luvas',
 
-        // ÓCULOS
+        // OCULOS
         'glasses' => 'oculos de protecao',
+        'glass' => 'oculos de protecao',
         'protective glasses' => 'oculos de protecao',
         'safety glasses' => 'oculos de protecao',
+        'safety glass' => 'oculos de protecao',
         'oculos' => 'oculos de protecao',
         'oculos de protecao' => 'oculos de protecao',
 
@@ -714,7 +882,7 @@ $classesDetectadas =
         'botas' => 'botas de seguranca',
         'botas de seguranca' => 'botas de seguranca',
 
-        // MÁSCARA
+        // MASCARA
         'mask' => 'mascara',
         'masks' => 'mascara',
         'mascara' => 'mascara',
@@ -731,61 +899,8 @@ $classesDetectadas =
         'protetor auricular' => 'protetor auricular'
     ];
 
-    /*
-     * Se encontrou no mapa,
-     * retorna o nome padronizado.
-     */
-
-    if (isset($mapa[$nome])) {
-
-        return $mapa[$nome];
-
-    }
-
-
-    /*
-     * Remove acentos caso o nome não esteja
-     * diretamente no mapa.
-     */
-
-    $nome = str_replace(
-        [
-            'á',
-            'à',
-            'ã',
-            'â',
-            'é',
-            'ê',
-            'í',
-            'ó',
-            'ô',
-            'õ',
-            'ú',
-            'ç'
-        ],
-        [
-            'a',
-            'a',
-            'a',
-            'a',
-            'e',
-            'e',
-            'i',
-            'o',
-            'o',
-            'o',
-            'u',
-            'c'
-        ],
-        $nome
-    );
-
-    
-
-
-    return $nome;
+    return $mapa[$nome] ?? $nome;
 }
-
 
 
 private function objetoPertenceAPessoa(

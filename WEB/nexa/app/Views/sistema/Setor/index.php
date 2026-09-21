@@ -191,65 +191,99 @@
 
 
 
-                <div class="header-right">
-                    
-    <div class="access-menu">
+               <div class="header-right">
+                
+<div class="access-menu">
 
 
-        <button class="gear-btn" onclick="toggleAccessMenu()">
+    <!-- BOTÃO CONFIGURAÇÕES -->
 
-            <i class="fas fa-cog"></i>
+    <button
+        class="gear-btn"
+        onclick="toggleAccessMenu()"
+    >
+
+        <i class="fas fa-cog"></i>
+
+    </button>
+
+
+    <!-- OPÇÕES -->
+
+    <div
+        class="access-options"
+        id="accessOptions"
+    >
+
+
+        <!-- CONTRASTE -->
+
+        <button
+            class="access-btn"
+            onclick="Acessibilidade.toggleContraste()"
+            title="Alto contraste"
+        >
+
+            <i class="fas fa-adjust"></i>
 
         </button>
 
 
+        <!-- MODO ESCURO -->
 
-        <div class="access-options" id="accessOptions">
+        <button
+            class="access-btn"
+            onclick="toggleDark()"
+            title="Modo escuro"
+        >
 
+            <i class="fas fa-moon"></i>
 
-            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
-
-                <i class="fas fa-adjust"></i>
-
-            </button>
-
-
-
-            <button class="access-btn" onclick="toggleDark()">
-
-                <i class="fas fa-moon"></i>
-
-            </button>
+        </button>
 
 
+        <!-- AUMENTAR FONTE -->
 
-            <button class="access-btn" onclick="mudarFonte('aumentar')">
+        <button
+            class="access-btn"
+            onclick="Acessibilidade.aumentarFonte()"
+            title="Aumentar fonte"
+        >
 
-                A+
+            A+
 
-            </button>
-
-
-
-            <button class="access-btn" onclick="mudarFonte('diminuir')">
-
-                A-
-
-            </button>
+        </button>
 
 
+        <!-- DIMINUIR FONTE -->
 
-            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+        <button
+            class="access-btn"
+            onclick="Acessibilidade.diminuirFonte()"
+            title="Diminuir fonte"
+        >
 
-                <i class="fas fa-volume-up"></i>
+            A-
 
-            </button>
+        </button>
 
 
-        </div>
+        <!-- LER PÁGINA -->
+
+        <button
+            class="access-btn"
+            onclick="Acessibilidade.lerPagina()"
+            title="Ler página"
+        >
+
+            <i class="fas fa-volume-up"></i>
+
+        </button>
 
 
     </div>
+
+</div>
 
 
 

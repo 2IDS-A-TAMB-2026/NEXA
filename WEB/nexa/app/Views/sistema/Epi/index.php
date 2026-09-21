@@ -15,120 +15,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        /* Contêiner de Acessibilidade Posicionado */
-        .access-menu {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        /* Botão da Engrenagem */
-        .gear-btn {
-            background: transparent;
-            border: none;
-            font-size: 1.25rem;
-            cursor: pointer;
-            color: #4a5568;
-            padding: 8px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            z-index: 2;
-        }
-
-        .gear-btn:hover {
-            background-color: rgba(0, 0, 0, 0.06);
-            color: #1a202c;
-        }
-
-        /* Menu HORIZONTAL posicionado à ESQUERDA da engrenagem */
-.access-options {
-    display: flex; /* Mantém a estrutura flexível */
-    visibility: hidden; /* Oculta sem quebrar o layout */
-    opacity: 0;
-    pointer-events: none; /* Desativa cliques quando oculto */
-    
-    position: absolute;
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%) translateX(10px);
-    margin-right: 8px;
-    
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
-    
-    background-color: #ffffff;
-    padding: 4px 8px;
-    border-radius: 30px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-    border: 1px solid #e2e8f0;
-    z-index: 999; /* Garante que fique por cima de outros elementos */
-    white-space: nowrap;
-    
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
-}
-
-/* Exibição ativa via Classe */
-.access-options.show {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto; /* Habilita cliques quando visível */
-    transform: translateY(-50%) translateX(0);
-}
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50%) translateX(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(-50%) translateX(0);
-            }
-        }
-
-        /* Estilo dos Botões do Menu */
-        .access-btn {
-            background: transparent;
-            border: none;
-            padding: 6px 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #0A66C2;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .access-btn:hover {
-            background-color: #edf2f7;
-        }
-
-        /* Compatibilidade com Modo Escuro */
-        body.dark-mode .access-options {
-            background-color: #2d3748;
-            border-color: #4a5568;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        body.dark-mode .access-btn {
-            color: #63b3ed;
-        }
-
-        body.dark-mode .access-btn:hover {
-            background-color: #4a5568;
-        }
-
-        body.dark-mode .gear-btn {
-            color: #e2e8f0;
-        }
-    </style>
 </head>
 
 <body>
@@ -201,59 +87,149 @@
         </div>
     </aside>
 
-    <!-- ================= HEADER ================= -->
-    <header class="dashboard-header">
-        <div class="header-left">
-            <div class="header-title">
-                <h1>Cadastro de EPIs</h1>
-                <p>Gerencie os equipamentos de proteção individual da sua empresa</p>
-            </div>
-        </div>
+<!-- =============================================================
+     HEADER
+============================================================= -->
 
-        <div class="header-right">
-            <div class="access-menu">
+<header class="dashboard-header">
 
-                <div class="access-options" id="accessOptions">
+    <div class="header-title">
 
-                    <button class="access-btn" onclick="if(window.Acessibilidade) Acessibilidade.toggleContraste()" title="Alto Contraste">
-                        <i class="fas fa-adjust"></i>
-                    </button>
+        <h1>
+            Cadastro de EPI
+        </h1>
 
-                    <button class="access-btn" onclick="toggleDark()" title="Modo Escuro">
-                        <i class="fas fa-moon"></i>
-                    </button>
+        <p>
+            Gerencie os EPIs cadastrados da sua empresa
+        </p>
 
-                    <button class="access-btn" onclick="if(window.Acessibilidade) Acessibilidade.aumentarFonte()" title="Aumentar Fonte">
-                        A+
-                    </button>
+    </div>
 
-                    <button class="access-btn" onclick="if(window.Acessibilidade) Acessibilidade.diminuirFonte()" title="Diminuir Fonte">
-                        A-
-                    </button>
 
-                    <button class="access-btn" onclick="if(window.Acessibilidade) Acessibilidade.lerPagina()" title="Ler Página">
-                        <i class="fas fa-volume-up"></i>
-                    </button>
+    <div class="header-right">
 
-                </div>
 
-                <button class="gear-btn" onclick="toggleAccessMenu()" title="Opções de Acessibilidade">
-                    <i class="fas fa-cog"></i>
+        <!-- ACESSIBILIDADE -->
+
+        <div class="access-menu">
+
+            <button
+                type="button"
+                class="gear-btn"
+                onclick="toggleAccessMenu()"
+                title="Acessibilidade"
+            >
+
+                <i class="fas fa-cog"></i>
+
+            </button>
+
+
+            <div
+                class="access-options"
+                id="accessOptions"
+            >
+
+                <button
+                    type="button"
+                    class="access-btn"
+                    onclick="AcessibilidadePagina.toggleContraste()"
+                    title="Alto Contraste"
+                >
+
+                    <i class="fas fa-adjust"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="access-btn"
+                    onclick="AcessibilidadePagina.toggleDark()"
+                    title="Modo Escuro"
+                >
+
+                    <i class="fas fa-moon"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="access-btn"
+                    onclick="AcessibilidadePagina.aumentarFonte()"
+                    title="Aumentar Fonte"
+                >
+                    A+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="access-btn"
+                    onclick="AcessibilidadePagina.diminuirFonte()"
+                    title="Diminuir Fonte"
+                >
+                    A-
+                </button>
+
+
+                <button
+                    type="button"
+                    class="access-btn"
+                    onclick="AcessibilidadePagina.lerPagina()"
+                    title="Ler Página"
+                >
+
+                    <i class="fas fa-volume-up"></i>
+
                 </button>
 
             </div>
 
-            <a href="<?= base_url('/administrador') ?>" class="profile">
-                <div class="profile-avatar">
-                    <?= strtoupper(substr(session()->get('nome') ?? 'A', 0, 1)) ?>
-                </div>
-                <div class="profile-info">
-                    <strong><?= esc(session()->get('nome')) ?></strong>
-                    <span>NEXA SOLUÇÕES</span>
-                </div>
-            </a>
         </div>
-    </header>
+
+
+        <!-- PERFIL -->
+
+        <a
+            href="<?= base_url('/administrador') ?>"
+            class="profile"
+        >
+
+            <div class="profile-avatar">
+
+                <?= strtoupper(
+                    substr(
+                        session()->get('nome') ?? 'A',
+                        0,
+                        1
+                    )
+                ) ?>
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <strong>
+                    <?= esc(
+                        session()->get('nome')
+                        ?? 'Administrador'
+                    ) ?>
+                </strong>
+
+                <span>
+                    NEXA SOLUÇÕES
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
 
     <!-- ================= CONTEÚDO ================= -->
     <div class="overlay">

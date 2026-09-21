@@ -260,17 +260,21 @@
                         <?php if (strtoupper($camera['STATUS']) == 'ATIVA' || strtoupper($camera['STATUS']) == 'ATIVO'): ?>
 
                             <span class="status ativo"></span>
+                            <span class="verde">
 
-                            <span class="texto-status">
-                                Ativa
+                                <span class="texto-status">
+                                    Ativa
+                                </span>
                             </span>
 
                         <?php else: ?>
 
                             <span class="status inativo"></span>
+                            <span class="vermelho"></span>
 
-                            <span class="texto-status">
-                                Inativa
+                                <span class="texto-status">
+                                    Inativa
+                                </span>
                             </span>
 
                         <?php endif; ?>

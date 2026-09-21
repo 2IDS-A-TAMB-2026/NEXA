@@ -30,7 +30,6 @@
 <!--mudar icone?-->
     
 
-    
 </head>
 
 
@@ -236,119 +235,102 @@
 
         <header class="dashboard-header">
 
-            <div class="header-left">
+    <!-- LADO ESQUERDO -->
+    <div class="header-left">
 
-                <div class="header-title">
+        <div class="header-title">
 
-                    <h1>
-                        Perfil do administrador
-                    </h1>
+            <h1>
+                Perfil do administrador
+            </h1>
 
-                    <p>
-                        Visualize seus dados
-                    </p>
+            <p>
+                Visualize seus dados
+            </p>
 
-                </div>
+        </div>
 
-            </div>
+    </div>
 
+<!-- LADO DIREITO -->
+<div class="header-right">
 
+    <!-- MENU DE ACESSIBILIDADE -->
+    <div class="access-menu">
 
+        <button
+            type="button"
+            class="gear-btn"
+            onclick="toggleAccessMenu()"
+            title="Opções de Acessibilidade"
+        >
+            <i class="fas fa-cog"></i>
+        </button>
 
-
-        <!--botao de acessibilidade TESTE que nao deu muito certo, o vlibras ta funcionando-->
-    <!-- BOTÃO CONFIGURAÇÕES -->
+        <div
+            class="access-options"
+            id="accessOptions"
+        >
 
             <button
-                class="gear-btn"
-                onclick="toggleAccessMenu()"
+                type="button"
+                class="access-btn"
+                onclick="Acessibilidade.toggleContraste()"
+                title="Alto Contraste"
             >
-        
-                <i class="fas fa-cog"></i>
-        
+                <i class="fas fa-adjust"></i>
             </button>
-        
-        
-            <!-- OPÇÕES -->
-        
-            <div
-                class="access-options"
-                id="accessOptions"
+
+            <button
+                type="button"
+                class="access-btn"
+                onclick="toggleDark()"
+                title="Modo Escuro"
             >
-        
-        
-                <!-- CONTRASTE -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.toggleContraste()"
-                    title="Alto contraste"
-                >
-        
-                    <i class="fas fa-adjust"></i>
-        
-                </button>
-        
-        
-                <!-- MODO ESCURO -->
-        
-                <button
-                    class="access-btn"
-                    onclick="toggleDark()"
-                    title="Modo escuro"
-                >
-        
-                    <i class="fas fa-moon"></i>
-        
-                </button>
-        
-        
-                <!-- AUMENTAR FONTE -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.aumentarFonte()"
-                    title="Aumentar fonte"
-                >
-        
-                    A+
-        
-                </button>
-        
-        
-                <!-- DIMINUIR FONTE -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.diminuirFonte()"
-                    title="Diminuir fonte"
-                >
-        
-                    A-
-        
-                </button>
-        
-        
-                <!-- LER PÁGINA -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.lerPagina()"
-                    title="Ler página"
-                >
-        
-                    <i class="fas fa-volume-up"></i>
-        
-                </button>
-        
-        
-            </div> 
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <button
+                type="button"
+                class="access-btn"
+                onclick="Acessibilidade.aumentarFonte()"
+                title="Aumentar Fonte"
+            >
+                A+
+            </button>
+
+            <button
+                type="button"
+                class="access-btn"
+                onclick="Acessibilidade.diminuirFonte()"
+                title="Diminuir Fonte"
+            >
+                A-
+            </button>
+
+            <button
+                type="button"
+                class="access-btn"
+                onclick="Acessibilidade.lerPagina()"
+                title="Ler Página"
+            >
+                <i class="fas fa-volume-up"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- NOME DA EMPRESA -->
+    <p class="nome-empresa">
+        NEXA SOLUÇÕES
+    </p>
+
+</div>
+     
 
 
-
-
-
-        </header>
+</header>
 
 
         <!-- =====================================================
@@ -399,22 +381,15 @@
                 </div>
 
 
-                <div class="perfil-direita">
+                  <div class="perfil-direita">
 
-                    <div class="fundo-capacete"></div>
-
-                    <div class="circulo"></div>
-
-                    <i class="fa-solid fa-helmet-safety"></i>
-
-                    <div class="dots dots1"></div>
-
-                    <div class="dots dots2"></div>
-
-                </div>
-
-
+    <img
+        src="<?= base_url('assets/images/capacete_perfil.png') ?>"
+        alt="Segurança com capacete"
+        class="imagem-seguranca"
+    >
             </div>
+</div>
 
 
             <!-- =================================================
@@ -983,114 +958,17 @@
         }
 
 
-        /* =========================================================
-           DARK MODE
-        ========================================================= */
-
-        function toggleDark() {
-
-            document.body.classList.toggle(
-                'dark-mode'
-            );
-
-        }
+       
 
 
-        /* =========================================================
-           MENU ACESSIBILIDADE
-        ========================================================= */
-
-        function toggleAccessMenu() {
-
-            const options =
-                document.getElementById(
-                    'accessOptions'
-                );
-
-            if (!options) return;
-
-            options.style.display =
-                options.style.display === 'flex'
-                    ? 'none'
-                    : 'flex';
-
-        }
+       
 
 
-        /* =========================================================
-           ESCALA DE FONTE
-        ========================================================= */
-
-        let escalaAtual =
-            parseFloat(
-                localStorage.getItem('escalaFonte')
-            ) || 1.0;
+        
+       
 
 
-        function aplicarEscala(valor) {
-
-            document.documentElement.style
-                .setProperty(
-                    '--escala',
-                    valor
-                );
-
-            localStorage.setItem(
-                'escalaFonte',
-                valor
-            );
-
-        }
-
-
-        window.addEventListener(
-            'DOMContentLoaded',
-            () => {
-
-                aplicarEscala(
-                    escalaAtual
-                );
-
-            }
-        );
-
-
-        function mudarFonte(acao) {
-
-            if (acao === 'aumentar') {
-
-                if (escalaAtual < 1.3) {
-
-                    escalaAtual += 0.1;
-
-                }
-
-            }
-
-
-            if (acao === 'diminuir') {
-
-                if (escalaAtual > 0.9) {
-
-                    escalaAtual -= 0.1;
-
-                }
-
-            }
-
-
-            escalaAtual =
-                parseFloat(
-                    escalaAtual.toFixed(1)
-                );
-
-
-            aplicarEscala(
-                escalaAtual
-            );
-
-        }
-
+        
     </script>
 
 <!-- COMPONENTE VLIBRAS -->

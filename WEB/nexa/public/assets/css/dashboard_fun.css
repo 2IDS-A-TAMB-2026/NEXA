@@ -703,3 +703,641 @@ body.fonte-130 .card.dicas li,
 body.fonte-140 .card.dicas li {
     font-size: calc(15px * var(--escala-fonte)) !important;
 }
+
+
+
+/* =========================================================
+   MODAL DE OCORRÊNCIAS
+========================================================= */
+
+#modal {
+
+    position:fixed;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(15,42,68,.55);
+
+    backdrop-filter:blur(6px);
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:25px;
+
+    z-index:9999;
+
+}
+
+
+/* =========================================================
+   CAIXA
+========================================================= */
+
+.modal-box {
+
+    width:min(650px, 95vw);
+
+    max-height:90vh;
+
+    background:#fff;
+
+    border-radius:24px;
+
+    box-shadow:
+        0 25px 70px rgba(15,42,68,.25);
+
+    overflow:hidden;
+
+    animation:modalEntrada .25s ease;
+
+}
+
+
+@keyframes modalEntrada {
+
+    from {
+
+        opacity:0;
+
+        transform:translateY(20px) scale(.97);
+
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.modal-header {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:22px 24px;
+
+    border-bottom:1px solid #edf2f7;
+
+}
+
+
+.modal-titulo {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+
+.modal-icon {
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:15px;
+
+    background:#eaf3ff;
+
+    color:#0A66C2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:20px;
+
+}
+
+
+.modal-titulo h3 {
+
+    margin:0;
+
+    color:#1f3556;
+
+    font-size:21px;
+
+}
+
+
+.modal-titulo span {
+
+    display:block;
+
+    margin-top:3px;
+
+    color:#7b8797;
+
+    font-size:13px;
+
+}
+
+
+/* =========================================================
+   BOTÃO X
+========================================================= */
+
+.modal-fechar {
+
+    width:38px;
+
+    height:38px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#f5f8fc;
+
+    color:#718096;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+.modal-fechar:hover {
+
+    background:#eaf3ff;
+
+    color:#0A66C2;
+
+    transform:rotate(90deg);
+
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.modal-resumo {
+
+    margin:18px 24px;
+
+    padding:14px 16px;
+
+    background:#f5f9ff;
+
+    border:1px solid #e1edfb;
+
+    border-radius:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+}
+
+
+.resumo-icon {
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:12px;
+
+    background:#0A66C2;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+.modal-resumo strong {
+
+    display:block;
+
+    color:#1f3556;
+
+    font-size:14px;
+
+}
+
+
+.modal-resumo span {
+
+    display:block;
+
+    margin-top:3px;
+
+    color:#7b8797;
+
+    font-size:12px;
+
+}
+
+
+/* =========================================================
+   LISTA
+========================================================= */
+
+.ocorrencias-lista {
+
+    padding:0 24px 5px;
+
+    max-height:430px;
+
+    overflow-y:auto;
+
+}
+
+
+.ocorrencias-lista::-webkit-scrollbar {
+
+    width:6px;
+
+}
+
+
+.ocorrencias-lista::-webkit-scrollbar-thumb {
+
+    background:#c9d9eb;
+
+    border-radius:10px;
+
+}
+
+
+/* =========================================================
+   ITEM
+========================================================= */
+
+.ocorrencia-item {
+
+    background:#fff;
+
+    border:1px solid #e7edf5;
+
+    border-radius:18px;
+
+    padding:17px;
+
+    margin-bottom:12px;
+
+    transition:.25s ease;
+
+}
+
+
+.ocorrencia-item:hover {
+
+    border-color:#c8def7;
+
+    box-shadow:0 8px 20px rgba(10,102,194,.08);
+
+    transform:translateY(-2px);
+
+}
+
+
+/* =========================================================
+   TOPO
+========================================================= */
+
+.ocorrencia-topo {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:12px;
+
+}
+
+
+.ocorrencia-numero {
+
+    color:#1f3556;
+
+    font-size:14px;
+
+    font-weight:700;
+
+}
+
+
+.ocorrencia-hora {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    color:#0A66C2;
+
+    background:#edf5ff;
+
+    padding:7px 11px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+
+.ocorrencia-hora i {
+
+    font-size:12px;
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.ocorrencia-status {
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    padding:6px 10px;
+
+    border-radius:9px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    margin-bottom:14px;
+
+}
+
+
+.modal-status-regular {
+
+    background:#eaf8ee;
+
+    color:#2e8b45;
+
+}
+
+
+.modal-status-irregular {
+
+    background:#fff0f0;
+
+    color:#d93636;
+
+}
+
+
+/* =========================================================
+   DADOS DOS EPIs
+========================================================= */
+
+.ocorrencia-dados {
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+}
+
+
+.dado {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:#f8fafc;
+
+    border-radius:13px;
+
+    padding:10px;
+
+}
+
+
+.dado-icone {
+
+    width:34px;
+
+    height:34px;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+.dado-icone.detectado {
+
+    background:#eaf8ee;
+
+    color:#3ca353;
+
+}
+
+
+.dado-icone.ausente {
+
+    background:#fff0f0;
+
+    color:#e04a4a;
+
+}
+
+
+.dado span {
+
+    display:block;
+
+    color:#8490a0;
+
+    font-size:10px;
+
+    margin-bottom:3px;
+
+}
+
+
+.dado strong {
+
+    display:block;
+
+    color:#27364b;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.modal-footer {
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    padding:16px 24px 20px;
+
+    border-top:1px solid #edf2f7;
+
+}
+
+
+.btn-fechar-modal {
+
+    border:none;
+
+    background:#0A66C2;
+
+    color:#fff;
+
+    padding:11px 20px;
+
+    border-radius:12px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    transition:.25s ease;
+
+}
+
+
+.btn-fechar-modal:hover {
+
+    background:#084f96;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 6px 15px rgba(10,102,194,.25);
+
+}
+
+
+/* =========================================================
+   DIA COM VÁRIAS OCORRÊNCIAS
+========================================================= */
+
+.dia {
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+.dia.tem-varias {
+
+    box-shadow:
+        inset 0 0 0 2px #dcecff;
+
+}
+
+
+.quantidade-ocorrencias {
+
+    position:absolute;
+
+    top:5px;
+
+    right:6px;
+
+    min-width:18px;
+
+    height:18px;
+
+    padding:0 4px;
+
+    border-radius:9px;
+
+    background:#0A66C2;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:9px;
+
+    font-weight:bold;
+
+}
+
+
+.dia.tem-varias:hover {
+
+    box-shadow:
+        inset 0 0 0 2px #0A66C2;
+
+}

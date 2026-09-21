@@ -464,7 +464,7 @@
 
 
             <!-- STATUS -->
-
+        
             <select id="filtroStatus">
 
                 <option value="">
@@ -570,7 +570,8 @@
 
                         data-status="<?= $statusClasse ?>"
 
-                        data-data="<?= $o['DATA_ANALISE'] ?>"
+                        data-data="<?= esc($o['DATA_ANALISE'] ?? '') ?>"
+data-hora="<?= esc($o['HORA_ANALISE'] ?? '00:00:00') ?>"
                     >
 
 
@@ -698,60 +699,106 @@
                              EPIs
                         ============================================== -->
 
-                        <div class="epi-box">
+                    <!-- =============================================
+     EPIs
+============================================= -->
+
+<div class="epi-box">
+
+    <?php
+        /*
+        =========================================================
+        EPIs DETECTADOS
+        =========================================================
+
+        Se o banco tiver salvo "Nenhum", não mostramos nada.
+
+        Isso acontece quando a câmera não identificou nenhum
+        EPI naquela análise.
+        */
+
+        $episDetectados = trim(
+            $o['EPIS_DETECTADOS'] ?? ''
+        );
+
+        $mostrarDetectados = (
+            $episDetectados !== '' &&
+            mb_strtolower(
+                $episDetectados,
+                'UTF-8'
+            ) !== 'nenhum' &&
+            mb_strtolower(
+                $episDetectados,
+                'UTF-8'
+            ) !== 'nenhuma'
+        );
+    ?>
 
 
-                            <!-- EPIs DETECTADOS -->
+    <!-- =============================================
+         EPIs DETECTADOS
+    ============================================== -->
 
-                            <?php if (
-                                !empty(
-                                    $o['EPIS_DETECTADOS']
-                                )
-                            ) : ?>
+    <?php if ($mostrarDetectados) : ?>
 
-                                <span class="ok">
+        <span class="ok">
 
-                                    <i class="fas fa-check"></i>
+            <i class="fas fa-check"></i>
 
-                                    <?= esc(
-                                        $o['EPIS_DETECTADOS']
-                                    ) ?>
+            <?= esc($episDetectados) ?>
 
-                                </span>
+        </span>
 
-                            <?php endif; ?>
+    <?php endif; ?>
 
 
+    <?php
+        /*
+        =========================================================
+        EPIs AUSENTES
+        =========================================================
 
-                            <!-- EPIs AUSENTES -->
+        "Nenhum" NÃO será mostrado aqui também.
 
-                            <?php if (
-                                isset(
-                                    $o['EPIS_AUSENTE']
-                                )
-                                &&
-                                $o['EPIS_AUSENTE']
-                                != 'Nenhum'
-                                &&
-                                !empty(
-                                    $o['EPIS_AUSENTE']
-                                )
-                            ) : ?>
+        Só aparecem os EPIs que realmente estão ausentes.
+        */
 
-                                <span class="fail">
+        $episAusentes = trim(
+            $o['EPIS_AUSENTE'] ?? ''
+        );
 
-                                    <i class="fas fa-xmark"></i>
-
-                                    <?= esc(
-                                        $o['EPIS_AUSENTE']
-                                    ) ?>
-
-                                </span>
-
-                            <?php endif; ?>
+        $mostrarAusentes = (
+            $episAusentes !== '' &&
+            mb_strtolower(
+                $episAusentes,
+                'UTF-8'
+            ) !== 'nenhum' &&
+            mb_strtolower(
+                $episAusentes,
+                'UTF-8'
+            ) !== 'nenhuma'
+        );
+    ?>
 
 
-                        </div>
+    <!-- =============================================
+         EPIs AUSENTES
+    ============================================== -->
+
+    <?php if ($mostrarAusentes) : ?>
+
+        <span class="fail">
+
+            <i class="fas fa-xmark"></i>
+
+            <?= esc($episAusentes) ?>
+
+        </span>
+
+    <?php endif; ?>
+
+
+</div>
 
 
                     </div>
@@ -804,22 +851,23 @@
              PAGINAÇÃO
         ====================================================== -->
 
-     <div class="paginacao-container">
+   <!-- =====================================================
+     PAGINAÇÃO
+====================================================== -->
+
+<div class="paginacao-container">
 
     <!-- QUANTIDADE POR PÁGINA -->
 
     <div class="itens-por-pagina">
 
         <span>
-            Exibir:
+            Mostrar
         </span>
 
-        <select
-            id="itensPorPagina"
-            onchange="alterarItensPorPagina()"
-        >
+        <select id="itensPorPagina">
 
-            <option value="5">
+            <option value="5" selected>
                 5
             </option>
 
@@ -844,12 +892,46 @@
     </div>
 
 
+    <!-- INFORMAÇÃO DOS RESULTADOS -->
+
+    <div id="infoOcorrencias">
+
+        Mostrando 0 de 0
+
+    </div>
+
+
     <!-- PAGINAÇÃO -->
 
-    <div
-        class="paginacao"
-        id="paginacao"
-    ></div>
+    <div class="pagination">
+
+        <button
+            id="anterior"
+            type="button"
+            title="Página anterior"
+        >
+
+            <i class="fas fa-chevron-left"></i>
+
+        </button>
+
+
+        <span id="paginaAtual">
+            1
+        </span>
+
+
+        <button
+            id="proximo"
+            type="button"
+            title="Próxima página"
+        >
+
+            <i class="fas fa-chevron-right"></i>
+
+        </button>
+
+    </div>
 
 </div>
             
@@ -869,30 +951,22 @@
 ========================================================= -->
  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
-<script>
 
+
+    <script>
 
 /* ==========================================================
    ELEMENTOS DOS FILTROS
 ========================================================== */
 
 const filtroFuncionario =
-    document.getElementById(
-        'filtroFuncionario'
-    );
-
+    document.getElementById('filtroFuncionario');
 
 const filtroStatus =
-    document.getElementById(
-        'filtroStatus'
-    );
-
+    document.getElementById('filtroStatus');
 
 const filtroData =
-    document.getElementById(
-        'filtroData'
-    );
-
+    document.getElementById('filtroData');
 
 const todosCards =
     Array.from(
@@ -901,6 +975,23 @@ const todosCards =
         )
     );
 
+
+    // ==========================================================
+// ORDENAR OCORRÊNCIAS — MAIS RECENTES PRIMEIRO
+// ==========================================================
+todosCards.sort((a, b) => {
+    const dataA = a.dataset.data || '';
+    const dataB = b.dataset.data || '';
+
+    // Pega também o horário da ocorrência
+    const horaA = a.dataset.hora || '00:00:00';
+    const horaB = b.dataset.hora || '00:00:00';
+
+    const dataHoraA = new Date(`${dataA}T${horaA}`);
+    const dataHoraB = new Date(`${dataB}T${horaB}`);
+
+    return dataHoraB - dataHoraA;
+});
 
 
 /* ==========================================================
@@ -911,10 +1002,168 @@ let cardsPorPagina = 5;
 
 let paginaAtual = 1;
 
-let cardsFiltrados = [
-    ...todosCards
-];
+let cardsFiltrados = [...todosCards];
 
+
+/* ==========================================================
+   MOSTRAR PÁGINA
+========================================================== */
+
+function mostrarPagina() {
+
+    /* ------------------------------------------
+       Esconde todos os cards
+    ------------------------------------------ */
+
+    todosCards.forEach(card => {
+
+        card.style.display = 'none';
+
+    });
+
+
+    /* ------------------------------------------
+       Calcula início e fim
+    ------------------------------------------ */
+
+    const inicio =
+        (paginaAtual - 1) *
+        cardsPorPagina;
+
+    const fim =
+        inicio +
+        cardsPorPagina;
+
+
+    /* ------------------------------------------
+       Cards da página atual
+    ------------------------------------------ */
+
+    const cardsPagina =
+        cardsFiltrados.slice(
+            inicio,
+            fim
+        );
+
+
+    /* ------------------------------------------
+       Mostra os cards
+    ------------------------------------------ */
+
+    cardsPagina.forEach(card => {
+
+        card.style.display = 'block';
+
+    });
+
+
+    /* ------------------------------------------
+       Atualiza rodapé
+    ------------------------------------------ */
+
+    atualizarRodape(
+        inicio,
+        Math.min(
+            fim,
+            cardsFiltrados.length
+        ),
+        cardsFiltrados.length
+    );
+
+}
+
+
+/* ==========================================================
+   ATUALIZAR RODAPÉ
+========================================================== */
+
+function atualizarRodape(
+    inicio,
+    fim,
+    total
+) {
+
+    const info =
+        document.getElementById(
+            'infoOcorrencias'
+        );
+
+    const pagina =
+        document.getElementById(
+            'paginaAtual'
+        );
+
+    const anterior =
+        document.getElementById(
+            'anterior'
+        );
+
+    const proximo =
+        document.getElementById(
+            'proximo'
+        );
+
+
+    /* ------------------------------------------
+       Informação dos resultados
+    ------------------------------------------ */
+
+    if (total === 0) {
+
+        info.textContent =
+            'Mostrando 0 de 0';
+
+    } else {
+
+        info.textContent =
+            `Mostrando ${inicio + 1} a ${fim} de ${total}`;
+
+    }
+
+
+    /* ------------------------------------------
+       Número da página
+    ------------------------------------------ */
+
+    pagina.textContent =
+        paginaAtual;
+
+
+    /* ------------------------------------------
+       Total de páginas
+    ------------------------------------------ */
+
+    const totalPaginas =
+        Math.max(
+            1,
+            Math.ceil(
+                total /
+                cardsPorPagina
+            )
+        );
+
+
+    /* ------------------------------------------
+       Botão ANTERIOR
+    ------------------------------------------ */
+
+    anterior.disabled =
+        paginaAtual <= 1;
+
+
+    /* ------------------------------------------
+       Botão PRÓXIMO
+    ------------------------------------------ */
+
+    proximo.disabled =
+        paginaAtual >= totalPaginas;
+
+}
+
+
+/* ==========================================================
+   ALTERAR ITENS POR PÁGINA
+========================================================== */
 
 function alterarItensPorPagina() {
 
@@ -923,19 +1172,77 @@ function alterarItensPorPagina() {
             'itensPorPagina'
         );
 
+
     cardsPorPagina =
-        parseInt(seletor.value);
+        parseInt(
+            seletor.value
+        );
+
 
     paginaAtual = 1;
 
+
     mostrarPagina();
+
 }
+
+
+/* ==========================================================
+   MUDAR PÁGINA
+========================================================== */
+
+function mudarPagina(direcao) {
+
+    const totalPaginas =
+        Math.ceil(
+            cardsFiltrados.length /
+            cardsPorPagina
+        );
+
+
+    /* ------------------------------------------
+       Calcula nova página
+    ------------------------------------------ */
+
+    paginaAtual += direcao;
+
+
+    /* ------------------------------------------
+       Limite mínimo
+    ------------------------------------------ */
+
+    if (paginaAtual < 1) {
+
+        paginaAtual = 1;
+
+    }
+
+
+    /* ------------------------------------------
+       Limite máximo
+    ------------------------------------------ */
+
+    if (
+        paginaAtual >
+        totalPaginas
+    ) {
+
+        paginaAtual =
+            totalPaginas;
+
+    }
+
+
+    mostrarPagina();
+
+}
+
+
 /* ==========================================================
    FILTRAR OCORRÊNCIAS
 ========================================================== */
 
 function filtrarOcorrencias() {
-
 
     const nome =
         filtroFuncionario
@@ -952,6 +1259,9 @@ function filtrarOcorrencias() {
         filtroData.value;
 
 
+    /* ------------------------------------------
+       Filtra os cards
+    ------------------------------------------ */
 
     cardsFiltrados =
         todosCards.filter(card => {
@@ -974,37 +1284,44 @@ function filtrarOcorrencias() {
                 || '';
 
 
+            /* ----------------------------------
+               Filtro funcionário
+            ---------------------------------- */
 
             const matchNome =
                 funcionario.includes(nome);
 
 
+            /* ----------------------------------
+               Filtro status
+            ---------------------------------- */
+
             const matchStatus =
-                status === ''
-                ||
+                status === '' ||
                 cardStatus === status;
 
 
+            /* ----------------------------------
+               Filtro data
+            ---------------------------------- */
+
             const matchData =
-                data === ''
-                ||
+                data === '' ||
                 cardData === data;
 
 
-
             return (
-                matchNome
-                &&
-                matchStatus
-                &&
+                matchNome &&
+                matchStatus &&
                 matchData
             );
 
         });
 
 
-
-    /* Volta para a primeira página */
+    /* ------------------------------------------
+       Sempre volta para página 1
+    ------------------------------------------ */
 
     paginaAtual = 1;
 
@@ -1012,312 +1329,6 @@ function filtrarOcorrencias() {
     mostrarPagina();
 
 }
-
-
-
-/* ==========================================================
-   MOSTRAR PÁGINA
-========================================================== */
-
-function mostrarPagina() {
-
-
-    /*
-    Esconde todos os cards
-    */
-
-    todosCards.forEach(card => {
-
-        card.style.display = 'none';
-
-    });
-
-
-
-    /*
-    Calcula início e fim
-    */
-
-    const inicio =
-        (paginaAtual - 1)
-        * cardsPorPagina;
-
-
-    const fim =
-        inicio
-        + cardsPorPagina;
-
-
-
-    /*
-    Pega somente os cards
-    daquela página
-    */
-
-    const cardsPagina =
-        cardsFiltrados.slice(
-            inicio,
-            fim
-        );
-
-
-
-    /*
-    Mostra os cards
-    */
-
-    cardsPagina.forEach(card => {
-
-        card.style.display =
-            'block';
-
-    });
-
-
-
-    /*
-    Atualiza paginação
-    */
-
-    criarPaginacao();
-
-}
-
-
-
-/* ==========================================================
-   CRIAR PAGINAÇÃO
-========================================================== */
-
-function criarPaginacao() {
-
-
-    const paginacao =
-        document.getElementById(
-            'paginacao'
-        );
-
-
-    paginacao.innerHTML = '';
-
-
-
-    /*
-    Quantidade total de páginas
-    */
-
-    const totalPaginas =
-        Math.ceil(
-            cardsFiltrados.length
-            /
-            cardsPorPagina
-        );
-
-
-
-    /*
-    Se não houver resultados
-    */
-
-    if (totalPaginas === 0) {
-
-        return;
-
-    }
-
-
-
-    /* ======================================================
-       BOTÃO ANTERIOR
-    ======================================================= */
-
-    const anterior =
-        document.createElement(
-            'button'
-        );
-
-
-    anterior.className =
-        'pagina-btn';
-
-
-    anterior.innerHTML =
-        '<i class="fas fa-chevron-left"></i>';
-
-
-    anterior.disabled =
-        paginaAtual === 1;
-
-
-    anterior.onclick =
-        function () {
-
-            mudarPagina(-1);
-
-        };
-
-
-    paginacao.appendChild(
-        anterior
-    );
-
-
-
-    /* ======================================================
-       NÚMEROS DAS PÁGINAS
-    ======================================================= */
-
-    for (
-        let i = 1;
-        i <= totalPaginas;
-        i++
-    ) {
-
-
-        const botao =
-            document.createElement(
-                'button'
-            );
-
-
-        botao.className =
-            'pagina-btn';
-
-
-        botao.textContent =
-            i;
-
-
-
-        /*
-        Página atual
-        */
-
-        if (
-            i === paginaAtual
-        ) {
-
-            botao.classList.add(
-                'ativa'
-            );
-
-        }
-
-
-
-        /*
-        Ao clicar
-        */
-
-        botao.onclick =
-            function () {
-
-                paginaAtual = i;
-
-                mostrarPagina();
-
-            };
-
-
-
-        paginacao.appendChild(
-            botao
-        );
-
-    }
-
-
-
-    /* ======================================================
-       BOTÃO PRÓXIMO
-    ======================================================= */
-
-    const proximo =
-        document.createElement(
-            'button'
-        );
-
-
-    proximo.className =
-        'pagina-btn';
-
-
-    proximo.innerHTML =
-        '<i class="fas fa-chevron-right"></i>';
-
-
-    proximo.disabled =
-        paginaAtual === totalPaginas;
-
-
-    proximo.onclick =
-        function () {
-
-            mudarPagina(1);
-
-        };
-
-
-    paginacao.appendChild(
-        proximo
-    );
-
-}
-
-
-
-/* ==========================================================
-   MUDAR PÁGINA
-========================================================== */
-
-function mudarPagina(direcao) {
-
-
-    const totalPaginas =
-        Math.ceil(
-            cardsFiltrados.length
-            /
-            cardsPorPagina
-        );
-
-
-    paginaAtual += direcao;
-
-
-
-    /*
-    Impede página menor que 1
-    */
-
-    if (
-        paginaAtual < 1
-    ) {
-
-        paginaAtual = 1;
-
-    }
-
-
-
-    /*
-    Impede passar da última
-    */
-
-    if (
-        paginaAtual > totalPaginas
-    ) {
-
-        paginaAtual =
-            totalPaginas;
-
-    }
-
-
-
-    mostrarPagina();
-
-}
-
 
 
 /* ==========================================================
@@ -1326,27 +1337,17 @@ function mudarPagina(direcao) {
 
 function limparFiltros() {
 
+    filtroFuncionario.value = '';
 
-    filtroFuncionario.value =
-        '';
+    filtroStatus.value = '';
 
-
-    filtroStatus.value =
-        '';
-
-
-    filtroData.value =
-        '';
-
-
+    filtroData.value = '';
 
     paginaAtual = 1;
-
 
     filtrarOcorrencias();
 
 }
-
 
 
 /* ==========================================================
@@ -1354,9 +1355,9 @@ function limparFiltros() {
 ========================================================== */
 
 
-/*
-Busca enquanto digita
-*/
+/* ------------------------------------------
+   Funcionário
+------------------------------------------ */
 
 filtroFuncionario.addEventListener(
     'input',
@@ -1364,9 +1365,9 @@ filtroFuncionario.addEventListener(
 );
 
 
-/*
-Status
-*/
+/* ------------------------------------------
+   Status
+------------------------------------------ */
 
 filtroStatus.addEventListener(
     'change',
@@ -1374,15 +1375,117 @@ filtroStatus.addEventListener(
 );
 
 
-/*
-Data
-*/
+/* ------------------------------------------
+   Data
+------------------------------------------ */
 
 filtroData.addEventListener(
     'change',
     filtrarOcorrencias
 );
 
+
+/* ==========================================================
+   EVENTOS DA PAGINAÇÃO
+========================================================== */
+
+
+/* ------------------------------------------
+   Quantidade por página
+------------------------------------------ */
+
+const seletorPagina =
+    document.getElementById(
+        'itensPorPagina'
+    );
+
+if (seletorPagina) {
+
+    seletorPagina.addEventListener(
+        'change',
+        function () {
+
+            cardsPorPagina =
+                parseInt(
+                    this.value
+                );
+
+            paginaAtual = 1;
+
+            mostrarPagina();
+
+        }
+    );
+
+}
+
+
+/* ------------------------------------------
+   Botão ANTERIOR
+------------------------------------------ */
+
+const botaoAnterior =
+    document.getElementById(
+        'anterior'
+    );
+
+if (botaoAnterior) {
+
+    botaoAnterior.addEventListener(
+        'click',
+        function () {
+
+            if (paginaAtual > 1) {
+
+                paginaAtual--;
+
+                mostrarPagina();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ------------------------------------------
+   Botão PRÓXIMO
+------------------------------------------ */
+
+const botaoProximo =
+    document.getElementById(
+        'proximo'
+    );
+
+if (botaoProximo) {
+
+    botaoProximo.addEventListener(
+        'click',
+        function () {
+
+            const totalPaginas =
+                Math.ceil(
+                    cardsFiltrados.length /
+                    cardsPorPagina
+                );
+
+
+            if (
+                paginaAtual <
+                totalPaginas
+            ) {
+
+                paginaAtual++;
+
+                mostrarPagina();
+
+            }
+
+        }
+    );
+
+}
 
 
 /* ==========================================================
@@ -1398,13 +1501,11 @@ function toggleDark() {
 }
 
 
-
 /* ==========================================================
    MENU DE ACESSIBILIDADE
 ========================================================== */
 
 function toggleAccessMenu() {
-
 
     const menu =
         document.getElementById(
@@ -1412,12 +1513,14 @@ function toggleAccessMenu() {
         );
 
 
+    if (!menu) return;
+
+
     menu.classList.toggle(
         'show'
     );
 
 }
-
 
 
 /* ==========================================================
@@ -1428,12 +1531,10 @@ document.addEventListener(
     'click',
     function (event) {
 
-
         const menu =
             document.getElementById(
                 'accessOptions'
             );
-
 
         const botao =
             document.querySelector(
@@ -1441,12 +1542,10 @@ document.addEventListener(
             );
 
 
-
         if (
-            menu
-            &&
-            !menu.contains(event.target)
-            &&
+            menu &&
+            botao &&
+            !menu.contains(event.target) &&
             !botao.contains(event.target)
         ) {
 
@@ -1460,18 +1559,13 @@ document.addEventListener(
 );
 
 
-
 /* ==========================================================
    INICIALIZAÇÃO
 ========================================================== */
 
 mostrarPagina();
 
-
 </script>
-
-
-
 <!-- =========================================================
      ACESSIBILIDADE
 ========================================================= -->

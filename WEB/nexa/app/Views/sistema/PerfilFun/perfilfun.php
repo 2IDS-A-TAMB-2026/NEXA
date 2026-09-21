@@ -15,135 +15,7 @@
 
     <!-- ESTILOS CORRIGIDOS PARA CORRIGIR O MODO ESCURO E ACESSIBILIDADE DO HEADER -->
     <style>
-        /* ESTILO PADRÃO DO HEADER */
-        .main-header {
-            background-color: #ffffff;
-            width: 100%;
-            padding: 15px 35px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e5e7eb;
-            box-sizing: border-box;
-            margin-bottom: 30px;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .header-title {
-            font-size: 22px;
-            color: #0a66c2;
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .header-subtitle {
-            color: #6b7280;
-            font-size: 13px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .header-access {
-            position: relative;
-        }
-
-        /* CONFIGURAÇÃO DO BOTÃO E POPOVER DE ACESSIBILIDADE */
-        .gear-btn {
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            color: #374151;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: background-color 0.2s;
-        }
-
-        .gear-btn:hover {
-            background: #e5e7eb;
-        }
-
-        .access-options {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 50px;
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            gap: 8px;
-            z-index: 1000;
-        }
-
-        .access-options.active {
-            display: flex;
-        }
-
-        .access-btn {
-            background: #f3f4f6;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #374151;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .access-btn:hover {
-            background: #0a66c2;
-            color: #ffffff;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
-            background-color: #0a66c2;
-            color: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-name {
-            font-size: 13px;
-            color: #1f2937;
-            line-height: 1.2;
-        }
-
-        .profile-company {
-            font-size: 10px;
-            color: #9ca3af;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
+      
         /* =========================================================
            REGRAS FORÇADAS PARA O MODO ESCURO NO HEADER
            ========================================================= */
@@ -318,54 +190,119 @@
 
     <div class="main" style="display: flex; flex-direction: column; width: 100%; box-sizing: border-box; padding: 20px;">
 
-        <!-- BARRA SUPERIOR (HEADER TOTALMENTE LIMPO DE ATRIBUTOS STYLE INLINE) -->
-        <header class="main-header">
-            
-            <!-- ESQUERDA: Bem-vindo + Nome -->
+         <header class="dashboard-header">
+
             <div class="header-left">
-                <h1 class="header-title">Bem-vindo,</h1>
-                <span class="header-subtitle"><?= session()->get('nome_fun') ?? 'Funcionario 1' ?></span>
-            </div>
 
-            <!-- DIREITA: Engrenagem + Perfil -->
-            <div class="header-right">
-                
-                <!-- ENGRENAGEM DE ACESSIBILIDADE -->
-                <div class="header-access">
-                    <button type="button" class="gear-btn" onclick="toggleAccessMenu()">
-                        <i class="fas fa-cog"></i>
-                    </button>
+                <div class="header-title">
 
-                    <div class="access-options" id="accessOptions">
-                        <button type="button" class="access-btn" onclick="toggleContrasteHandler()" title="Alto Contraste">
-                            <i class="fas fa-adjust"></i>
-                        </button>
-                        <button type="button" class="access-btn" onclick="toggleDark()" title="Modo Escuro">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                        <button type="button" class="access-btn" onclick="aumentarFonteHandler()" title="Aumentar Fonte">A+</button>
-                        <button type="button" class="access-btn" onclick="diminuirFonteHandler()" title="Diminuir Fonte">A-</button>
-                        <button type="button" class="access-btn" onclick="lerPaginaHandler()" title="Ler Página">
-                            <i class="fas fa-volume-up"></i>
-                        </button>
-                        <button type="button" class="access-btn" onclick="toggleVLibras()" title="Acessibilidade em Libras">
-                            <i class="fas fa-hands-asl-interpreting"></i>
-                        </button>
-                    </div>
-                </div>
+                    <h1>
+                        Perfil do Funcionário
+                    </h1>
 
-                <!-- FOTO / AVATAR + INFOS -->
-                <div class="profile">
-                    <div class="profile-avatar">
-                        <?= strtoupper(substr(session()->get('nome_fun') ?? 'F', 0, 1)); ?>
-                    </div>
-                    <div class="profile-info">
-                        <strong class="profile-name"><?= session()->get('nome_fun') ?? 'Funcionario 1' ?></strong>
-                        <small class="profile-company">NEXA SOLUÇÕES</small>
-                    </div>
+                    <p>
+                        Visualize seus dados
+                    </p>
+
                 </div>
 
             </div>
+
+
+
+
+
+        <!--botao de acessibilidade TESTE que nao deu muito certo, o vlibras ta funcionando-->
+    <!-- BOTÃO CONFIGURAÇÕES -->
+
+            <button
+                class="gear-btn"
+                onclick="toggleAccessMenu()"
+            >
+        
+                <i class="fas fa-cog"></i>
+        
+            </button>
+        
+        
+            <!-- OPÇÕES -->
+        
+            <div
+                class="access-options"
+                id="accessOptions"
+            >
+        
+        
+                <!-- CONTRASTE -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.toggleContraste()"
+                    title="Alto contraste"
+                >
+        
+                    <i class="fas fa-adjust"></i>
+        
+                </button>
+        
+        
+                <!-- MODO ESCURO -->
+        
+                <button
+                    class="access-btn"
+                    onclick="toggleDark()"
+                    title="Modo escuro"
+                >
+        
+                    <i class="fas fa-moon"></i>
+        
+                </button>
+        
+        
+                <!-- AUMENTAR FONTE -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.aumentarFonte()"
+                    title="Aumentar fonte"
+                >
+        
+                    A+
+        
+                </button>
+        
+        
+                <!-- DIMINUIR FONTE -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.diminuirFonte()"
+                    title="Diminuir fonte"
+                >
+        
+                    A-
+        
+                </button>
+        
+        
+                <!-- LER PÁGINA -->
+        
+                <button
+                    class="access-btn"
+                    onclick="Acessibilidade.lerPagina()"
+                    title="Ler página"
+                >
+        
+                    <i class="fas fa-volume-up"></i>
+        
+                </button>
+        
+        
+            </div> 
+
+
+
+
 
         </header>
 
@@ -391,16 +328,15 @@
 
                     </div>
 
-                    <div class="perfil-direita">
+                  <div class="perfil-direita">
 
-                        <div class="fundo-capacete"></div>
+    <img
+        src="<?= base_url('assets/images/capacete_perfil.png') ?>"
+        alt="Segurança com capacete"
+        class="imagem-seguranca"
+    >
 
-                        <div class="circulo"></div>
-
-                        <i class="fa-solid fa-helmet-safety"></i>
-                        <div class="dots dots1"></div>
-                        <div class="dots dots2"></div>
-                    </div>
+</div>
 
                 </div>
 

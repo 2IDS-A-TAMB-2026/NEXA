@@ -93,13 +93,12 @@ class AuthController extends ResourceController
         // VALIDAR SENHA
         // =====================================================
 
-        if ($funcionario['SENHA'] !== $senha) {
-            return $this->respond([
-                'status' => 401,
-                'message' => 'E-mail ou senha inválidos.'
-            ], 401);
-        }
-
+      if (!password_verify($senha, $funcionario['SENHA'])) {
+    return $this->respond([
+        'status' => 401,
+        'message' => 'E-mail ou senha inválidos.'
+    ], 401);
+}
         // =====================================================
         // RESPOSTA PARA O FLUTTER
         // =====================================================

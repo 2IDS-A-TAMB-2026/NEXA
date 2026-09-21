@@ -154,7 +154,7 @@
                     <div class="legend">
                         <span><span class="dot verde"></span> Correto</span>
                         <span><span class="dot vermelho"></span> Erro</span>
-                        <span><span class="dot cinza"></span> Folga</span>
+                        <span><span class="dot cinza"></span> Não analisado</span>
                     </div>
                 </div>
 
@@ -200,98 +200,483 @@
         </div>
     </div>
 
-    <script>
-    const meses = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
-    let dataAtual = new Date();
+   <script>
+const meses = [
+    "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
+    "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"
+];
 
-    /* DADOS DO BANCO */
-    const ocorrencias = <?= json_encode($ocorrencias ?? []) ?>;
-    const mapa = {};
+let dataAtual = new Date();
 
-    ocorrencias.forEach(o => {
-        mapa[o.DATA_ANALISE] = o;
+/* =====================================================
+   DADOS DO BANCO
+===================================================== */
+
+const ocorrencias = <?= json_encode($ocorrencias ?? [], JSON_UNESCAPED_UNICODE) ?>;
+
+
+/* =====================================================
+   AGRUPAR OCORRÊNCIAS POR DATA
+===================================================== */
+
+const mapa = {};
+
+ocorrencias.forEach(o => {
+
+    const data = o.DATA_ANALISE;
+
+    if (!mapa[data]) {
+        mapa[data] = [];
+    }
+
+    mapa[data].push(o);
+
+});
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function abrirModal(data, ocorrenciasDoDia) {
+
+    const modal = document.getElementById("modal");
+
+    /* Ordena por horário */
+    ocorrenciasDoDia.sort((a, b) => {
+
+        const horaA = a.HORA_ANALISE || "";
+        const horaB = b.HORA_ANALISE || "";
+
+        return horaA.localeCompare(horaB);
+
     });
 
-    /* MODAL SIMPLES */
-    function abrirModal(info) {
-        const modal = document.getElementById("modal");
-        modal.innerHTML = `
-            <div class="modal-box">
-                <h3>Detalhes do Dia</h3>
-                <p><b>Status:</b> ${info.STATUS_OCORRENCIA}</p>
-                <p><b>Hora:</b> ${info.HORA_ANALISE}</p>
-                <p><b>EPIs Detectados:</b> ${info.EPIS_DETECTADOS}</p>
-                <p><b>EPIs Ausentes:</b> ${info.EPIS_AUSENTE}</p>
-                <button onclick="fecharModal()">Fechar</button>
+
+    /* Formata a data */
+    const partes = data.split("-");
+
+    const dataFormatada =
+        `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+
+    /* Cria os cards das ocorrências */
+
+    let ocorrenciasHTML = "";
+
+    ocorrenciasDoDia.forEach((info, index) => {
+
+        const status =
+            info.STATUS_OCORRENCIA || "Sem status";
+
+      const statusNormalizado =
+    String(status || "").toLowerCase().trim();
+
+const statusConforme =
+    statusNormalizado === "conforme" ||
+    statusNormalizado === "regular";
+
+const statusClasse =
+    statusConforme
+        ? "modal-status-regular"
+        : "modal-status-irregular";
+
+        ocorrenciasHTML += `
+
+            <div class="ocorrencia-item">
+
+                <div class="ocorrencia-topo">
+
+                    <div class="ocorrencia-numero">
+                        Ocorrência ${index + 1}
+                    </div>
+
+                    <div class="ocorrencia-hora">
+                        <i class="fa-regular fa-clock"></i>
+                        ${info.HORA_ANALISE || "--:--"}
+                    </div>
+
+                </div>
+
+
+                <div class="ocorrencia-status ${statusClasse}">
+
+                    <i class="fa-solid ${
+                      statusConforme
+    ? "fa-circle-check"
+    : "fa-triangle-exclamation"
+                    }"></i>
+
+                    ${status}
+
+                </div>
+
+<div class="ocorrencia-dados">
+
+    ${
+        info.EPIS_DETECTADOS &&
+        info.EPIS_DETECTADOS.trim().toLowerCase() !== "nenhum"
+        ? `
+            <div class="dado">
+
+                <div class="dado-icone detectado">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <span>EPIs Detectados</span>
+                    <strong>
+                        ${info.EPIS_DETECTADOS}
+                    </strong>
+                </div>
+
             </div>
+        `
+        : ""
+    }
+
+
+    ${
+        info.EPIS_AUSENTE &&
+        info.EPIS_AUSENTE.trim().toLowerCase() !== "nenhum"
+        ? `
+            <div class="dado">
+
+                <div class="dado-icone ausente">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+                <div>
+                    <span>EPIs Ausentes</span>
+                    <strong>
+                        ${info.EPIS_AUSENTE}
+                    </strong>
+                </div>
+
+            </div>
+        `
+        : ""
+    }
+
+</div>
+            </div>
+
         `;
-        modal.style.display = "flex";
+
+    });
+
+
+    /* Monta o modal */
+
+    modal.innerHTML = `
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <div class="modal-titulo">
+
+                    <div class="modal-icon">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>Ocorrências do dia</h3>
+
+                        <span>
+                            ${dataFormatada}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="modal-fechar"
+                    onclick="fecharModal()"
+                    aria-label="Fechar"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div class="modal-resumo">
+
+                <div class="resumo-icon">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        ${ocorrenciasDoDia.length}
+                        ${
+                            ocorrenciasDoDia.length === 1
+                            ? "ocorrência registrada"
+                            : "ocorrências registradas"
+                        }
+                    </strong>
+
+                    <span>
+                        Confira os horários e detalhes das análises.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="ocorrencias-lista">
+
+                ${ocorrenciasHTML}
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn-fechar-modal"
+                    onclick="fecharModal()"
+                >
+                    <i class="fa-solid fa-check"></i>
+                    Fechar
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    modal.style.display = "flex";
+
+}
+
+
+/* =====================================================
+   FECHAR MODAL
+===================================================== */
+
+function fecharModal() {
+
+    document.getElementById("modal").style.display = "none";
+
+}
+
+
+/* =====================================================
+   FECHAR CLICANDO FORA DO MODAL
+===================================================== */
+
+document.getElementById("modal").addEventListener("click", function(e) {
+
+    if (e.target === this) {
+        fecharModal();
     }
 
-    function fecharModal() {
-        document.getElementById("modal").style.display = "none";
+});
+
+
+/* =====================================================
+   CALENDÁRIO
+===================================================== */
+
+function renderCalendario() {
+
+    let dias = document.getElementById("dias");
+
+    dias.innerHTML = "";
+
+
+    let ano = dataAtual.getFullYear();
+
+    let mes = dataAtual.getMonth();
+
+
+    document.getElementById("mesAno").innerText =
+        meses[mes];
+
+    document.getElementById("ano").innerText =
+        ano;
+
+
+    let primeiroDia =
+        new Date(ano, mes, 1).getDay();
+
+    let totalDias =
+        new Date(ano, mes + 1, 0).getDate();
+
+
+    /* Espaços antes do primeiro dia */
+
+    for (let i = 0; i < primeiroDia; i++) {
+
+        dias.innerHTML += "<div></div>";
+
     }
 
-    /* CALENDÁRIO */
-    function renderCalendario() {
-        let dias = document.getElementById("dias");
-        dias.innerHTML = "";
 
-        let ano = dataAtual.getFullYear();
-        let mes = dataAtual.getMonth();
+    /* Dias */
 
-        document.getElementById("mesAno").innerText = meses[mes];
-        document.getElementById("ano").innerText = ano;
+    for (let dia = 1; dia <= totalDias; dia++) {
 
-        let primeiroDia = new Date(ano, mes, 1).getDay();
-        let totalDias = new Date(ano, mes + 1, 0).getDate();
+        let div = document.createElement("div");
 
-        for (let i = 0; i < primeiroDia; i++) {
-            dias.innerHTML += "<div></div>";
+        div.classList.add("dia");
+
+        div.innerText = dia;
+
+
+        let status = document.createElement("div");
+
+        status.classList.add("status");
+
+
+        let data =
+            `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+
+
+        /* TODAS as ocorrências daquele dia */
+
+        let ocorrenciasDoDia =
+            mapa[data] || [];
+
+
+  /* =================================================
+   DEFINIR COR DO DIA
+================================================= */
+
+let cor = "cinza";
+
+if (ocorrenciasDoDia.length > 0) {
+
+    /*
+     * Se existir pelo menos uma ocorrência irregular,
+     * o dia inteiro fica vermelho.
+     */
+    const temIrregular = ocorrenciasDoDia.some(o =>
+        String(o.STATUS_OCORRENCIA || "").toLowerCase() === "irregular"
+    );
+
+    /*
+     * Se não existe irregular e existe ocorrência,
+     * significa que todas são conformes.
+     */
+    const temConforme = ocorrenciasDoDia.some(o =>
+        ["conforme", "regular"].includes(
+            String(o.STATUS_OCORRENCIA || "").toLowerCase()
+        )
+    );
+
+    if (temIrregular) {
+
+        cor = "vermelho";
+
+    } else if (temConforme) {
+
+        cor = "verde";
+
+    }
+}
+
+
+        status.classList.add(cor);
+
+
+        /* =================================================
+           CLIQUE NO DIA
+        ================================================= */
+
+        div.onclick = () => {
+
+            if (ocorrenciasDoDia.length > 0) {
+
+                abrirModal(
+                    data,
+                    ocorrenciasDoDia
+                );
+
+            }
+
+        };
+
+
+        /*
+         * Mostra que existem várias ocorrências
+         */
+
+        if (ocorrenciasDoDia.length > 1) {
+
+            div.classList.add("tem-varias");
+
+            const quantidade =
+                document.createElement("span");
+
+            quantidade.classList.add(
+                "quantidade-ocorrencias"
+            );
+
+            quantidade.innerText =
+                ocorrenciasDoDia.length;
+
+            div.appendChild(quantidade);
+
         }
 
-        for (let dia = 1; dia <= totalDias; dia++) {
-            let div = document.createElement("div");
-            div.classList.add("dia");
-            div.innerText = dia;
 
-            let status = document.createElement("div");
-            status.classList.add("status");
+        div.appendChild(status);
 
-            let data = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
-            let info = mapa[data];
+        dias.appendChild(div);
 
-            let cor = "cinza";
-            if (info?.STATUS_OCORRENCIA === "Regular") cor = "verde";
-            if (info?.STATUS_OCORRENCIA === "Irregular") cor = "vermelho";
-
-            status.classList.add(cor);
-
-            div.onclick = () => {
-                if (info) {
-                    abrirModal(info);
-                }
-            };
-
-            div.appendChild(status);
-            dias.appendChild(div);
-        }
     }
 
-    /* TROCAR MÊS */
-    function mudarMes(v) {
-        dataAtual.setMonth(dataAtual.getMonth() + v);
-        renderCalendario();
-    }
+}
 
-    /* ALTERNAR EXIBIÇÃO DO VLIBRAS VIA MENU DE ACESSIBILIDADE */
-    function toggleVLibras() {
-        const btn = document.querySelector('[vw-access-button]');
-        if (btn) btn.click();
-    }
+
+/* =====================================================
+   TROCAR MÊS
+===================================================== */
+
+function mudarMes(v) {
+
+    dataAtual.setMonth(
+        dataAtual.getMonth() + v
+    );
 
     renderCalendario();
-    </script>
+
+}
+
+
+/* =====================================================
+   VLIBRAS
+===================================================== */
+
+function toggleVLibras() {
+
+    const btn =
+        document.querySelector('[vw-access-button]');
+
+    if (btn) {
+        btn.click();
+    }
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+renderCalendario();
+
+</script>
 
     <!-- SCRIPT DA NOSSA ACESSIBILIDADE E DO VLIBRAS -->
     <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>

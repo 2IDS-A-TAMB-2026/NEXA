@@ -31,171 +31,7 @@
         href="<?= base_url('assets/css/cadastro_funci.css') ?>"
     >
 
-    <style>
-
-        /* =========================================================
-           HEADER
-        ========================================================= */
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-
-        /* =========================================================
-           MENU DE ACESSIBILIDADE
-        ========================================================= */
-
-        .access-options.show,
-        .access-options.active {
-            display: flex;
-        }
-
-        .access-menu {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .gear-btn {
-            background: transparent !important;
-            border: none !important;
-            outline: none !important;
-            cursor: pointer;
-
-            font-size: 1.2rem;
-            color: #6c757d;
-
-            padding: 6px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            transition:
-                color 0.2s,
-                transform 0.3s;
-        }
-
-        .gear-btn:hover {
-            color: #2b3674;
-            transform: rotate(45deg);
-        }
-
-        .access-options {
-            display: none;
-
-            position: absolute;
-
-            top: 130%;
-            right: 0;
-
-            background: #ffffff;
-
-            box-shadow:
-                0px 4px 15px rgba(0, 0, 0, 0.12);
-
-            border-radius: 8px;
-
-            padding: 8px;
-
-            gap: 6px;
-
-            z-index: 1000;
-        }
-
-        .access-options.show {
-            display: flex;
-        }
-
-        .access-btn {
-            background: #f4f7fe;
-
-            border: none;
-
-            padding: 8px 12px;
-
-            border-radius: 6px;
-
-            cursor: pointer;
-
-            color: #2b3674;
-
-            font-weight: 600;
-
-            transition: background 0.2s;
-        }
-
-        .access-btn:hover {
-            background: #e0e5f2;
-        }
-
-
-        /* =========================================================
-           MODO ESCURO
-        ========================================================= */
-
-        body.dark-mode {
-            background-color: #0b1437 !important;
-            color: #ffffff !important;
-        }
-
-        body.dark-mode .dashboard-header,
-        body.dark-mode .form-card,
-        body.dark-mode .list-card,
-        body.dark-mode .sidebar {
-            background-color: #111c44 !important;
-            color: #ffffff !important;
-        }
-
-        body.dark-mode input,
-        body.dark-mode select,
-        body.dark-mode textarea {
-            background-color: #1b254b !important;
-            color: #ffffff !important;
-            border-color: #2b3674 !important;
-        }
-
-
-        /* =========================================================
-           ALTO CONTRASTE
-        ========================================================= */
-
-        body.high-contrast {
-            background-color: #000000 !important;
-            color: #ffff00 !important;
-        }
-
-        body.high-contrast *,
-        body.high-contrast input,
-        body.high-contrast select,
-        body.high-contrast button {
-            background-color: #000000 !important;
-            color: #ffff00 !important;
-            border-color: #ffff00 !important;
-        }
-
     
-/* CHECKBOXES DE EPI NA EDICAO */
-.edit-epis-container { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; width:100%; max-height:220px; overflow-y:auto; padding:4px; }
-.edit-epi-checkbox { display:flex; align-items:center; gap:10px; min-height:48px; padding:10px 12px; border:1px solid #d9e2ec; border-radius:10px; background:#fff; cursor:pointer; transition:.2s ease; }
-.edit-epi-checkbox:hover { border-color:#0a66c2; }
-.edit-epi-checkbox input { position:absolute; opacity:0; pointer-events:none; }
-.edit-epi-checkmark { width:22px; height:22px; min-width:22px; border:2px solid #aab7c4; border-radius:5px; display:flex; align-items:center; justify-content:center; transition:.2s ease; }
-.edit-epi-checkmark i { display:none; font-size:12px; color:#fff; }
-.edit-epi-checkbox input:checked + .edit-epi-checkmark { background:#198754; border-color:#198754; }
-.edit-epi-checkbox input:checked + .edit-epi-checkmark i { display:block; }
-.edit-epi-name { font-weight:600; }
-@media (max-width:600px) { .edit-epis-container { grid-template-columns:1fr; } }
-</style>
 
 </head>
 
@@ -1312,11 +1148,11 @@
         toggleContraste() {
 
             document.body.classList.remove(
-                "dark-mode"
+                "high-contrast"
             );
 
             document.body.classList.toggle(
-                "high-contrast"
+                "alto-contraste"
             );
 
         },

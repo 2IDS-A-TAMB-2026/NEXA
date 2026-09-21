@@ -36,9 +36,9 @@ body{
     padding:110px 35px 35px;
 }
 
-/* ==========================================================
-   HEADER DASHBOARD
-========================================================== */
+/* =========================================================
+   HEADER
+========================================================= */
 
 .dashboard-header {
     position: fixed;
@@ -46,15 +46,21 @@ body{
     left: 270px;
     right: 0;
     height: 75px;
+
     background: #ffffff;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     padding: 0 35px;
+
     border-bottom: 1px solid #e7edf3;
     box-shadow: 0 3px 15px rgba(15, 42, 68, 0.06);
+
     z-index: 100;
 }
+
 
 /* =========================================================
    TÍTULO
@@ -83,13 +89,6 @@ body{
     font-size: 13px;
 }
 
-/* =========================================================
-   PERFIL E ACESSIBILIDADE
-========================================================= */
-
-/* =========================================================
-   PERFIL E ACESSIBILIDADE
-========================================================= */
 
 /* =========================================================
    PERFIL E ACESSIBILIDADE
@@ -99,7 +98,7 @@ body{
     display: flex;
     align-items: center;
     gap: 15px;
-    position: relative !important; /* Referência fixa para alinhamento à direita */
+    position: relative !important;
     margin-left: auto;
 }
 
@@ -114,103 +113,6 @@ body{
     align-items: center !important;
     z-index: 99999 !important;
 }
-
-/* ENGRENAGEM (Transparente e cinza, alinhada à esquerda do perfil) */
-.gear-btn {
-    position: relative !important;
-    flex-shrink: 0 !important;
-    width: auto !important;
-    height: auto !important;
-    border: none !important;
-    border-radius: 0 !important;
-    outline: none !important;
-    background: transparent !important;
-    color: #64748b !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer;
-    font-size: 22px;
-    box-shadow: none !important;
-    padding: 6px;
-    transition: transform 0.4s ease, color 0.2s ease;
-}
-
-.access-menu:has(.access-options.active) .gear-btn,
-.access-menu.active .gear-btn {
-    transform: rotate(90deg);
-}
-
-.gear-btn:hover {
-    background: transparent !important;
-    color: #17325c !important;
-}
-
-/* CAIXA FLUTUANTE DE ACESSIBILIDADE (Alinhada perfeitamente à borda direita) */
-/* CAIXA FLUTUANTE DE ACESSIBILIDADE */
-.access-options {
-    position: fixed !important;
-    top: 70px !important; /* Distância do topo da tela */
-    right: 35px !important; /* Encosta perfeitamente na margem direita do header */
-    left: auto !important;
-    width: max-content !important;
-    height: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 20px !important;
-    padding: 12px 24px !important;
-    background: #ffffff !important;
-    border-radius: 20px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-    z-index: 99999 !important;
-}
-
-.access-options.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translateY(0) !important;
-}
-
-/* BOTÕES DE ACESSIBILIDADE */
-.access-btn {
-    width: auto !important;
-    height: auto !important;
-    border: none !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    color: #475569 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 700;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 0.25s ease, transform 0.25s ease, color 0.15s ease;
-}
-
-.access-btn:hover {
-    background: transparent !important;
-    color: #000000 !important;
-}
-
-.access-options.active .access-btn {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.access-options.active .access-btn:nth-child(1) { transition-delay: 0.03s; }
-.access-options.active .access-btn:nth-child(2) { transition-delay: 0.06s; }
-.access-options.active .access-btn:nth-child(3) { transition-delay: 0.09s; }
-.access-options.active .access-btn:nth-child(4) { transition-delay: 0.12s; }
-.access-options.active .access-btn:nth-child(5) { transition-delay: 0.15s; }
 
 /* PERFIL */
 .profile {
@@ -248,6 +150,7 @@ body{
     color: #94a3b8;
     font-size: 13px;
 }
+
 /* ==========================================================
    MÉTRICAS
 ========================================================== */
@@ -419,9 +322,112 @@ body{
         height:210px;
     }
 }
-
 /* ==========================================================
-   MODO ESCURO (SEM MUDAR TAMANHO, TUDO REDONDINHO)
+   EPIs MAIS AUSENTES
+========================================================== */
+
+.card-epis {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-epis h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-epis h3 i {
+    color: #0A66C2;
+}
+
+.epis-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.epi-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+    background: #f4f6fa;
+
+    transition: 0.2s ease;
+}
+
+.epi-item:hover {
+    transform: translateX(3px);
+}
+
+.epi-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.epi-icone {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(10, 102, 194, 0.1);
+    color: #0A66C2;
+}
+
+.epi-info span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.epi-item strong {
+    min-width: 30px;
+
+    text-align: center;
+
+    font-size: 15px;
+
+    color: #0A66C2;
+
+    background: rgba(10, 102, 194, 0.1);
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+}
+
+.epi-vazio {
+    min-height: 180px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color: #04b507;
+    font-weight: 600;
+}
+
+.epi-vazio i {
+    font-size: 35px;
+}
+/* ==========================================================
+   MODO ESCURO
 ========================================================== */
 
 body.modo-escuro .access-options,
@@ -474,11 +480,150 @@ body.dark-mode .pagina-btn.ativa {
     border-radius: 50% !important;
 }
 
-
 /* ==========================================================
-   MODO ALTO CONTRASTE (SEM MUDAR TAMANHO, TUDO REDONDINHO)
+   MODO ALTO CONTRASTE
 ========================================================== */
 
+body.alto-contraste,
+body.contraste,
+[data-theme="alto-contraste"] {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.alto-contraste .overlay,
+body.contraste .overlay,
+[data-theme="alto-contraste"] .overlay,
+body.alto-contraste .main,
+body.contraste .main,
+[data-theme="alto-contraste"] .main {
+    background: #000000 !important;
+}
+
+/* Header superior */
+body.alto-contraste .dashboard-header,
+body.contraste .dashboard-header,
+[data-theme="alto-contraste"] .dashboard-header {
+    background: #000000 !important;
+    border-bottom: 1px solid #ffff00 !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .header-title h1,
+body.contraste .header-title h1,
+[data-theme="alto-contraste"] .header-title h1,
+body.alto-contraste .header-title p,
+body.contraste .header-title p,
+[data-theme="alto-contraste"] .header-title p,
+body.alto-contraste .profile-info span,
+body.contraste .profile-info span,
+[data-theme="alto-contraste"] .profile-info span {
+    color: #ffff00 !important;
+}
+
+body.alto-contraste .profile-info strong,
+body.contraste .profile-info strong,
+[data-theme="alto-contraste"] .profile-info strong {
+    color: #ffffff !important;
+}
+
+/* Sidebar e Menu Lateral sem fundo azul e sem bordas nas opções */
+body.alto-contraste .sidebar,
+body.contraste .sidebar,
+[data-theme="alto-contraste"] .sidebar,
+body.alto-contraste aside,
+body.contraste aside,
+[data-theme="alto-contraste"] aside {
+    background: #000000 !important;
+    background-image: none !important;
+    border-right: 1px solid #ffff00 !important;
+}
+
+body.alto-contraste .sidebar::before,
+body.contraste .sidebar::before,
+[data-theme="alto-contraste"] .sidebar::before,
+body.alto-contraste .sidebar::after,
+body.contraste .sidebar::after,
+[data-theme="alto-contraste"] .sidebar::after {
+    display: none !important;
+}
+
+/* Categorias do Menu (CONTA, PRINCIPAL, CADASTROS) em cinza claro */
+body.alto-contraste .sidebar-title,
+body.contraste .sidebar-title,
+[data-theme="alto-contraste"] .sidebar-title,
+body.alto-contraste .menu-category,
+body.contraste .menu-category,
+[data-theme="alto-contraste"] .menu-category {
+    color: #94a3b8 !important;
+}
+
+/* Textos e Ícones do Menu Amarelos e sem Borda */
+body.alto-contraste .sidebar a,
+body.contraste .sidebar a,
+[data-theme="alto-contraste"] .sidebar a,
+body.alto-contraste .menu-item,
+body.contraste .menu-item,
+[data-theme="alto-contraste"] .menu-item {
+    background: transparent !important;
+    color: #ffff00 !important;
+    border: none !important;
+}
+
+body.alto-contraste .sidebar a *,
+body.contraste .sidebar a *,
+[data-theme="alto-contraste"] .sidebar a *,
+body.alto-contraste .menu-item *,
+body.contraste .menu-item * {
+    color: #ffff00 !important;
+}
+
+body.alto-contraste .sidebar i,
+body.contraste .sidebar i,
+[data-theme="alto-contraste"] .sidebar i,
+body.alto-contraste .sidebar svg,
+body.contraste .sidebar svg,
+[data-theme="alto-contraste"] .sidebar svg,
+body.alto-contraste .menu-item i,
+body.contraste .menu-item i,
+[data-theme="alto-contraste"] .menu-item svg {
+    color: #ffff00 !important;
+    fill: #ffff00 !important;
+}
+
+body.alto-contraste .sidebar a.active,
+body.contraste .sidebar a.active,
+[data-theme="alto-contraste"] .sidebar a.active,
+body.alto-contraste .menu-item.active,
+body.contraste .menu-item.active,
+[data-theme="alto-contraste"] .menu-item.active {
+    background: rgba(255, 255, 0, 0.1) !important;
+    color: #ffff00 !important;
+    border: none !important;
+}
+
+/* Cards das Métricas e Gráficos */
+body.alto-contraste .metric,
+body.contraste .metric,
+[data-theme="alto-contraste"] .metric,
+body.alto-contraste .card,
+body.contraste .card,
+[data-theme="alto-contraste"] .card {
+    background: #000000 !important;
+    border: 1px solid #ffff00 !important;
+    box-shadow: none !important;
+}
+
+body.alto-contraste .metric h4,
+body.contraste .metric h4,
+[data-theme="alto-contraste"] .metric h4,
+body.alto-contraste .card h3,
+body.contraste .card h3,
+[data-theme="alto-contraste"] .card h3 {
+    color: #ffff00 !important;
+}
+
+/* Modal e Botões de Acessibilidade */
 body.alto-contraste .access-options,
 body.contraste .access-options,
 [data-theme="alto-contraste"] .access-options {
@@ -513,20 +658,103 @@ body.contraste .gear-btn,
     border-radius: 50% !important;
 }
 
-body.alto-contraste .btn-limpar,
-body.contraste .btn-limpar,
-[data-theme="alto-contraste"] .btn-limpar {
-    background: #000000 !important;
-    color: #ffff00 !important;
-    border: 1px solid #ffff00 !important;
-    border-radius: 50px !important;
+/* Botão Sair do Sistema em Vermelho */
+body.alto-contraste .btn-logout,
+body.contraste .btn-logout,
+[data-theme="alto-contraste"] .btn-logout,
+body.alto-contraste a[href*="logout"],
+body.contraste a[href*="logout"],
+body.alto-contraste .sidebar-footer a,
+body.contraste .sidebar-footer a,
+body.alto-contraste .sidebar .menu-item:last-child,
+body.contraste .sidebar .menu-item:last-child {
+    background-color: #000000 !important;
+    color: #ff3333 !important;
+    border: 1px solid #ff3333 !important;
+    border-radius: 12px !important;
 }
 
-body.alto-contraste .pagina-btn.ativa,
-body.contraste .pagina-btn.ativa,
-[data-theme="alto-contraste"] .pagina-btn.ativa {
-    background: #ffff00 !important;
+body.alto-contraste .btn-logout *,
+body.contraste .btn-logout *,
+[data-theme="alto-contraste"] .btn-logout *,
+body.alto-contraste a[href*="logout"] *,
+body.contraste a[href*="logout"] *,
+body.alto-contraste .sidebar .menu-item:last-child *,
+body.contraste .sidebar .menu-item:last-child * {
+    color: #ff3333 !important;
+}
+
+body.alto-contraste .btn-logout:hover,
+body.contraste .btn-logout:hover,
+[data-theme="alto-contraste"] .btn-logout:hover,
+body.alto-contraste a[href*="logout"]:hover,
+body.contraste a[href*="logout"]:hover {
+    background-color: #ff3333 !important;
     color: #000000 !important;
-    border: 1px solid #ffff00 !important;
-    border-radius: 50% !important;
+}
+
+body.alto-contraste .btn-logout:hover *,
+body.contraste .btn-logout:hover *,
+[data-theme="alto-contraste"] .btn-logout:hover *,
+body.alto-contraste a[href*="logout"]:hover *,
+body.contraste a[href*="logout"]:hover * {
+    color: #000000 !important;
+}
+
+/* Cores Originais mantidas nas Métricas (Ícones e Valores) */
+body.alto-contraste .metric-icon.pessoas,
+body.contraste .metric-icon.pessoas,
+[data-theme="alto-contraste"] .metric-icon.pessoas,
+.metric-icon.pessoas {
+    background: rgba(10, 102, 194, 0.2) !important;
+    color: #3b82f6 !important;
+}
+
+body.alto-contraste .metric-icon.conformidade,
+body.contraste .metric-icon.conformidade,
+[data-theme="alto-contraste"] .metric-icon.conformidade,
+.metric-icon.conformidade {
+    background: rgba(22, 163, 74, 0.2) !important;
+    color: #22c55e !important;
+}
+
+body.alto-contraste .metric-icon.alerta,
+body.contraste .metric-icon.alerta,
+[data-theme="alto-contraste"] .metric-icon.alerta,
+.metric-icon.alerta {
+    background: rgba(220, 38, 38, 0.2) !important;
+    color: #ef4444 !important;
+}
+
+body.alto-contraste .metric-icon.camera,
+body.contraste .metric-icon.camera,
+[data-theme="alto-contraste"] .metric-icon.camera,
+.metric-icon.camera {
+    background: rgba(37, 99, 235, 0.2) !important;
+    color: #3b82f6 !important;
+}
+
+body.alto-contraste .metric:has(.conformidade) span,
+body.contraste .metric:has(.conformidade) span,
+[data-theme="alto-contraste"] .metric:has(.conformidade) span,
+.metric:has(.conformidade) span,
+[data-metric="conformidade"] span {
+    color: #22c55e !important;
+}
+
+body.alto-contraste .metric:has(.alerta) span,
+body.contraste .metric:has(.alerta) span,
+[data-theme="alto-contraste"] .metric:has(.alerta) span,
+.metric:has(.alerta) span,
+[data-metric="alerta"] span {
+    color: #ef4444 !important;
+}
+
+body.alto-contraste .metric:has(.pessoas) span,
+body.contraste .metric:has(.pessoas) span,
+[data-theme="alto-contraste"] .metric:has(.pessoas) span,
+body.alto-contraste .metric:has(.camera) span,
+body.contraste .metric:has(.camera) span,
+[data-theme="alto-contraste"] .metric:has(.camera) span {
+    color: #ffffff !important;
 }

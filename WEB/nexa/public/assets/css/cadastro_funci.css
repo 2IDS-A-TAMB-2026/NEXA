@@ -52,241 +52,119 @@ body{
 
 }
 
-/* ==========================================================
+/* =========================================================
    HEADER
-========================================================== */
+========================================================= */
 
-.dashboard-header{
-    position:fixed;
-    top:0;
-    left:270px;
-    right:0;
-    height:75px;
-    background:#fff;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 32px;
-    border-bottom:1px solid #edf2f7;
-    box-shadow:0 4px 20px rgba(0,0,0,.05);
-    z-index:100;
+.dashboard-header {
+    position: fixed;
+    top: 0;
+    left: 270px;
+    right: 0;
+    height: 75px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 35px;
+
+    border-bottom: 1px solid #e7edf3;
+    box-shadow: 0 3px 15px rgba(15, 42, 68, 0.06);
+
+    z-index: 100;
 }
 
-/* Agrupador do lado direito da header */
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-title h1 {
+    color: #17325c;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.header-title p {
+    margin-top: 4px;
+    color: #7b8794;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   PERFIL E ACESSIBILIDADE
+========================================================= */
+
 .header-right {
     display: flex;
     align-items: center;
     gap: 15px;
-    position: relative !important; /* Referência fixa para alinhamento à direita */
+    position: relative !important;
     margin-left: auto;
 }
-.header-title{
-    display:flex;
-    flex-direction:column;
-}
 
-.header-title h1{
-    color:#17325c;
-    font-size:22px;
-    font-weight:700;
-}
-
-.header-title p{
-    margin-top:6px;
-    color:#64748b;
-    font-size:15px;
-}
-
-/* ==========================================================
-   MENU ACESSIBILIDADE (BOTÃO DE ENGRENAGEM)
-========================================================== */
-
-/* ==========================================================
-   MENU ACESSIBILIDADE (BOTÃO DE ENGRENAGEM E OPÇÕES)
-========================================================== */
-
-.access-menu {
-    position: relative;
+/* CONTAINER DE ACESSIBILIDADE */
+.header-access {
     display: flex;
     align-items: center;
 }
 
-/* Botão de Engrenagem (Mesmo tamanho e formato do avatar) */
-.gear-btn {
-    width: 42px !important;
-    height: 42px !important;
-    border-radius: 50% !important;
-    background: #f4f7fe !important;
-    color: #0A66C2 !important;
-    border: none !important;
-    outline: none !important;
-    cursor: pointer;
+.access-menu {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    padding: 0 !important;
-    font-size: 1.1rem;
-    transition: background 0.2s, transform 0.3s;
-}
-
-.gear-btn:hover {
-    background: #e0e5f2 !important;
-    transform: rotate(45deg);
-}
-
-.access-options {
-    position: fixed !important;
-    top: 75px !important;
-    right: 35px !important;
-    left: auto !important;
-    width: max-content !important;
-    height: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    padding: 10px 18px !important;
-    background: #ffffff !important;
-    border-radius: 50px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
     z-index: 99999 !important;
 }
 
-.access-options.show,
-.access-options.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translateY(0) !important;
-}
-
-/* Botões Internos do Menu (Estilo Pílula/Círculo) */
-.access-btn {
-    width: 36px;
-    height: 36px;
-    background: #f4f7fe;
-    border: none;
-    border-radius: 50% !important;
-    cursor: pointer;
-    color: #17325c;
-    font-weight: 600;
-    font-size: 13px;
-    transition: background 0.2s, color 0.2s;
+/* PERFIL */
+.profile {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
 }
 
-.access-btn:hover {
+.profile-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     background: #0A66C2;
-    color: #ffffff;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 700;
 }
 
-/* ==========================================================
-   MODO ESCURO E ALTO CONTRASTE (SUPORTE)
-========================================================== */
-
-body.dark-mode {
-    background: #0b1437 !important;
-    color: #ffffff !important;
+.profile-info {
+    display: flex;
+    flex-direction: column;
 }
 
-body.dark-mode .dashboard-header,
-body.dark-mode .form-card,
-body.dark-mode .list-card {
-    background: #111c44 !important;
-    border-color: #1b254b !important;
-    color: #ffffff !important;
+.profile-info strong {
+    color: #17325c;
+    font-size: 15px;
 }
 
-body.dark-mode .access-options {
-    background: #1b254b;
-}
-
-body.dark-mode .access-btn {
-    background: #111c44;
-    color: #ffffff;
-}
-
-body.high-contrast {
-    background: #000000 !important;
-    color: #ffff00 !important;
-}
-
-body.high-contrast * {
-    background: #000000 !important;
-    color: #ffff00 !important;
-    border-color: #ffff00 !important;
-}
-
-
-/* ==========================================================
-   PERFIL
-========================================================== */
-
-.profile{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    text-decoration:none;
-
-    color:inherit;
-
-}
-
-.profile-avatar{
-
-    width:42px;
-
-    height:42px;
-
-    border-radius:50%;
-
-    background:#0A66C2;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    color:#fff;
-
-    font-weight:bold;
-
-}
-
-.profile-info{
-
-    display:flex;
-
-    flex-direction:column;
-
-}
-
-.profile-info strong{
-
-    color:#17325c;
-
-    font-size:15px;
-
-}
-
-.profile-info span{
-
-    color:#94a3b8;
-
-    font-size:13px;
-
+.profile-info span {
+    color: #94a3b8;
+    font-size: 13px;
 }
 
 /* ==========================================================
@@ -428,7 +306,7 @@ body.high-contrast * {
 
     position:absolute;
 
-    bottom:530px;
+    top:100px;
     right:30px;
 
     width:180px;
@@ -769,7 +647,7 @@ body.high-contrast * {
 
     cursor:pointer;
 
-    font-size:16px;
+    font-size:14px;
 
     font-weight:600;
 

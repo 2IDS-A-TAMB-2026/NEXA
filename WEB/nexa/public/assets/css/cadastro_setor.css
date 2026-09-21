@@ -40,94 +40,121 @@ body{
     width:100%;
 }
 
-/* ==========================================================
+/* =========================================================
    HEADER
-========================================================== */
+========================================================= */
 
-.dashboard-header{
-    position:fixed;
-    top:0;
-    left:270px;
-    right:0;
-    height:75px;
-    background:#fff;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 32px;
-    border-bottom:1px solid #edf2f7;
-    box-shadow:0 4px 20px rgba(0,0,0,.05);
-    z-index:100;
+.dashboard-header {
+    position: fixed;
+    top: 0;
+    left: 270px;
+    right: 0;
+    height: 75px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 35px;
+
+    border-bottom: 1px solid #e7edf3;
+    box-shadow: 0 3px 15px rgba(15, 42, 68, 0.06);
+
+    z-index: 100;
 }
 
-.header-left{
-    display:flex;
-    align-items:center;
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.header-left {
+    display: flex;
+    align-items: center;
 }
 
-.header-title{
-    display:flex;
-    flex-direction:column;
+.header-title {
+    display: flex;
+    flex-direction: column;
 }
 
-.header-title h1{
-    color:#17325c;
-    font-size:21px;
-    font-weight:700;
-    line-height:1.1;
+.header-title h1 {
+    color: #17325c;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-.header-title p{
-    margin-top:6px;
-    color:#667085;
-    font-size:15px;
+.header-title p {
+    margin-top: 4px;
+    color: #7b8794;
+    font-size: 13px;
 }
 
-/* ==========================================================
-   HEADER DIREITA
-========================================================== */
 
-.header-right{
-    display:flex;
-    align-items:center;
-    gap:24px;
+/* =========================================================
+   PERFIL E ACESSIBILIDADE
+========================================================= */
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative !important;
+    margin-left: auto;
 }
 
-.profile{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    text-decoration:none;
-    color:inherit;
+/* CONTAINER DE ACESSIBILIDADE */
+.header-access {
+    display: flex;
+    align-items: center;
 }
 
-.profile-avatar{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    background:#0A66C2;
-    color:#fff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:16px;
-    font-weight:bold;
+.access-menu {
+    display: flex !important;
+    align-items: center !important;
+    z-index: 99999 !important;
 }
 
-.profile-info{
-    display:flex;
-    flex-direction:column;
+/* PERFIL */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
 }
 
-.profile-info strong{
-    color:#17325c;
-    font-size:15px;
+.profile-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #0A66C2;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 700;
 }
 
-.profile-info span{
-    color:#94a3b8;
-    font-size:13px;
+.profile-info {
+    display: flex;
+    flex-direction: column;
 }
+
+.profile-info strong {
+    color: #17325c;
+    font-size: 15px;
+}
+
+.profile-info span {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
 
 /* ==========================================================
    CARDS
@@ -793,63 +820,6 @@ body{
     background:transparent;
 }
 
-/* ==========================================================
-   ACESSIBILIDADE
-========================================================== */
-
-.access-menu{
-    position:fixed;
-    top:110px;
-    right:20px;
-    display:flex;
-    flex-direction:row-reverse;
-    align-items:center;
-    gap:10px;
-    z-index:999;
-}
-
-.gear-btn{
-    width:46px;
-    height:46px;
-    border:none;
-    border-radius:50%;
-    background:#0A66C2;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    box-shadow:0 6px 18px rgba(0,0,0,.15);
-}
-
-.gear-btn i{
-    transition:.3s;
-}
-
-.gear-btn:hover i{
-    transform:rotate(90deg);
-}
-
-.access-options{
-    display:none;
-    gap:8px;
-}
-
-/* ADICIONADO: classe para renderizar os botões quando a engrenagem for clicada */
-.access-options.active{
-    display:flex;
-}
-
-.access-btn{
-    width:42px;
-    height:42px;
-    border:none;
-    border-radius:50%;
-    background:white;
-    color:#0A66C2;
-    cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,.12);
-}
 
 /* ==========================================================
    ERRO DE VALIDAÇÃO
@@ -991,112 +961,3 @@ body{
     }
 }
 
-/* ==========================================================
-   MODO ESCURO
-========================================================== */
-
-body.modo-escuro .access-options,
-body.dark-mode .access-options,
-[data-theme="dark"] .access-options {
-    background: #1c2536 !important;
-    border: 1px solid #2d3d54 !important;
-    border-radius: 50px !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
-}
-
-body.modo-escuro .access-btn,
-body.dark-mode .access-btn,
-[data-theme="dark"] .access-btn {
-    color: #94a3b8 !important;
-    background: transparent !important;
-    border: 1px solid transparent !important;
-    border-radius: 50% !important;
-}
-
-body.modo-escuro .access-btn:hover,
-body.dark-mode .access-btn:hover,
-[data-theme="dark"] .access-btn:hover {
-    color: #3b82f6 !important;
-    background: #2a374e !important;
-}
-
-body.modo-escuro .gear-btn,
-body.dark-mode .gear-btn,
-[data-theme="dark"] .gear-btn {
-    background: #0a66c2 !important;
-    color: #ffffff !important;
-    border: 1px solid transparent !important;
-    border-radius: 50% !important;
-}
-
-body.modo-escuro .btn-limpar,
-body.dark-mode .btn-limpar {
-    background: #0a66c2 !important;
-    color: #ffffff !important;
-    border: 1px solid transparent !important;
-    border-radius: 50px !important;
-}
-
-body.modo-escuro .pagina-btn.ativa,
-body.dark-mode .pagina-btn.ativa {
-    background: #0a66c2 !important;
-    border-color: #0a66c2 !important;
-    color: #ffffff !important;
-    border-radius: 50% !important;
-}
-
-/* ==========================================================
-   MODO ALTO CONTRASTE
-========================================================== */
-
-body.alto-contraste .access-options,
-body.contraste .access-options,
-[data-theme="alto-contraste"] .access-options {
-    background: #000000 !important;
-    border: 1px solid #ffff00 !important;
-    border-radius: 50px !important;
-    box-shadow: none !important;
-}
-
-body.alto-contraste .access-btn,
-body.contraste .access-btn,
-[data-theme="alto-contraste"] .access-btn {
-    color: #ffff00 !important;
-    background: #000000 !important;
-    border: 1px solid transparent !important;
-    border-radius: 50% !important;
-}
-
-body.alto-contraste .access-btn:hover,
-body.contraste .access-btn:hover,
-[data-theme="alto-contraste"] .access-btn:hover {
-    background: #ffff00 !important;
-    color: #000000 !important;
-}
-
-body.alto-contraste .gear-btn,
-body.contraste .gear-btn,
-[data-theme="alto-contraste"] .gear-btn {
-    background: #ffff00 !important;
-    color: #000000 !important;
-    border: 1px solid #ffff00 !important;
-    border-radius: 50% !important;
-}
-
-body.alto-contraste .btn-limpar,
-body.contraste .btn-limpar,
-[data-theme="alto-contraste"] .btn-limpar {
-    background: #000000 !important;
-    color: #ffff00 !important;
-    border: 1px solid #ffff00 !important;
-    border-radius: 50px !important;
-}
-
-body.alto-contraste .pagina-btn.ativa,
-body.contraste .pagina-btn.ativa,
-[data-theme="alto-contraste"] .pagina-btn.ativa {
-    background: #ffff00 !important;
-    color: #000000 !important;
-    border: 1px solid #ffff00 !important;
-    border-radius: 50% !important;
-}
