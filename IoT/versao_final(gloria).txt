@@ -1,6 +1,6 @@
 // ======================================================
 // NEXA - IoT RFID ESP32
-// RFID + Wi-Fi + API NEXA + LCD 1602
+// RFID + Wi-Fi + API NEXA + LCD I2C
 // Identificação de Funcionário
 // ======================================================
 
@@ -14,7 +14,8 @@
 #include <ArduinoJson.h>
 #include <SPI.h>
 #include <MFRC522.h>
-#include <LiquidCrystal.h>
+#include <Wire.h>
+#include <LiquidCrystal_PCF8574.h>
 
 
 // ======================================================
@@ -30,21 +31,17 @@ const char* password = "ac3ce7ss0-EDUC";
 // ======================================================
 
 const char* serverUrl =
-  "http://10.141.130.34/nexa/public/index.php/api/rfid";
+  "http://10.141.130.97/nexa/public/index.php/api/rfid";
 
 
 // ======================================================
 // PINOS DO RFID
 // ======================================================
 
-// SDA / SS
-#define RFID_SDA 5
-
-// Reset
+#define RFID_SDA  5
 #define RFID_RST 22
 
-// Comunicação SPI
-#define RFID_SCK 18
+#define RFID_SCK  18
 #define RFID_MISO 19
 #define RFID_MOSI 23
 
@@ -53,35 +50,26 @@ const char* serverUrl =
 // LEDS E BUZZER
 // ======================================================
 
-#define LED_VERDE 26
+#define LED_VERDE    26
 #define LED_VERMELHO 27
-#define BUZZER 25
+#define BUZZER       25
 
 
 // ======================================================
-// LCD 1602A-1
+// LCD I2C
 // ======================================================
+//
+// LCD encontrado pelo scanner:
+// Endereço = 0x27
+//
+// SDA = GPIO 21
+// SCL = GPIO 15
+//
 
-#define LCD_RS 32
-#define LCD_E 33
-#define LCD_D4 27
-#define LCD_D5 14
-#define LCD_D6 15
-#define LCD_D7 13
+#define LCD_SDA 21
+#define LCD_SCL 15
 
-
-// ======================================================
-// LCD
-// ======================================================
-
-LiquidCrystal lcd(
-  LCD_RS,
-  LCD_E,
-  LCD_D4,
-  LCD_D5,
-  LCD_D6,
-  LCD_D7
-);
+LiquidCrystal_PCF8574 lcd(0x27);
 
 
 // ======================================================
@@ -187,7 +175,7 @@ void lcdAcessoNegado() {
 
 
 // ======================================================
-// FUNÇÃO PARA CONECTAR AO WI-FI
+// CONECTAR AO WI-FI
 // ======================================================
 
 void conectarWifi() {
@@ -212,7 +200,6 @@ void conectarWifi() {
 
     tentativas++;
 
-    // Evita ficar preso para sempre
     if (tentativas >= 30) {
 
       Serial.println();
@@ -240,7 +227,7 @@ void conectarWifi() {
 
 
 // ======================================================
-// FUNÇÃO PARA LER UID
+// LER UID
 // ======================================================
 
 String lerUID() {
@@ -253,7 +240,6 @@ String lerUID() {
     i++
   ) {
 
-    // Adiciona zero antes de valores menores que 10
     if (
       leitorRFID.uid.uidByte[i] < 0x10
     ) {
@@ -261,13 +247,11 @@ String lerUID() {
       uid += "0";
     }
 
-    // Adiciona byte hexadecimal
     uid += String(
       leitorRFID.uid.uidByte[i],
       HEX
     );
 
-    // Adiciona espaço
     if (
       i < leitorRFID.uid.size - 1
     ) {
@@ -276,7 +260,6 @@ String lerUID() {
     }
   }
 
-  // Coloca tudo em maiúsculo
   uid.toUpperCase();
 
   return uid;
@@ -284,7 +267,7 @@ String lerUID() {
 
 
 // ======================================================
-// LIMPAR DADOS DO FUNCIONÁRIO
+// LIMPAR DADOS
 // ======================================================
 
 void limparDadosFuncionario() {
@@ -305,7 +288,7 @@ void limparDadosFuncionario() {
 
 
 // ======================================================
-// INDICAR ACESSO LIBERADO
+// INDICAR SUCESSO
 // ======================================================
 
 void indicarSucesso() {
@@ -323,17 +306,14 @@ void indicarSucesso() {
     "========================================"
   );
 
-
   // LCD
   lcdAcessoPermitido();
 
-
-  // LED verde ligado
+  // LED verde
   digitalWrite(
     LED_VERDE,
     HIGH
   );
-
 
   // LED vermelho desligado
   digitalWrite(
@@ -341,8 +321,7 @@ void indicarSucesso() {
     LOW
   );
 
-
-  // Um bip
+  // Buzzer
   tone(
     BUZZER,
     1500
@@ -354,12 +333,8 @@ void indicarSucesso() {
     BUZZER
   );
 
-
-  // Mantém verde aceso
   delay(1000);
 
-
-  // Desliga verde
   digitalWrite(
     LED_VERDE,
     LOW
@@ -368,7 +343,7 @@ void indicarSucesso() {
 
 
 // ======================================================
-// INDICAR ACESSO NEGADO
+// INDICAR ERRO
 // ======================================================
 
 void indicarErro() {
@@ -386,10 +361,8 @@ void indicarErro() {
     "========================================"
   );
 
-
   // LCD
   lcdAcessoNegado();
-
 
   // Verde desligado
   digitalWrite(
@@ -397,13 +370,11 @@ void indicarErro() {
     LOW
   );
 
-
   // Vermelho ligado
   digitalWrite(
     LED_VERMELHO,
     HIGH
   );
-
 
   // Três bips
   for (
@@ -426,8 +397,6 @@ void indicarErro() {
     delay(150);
   }
 
-
-  // Desliga vermelho
   digitalWrite(
     LED_VERMELHO,
     LOW
@@ -436,7 +405,7 @@ void indicarErro() {
 
 
 // ======================================================
-// MOSTRAR DADOS DO FUNCIONÁRIO
+// MOSTRAR FUNCIONÁRIO
 // ======================================================
 
 void mostrarFuncionario() {
@@ -493,15 +462,13 @@ void mostrarFuncionario() {
 
 
 // ======================================================
-// ENVIAR RFID PARA A API
+// ENVIAR RFID PARA API
 // ======================================================
 
-bool enviarRFID(
-  String uid
-) {
+bool enviarRFID(String uid) {
 
   // ----------------------------------------------------
-  // Verificar Wi-Fi
+  // VERIFICAR WI-FI
   // ----------------------------------------------------
 
   if (
@@ -524,7 +491,10 @@ bool enviarRFID(
   }
 
 
-  // Limpa dados antigos
+  // ----------------------------------------------------
+  // LIMPAR DADOS
+  // ----------------------------------------------------
+
   limparDadosFuncionario();
 
 
@@ -564,13 +534,11 @@ bool enviarRFID(
   );
 
 
-  // Inicia conexão
   http.begin(
     serverUrl
   );
 
 
-  // Header JSON
   http.addHeader(
     "Content-Type",
     "application/json"
@@ -578,7 +546,7 @@ bool enviarRFID(
 
 
   // ----------------------------------------------------
-  // MONTAR JSON
+  // JSON
   // ----------------------------------------------------
 
   StaticJsonDocument<256> json;
@@ -622,7 +590,7 @@ bool enviarRFID(
 
 
   // ----------------------------------------------------
-  // ERRO DE CONEXÃO
+  // ERRO HTTP
   // ----------------------------------------------------
 
   if (
@@ -646,7 +614,7 @@ bool enviarRFID(
 
 
   // ----------------------------------------------------
-  // PEGAR RESPOSTA
+  // RESPOSTA
   // ----------------------------------------------------
 
   String resposta =
@@ -654,6 +622,7 @@ bool enviarRFID(
 
 
   Serial.println();
+
   Serial.println(
     "Resposta da API:"
   );
@@ -697,17 +666,15 @@ bool enviarRFID(
   // ----------------------------------------------------
 
   bool sucesso =
-    respostaJson["sucesso"] |
-    false;
+    respostaJson["sucesso"] | false;
 
   bool acesso =
-    respostaJson["acesso"] |
-    false;
+    respostaJson["acesso"] | false;
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // ACESSO NEGADO
-  // ====================================================
+  // ----------------------------------------------------
 
   if (
     codigoResposta != 200 ||
@@ -742,64 +709,57 @@ bool enviarRFID(
   }
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // FUNCIONÁRIO
-  // ====================================================
+  // ----------------------------------------------------
 
   JsonObject funcionario =
     respostaJson["funcionario"];
 
 
   funcionarioCPF =
-    funcionario["cpf"] |
-    "";
+    funcionario["cpf"] | "";
 
   funcionarioNome =
-    funcionario["nome"] |
-    "";
+    funcionario["nome"] | "";
 
   funcionarioEmail =
-    funcionario["email"] |
-    "";
+    funcionario["email"] | "";
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // EMPRESA
-  // ====================================================
+  // ----------------------------------------------------
 
   JsonObject empresa =
     respostaJson["empresa"];
 
 
   empresaNome =
-    empresa["nome"] |
-    "";
+    empresa["nome"] | "";
 
   empresaCNPJ =
-    empresa["cnpj"] |
-    "";
+    empresa["cnpj"] | "";
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // SETOR
-  // ====================================================
+  // ----------------------------------------------------
 
   JsonObject setor =
     respostaJson["setor"];
 
 
   setorNome =
-    setor["nome"] |
-    "";
+    setor["nome"] | "";
 
   setorLocal =
-    setor["local"] |
-    "";
+    setor["local"] | "";
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // CÂMERA
-  // ====================================================
+  // ----------------------------------------------------
 
   JsonObject camera =
     respostaJson["camera"];
@@ -810,33 +770,30 @@ bool enviarRFID(
   ) {
 
     cameraId =
-      camera["id"] |
-      "";
-    
+      camera["id"] | "";
+
     cameraIdentificador =
-      camera["identificador"] |
-      "";
+      camera["identificador"] | "";
   }
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // MOSTRAR FUNCIONÁRIO
-  // ====================================================
+  // ----------------------------------------------------
 
   mostrarFuncionario();
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // PRÓXIMA ETAPA
-  // ====================================================
+  // ----------------------------------------------------
 
   JsonObject proximaEtapa =
     respostaJson["proximaEtapa"];
 
 
   const char* acao =
-    proximaEtapa["acao"] |
-    "";
+    proximaEtapa["acao"] | "";
 
 
   Serial.println();
@@ -882,13 +839,8 @@ bool enviarRFID(
   );
 
 
-  // Finaliza HTTP
   http.end();
 
-
-  // ====================================================
-  // ACESSO LIBERADO
-  // ====================================================
 
   return true;
 }
@@ -931,7 +883,6 @@ void setup() {
   );
 
 
-  // LEDs inicialmente desligados
   digitalWrite(
     LED_VERDE,
     LOW
@@ -944,14 +895,21 @@ void setup() {
 
 
   // ----------------------------------------------------
+  // I2C
+  // ----------------------------------------------------
+
+  Wire.begin(
+    LCD_SDA,
+    LCD_SCL
+  );
+
+
+  // ----------------------------------------------------
   // LCD
   // ----------------------------------------------------
 
-  lcd.begin(
-    16,
-    2
-  );
-
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
 
   lcd.clear();
 
@@ -981,13 +939,6 @@ void setup() {
   // SPI
   // ----------------------------------------------------
 
-  /*
-     SCK  -> GPIO 18
-     MISO -> GPIO 19
-     MOSI -> GPIO 23
-     SDA  -> GPIO 5
-  */
-
   SPI.begin(
     RFID_SCK,
     RFID_MISO,
@@ -1006,7 +957,7 @@ void setup() {
 
 
   // ----------------------------------------------------
-  // MENSAGENS
+  // SERIAL
   // ----------------------------------------------------
 
   Serial.println();
@@ -1042,7 +993,7 @@ void setup() {
 
 
   // ----------------------------------------------------
-  // PRONTO
+  // SISTEMA PRONTO
   // ----------------------------------------------------
 
   Serial.println();
@@ -1066,7 +1017,10 @@ void setup() {
   Serial.println();
 
 
+  // ----------------------------------------------------
   // LCD
+  // ----------------------------------------------------
+
   lcdAproximeCartao();
 }
 
@@ -1077,9 +1031,9 @@ void setup() {
 
 void loop() {
 
-  // ====================================================
-  // WI-FI
-  // ====================================================
+  // ----------------------------------------------------
+  // VERIFICAR WI-FI
+  // ----------------------------------------------------
 
   if (
     WiFi.status() != WL_CONNECTED
@@ -1097,9 +1051,9 @@ void loop() {
   }
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // VERIFICAR CARTÃO
-  // ====================================================
+  // ----------------------------------------------------
 
   if (
     !leitorRFID.PICC_IsNewCardPresent()
@@ -1109,9 +1063,9 @@ void loop() {
   }
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // LER CARTÃO
-  // ====================================================
+  // ----------------------------------------------------
 
   if (
     !leitorRFID.PICC_ReadCardSerial()
@@ -1121,9 +1075,9 @@ void loop() {
   }
 
 
-  // ====================================================
-  // LER UID
-  // ====================================================
+  // ----------------------------------------------------
+  // UID
+  // ----------------------------------------------------
 
   String uidLido =
     lerUID();
@@ -1152,20 +1106,18 @@ void loop() {
   );
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // PROCESSANDO
-  // ====================================================
+  // ----------------------------------------------------
 
   lcdProcessando();
 
-
-  // Pequena pausa para o LCD mostrar
   delay(300);
 
 
-  // ====================================================
-  // ENVIAR PARA API
-  // ====================================================
+  // ----------------------------------------------------
+  // API
+  // ----------------------------------------------------
 
   bool acessoLiberado =
     enviarRFID(
@@ -1173,9 +1125,9 @@ void loop() {
     );
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // RESULTADO
-  // ====================================================
+  // ----------------------------------------------------
 
   if (
     acessoLiberado
@@ -1189,25 +1141,25 @@ void loop() {
   }
 
 
-  // ====================================================
+  // ----------------------------------------------------
   // FINALIZAR RFID
-  // ====================================================
+  // ----------------------------------------------------
 
   leitorRFID.PICC_HaltA();
 
   leitorRFID.PCD_StopCrypto1();
 
 
-  // ====================================================
-  // EVITAR LEITURA DUPLICADA
-  // ====================================================
+  // ----------------------------------------------------
+  // EVITAR DUPLICAÇÃO
+  // ----------------------------------------------------
 
   delay(1500);
 
 
-  // ====================================================
-  // VOLTAR PARA TELA INICIAL
-  // ====================================================
+  // ----------------------------------------------------
+  // TELA INICIAL
+  // ----------------------------------------------------
 
   lcdAproximeCartao();
 
