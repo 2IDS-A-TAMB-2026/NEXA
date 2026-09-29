@@ -1,7 +1,7 @@
-import 'dart:async';
 
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:nexa_app/views/dashboard_page_fun.dart'; // Mude aqui para o dashboard do funcionário se tiver um específico, ex: dashboard_funcionario_page.dart
+import 'package:nexa_app/views/dashboard_page_fun.dart';
 import 'package:nexa_app/views/login_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +19,9 @@ class InstitucionalPage extends StatefulWidget {
 class _InstitucionalPageState extends State<InstitucionalPage> {
   final GlobalKey _sobreKey = GlobalKey();
 
+  // Controla se os botões de acessibilidade aparecem
+  bool mostrarAcessibilidade = false;
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
@@ -27,10 +30,14 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
         final Color backgroundColor = isDarkMode
             ? const Color(0xFF000000)
             : const Color(0xFFF9F9FA);
+
         final Color appBarColor = isDarkMode
             ? const Color(0xFF1A2B4C)
             : Colors.white;
-        final Color textColor = isDarkMode ? Colors.white : Colors.black87;
+
+        final Color textColor =
+            isDarkMode ? Colors.white : Colors.black87;
+
         final Color brandColor = const Color(0xFF1A9DE7);
 
         return ValueListenableBuilder<double>(
@@ -38,41 +45,63 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
           builder: (context, fontScale, child) {
             return Scaffold(
               backgroundColor: backgroundColor,
+
+              // ==========================================================
+              // APP BAR
+              // ==========================================================
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(70),
+
                 child: AppBar(
                   backgroundColor: appBarColor,
                   elevation: 1,
                   automaticallyImplyLeading: false,
+
                   title: Center(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1200),
+                      constraints:
+                          const BoxConstraints(maxWidth: 1200),
+
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+
                           children: [
-                            // LOGO ARREDONDADA ALTERNANDO ENTRE OS ATIVOS CONFORME O TEMA
+
+                            // ==================================================
+                            // LOGO
+                            // ==================================================
                             Row(
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(
+                                  borderRadius:
+                                      BorderRadius.circular(
                                     8 * fontScale,
                                   ),
+
                                   child: SizedBox(
                                     width: 32 * fontScale,
                                     height: 32 * fontScale,
+
                                     child: Image.asset(
                                       isDarkMode
                                           ? 'assets/escuro.png'
                                           : 'assets/logo.nexa.png',
+
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
+
                                 const SizedBox(width: 10),
+
                                 Text(
                                   "NEXA",
+
                                   style: TextStyle(
                                     color: textColor,
                                     fontSize: 22 * fontScale,
@@ -82,101 +111,247 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                               ],
                             ),
 
-                            // BOTÕES DO MENU COM CORES PADRONIZADAS
+                            // ==================================================
+                            // MENU DE ACESSIBILIDADE + ENTRAR
+                            // ==================================================
                             Row(
                               children: [
-                                // Botão A+ sem sombra e padronizado
-                                InkWell(
-                                  onTap: () {
-                                    if (fontSizeScaleNotifier.value < 1.4) {
-                                      fontSizeScaleNotifier.value += 0.1;
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 4,
+
+                                // ==============================================
+                                // ENGRENAGEM
+                                // ==============================================
+                                Container(
+                                  width: 42,
+                                  height: 42,
+
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+
+                                    color: isDarkMode
+                                        ? Colors.black
+                                        : Colors.transparent,
+
+                                    border: Border.all(
+                                      color: brandColor,
+                                      width: 1.5,
                                     ),
-                                    child: Text(
-                                      "A+",
-                                      style: TextStyle(
+                                  ),
+
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+
+                                    icon: Icon(
+                                      Icons.settings,
+                                      color: brandColor,
+                                      size: 23,
+                                    ),
+
+                                    tooltip: "Acessibilidade",
+
+                                    onPressed: () {
+                                      setState(() {
+                                        mostrarAcessibilidade =
+                                            !mostrarAcessibilidade;
+                                      });
+                                    },
+                                  ),
+                                ),
+
+                                // ==============================================
+                                // ESPAÇO
+                                // ==============================================
+                                if (mostrarAcessibilidade)
+                                  const SizedBox(width: 8),
+
+                                // ==============================================
+                                // OPÇÕES DE ACESSIBILIDADE
+                                // ==============================================
+                                if (mostrarAcessibilidade)
+                                  Container(
+                                    padding:
+                                        const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 3,
+                                    ),
+
+                                    decoration: BoxDecoration(
+                                      color: isDarkMode
+                                          ? Colors.black
+                                          : Colors.white,
+
+                                      borderRadius:
+                                          BorderRadius.circular(25),
+
+                                      border: Border.all(
                                         color: brandColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16 * fontScale,
+                                        width: 1.2,
                                       ),
                                     ),
-                                  ),
-                                ),
-                                const SizedBox(width: 4),
 
-                                // BOTÃO DE MODO ESCURO / CLARO AO LADO DO A+
-                                IconButton(
-                                  icon: Icon(
-                                    isDarkMode
-                                        ? Icons.wb_sunny
-                                        : Icons.nightlight_round,
-                                    color: brandColor,
-                                    size: 22,
-                                  ),
-                                  tooltip: "Alternar Modo Escuro",
-                                  onPressed: () {
-                                    darkModeNotifier.value =
-                                        !darkModeNotifier.value;
-                                  },
-                                ),
-                                const SizedBox(width: 4),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
 
-                                // Botão A- padronizado
-                                InkWell(
-                                  onTap: () {
-                                    if (fontSizeScaleNotifier.value > 0.8) {
-                                      fontSizeScaleNotifier.value -= 0.1;
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 4,
+                                      children: [
+
+                                        // ======================================
+                                        // A+
+                                        // ======================================
+                                        SizedBox(
+                                          width: 40,
+                                          height: 40,
+
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+
+                                            onTap: () {
+                                              if (fontSizeScaleNotifier
+                                                      .value <
+                                                  1.4) {
+                                                fontSizeScaleNotifier
+                                                        .value +=
+                                                    0.1;
+                                              }
+                                            },
+
+                                            child: Center(
+                                              child: Text(
+                                                "A+",
+
+                                                style: TextStyle(
+                                                  color: brandColor,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                  fontSize:
+                                                      16 * fontScale,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // ======================================
+                                        // MODO ESCURO
+                                        // ======================================
+                                        SizedBox(
+                                          width: 40,
+                                          height: 40,
+
+                                          child: IconButton(
+                                            padding: EdgeInsets.zero,
+
+                                            icon: Icon(
+                                              isDarkMode
+                                                  ? Icons.wb_sunny
+                                                  : Icons
+                                                      .nightlight_round,
+
+                                              color: brandColor,
+                                              size: 21,
+                                            ),
+
+                                            tooltip:
+                                                "Alternar Modo Escuro",
+
+                                            onPressed: () {
+                                              darkModeNotifier.value =
+                                                  !darkModeNotifier.value;
+                                            },
+                                          ),
+                                        ),
+
+                                        // ======================================
+                                        // A-
+                                        // ======================================
+                                        SizedBox(
+                                          width: 40,
+                                          height: 40,
+
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+
+                                            onTap: () {
+                                              if (fontSizeScaleNotifier
+                                                      .value >
+                                                  0.8) {
+                                                fontSizeScaleNotifier
+                                                        .value -=
+                                                    0.1;
+                                              }
+                                            },
+
+                                            child: Center(
+                                              child: Text(
+                                                "A-",
+
+                                                style: TextStyle(
+                                                  color: brandColor,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                  fontSize:
+                                                      16 * fontScale,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // ======================================
+                                        // SOM
+                                        // ======================================
+                                        SizedBox(
+                                          width: 40,
+                                          height: 40,
+
+                                          child: IconButton(
+                                            padding: EdgeInsets.zero,
+
+                                            icon: Icon(
+                                              Icons.volume_up,
+                                              color: brandColor,
+                                              size: 20,
+                                            ),
+
+                                            tooltip:
+                                                "Leitura da página",
+
+                                            onPressed: () {
+                                              // Coloque aqui sua função
+                                              // de leitura da página.
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    child: Text(
-                                      "A-",
-                                      style: TextStyle(
-                                        color: brandColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16 * fontScale,
-                                      ),
-                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 16),
 
-                                // Botão de Som / Áudio padronizado
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.volume_up,
-                                    color: brandColor,
-                                    size: 20,
-                                  ),
-                                  onPressed: () {},
-                                ),
-                                const SizedBox(width: 16),
+                                // ==============================================
+                                // ESPAÇO ANTES DO BOTÃO ENTRAR
+                                // ==============================================
+                                const SizedBox(width: 12),
 
-                                // Botão Entrar direcionando para LoginPage de Funcionário
+                                // ==============================================
+                                // BOTÃO ENTRAR
+                                // ==============================================
                                 ElevatedButton(
                                   onPressed: () {
                                     Navigator.push(
                                       context,
+
                                       MaterialPageRoute(
                                         builder: (_) => LoginPage(
                                           onLogin: () {
-                                            // AQUI VOCÊ DIRECIONA PARA O DASHBOARD ESPECÍFICO DO FUNCIONÁRIO
                                             Navigator.pushReplacement(
                                               context,
+
                                               MaterialPageRoute(
-                                                builder: (_) => DashboardPageFun(),
+                                                builder: (_) =>
+                                                    DashboardPageFun(),
                                               ),
                                             );
                                           },
+
                                           onVoltar: () {
                                             Navigator.pop(context);
                                           },
@@ -184,16 +359,29 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                                       ),
                                     );
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: brandColor,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+
+                                  style:
+                                      ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        brandColor,
+
+                                    foregroundColor:
+                                        Colors.white,
+
+                                    shape:
+                                        RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20),
                                     ),
                                   ),
+
                                   child: Text(
                                     "Entrar",
-                                    style: TextStyle(fontSize: 14 * fontScale),
+
+                                    style: TextStyle(
+                                      fontSize:
+                                          14 * fontScale,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -205,113 +393,164 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                   ),
                 ),
               ),
+
+              // ==========================================================
+              // CORPO
+              // ==========================================================
               body: SingleChildScrollView(
                 child: Column(
                   children: [
+
                     Center(
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1200),
+                        constraints:
+                            const BoxConstraints(maxWidth: 1200),
+
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
+                          padding:
+                              const EdgeInsets.symmetric(
                             horizontal: 24,
                             vertical: 20,
                           ),
+
                           child: Column(
                             children: [
-                              /// CONTEÚDO PRINCIPAL (COM GRADIENTE E BORDAS ARREDONDADAS)
+
+                              // ================================================
+                              // CONTEÚDO PRINCIPAL
+                              // ================================================
                               Container(
                                 width: double.infinity,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
+
+                                decoration:
+                                    BoxDecoration(
+                                  gradient:
+                                      const LinearGradient(
                                     colors: [
                                       Color(0xFF1A2B4C),
                                       Color(0xFF1A9DE7),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(16),
+
+                                  borderRadius:
+                                      BorderRadius.circular(16),
                                 ),
+
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+
                                   children: [
+
                                     Padding(
-                                      padding: const EdgeInsets.all(40),
+                                      padding:
+                                          const EdgeInsets.all(40),
+
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
+
                                         children: [
-                                          /// TÍTULO
+
+                                          // ==================================
+                                          // TÍTULO
+                                          // ==================================
                                           RichText(
                                             text: TextSpan(
                                               children: [
+
                                                 TextSpan(
-                                                  text: 'Safety at the',
-                                                  style: TextStyle(
-                                                    color: const Color.fromARGB(
+                                                  text:
+                                                      'Safety at the',
+
+                                                  style:
+                                                      TextStyle(
+                                                    color:
+                                                        const Color.fromARGB(
                                                       252,
                                                       1,
                                                       152,
                                                       253,
                                                     ),
-                                                    fontSize: 70 * fontScale,
+
+                                                    fontSize:
+                                                        70 *
+                                                            fontScale,
                                                   ),
                                                 ),
+
                                                 TextSpan(
                                                   text: ' Core',
-                                                  style: TextStyle(
-                                                    color: const Color.fromARGB(
-                                                      251,
-                                                      255,
-                                                      255,
-                                                      255,
-                                                    ),
-                                                    fontSize: 70 * fontScale,
+
+                                                  style:
+                                                      TextStyle(
+                                                    color:
+                                                        Colors.white,
+
+                                                    fontSize:
+                                                        70 *
+                                                            fontScale,
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
 
-                                          const SizedBox(height: 20),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
 
-                                          /// TEXTO
+                                          // ==================================
+                                          // TEXTO
+                                          // ==================================
                                           Text(
                                             "A NEXA é uma plataforma inteligente de segurança do trabalho, unindo tecnologia, dados e automação para proteger pessoas e operações.",
+
                                             style: TextStyle(
-                                              color: const Color.fromARGB(
-                                                255,
-                                                255,
-                                                255,
-                                                255,
-                                              ),
-                                              fontSize: 16 * fontScale,
+                                              color:
+                                                  Colors.white,
+
+                                              fontSize:
+                                                  16 *
+                                                      fontScale,
                                             ),
                                           ),
 
-                                          const SizedBox(height: 30),
+                                          const SizedBox(
+                                            height: 30,
+                                          ),
 
-                                          /// BOTÕES DA SEÇÃO PRINCIPAL
+                                          // ==================================
+                                          // BOTÕES
+                                          // ==================================
                                           Wrap(
                                             spacing: 15,
                                             runSpacing: 10,
+
                                             children: [
-                                              /// ACESSAR (direcionando para LoginPage)
+
+                                              // =================================
+                                              // ACESSAR
+                                              // =================================
                                               ElevatedButton(
                                                 onPressed: () {
                                                   Navigator.push(
                                                     context,
+
                                                     MaterialPageRoute(
-                                                      builder: (_) => LoginPage(
+                                                      builder: (_) =>
+                                                          LoginPage(
                                                         onLogin: () {
                                                           Navigator.pushReplacement(
                                                             context,
+
                                                             MaterialPageRoute(
                                                               builder: (_) =>
-                                                                  DashboardPageFun(
-                                                                   
-                                                                  ),
+                                                                  DashboardPageFun(),
                                                             ),
                                                           );
                                                         },
+
                                                         onVoltar: () {
                                                           Navigator.pop(
                                                             context,
@@ -321,77 +560,115 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                                                     ),
                                                   );
                                                 },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.white,
-                                                  foregroundColor: const Color(
+
+                                                style:
+                                                    ElevatedButton
+                                                        .styleFrom(
+                                                  backgroundColor:
+                                                      Colors.white,
+
+                                                  foregroundColor:
+                                                      const Color(
                                                     0xFF1A2B4C,
                                                   ),
+
                                                   padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 30,
-                                                        vertical: 15,
-                                                      ),
-                                                  shape: RoundedRectangleBorder(
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    horizontal: 30,
+                                                    vertical: 15,
+                                                  ),
+
+                                                  shape:
+                                                      RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                          10,
-                                                        ),
+                                                        BorderRadius
+                                                            .circular(
+                                                      10,
+                                                    ),
                                                   ),
                                                 ),
+
                                                 child: Text(
                                                   "Acesse o app",
-                                                  style: TextStyle(
-                                                    color: const Color(
+
+                                                  style:
+                                                      TextStyle(
+                                                    color:
+                                                        const Color(
                                                       0xFF1A2B4C,
                                                     ),
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14 * fontScale,
+
+                                                    fontWeight:
+                                                        FontWeight
+                                                            .bold,
+
+                                                    fontSize:
+                                                        14 *
+                                                            fontScale,
                                                   ),
                                                 ),
                                               ),
 
-                                              /// SOBRE NÓS (SCROLL)
+                                              // =================================
+                                              // SOBRE NÓS
+                                              // =================================
                                               OutlinedButton(
                                                 onPressed: () {
-                                                  Scrollable.ensureVisible(
-                                                    _sobreKey.currentContext!,
-                                                    duration: const Duration(
-                                                      milliseconds: 600,
+                                                  Scrollable
+                                                      .ensureVisible(
+                                                    _sobreKey
+                                                        .currentContext!,
+
+                                                    duration:
+                                                        const Duration(
+                                                      milliseconds:
+                                                          600,
                                                     ),
-                                                    curve: Curves.easeInOut,
+
+                                                    curve:
+                                                        Curves
+                                                            .easeInOut,
                                                   );
                                                 },
-                                                style: OutlinedButton.styleFrom(
-                                                  side: const BorderSide(
-                                                    color: Color.fromARGB(
-                                                      255,
-                                                      255,
-                                                      255,
-                                                      255,
-                                                    ),
+
+                                                style:
+                                                    OutlinedButton
+                                                        .styleFrom(
+                                                  side:
+                                                      const BorderSide(
+                                                    color:
+                                                        Colors.white,
                                                   ),
+
                                                   padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 30,
-                                                        vertical: 15,
-                                                      ),
-                                                  shape: RoundedRectangleBorder(
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    horizontal: 30,
+                                                    vertical: 15,
+                                                  ),
+
+                                                  shape:
+                                                      RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                          10,
-                                                        ),
+                                                        BorderRadius
+                                                            .circular(
+                                                      10,
+                                                    ),
                                                   ),
                                                 ),
+
                                                 child: Text(
                                                   "Sobre nós",
-                                                  style: TextStyle(
-                                                    color: const Color.fromARGB(
-                                                      255,
-                                                      255,
-                                                      255,
-                                                      255,
-                                                    ),
-                                                    fontSize: 14 * fontScale,
+
+                                                  style:
+                                                      TextStyle(
+                                                    color:
+                                                        Colors.white,
+
+                                                    fontSize:
+                                                        14 *
+                                                            fontScale,
                                                   ),
                                                 ),
                                               ),
@@ -400,14 +677,25 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                                         ],
                                       ),
                                     ),
+
+                                    // ==========================================
+                                    // CARROSSEL
+                                    // ==========================================
                                     ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(16),
-                                        bottomRight: Radius.circular(16),
+                                      borderRadius:
+                                          const BorderRadius.only(
+                                        bottomLeft:
+                                            Radius.circular(16),
+
+                                        bottomRight:
+                                            Radius.circular(16),
                                       ),
+
                                       child: SizedBox(
                                         height: 250,
-                                        child: const Carrossel(),
+
+                                        child:
+                                            const Carrossel(),
                                       ),
                                     ),
                                   ],
@@ -420,6 +708,7 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                                 isDarkMode: isDarkMode,
                                 fontScale: fontScale,
                               ),
+
                               const Divider(),
 
                               const SizedBox(height: 50),
@@ -428,6 +717,7 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                                 isDarkMode: isDarkMode,
                                 fontScale: fontScale,
                               ),
+
                               const Divider(),
 
                               const SizedBox(height: 50),
@@ -441,7 +731,6 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
 
                               const SizedBox(height: 50),
 
-                              /// SOBRE COM KEY
                               SobreSection(
                                 key: _sobreKey,
                                 isDarkMode: isDarkMode,
@@ -455,7 +744,9 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
                       ),
                     ),
 
-                    /// FOOTER
+                    // ================================================
+                    // FOOTER
+                    // ================================================
                     const FooterNexa(),
                   ],
                 ),
@@ -468,6 +759,10 @@ class _InstitucionalPageState extends State<InstitucionalPage> {
   }
 }
 
+// ============================================================
+// CARROSSEL
+// ============================================================
+
 class Carrossel extends StatefulWidget {
   const Carrossel({super.key});
 
@@ -477,7 +772,9 @@ class Carrossel extends StatefulWidget {
 
 class _CarrosselState extends State<Carrossel> {
   final PageController _controller = PageController();
+
   int paginaAtual = 0;
+
   Timer? timer;
 
   final imagens = [
@@ -490,25 +787,31 @@ class _CarrosselState extends State<Carrossel> {
   void initState() {
     super.initState();
 
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      if (paginaAtual < imagens.length - 1) {
-        paginaAtual++;
-      } else {
-        paginaAtual = 0;
-      }
+    timer = Timer.periodic(
+      const Duration(seconds: 3),
+      (timer) {
+        if (paginaAtual < imagens.length - 1) {
+          paginaAtual++;
+        } else {
+          paginaAtual = 0;
+        }
 
-      _controller.animateToPage(
-        paginaAtual,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-      );
-    });
+        _controller.animateToPage(
+          paginaAtual,
+          duration: const Duration(
+            milliseconds: 800,
+          ),
+          curve: Curves.easeInOut,
+        );
+      },
+    );
   }
 
   @override
   void dispose() {
     timer?.cancel();
     _controller.dispose();
+
     super.dispose();
   }
 
@@ -516,63 +819,121 @@ class _CarrosselState extends State<Carrossel> {
   Widget build(BuildContext context) {
     return PageView(
       physics: const BouncingScrollPhysics(),
+
       controller: _controller,
+
       children: imagens
-          .map((url) => Image.asset(url, fit: BoxFit.cover))
+          .map(
+            (url) => Image.asset(
+              url,
+              fit: BoxFit.cover,
+            ),
+          )
           .toList(),
     );
   }
 }
 
+// ============================================================
+// VALORES
+// ============================================================
+
 class ValoresSection extends StatelessWidget {
   final bool isDarkMode;
   final double fontScale;
+
   const ValoresSection({
     super.key,
     required this.isDarkMode,
     required this.fontScale,
   });
 
-  Widget cardValor(IconData icone, String titulo, String descricao) {
+  Widget cardValor(
+    IconData icone,
+    String titulo,
+    String descricao,
+  ) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          padding: const EdgeInsets.all(20),
+          margin:
+              const EdgeInsets.only(bottom: 20),
+
+          padding:
+              const EdgeInsets.all(20),
+
           decoration: BoxDecoration(
-            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            color: isDarkMode
+                ? const Color(0xFF1A2B4C)
+                : Colors.white,
+
+            borderRadius:
+                BorderRadius.circular(15),
+
             boxShadow: [
               BoxShadow(
-                color: isDarkMode ? Colors.black54 : Colors.black12,
+                color: isDarkMode
+                    ? Colors.black54
+                    : Colors.black12,
+
                 blurRadius: 10,
-                offset: const Offset(0, 4),
+
+                offset:
+                    const Offset(0, 4),
               ),
             ],
           ),
+
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+
             children: [
-              Icon(icone, color: const Color(0xFF1A9DE7), size: 30 * fontScale),
+
+              Icon(
+                icone,
+                color:
+                    const Color(0xFF1A9DE7),
+                size: 30 * fontScale,
+              ),
+
               const SizedBox(width: 15),
+
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+
                   children: [
+
                     Text(
                       titulo,
+
                       style: TextStyle(
-                        fontSize: 18 * fontScale,
-                        fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black87,
+                        fontSize:
+                            18 * fontScale,
+
+                        fontWeight:
+                            FontWeight.bold,
+
+                        color: isDarkMode
+                            ? Colors.white
+                            : Colors.black87,
                       ),
                     ),
+
                     const SizedBox(height: 8),
+
                     Text(
                       descricao,
+
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white70 : Colors.black87,
-                        fontSize: 14 * fontScale,
+                        color: isDarkMode
+                            ? Colors.white70
+                            : Colors.black87,
+
+                        fontSize:
+                            14 * fontScale,
                       ),
                     ),
                   ],
@@ -588,35 +949,52 @@ class ValoresSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+
       children: [
+
         Text(
           "Missão, Visão e Valores",
+
           style: TextStyle(
             fontSize: 32 * fontScale,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode
+                ? Colors.white
+                : Colors.black,
           ),
         ),
+
         const SizedBox(height: 10),
+
         Text(
           "Os princípios que orientam a NEXA refletem nosso compromisso com inovação, ética e proteção da vida.",
+
           style: TextStyle(
-            color: isDarkMode ? Colors.white70 : Colors.black54,
-            fontSize: 14 * fontScale,
+            color: isDarkMode
+                ? Colors.white70
+                : Colors.black54,
+
+            fontSize:
+                14 * fontScale,
           ),
         ),
+
         const SizedBox(height: 30),
+
         cardValor(
           Icons.playlist_add_check_circle_rounded,
           "Missão",
           "Transformar a segurança do trabalho em inteligência, promovendo ambientes mais seguros e eficientes.",
         ),
+
         cardValor(
           Icons.visibility_outlined,
           "Visão",
           "Ser referência global em soluções tecnológicas de segurança e compliance corporativo.",
         ),
+
         cardValor(
           Icons.balance,
           "Valores",
@@ -627,9 +1005,15 @@ class ValoresSection extends StatelessWidget {
   }
 }
 
-class VisaoComputacionalSection extends StatelessWidget {
+// ============================================================
+// VISÃO COMPUTACIONAL
+// ============================================================
+
+class VisaoComputacionalSection
+    extends StatelessWidget {
   final bool isDarkMode;
   final double fontScale;
+
   const VisaoComputacionalSection({
     super.key,
     required this.isDarkMode,
@@ -639,94 +1023,174 @@ class VisaoComputacionalSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+
       children: [
+
         Text(
           "Visão Computacional",
+
           style: TextStyle(
             fontSize: 32 * fontScale,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode
+                ? Colors.white
+                : Colors.black,
           ),
         ),
+
         const SizedBox(height: 20),
+
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(25),
+
+          padding:
+              const EdgeInsets.all(25),
+
           decoration: BoxDecoration(
-            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            color: isDarkMode
+                ? const Color(0xFF1A2B4C)
+                : Colors.white,
+
+            borderRadius:
+                BorderRadius.circular(15),
+
             boxShadow: [
               BoxShadow(
-                color: isDarkMode ? Colors.black54 : Colors.black12,
+                color: isDarkMode
+                    ? Colors.black54
+                    : Colors.black12,
+
                 blurRadius: 10,
-                offset: const Offset(0, 4),
+
+                offset:
+                    const Offset(0, 4),
               ),
             ],
           ),
+
           child: Text(
             "A visão computacional é um campo da inteligência artificial que treina computadores para interpretar e compreender o mundo visual de forma semelhante aos humanos. Utilizando modelos de aprendizado de máquina e redes neurais profundas, o sistema analisa imagens digitais, vídeos e entradas de sensores para identificar padrões, detectar objetos, classificar cenas e até rastrear movimentos. Na NEXA, usamos a visão computacional para detectar o uso de EPI's pelos funcionários, aliando segurança e tecnologia para o benefício de todos.",
+
             style: TextStyle(
-              color: isDarkMode ? Colors.white70 : Colors.black87,
-              fontSize: 15 * fontScale,
+              color: isDarkMode
+                  ? Colors.white70
+                  : Colors.black87,
+
+              fontSize:
+                  15 * fontScale,
             ),
           ),
         ),
+
         const SizedBox(height: 30),
       ],
     );
   }
 }
 
-class SolucoesSection extends StatelessWidget {
+// ============================================================
+// SOLUÇÕES
+// ============================================================
+
+class SolucoesSection
+    extends StatelessWidget {
   final bool isDarkMode;
   final double fontScale;
+
   const SolucoesSection({
     super.key,
     required this.isDarkMode,
     required this.fontScale,
   });
 
-  Widget cardSolucao(IconData icone, String titulo, String descricao) {
+  Widget cardSolucao(
+    IconData icone,
+    String titulo,
+    String descricao,
+  ) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          padding: const EdgeInsets.all(20),
+          margin:
+              const EdgeInsets.only(bottom: 20),
+
+          padding:
+              const EdgeInsets.all(20),
+
           decoration: BoxDecoration(
-            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            color: isDarkMode
+                ? const Color(0xFF1A2B4C)
+                : Colors.white,
+
+            borderRadius:
+                BorderRadius.circular(20),
+
             boxShadow: [
               BoxShadow(
-                color: isDarkMode ? Colors.black54 : Colors.black12,
+                color: isDarkMode
+                    ? Colors.black54
+                    : Colors.black12,
+
                 blurRadius: 10,
-                offset: const Offset(0, 5),
+
+                offset:
+                    const Offset(0, 5),
               ),
             ],
           ),
+
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+
             children: [
-              Icon(icone, size: 40 * fontScale, color: const Color(0xFF1A9DE7)),
+
+              Icon(
+                icone,
+                size: 40 * fontScale,
+                color:
+                    const Color(0xFF1A9DE7),
+              ),
+
               const SizedBox(width: 15),
+
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+
                   children: [
+
                     Text(
                       titulo,
+
                       style: TextStyle(
-                        fontSize: 18 * fontScale,
-                        fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black87,
+                        fontSize:
+                            18 * fontScale,
+
+                        fontWeight:
+                            FontWeight.bold,
+
+                        color: isDarkMode
+                            ? Colors.white
+                            : Colors.black87,
                       ),
                     ),
+
                     const SizedBox(height: 8),
+
                     Text(
                       descricao,
+
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white70 : Colors.black87,
-                        fontSize: 14 * fontScale,
+                        color: isDarkMode
+                            ? Colors.white70
+                            : Colors.black87,
+
+                        fontSize:
+                            14 * fontScale,
                       ),
                     ),
                   ],
@@ -742,110 +1206,182 @@ class SolucoesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+
       children: [
+
         Text(
           "Nossas Soluções",
+
           style: TextStyle(
             fontSize: 32 * fontScale,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode
+                ? Colors.white
+                : Colors.black,
           ),
         ),
+
         const SizedBox(height: 10),
+
         Text(
           "A NEXA oferece soluções digitais integradas que garantem segurança, conformidade e inteligência operacional em ambientes corporativos e industriais.",
+
           style: TextStyle(
             fontSize: 16 * fontScale,
-            color: isDarkMode ? Colors.white70 : Colors.black54,
+
+            color: isDarkMode
+                ? Colors.white70
+                : Colors.black54,
           ),
         ),
+
         const SizedBox(height: 30),
+
         cardSolucao(
           Icons.security,
           "Monitoramento de EPIs",
           "Identificação automática do uso correto de EPIs..",
         ),
+
         cardSolucao(
           Icons.bar_chart,
           "Relatórios Inteligentes",
           "Análises em tempo real para decisões estratégicas.",
         ),
+
         cardSolucao(
           Icons.join_inner_outlined,
           "Compliance Global",
           "Adequação às normas nacionais e internacionais.",
         ),
+
         cardSolucao(
           Icons.circle_notifications_rounded,
           "Alertas em Tempo Real",
           "Notificações imediatas para prevenção de acidentes.",
         ),
+
         cardSolucao(
           Icons.data_usage,
           "Centralização de Dados",
           "Histórico seguro e rastreável de informações.",
         ),
+
         cardSolucao(
           Icons.security,
           "Gestão de Riscos",
           "Mitigação de riscos com apoio tecnológico.",
         ),
+
         const SizedBox(height: 30),
       ],
     );
   }
 }
 
+// ============================================================
 // SOBRE NÓS
-class SobreSection extends StatelessWidget {
+// ============================================================
+
+class SobreSection
+    extends StatelessWidget {
   final bool isDarkMode;
   final double fontScale;
+
   const SobreSection({
     super.key,
     required this.isDarkMode,
     required this.fontScale,
   });
 
-  Widget cardMembro(String imagem, String nome, String cargo) {
+  Widget cardMembro(
+    String imagem,
+    String nome,
+    String cargo,
+  ) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
           width: 270,
-          padding: const EdgeInsets.all(20),
+
+          padding:
+              const EdgeInsets.all(20),
+
           decoration: BoxDecoration(
-            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            color: isDarkMode
+                ? const Color(0xFF1A2B4C)
+                : Colors.white,
+
+            borderRadius:
+                BorderRadius.circular(15),
+
             boxShadow: [
               BoxShadow(
-                color: isDarkMode ? Colors.black54 : Colors.black12,
+                color: isDarkMode
+                    ? Colors.black54
+                    : Colors.black12,
+
                 blurRadius: 8,
-                offset: const Offset(0, 4),
+
+                offset:
+                    const Offset(0, 4),
               ),
             ],
           ),
+
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize:
+                MainAxisSize.min,
+
+            mainAxisAlignment:
+                MainAxisAlignment.center,
+
             children: [
-              CircleAvatar(radius: 35, backgroundImage: AssetImage(imagem)),
+
+              CircleAvatar(
+                radius: 35,
+                backgroundImage:
+                    AssetImage(imagem),
+              ),
+
               const SizedBox(height: 10),
+
               Text(
                 nome,
-                textAlign: TextAlign.center,
+
+                textAlign:
+                    TextAlign.center,
+
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black87,
-                  fontSize: 14 * fontScale,
+                  fontWeight:
+                      FontWeight.bold,
+
+                  color: isDarkMode
+                      ? Colors.white
+                      : Colors.black87,
+
+                  fontSize:
+                      14 * fontScale,
                 ),
               ),
+
               const SizedBox(height: 5),
+
               Text(
                 cargo,
-                textAlign: TextAlign.center,
+
+                textAlign:
+                    TextAlign.center,
+
                 style: TextStyle(
-                  color: isDarkMode ? Colors.white70 : Colors.black54,
-                  fontSize: 12 * fontScale,
+                  color: isDarkMode
+                      ? Colors.white70
+                      : Colors.black54,
+
+                  fontSize:
+                      12 * fontScale,
                 ),
               ),
             ],
@@ -858,49 +1394,71 @@ class SobreSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+
       children: [
+
         Text(
           "Sobre a NEXA",
+
           style: TextStyle(
             fontSize: 32 * fontScale,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+
+            color: isDarkMode
+                ? Colors.white
+                : Colors.black,
           ),
         ),
+
         const SizedBox(height: 10),
+
         Text(
           "A NEXA nasceu com o propósito de transformar a segurança do trabalho em um processo inteligente, integrado e orientado por dados.\n\n"
           "Nossa plataforma combina monitoramento inteligente, análise de dados em tempo real e conformidade normativa para garantir ambientes de trabalho mais seguros.",
+
           style: TextStyle(
-            color: isDarkMode ? Colors.white70 : Colors.black54,
-            fontSize: 14 * fontScale,
+            color: isDarkMode
+                ? Colors.white70
+                : Colors.black54,
+
+            fontSize:
+                14 * fontScale,
           ),
         ),
+
         const SizedBox(height: 30),
 
         Wrap(
           spacing: 20,
           runSpacing: 20,
+
           children: [
+
             SizedBox(
               width: 350,
+
               child: _infoCard(
                 Icons.flag,
                 "Propósito",
                 "Elevar o padrão da segurança do trabalho.",
               ),
             ),
+
             SizedBox(
               width: 350,
+
               child: _infoCard(
                 Icons.lightbulb,
                 "Inovação",
                 "Tecnologia para antecipar riscos.",
               ),
             ),
+
             SizedBox(
               width: 350,
+
               child: _infoCard(
                 Icons.verified,
                 "Compromisso",
@@ -914,33 +1472,55 @@ class SobreSection extends StatelessWidget {
 
         Text(
           "Nossa Equipe",
+
           style: TextStyle(
             fontSize: 24 * fontScale,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+
+            color: isDarkMode
+                ? Colors.white
+                : Colors.black,
           ),
         ),
+
         const SizedBox(height: 20),
 
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
+
           children: [
-            /// ANÁLISE E DESIGN
+
+            // ==============================================
+            // ANÁLISE E DESIGN
+            // ==============================================
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+
               children: [
+
                 Text(
                   "Análise e Design",
+
                   style: TextStyle(
-                    fontSize: 20 * fontScale,
-                    fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black87,
+                    fontSize:
+                        20 * fontScale,
+
+                    fontWeight:
+                        FontWeight.bold,
+
+                    color: isDarkMode
+                        ? Colors.white
+                        : Colors.black87,
                   ),
                 ),
+
                 const SizedBox(height: 20),
 
                 Row(
                   children: [
+
                     Expanded(
                       child: cardMembro(
                         "assets/ryan.jpg",
@@ -948,7 +1528,9 @@ class SobreSection extends StatelessWidget {
                         "Analista de Sistemas e Design",
                       ),
                     ),
+
                     const SizedBox(width: 20),
+
                     Expanded(
                       child: cardMembro(
                         "assets/laura.png",
@@ -963,22 +1545,36 @@ class SobreSection extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            /// DESENVOLVIMENTO FULL STACK
+            // ==============================================
+            // DESENVOLVIMENTO FULL STACK
+            // ==============================================
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+
               children: [
+
                 Text(
                   "Desenvolvimento Full Stack",
+
                   style: TextStyle(
-                    fontSize: 20 * fontScale,
-                    fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black87,
+                    fontSize:
+                        20 * fontScale,
+
+                    fontWeight:
+                        FontWeight.bold,
+
+                    color: isDarkMode
+                        ? Colors.white
+                        : Colors.black87,
                   ),
                 ),
+
                 const SizedBox(height: 20),
 
                 Row(
                   children: [
+
                     Expanded(
                       child: cardMembro(
                         "assets/livia.png",
@@ -986,7 +1582,9 @@ class SobreSection extends StatelessWidget {
                         "Programadora Full Stack",
                       ),
                     ),
+
                     const SizedBox(width: 20),
+
                     Expanded(
                       child: cardMembro(
                         "assets/bruno.png",
@@ -1001,22 +1599,36 @@ class SobreSection extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            /// DESENVOLVIMENTO BACK-END
+            // ==============================================
+            // DESENVOLVIMENTO BACK-END
+            // ==============================================
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+
               children: [
+
                 Text(
                   "Desenvolvimento Back-End",
+
                   style: TextStyle(
-                    fontSize: 20 * fontScale,
-                    fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black87,
+                    fontSize:
+                        20 * fontScale,
+
+                    fontWeight:
+                        FontWeight.bold,
+
+                    color: isDarkMode
+                        ? Colors.white
+                        : Colors.black87,
                   ),
                 ),
+
                 const SizedBox(height: 20),
 
                 Row(
                   children: [
+
                     Expanded(
                       child: cardMembro(
                         "assets/nicoly.png",
@@ -1024,7 +1636,9 @@ class SobreSection extends StatelessWidget {
                         "Back-End e Scrum Master",
                       ),
                     ),
+
                     const SizedBox(width: 20),
+
                     Expanded(
                       child: cardMembro(
                         "assets/erik.png",
@@ -1032,7 +1646,9 @@ class SobreSection extends StatelessWidget {
                         "Programador Back-End",
                       ),
                     ),
+
                     const SizedBox(width: 20),
+
                     Expanded(
                       child: cardMembro(
                         "assets/fernanda.png",
@@ -1050,44 +1666,89 @@ class SobreSection extends StatelessWidget {
     );
   }
 
-  Widget _infoCard(IconData icon, String titulo, String texto) {
+  Widget _infoCard(
+    IconData icon,
+    String titulo,
+    String texto,
+  ) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          padding: const EdgeInsets.all(25),
+          padding:
+              const EdgeInsets.all(25),
+
           decoration: BoxDecoration(
-            color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            color: isDarkMode
+                ? const Color(0xFF1A2B4C)
+                : Colors.white,
+
+            borderRadius:
+                BorderRadius.circular(10),
+
             boxShadow: [
               BoxShadow(
-                color: isDarkMode ? Colors.black54 : Colors.black12,
+                color: isDarkMode
+                    ? Colors.black54
+                    : Colors.black12,
+
                 blurRadius: 6,
-                offset: const Offset(0, 3),
+
+                offset:
+                    const Offset(0, 3),
               ),
             ],
           ),
+
           child: Row(
             children: [
-              Icon(icon, color: const Color(0xFF1A9DE7), size: 35 * fontScale),
+
+              Icon(
+                icon,
+
+                color:
+                    const Color(0xFF1A9DE7),
+
+                size:
+                    35 * fontScale,
+              ),
+
               const SizedBox(width: 15),
+
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+
                   children: [
+
                     Text(
                       titulo,
+
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18 * fontScale,
-                        color: isDarkMode ? Colors.white : Colors.black87,
+                        fontWeight:
+                            FontWeight.bold,
+
+                        fontSize:
+                            18 * fontScale,
+
+                        color: isDarkMode
+                            ? Colors.white
+                            : Colors.black87,
                       ),
                     ),
+
                     const SizedBox(height: 5),
+
                     Text(
                       texto,
+
                       style: TextStyle(
-                        fontSize: 14 * fontScale,
-                        color: isDarkMode ? Colors.white70 : Colors.black87,
+                        fontSize:
+                            14 * fontScale,
+
+                        color: isDarkMode
+                            ? Colors.white70
+                            : Colors.black87,
                       ),
                     ),
                   ],
@@ -1101,84 +1762,136 @@ class SobreSection extends StatelessWidget {
   }
 }
 
+// ============================================================
+// FOOTER
+// ============================================================
+
 class FooterNexa extends StatelessWidget {
   const FooterNexa({super.key});
 
   Future<void> abrirLink(String url) async {
     final Uri uri = Uri.parse(url);
 
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    )) {
       throw 'Não foi possível abrir $url';
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    double largura = MediaQuery.of(context).size.width;
+    double largura =
+        MediaQuery.of(context).size.width;
+
     bool isMobile = largura < 600;
 
     return Container(
       width: double.infinity,
+
       decoration: const BoxDecoration(
         color: Colors.black,
+
         boxShadow: [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 10,
-            offset: Offset(0, -2),
+            offset:
+                Offset(0, -2),
           ),
         ],
       ),
+
       padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 15 : 40,
+        horizontal:
+            isMobile ? 15 : 40,
+
         vertical: 20,
       ),
+
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+
         children: [
+
           Row(
             children: [
+
               const Icon(
                 Icons.security,
-                color: Color.fromARGB(255, 251, 252, 253),
+                color:
+                    Color.fromARGB(
+                  255,
+                  251,
+                  252,
+                  253,
+                ),
                 size: 18,
               ),
+
               const SizedBox(width: 8),
+
               const Text(
                 "NEXA",
+
                 style: TextStyle(
-                  color: Color.fromARGB(255, 232, 233, 236),
+                  color:
+                      Color.fromARGB(
+                    255,
+                    232,
+                    233,
+                    236,
+                  ),
+
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+
+                  fontWeight:
+                      FontWeight.bold,
                 ),
               ),
+
               const SizedBox(width: 20),
+
               IconButton(
                 icon: const Icon(
                   Icons.camera_alt,
-                  color: Colors.white70,
+                  color:
+                      Colors.white70,
                   size: 18,
                 ),
+
                 onPressed: () {
                   abrirLink(
                     "https://www.instagram.com/nexa.senai/?utm_source=ig_web_button_share_sheet",
                   );
                 },
               ),
+
               IconButton(
                 icon: const Icon(
                   Icons.music_note,
-                  color: Colors.white70,
+                  color:
+                      Colors.white70,
                   size: 18,
                 ),
+
                 onPressed: () {
                   abrirLink(
                     "https://www.tiktok.com/@nexa.senai?_r=1&_t=ZS-95X8QioYNRU",
                   );
                 },
               ),
+
               IconButton(
-                icon: const Icon(Icons.email, color: Colors.white70, size: 18),
+                icon: const Icon(
+                  Icons.email,
+                  color:
+                      Colors.white70,
+                  size: 18,
+                ),
+
                 onPressed: () {
                   abrirLink(
                     Uri.encodeFull(
@@ -1189,72 +1902,143 @@ class FooterNexa extends StatelessWidget {
               ),
             ],
           ),
+
           if (!isMobile)
             Row(
               children: const [
-                Icon(Icons.info_outline, color: Colors.white70, size: 16),
+
+                Icon(
+                  Icons.info_outline,
+                  color:
+                      Colors.white70,
+                  size: 16,
+                ),
+
                 SizedBox(width: 5),
+
                 Text(
                   "Sobre",
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
+
+                  style: TextStyle(
+                    color:
+                        Colors.white70,
+                    fontSize: 12,
+                  ),
                 ),
+
                 SizedBox(width: 20),
-                Icon(Icons.settings, color: Colors.white70, size: 16),
+
+                Icon(
+                  Icons.settings,
+                  color:
+                      Colors.white70,
+                  size: 16,
+                ),
+
                 SizedBox(width: 5),
+
                 Text(
                   "Soluções",
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
+
+                  style: TextStyle(
+                    color:
+                        Colors.white70,
+                    fontSize: 12,
+                  ),
                 ),
+
                 SizedBox(width: 20),
-                Icon(Icons.mail_outline, color: Colors.white70, size: 16),
+
+                Icon(
+                  Icons.mail_outline,
+                  color:
+                      Colors.white70,
+                  size: 16,
+                ),
+
                 SizedBox(width: 5),
+
                 Text(
                   "Contato",
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
+
+                  style: TextStyle(
+                    color:
+                        Colors.white70,
+                    fontSize: 12,
+                  ),
                 ),
+
                 SizedBox(width: 20),
               ],
             ),
+
           Row(
             children: [
+
               GestureDetector(
                 onDoubleTap: () {
                   Navigator.push(
                     context,
+
                     MaterialPageRoute(
-                      builder: (_) => LoginPage(
+                      builder: (_) =>
+                          LoginPage(
                         onLogin: () {
                           Navigator.pushReplacement(
                             context,
+
                             MaterialPageRoute(
-                              builder: (_) => DashboardPageFun(
-                              
-                              ),
+                              builder: (_) =>
+                                  DashboardPageFun(),
                             ),
                           );
                         },
+
                         onVoltar: () {
-                          Navigator.pop(context);
+                          Navigator.pop(
+                            context,
+                          );
                         },
                       ),
                     ),
                   );
                 },
+
                 child: Row(
                   children: const [
-                    Icon(Icons.lock_outline, color: Colors.white38, size: 14),
+
+                    Icon(
+                      Icons.lock_outline,
+                      color:
+                          Colors.white38,
+                      size: 14,
+                    ),
+
                     SizedBox(width: 4),
+
                     Text(
                       "Admin",
-                      style: TextStyle(color: Colors.white38, fontSize: 11),
+
+                      style: TextStyle(
+                        color:
+                            Colors.white38,
+                        fontSize: 11,
+                      ),
                     ),
                   ],
                 ),
               ),
+
               const SizedBox(width: 15),
+
               const Text(
                 "© 2026",
-                style: TextStyle(color: Colors.white38, fontSize: 11),
+
+                style: TextStyle(
+                  color:
+                      Colors.white38,
+                  fontSize: 11,
+                ),
               ),
             ],
           ),
@@ -1263,3 +2047,4 @@ class FooterNexa extends StatelessWidget {
     );
   }
 }
+
