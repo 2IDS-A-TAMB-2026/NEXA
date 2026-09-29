@@ -136,11 +136,7 @@ Links e redes sociais da NEXA.
                     onLogin: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => DashboardPageFun  (
-                           
-                          ),
-                        ),
+                        MaterialPageRoute(builder: (_) => DashboardPageFun()),
                       );
                     },
                     onVoltar: () => Navigator.pop(context),

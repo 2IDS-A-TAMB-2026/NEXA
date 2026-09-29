@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nexa_app/services/api_service.dart';
 import 'package:nexa_app/models/user_model.dart';
-
+import 'package:nexa_app/controllers/acessibility_controller.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLogin;
@@ -16,103 +17,138 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final senhaController = TextEditingController();
-bool carregandoLogin = false;
+
+  bool carregandoLogin = false;
+
   String? erroEmail;
   String? erroSenha;
-Future<void> validar() async {
-  setState(() {
-    erroEmail = null;
-    erroSenha = null;
-  });
 
-  if (emailController.text.trim().isEmpty ||
-      !emailController.text.contains("@")) {
+  // =========================================================
+  // LOGIN
+  // =========================================================
+
+  Future<void> validar() async {
     setState(() {
-      erroEmail = "Digite um e-mail válido";
+      erroEmail = null;
+      erroSenha = null;
     });
-    return;
+
+    if (emailController.text.trim().isEmpty ||
+        !emailController.text.contains("@")) {
+      setState(() {
+        erroEmail = "Digite um e-mail válido";
+      });
+      return;
+    }
+
+    if (senhaController.text.isEmpty || senhaController.text.length < 6) {
+      setState(() {
+        erroSenha = "Mínimo 6 caracteres";
+      });
+      return;
+    }
+
+    setState(() {
+      carregandoLogin = true;
+    });
+
+    try {
+      final UserModel usuario = await ApiService.login(
+        emailController.text.trim(),
+        senhaController.text,
+      );
+
+      usuarioLogado = usuario;
+
+      if (!mounted) return;
+
+      setState(() {
+        carregandoLogin = false;
+      });
+
+      widget.onLogin();
+    } catch (e, stackTrace) {
+      debugPrint('========================================');
+      debugPrint('ERRO NO LOGIN');
+      debugPrint('========================================');
+      debugPrint('ERRO: $e');
+      debugPrint('TIPO: ${e.runtimeType}');
+      debugPrint('STACK TRACE:');
+      debugPrint('$stackTrace');
+      debugPrint('========================================');
+
+      if (!mounted) return;
+
+      setState(() {
+        carregandoLogin = false;
+
+        erroEmail =
+            '''
+
+
+${e.toString().replaceFirst('Exception: ', '')}
+''';
+      });
+    }
   }
 
-  if (senhaController.text.isEmpty ||
-      senhaController.text.length < 6) {
-    setState(() {
-      erroSenha = "Mínimo 6 caracteres";
-    });
-    return;
-  }
-
-  setState(() {
-    carregandoLogin = true;
-  });
-
-  try {
-    final UserModel usuario =
-        await ApiService.login(
-      emailController.text.trim(),
-      senhaController.text,
-    );
-
-    usuarioLogado = usuario;
-
-    if (!mounted) return;
-
-    setState(() {
-      carregandoLogin = false;
-    });
-
-    widget.onLogin();
-  } catch (e) {
-    if (!mounted) return;
-
-    setState(() {
-      carregandoLogin = false;
-      erroEmail = e
-          .toString()
-          .replaceFirst('Exception: ', '');
-    });
-  }
-}
+  // =========================================================
+  // BUILD
+  // =========================================================
 
   @override
   Widget build(BuildContext context) {
     final largura = MediaQuery.of(context).size.width;
+
     final isMobile = largura < 800;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // PEGA O MESMO CONTROLLER GLOBAL
+    final accessibility = context.watch<AccessibilityController>();
+
+    final bool isDark = accessibility.darkMode;
 
     return Scaffold(
       backgroundColor: isDark
           ? const Color(0xFF0D1117)
           : const Color(0xFFF4F6FA),
+
       body: isMobile
           ? _mobileLayout(context, isDark)
           : _desktopLayout(context, isDark),
     );
   }
 
-  //////////////////////////////////////////////////////
-  /// MOBILE
-  //////////////////////////////////////////////////////
+  // =========================================================
+  // MOBILE
+  // =========================================================
+
   Widget _mobileLayout(BuildContext context, bool isDark) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          /// TOPO
+          // TOPO
           Container(
             width: double.infinity,
+
             padding: const EdgeInsets.only(top: 60, bottom: 50),
+
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF0A66C2), Color(0xFF003C8F)],
               ),
+
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
               ),
             ),
+
             child: Column(
               children: [
                 Image.asset("assets/logo_branco.png", height: 90),
+
                 const SizedBox(height: 10),
+
                 const Text(
                   "Login",
                   style: TextStyle(
@@ -125,31 +161,39 @@ Future<void> validar() async {
             ),
           ),
 
-          /// FORM COM MARGEM LATERAL MAIOR
+          // FORM
           Transform.translate(
             offset: const Offset(0, -30),
+
             child: Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 28,
-              ), // Margem lateral aumentada para 28
+              margin: const EdgeInsets.symmetric(horizontal: 28),
+
               padding: const EdgeInsets.all(25),
+
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF161B22) : Colors.white,
+
                 borderRadius: BorderRadius.circular(20),
+
                 boxShadow: const [
                   BoxShadow(color: Colors.black12, blurRadius: 10),
                 ],
               ),
+
               child: Column(
                 children: [
-                  /// VOLTAR
+                  // VOLTAR
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15),
+
                     child: Align(
                       alignment: Alignment.centerLeft,
+
                       child: TextButton.icon(
                         onPressed: widget.onVoltar,
+
                         icon: const Icon(Icons.undo, color: Color(0xFF0A66C2)),
+
                         label: const Text(
                           "Voltar",
                           style: TextStyle(
@@ -179,48 +223,45 @@ Future<void> validar() async {
 
                   const SizedBox(height: 20),
 
-                 ElevatedButton.icon(
-  onPressed: carregandoLogin ? null : validar,
+                  ElevatedButton.icon(
+                    onPressed: carregandoLogin ? null : validar,
 
-  icon: carregandoLogin
-      ? const SizedBox(
-          width: 22,
-          height: 22,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: Colors.white,
-          ),
-        )
-      : const Icon(
-          Icons.login,
-          color: Colors.white,
-        ),
+                    icon: carregandoLogin
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
 
-  label: Text(
-    carregandoLogin ? "Entrando..." : "Entrar",
-    style: const TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: Colors.white,
-    ),
-  ),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.login, color: Colors.white),
 
-  style: ElevatedButton.styleFrom(
-    minimumSize: const Size(
-      double.infinity,
-      50,
-    ),
-    backgroundColor: const Color(0xFF0A66C2),
-    disabledBackgroundColor: const Color(0xFF7AAEDC),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(30),
-    ),
-  ),
-),
+                    label: Text(
+                      carregandoLogin ? "Entrando..." : "Entrar",
+
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+
+                      backgroundColor: const Color(0xFF0A66C2),
+
+                      disabledBackgroundColor: const Color(0xFF7AAEDC),
+
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
 
                   const SizedBox(height: 10),
-
-          
                 ],
               ),
             ),
@@ -230,9 +271,10 @@ Future<void> validar() async {
     );
   }
 
-  //////////////////////////////////////////////////////
-  /// DESKTOP
-  //////////////////////////////////////////////////////
+  // =========================================================
+  // DESKTOP
+  // =========================================================
+
   Widget _desktopLayout(BuildContext context, bool isDark) {
     return Row(
       children: [
@@ -243,6 +285,7 @@ Future<void> validar() async {
                 colors: [Color(0xFF0A66C2), Color(0xFF003C8F)],
               ),
             ),
+
             child: Center(
               child: Image.asset("assets/logo_branco.png", height: 150),
             ),
@@ -253,28 +296,38 @@ Future<void> validar() async {
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.all(32),
+
                 child: Container(
                   width: 420,
+
                   padding: const EdgeInsets.all(35),
+
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF161B22) : Colors.white,
+
                     borderRadius: BorderRadius.circular(15),
+
                     boxShadow: const [
                       BoxShadow(color: Colors.black12, blurRadius: 10),
                     ],
                   ),
+
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
+
                         child: TextButton.icon(
                           onPressed: widget.onVoltar,
+
                           icon: const Icon(
                             Icons.undo,
                             color: Color(0xFF0A66C2),
                           ),
+
                           label: const Text("Voltar"),
                         ),
                       ),
@@ -287,9 +340,11 @@ Future<void> validar() async {
 
                       Text(
                         "Login",
+
                         style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
+
                           color: isDark
                               ? Colors.white
                               : const Color(0xFF1F3C5B),
@@ -319,14 +374,19 @@ Future<void> validar() async {
 
                       ElevatedButton.icon(
                         onPressed: validar,
+
                         icon: const Icon(Icons.login, color: Colors.white),
+
                         label: const Text(
                           "Entrar",
                           style: TextStyle(color: Colors.white),
                         ),
+
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
+
                           backgroundColor: const Color(0xFF0A66C2),
+
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -334,7 +394,6 @@ Future<void> validar() async {
                       ),
 
                       const SizedBox(height: 10),
-
                     ],
                   ),
                 ),
@@ -346,9 +405,10 @@ Future<void> validar() async {
     );
   }
 
-  //////////////////////////////////////////////////////
-  /// CAMPO COM ERRO
-  //////////////////////////////////////////////////////
+  // =========================================================
+  // CAMPO
+  // =========================================================
+
   Widget campo(
     String label,
     IconData icon,
@@ -359,19 +419,58 @@ Future<void> validar() async {
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
+
       child: TextField(
         controller: controller,
+
         obscureText: isPassword,
+
         style: TextStyle(color: isDark ? Colors.white : Colors.black),
+
         decoration: InputDecoration(
           labelText: label,
+
+          labelStyle: TextStyle(
+            color: isDark ? Colors.white70 : Colors.black87,
+          ),
+
           errorText: erro,
+
           prefixIcon: Icon(icon, color: const Color(0xFF1F66B1)),
+
           filled: true,
+
           fillColor: isDark ? const Color(0xFF0D1117) : Colors.white,
+
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+
+            borderSide: BorderSide(
+              color: isDark ? Colors.white24 : Colors.black12,
+            ),
+          ),
+
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+
+            borderSide: const BorderSide(color: Color(0xFF0A66C2), width: 2),
+          ),
         ),
       ),
     );
+  }
+
+  // =========================================================
+  // DISPOSE
+  // =========================================================
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    senhaController.dispose();
+
+    super.dispose();
   }
 }

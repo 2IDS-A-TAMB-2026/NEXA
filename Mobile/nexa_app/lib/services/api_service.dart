@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 
 import '../models/dashboard_fun_model.dart';
 import '../models/user_model.dart';
+import '../models/camera_model.dart';
+
+
 
 class ApiService {
 
@@ -11,7 +14,7 @@ class ApiService {
   // =========================================================
 
   static const String baseUrl =
-     'http://10.141.130.97/nexa/public';
+     'http://10.141.131.58/nexa/public';
 
 
   // =========================================================
@@ -293,6 +296,79 @@ static Future<void> alterarSenha(
           'Não foi possível alterar a senha.',
     );
   }
+}
+
+static Future<Map<String, dynamic>> analisarEpi({
+  required int cameraId,
+  required String cpf,
+  required String imagemBase64,
+}) async {
+  final url = Uri.parse(
+    '$baseUrl/api/cameras/$cameraId/analisar',
+  );
+
+  final response = await http.post(
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: jsonEncode({
+      'cpf': cpf,
+      'imagem': imagemBase64,
+    }),
+  );
+
+  final data = jsonDecode(response.body);
+
+  if (response.statusCode >= 200 && response.statusCode < 300) {
+    return data;
+  }
+
+  throw Exception(
+    data['message'] ?? 'Erro ao realizar análise.',
+  );
+}
+
+
+static Future<List<CameraModel>> buscarCamerasDoSetor(
+  int idSetor,
+) async {
+  final url = Uri.parse(
+    '$baseUrl/api/cameras',
+  );
+
+  final response = await http.get(
+    url,
+    headers: {
+      'Accept': 'application/json',
+    },
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception(
+      'Erro ao buscar câmeras: ${response.statusCode}',
+    );
+  }
+
+  final data = jsonDecode(response.body);
+
+  final List camerasJson = data is List
+      ? data
+      : (data['cameras'] ?? []);
+
+  final cameras = camerasJson
+      .map(
+        (camera) => CameraModel.fromJson(
+          Map<String, dynamic>.from(camera),
+        ),
+      )
+      .where(
+        (camera) => camera.idSetor == idSetor,
+      )
+      .toList();
+
+  return cameras;
 }
 }
 

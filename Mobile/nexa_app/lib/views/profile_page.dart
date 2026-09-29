@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nexa_app/controllers/acessibility_controller.dart';
@@ -68,9 +67,7 @@ class _PerfilPageState extends State<PerfilPage> {
 
       nomeController.text = usuario.nome;
       emailController.text = usuario.email;
-      telefoneController.text = formatarTelefone(
-        usuario.telefone,
-      );
+      telefoneController.text = formatarTelefone(usuario.telefone);
       cpfController.text = usuario.cpf;
       dataController.text = usuario.dataNascimento;
       uidController.text = usuario.uidRfid;
@@ -85,10 +82,7 @@ class _PerfilPageState extends State<PerfilPage> {
         setState(() {
           carregando = false;
           mensagemErro = true;
-          mensagem = e.toString().replaceFirst(
-                'Exception: ',
-                '',
-              );
+          mensagem = e.toString().replaceFirst('Exception: ', '');
         });
       }
     }
@@ -106,16 +100,12 @@ class _PerfilPageState extends State<PerfilPage> {
     imagem = imagem.trim();
 
     // Caso a API já envie uma URL completa
-    if (imagem.startsWith('http://') ||
-        imagem.startsWith('https://')) {
+    if (imagem.startsWith('http://') || imagem.startsWith('https://')) {
       return imagem;
     }
 
     // Remove barras do começo
-    imagem = imagem.replaceFirst(
-      RegExp(r'^/+'),
-      '',
-    );
+    imagem = imagem.replaceFirst(RegExp(r'^/+'), '');
 
     // Caso já venha com uploads/epis/
     if (imagem.startsWith('uploads/epis/')) {
@@ -131,10 +121,7 @@ class _PerfilPageState extends State<PerfilPage> {
   // =========================================================
 
   String formatarTelefone(String valor) {
-    String numeros = valor.replaceAll(
-      RegExp(r'[^0-9]'),
-      '',
-    );
+    String numeros = valor.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numeros.length > 11) {
       numeros = numeros.substring(0, 11);
@@ -185,16 +172,11 @@ class _PerfilPageState extends State<PerfilPage> {
 
       if (novaSenhaController.text.trim().isNotEmpty) {
         if (senhaAtualController.text.trim().isEmpty) {
-          throw Exception(
-            'Digite sua senha atual para alterar a senha.',
-          );
+          throw Exception('Digite sua senha atual para alterar a senha.');
         }
 
-        if (novaSenhaController.text !=
-            confirmarSenhaController.text) {
-          throw Exception(
-            'A nova senha e a confirmação não coincidem.',
-          );
+        if (novaSenhaController.text != confirmarSenhaController.text) {
+          throw Exception('A nova senha e a confirmação não coincidem.');
         }
 
         await ApiService.alterarSenha(
@@ -208,8 +190,7 @@ class _PerfilPageState extends State<PerfilPage> {
       // BUSCAR PERFIL NOVAMENTE
       // =====================================================
 
-      final usuarioAtualizado =
-          await ApiService.buscarPerfilFuncionario(
+      final usuarioAtualizado = await ApiService.buscarPerfilFuncionario(
         usuarioLogado.cpf,
       );
 
@@ -217,9 +198,7 @@ class _PerfilPageState extends State<PerfilPage> {
 
       nomeController.text = usuarioAtualizado.nome;
       emailController.text = usuarioAtualizado.email;
-      telefoneController.text = formatarTelefone(
-        usuarioAtualizado.telefone,
-      );
+      telefoneController.text = formatarTelefone(usuarioAtualizado.telefone);
 
       senhaAtualController.clear();
       novaSenhaController.clear();
@@ -239,10 +218,7 @@ class _PerfilPageState extends State<PerfilPage> {
         setState(() {
           salvando = false;
           mensagemErro = true;
-          mensagem = e.toString().replaceFirst(
-                'Exception: ',
-                '',
-              );
+          mensagem = e.toString().replaceFirst('Exception: ', '');
         });
       }
     }
@@ -270,19 +246,9 @@ class _PerfilPageState extends State<PerfilPage> {
 
   @override
   Widget build(BuildContext context) {
-    final accessibility =
-        context.watch<AccessibilityController>();
+    final accessibility = context.watch<AccessibilityController>();
 
-    bool isDarkMode = false;
-
-    try {
-      isDarkMode =
-          (accessibility as dynamic).darkMode ??
-          (accessibility as dynamic).isDarkMode ??
-          false;
-    } catch (_) {
-      isDarkMode = false;
-    }
+    final bool isDarkMode = accessibility.darkMode;
 
     final Color backgroundColor = isDarkMode
         ? const Color(0xFF000000)
@@ -292,17 +258,11 @@ class _PerfilPageState extends State<PerfilPage> {
         ? const Color(0xFF1A2B4C)
         : Colors.white;
 
-    final Color cardColor = isDarkMode
-        ? const Color(0xFF1A2B4C)
-        : Colors.white;
+    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
 
-    final Color textColor = isDarkMode
-        ? Colors.white
-        : const Color(0xFF161616);
+    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
 
-    final Color subTextColor = isDarkMode
-        ? Colors.white70
-        : Colors.grey;
+    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
 
     final Color fieldFillColor = isDarkMode
         ? const Color(0xFF2A3B5C)
@@ -314,94 +274,59 @@ class _PerfilPageState extends State<PerfilPage> {
       // =====================================================
       // DRAWER
       // =====================================================
-
       drawer: _buildDrawer(context),
 
       // =====================================================
       // APP BAR
       // =====================================================
-
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appBarColor,
-        iconTheme: const IconThemeData(
-          color: Color(0xFF0F62FE),
-        ),
+        iconTheme: const IconThemeData(color: Color(0xFF0F62FE)),
         title: Text(
           'Perfil',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: isDarkMode
-                ? Colors.white
-                : const Color(0xFF0F62FE),
+            color: isDarkMode ? Colors.white : const Color(0xFF0F62FE),
             fontWeight: FontWeight.bold,
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.text_increase,
-              color: Color(0xFF0F62FE),
-            ),
+            icon: const Icon(Icons.text_increase, color: Color(0xFF0F62FE)),
             onPressed: () {
-              context
-                  .read<AccessibilityController>()
-                  .aumentarFonte();
+              context.read<AccessibilityController>().aumentarFonte();
             },
           ),
 
           IconButton(
-            icon: const Icon(
-              Icons.text_decrease,
-              color: Color(0xFF0F62FE),
-            ),
+            icon: const Icon(Icons.text_decrease, color: Color(0xFF0F62FE)),
             onPressed: () {
-              context
-                  .read<AccessibilityController>()
-                  .diminuirFonte();
+              context.read<AccessibilityController>().diminuirFonte();
             },
           ),
 
           IconButton(
             icon: Icon(
-              isDarkMode
-                  ? Icons.wb_sunny
-                  : Icons.nightlight_round,
+              isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
               color: const Color(0xFF0F62FE),
             ),
             onPressed: () {
-              try {
-                (context
-                        .read<AccessibilityController>()
-                    as dynamic)
-                    .toggleDarkMode();
-              } catch (_) {
-                try {
-                  (context
-                          .read<AccessibilityController>()
-                      as dynamic)
-                      .alternarTema();
-                } catch (_) {}
-              }
+              context.read<AccessibilityController>().toggleDarkMode();
             },
           ),
 
           IconButton(
-            icon: const Icon(
-              Icons.volume_up,
-              color: Color(0xFF0F62FE),
-            ),
+            icon: const Icon(Icons.volume_up, color: Color(0xFF0F62FE)),
             onPressed: () {
-              context
-                  .read<AccessibilityController>()
-                  .lerTexto(
-                    '''
+              context.read<AccessibilityController>().lerTexto('''
 Perfil do Funcionário.
 Nome: ${nomeController.text}.
 E-mail: ${emailController.text}.
 Telefone: ${telefoneController.text}.
 EPIs obrigatórios: ${usuarioLogado.epis}.
-''',
-                  );
+''');
             },
           ),
 
@@ -412,22 +337,20 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
       // =====================================================
       // BODY
       // =====================================================
-
       body: carregando
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF0F62FE),
-              ),
+              child: CircularProgressIndicator(color: Color(0xFF0F62FE)),
             )
           : Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 30,
-                  horizontal: 20,
+                  vertical: 20,
+                  horizontal: 16,
                 ),
                 child: Container(
-                  width: 850,
-                  padding: const EdgeInsets.all(32),
+                  constraints: const BoxConstraints(maxWidth: 850),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: cardColor,
                     borderRadius: BorderRadius.circular(20),
@@ -440,25 +363,19 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       // =================================================
                       // HEADER
                       // =================================================
 
-                      _buildHeader(
-                        isDarkMode,
-                        subTextColor,
-                      ),
+                      _buildHeader(isDarkMode, subTextColor),
 
                       const SizedBox(height: 38),
 
                       // =================================================
                       // INFORMAÇÕES PESSOAIS
                       // =================================================
-
                       _secaoTitulo(
                         Icons.person_outline,
                         'INFORMAÇÕES PESSOAIS',
@@ -488,14 +405,10 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                         icon: Icons.phone_outlined,
                         textColor: textColor,
                         fillColor: fieldFillColor,
-                        keyboardType:
-                            TextInputType.phone,
+                        keyboardType: TextInputType.phone,
                         inputFormatters: [
-                          FilteringTextInputFormatter
-                              .digitsOnly,
-                          LengthLimitingTextInputFormatter(
-                            11,
-                          ),
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(11),
                           _TelefoneInputFormatter(),
                         ],
                       ),
@@ -512,8 +425,7 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                       campo(
                         'Data de nascimento',
                         dataController,
-                        icon:
-                            Icons.calendar_today_outlined,
+                        icon: Icons.calendar_today_outlined,
                         enabled: false,
                         textColor: textColor,
                         fillColor: fieldFillColor,
@@ -533,7 +445,6 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                       // =================================================
                       // VÍNCULO PROFISSIONAL
                       // =================================================
-
                       _secaoTitulo(
                         Icons.business_outlined,
                         'VÍNCULO PROFISSIONAL',
@@ -543,9 +454,7 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
 
                       campo(
                         'Empresa',
-                        TextEditingController(
-                          text: usuarioLogado.empresa,
-                        ),
+                        TextEditingController(text: usuarioLogado.empresa),
                         icon: Icons.business_outlined,
                         enabled: false,
                         textColor: textColor,
@@ -554,9 +463,7 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
 
                       campo(
                         'Setor',
-                        TextEditingController(
-                          text: usuarioLogado.setor,
-                        ),
+                        TextEditingController(text: usuarioLogado.setor),
                         icon: Icons.work_outline,
                         enabled: false,
                         textColor: textColor,
@@ -568,29 +475,18 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                       // =================================================
                       // EPIs OBRIGATÓRIOS
                       // =================================================
-
-                      _secaoTitulo(
-                        Icons.shield_outlined,
-                        'EPIS OBRIGATÓRIOS',
-                      ),
+                      _secaoTitulo(Icons.shield_outlined, 'EPIS OBRIGATÓRIOS'),
 
                       const SizedBox(height: 18),
 
-                      _buildEpis(
-                        textColor,
-                        fieldFillColor,
-                      ),
+                      _buildEpis(textColor, fieldFillColor),
 
                       const SizedBox(height: 30),
 
                       // =================================================
                       // SEGURANÇA
                       // =================================================
-
-                      _secaoTitulo(
-                        Icons.lock_outline,
-                        'SEGURANÇA',
-                      ),
+                      _secaoTitulo(Icons.lock_outline, 'SEGURANÇA'),
 
                       const SizedBox(height: 18),
 
@@ -633,27 +529,18 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                               confirmarSenhaController.clear();
                             });
                           },
-                          icon: const Icon(
-                            Icons.close,
-                            size: 18,
-                          ),
-                          label: const Text(
-                            'Cancelar alteração de senha',
-                          ),
+                          icon: const Icon(Icons.close, size: 18),
+                          label: const Text('Cancelar alteração de senha'),
                         ),
                       ],
 
                       if (mensagem.isNotEmpty)
                         Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                          ),
+                          padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             mensagem,
                             style: TextStyle(
-                              color: mensagemErro
-                                  ? Colors.red
-                                  : Colors.green,
+                              color: mensagemErro ? Colors.red : Colors.green,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -662,102 +549,87 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                       const SizedBox(height: 30),
 
                       // =================================================
-                      // BOTÕES
+                      // BOTÕES (RESPONSIVOS)
                       // =================================================
-
-                      Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center,
-                        children: [
-
-                          if (!alterarSenha)
-                            OutlinedButton.icon(
-                              onPressed: () {
-                                setState(() {
-                                  alterarSenha = true;
-                                  editando = true;
-                                  mensagem = '';
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.lock_reset,
-                              ),
-                              label: const Text(
-                                'Alterar senha',
-                              ),
-                              style:
-                                  OutlinedButton.styleFrom(
-                                foregroundColor:
-                                    const Color(0xFF0F62FE),
-                                padding:
-                                    const EdgeInsets.symmetric(
-                                  horizontal: 25,
-                                  vertical: 15,
-                                ),
-                                shape:
-                                    RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(25),
-                                ),
-                              ),
-                            ),
-
-                          if (!alterarSenha)
-                            const SizedBox(width: 12),
-
-                          ElevatedButton.icon(
-                            icon: salvando
-                                ? const SizedBox(
-                                    width: 18,
-                                    height: 18,
-                                    child:
-                                        CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Icon(
-                                    editando
-                                        ? Icons.save
-                                        : Icons.edit_note_rounded,
+                      SizedBox(
+                        width: double.infinity,
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: [
+                            if (!alterarSenha)
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  setState(() {
+                                    alterarSenha = true;
+                                    editando = true;
+                                    mensagem = '';
+                                  });
+                                },
+                                icon: const Icon(Icons.lock_reset),
+                                label: const Text('Alterar senha'),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: const Color(0xFF0F62FE),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 25,
+                                    vertical: 15,
                                   ),
-                            label: Text(
-                              salvando
-                                  ? 'Salvando...'
-                                  : editando
-                                      ? 'Salvar alterações'
-                                      : 'Editar campos',
-                            ),
-                            style:
-                                ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color(0xFF0F62FE),
-                              foregroundColor: Colors.white,
-                              padding:
-                                  const EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 16,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
                               ),
-                              shape:
-                                  RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(25),
+
+                            ElevatedButton.icon(
+                              icon: salvando
+                                  ? const SizedBox(
+                                      width: 18,
+                                      height: 18,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : Icon(
+                                      editando
+                                          ? Icons.save
+                                          : Icons.edit_note_rounded,
+                                    ),
+                              label: Text(
+                                salvando
+                                    ? 'Salvando...'
+                                    : editando
+                                    ? 'Salvar alterações'
+                                    : 'Editar campos',
                               ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF0F62FE),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                              onPressed: salvando
+                                  ? null
+                                  : () {
+                                      if (editando) {
+                                        salvarAlteracoes();
+                                      } else {
+                                        setState(() {
+                                          editando = true;
+                                          mensagem = '';
+                                        });
+                                      }
+                                    },
                             ),
-                            onPressed: salvando
-                                ? null
-                                : () {
-                                    if (editando) {
-                                      salvarAlteracoes();
-                                    } else {
-                                      setState(() {
-                                        editando = true;
-                                        mensagem = '';
-                                      });
-                                    }
-                                  },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -771,10 +643,7 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
   // EPIs
   // =========================================================
 
-  Widget _buildEpis(
-    Color textColor,
-    Color fillColor,
-  ) {
+  Widget _buildEpis(Color textColor, Color fillColor) {
     final epis = usuarioLogado.episObrigatorios;
 
     if (epis.isEmpty) {
@@ -787,16 +656,9 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
         ),
         child: const Row(
           children: [
-            Icon(
-              Icons.info_outline,
-              color: Colors.grey,
-            ),
+            Icon(Icons.info_outline, color: Colors.grey),
             SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                'Nenhum EPI obrigatório cadastrado.',
-              ),
-            ),
+            Expanded(child: Text('Nenhum EPI obrigatório cadastrado.')),
           ],
         ),
       );
@@ -804,105 +666,59 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
 
     return Column(
       children: epis.map((epi) {
-
-        final String imagemUrl =
-            _urlImagemEpi(epi.imagem);
+        final String imagemUrl = _urlImagemEpi(epi.imagem);
 
         return Container(
           width: double.infinity,
-
-          // MAIS ESPAÇO ENTRE OS EPIs
-          margin: const EdgeInsets.only(
-            bottom: 16,
-          ),
-
+          margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(16),
-
           decoration: BoxDecoration(
             color: fillColor,
             borderRadius: BorderRadius.circular(14),
           ),
-
           child: Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.center,
-
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
-              // =================================================
               // IMAGEM
-              // =================================================
-
               Container(
                 width: 78,
                 height: 78,
-
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0F62FE)
-                      .withOpacity(0.10),
-                  borderRadius:
-                      BorderRadius.circular(12),
+                  color: const Color(0xFFEAF4FF),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-
-                child: imagemUrl.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(12),
-
-                        child:Container(
-  width: 78,
-  height: 78,
-  decoration: BoxDecoration(
-    color: const Color(0xFFEAF4FF),
-    borderRadius: BorderRadius.circular(16),
-  ),
-  child: const Icon(
-    Icons.shield_outlined,
-    color: Color(0xFF0075E3),
-    size: 40,
-  ),
-),
-                      )
-                    : const Icon(
-                        Icons.shield_outlined,
-                        color: Color(0xFF0F62FE),
-                        size: 34,
-                      ),
+                child: const Icon(
+                  Icons.shield_outlined,
+                  color: Color(0xFF0075E3),
+                  size: 40,
+                ),
               ),
 
               const SizedBox(width: 18),
 
-              // =================================================
               // INFORMAÇÕES DO EPI
-              // =================================================
-
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Text(
-                      epi.nome.isEmpty
-                          ? 'EPI'
-                          : epi.nome,
-
+                      epi.nome.isEmpty ? 'EPI' : epi.nome,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: textColor,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     if (epi.descricao.isNotEmpty) ...[
                       const SizedBox(height: 7),
-
                       Text(
                         epi.descricao,
-
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color:
-                              textColor.withOpacity(0.70),
+                          color: textColor.withOpacity(0.70),
                           fontSize: 13,
                           height: 1.4,
                         ),
@@ -912,19 +728,10 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                 ),
               ),
 
-              // =================================================
               // BLOQUEADO
-              // =================================================
-
               const Padding(
-                padding: EdgeInsets.only(
-                  left: 10,
-                ),
-                child: Icon(
-                  Icons.lock_outline,
-                  size: 18,
-                  color: Colors.grey,
-                ),
+                padding: EdgeInsets.only(left: 10),
+                child: Icon(Icons.lock_outline, size: 18, color: Colors.grey),
               ),
             ],
           ),
@@ -949,78 +756,46 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
     List<TextInputFormatter>? inputFormatters,
   }) {
     return Padding(
-      // =====================================================
-      // MAIS ESPAÇO ENTRE OS CAMPOS
-      // =====================================================
-
-      padding: const EdgeInsets.only(
-        bottom: 22,
-      ),
-
+      padding: const EdgeInsets.only(bottom: 22),
       child: TextField(
         controller: controller,
         obscureText: oculto,
-
         enabled: editando && enabled,
-
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
-
+        maxLines: 1,
         style: TextStyle(
           color: textColor,
           fontSize: 14,
           fontWeight: FontWeight.w500,
+          overflow: TextOverflow.ellipsis,
         ),
-
         decoration: InputDecoration(
           labelText: label,
-
           prefixIcon: icon != null
-              ? Icon(
-                  icon,
-                  color: const Color(0xFF0F62FE),
-                  size: 20,
-                )
+              ? Icon(icon, color: const Color(0xFF0F62FE), size: 20)
               : null,
-
           filled: true,
           fillColor: fillColor,
-
-          // =================================================
-          // CAMPO MAIS ALTO
-          // =================================================
-
-          contentPadding:
-              const EdgeInsets.symmetric(
+          contentPadding: const EdgeInsets.symmetric(
             vertical: 18,
             horizontal: 16,
           ),
-
           border: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-
           disabledBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-
           enabledBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-
           focusedBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: Color(0xFF0F62FE),
-              width: 2,
-            ),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF0F62FE), width: 2),
           ),
         ),
       ),
@@ -1031,468 +806,316 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
   // TÍTULO DA SEÇÃO
   // =========================================================
 
-  Widget _secaoTitulo(
-    IconData icon,
-    String titulo,
-  ) {
+  Widget _secaoTitulo(IconData icon, String titulo) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 18,
-          color: const Color(0xFF0F62FE),
-        ),
-
+        Icon(icon, size: 18, color: const Color(0xFF0F62FE)),
         const SizedBox(width: 8),
-
-        Text(
-          titulo,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF0F62FE),
-            letterSpacing: 0.8,
-          ),
-        ),
-      ],
-    );
-  }
-
-  // =========================================================
-  // HEADER
-  // =========================================================
-
-  Widget _buildHeader(
-    bool isDarkMode,
-    Color subTextColor,
-  ) {
-    return Row(
-      children: [
-
-        CircleAvatar(
-          radius: 32,
-
-          backgroundColor:
-              const Color(0xFF0F62FE),
-
+        Expanded(
           child: Text(
-            usuarioLogado.nome.isNotEmpty
-                ? usuarioLogado.nome[0].toUpperCase()
-                : 'F',
-
+            titulo,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
+              color: Color(0xFF0F62FE),
+              letterSpacing: 0.8,
             ),
           ),
         ),
-
-        const SizedBox(width: 20),
-
-        Expanded(
-          child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
-            children: [
-
-              Text(
-                'Perfil do Funcionário',
-
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: isDarkMode
-                      ? Colors.white
-                      : const Color(0xFF0F62FE),
-                ),
-              ),
-
-              const SizedBox(height: 5),
-
-              Text(
-                'Visualize e gerencie suas informações pessoais',
-
-                style: TextStyle(
-                  fontSize: 14,
-                  color: subTextColor,
-                ),
-              ),
-
-              const SizedBox(height: 9),
-
-              Container(
-                height: 4,
-                width: 45,
-
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0F62FE),
-                  borderRadius:
-                      BorderRadius.circular(2),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        Container(
-          padding: const EdgeInsets.all(12),
-
-          decoration: BoxDecoration(
-            color: isDarkMode
-                ? const Color(0xFF2A3B5C)
-                : const Color(0xFFEBF3FF),
-            shape: BoxShape.circle,
-          ),
-
-          child: const Icon(
-            Icons.shield_outlined,
-            size: 40,
-            color: Color(0xFF0F62FE),
-          ),
-        ),
       ],
     );
   }
 
   // =========================================================
-  // DRAWER
+  // HEADER (RESPONSIVO)
   // =========================================================
-// =========================================================
-// DRAWER / MENU LATERAL NEXA
-// =========================================================
 
-Widget _buildDrawer(BuildContext context) {
-  return Drawer(
-    backgroundColor: const Color(0xFF071C30),
+  Widget _buildHeader(bool isDarkMode, Color subTextColor) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isNarrow = constraints.maxWidth < 450;
 
-    child: Stack(
-      children: [
-
-        // =====================================================
-        // IMAGEM NO CANTO INFERIOR DO MENU
-        // =====================================================
-
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 380,
-
-          child: Image.asset(
-            "assets/funci.png",
-
-            fit: BoxFit.cover,
-            alignment: Alignment.bottomCenter,
-
-            errorBuilder: (
-              context,
-              error,
-              stackTrace,
-            ) {
-              return Image.asset(
-                "assets/funci.webp",
-
-                fit: BoxFit.cover,
-                alignment: Alignment.bottomCenter,
-
-                errorBuilder: (
-                  context,
-                  error,
-                  stackTrace,
-                ) {
-                  return const SizedBox();
-                },
-              );
-            },
-          ),
-        ),
-
-        // =====================================================
-        // GRADIENTE DE FUSÃO SOBRE A IMAGEM
-        // =====================================================
-
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 380,
-
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-
-                colors: [
-                  const Color(0xFF071C30),
-                  const Color(0xFF071C30)
-                      .withOpacity(0.65),
+        return Row(
+          children: [
+            CircleAvatar(
+              radius: isNarrow ? 26 : 32,
+              backgroundColor: const Color(0xFF0F62FE),
+              child: Text(
+                usuarioLogado.nome.isNotEmpty
+                    ? usuarioLogado.nome[0].toUpperCase()
+                    : 'F',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: isNarrow ? 22 : 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Perfil do Funcionário',
+                    style: TextStyle(
+                      fontSize: isNarrow ? 18 : 24,
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode
+                          ? Colors.white
+                          : const Color(0xFF0F62FE),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Visualize e gerencie suas informações pessoais',
+                    style: TextStyle(
+                      fontSize: isNarrow ? 12 : 14,
+                      color: subTextColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 4,
+                    width: 45,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0F62FE),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-        ),
-
-        // =====================================================
-        // CONTEÚDO DO DRAWER
-        // =====================================================
-
-        SafeArea(
-          child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
-
-            children: [
-
-              // =================================================
-              // CABEÇALHO
-              // =================================================
-
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
+            if (!isNarrow)
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: isDarkMode
+                      ? const Color(0xFF2A3B5C)
+                      : const Color(0xFFEBF3FF),
+                  shape: BoxShape.circle,
                 ),
+                child: const Icon(
+                  Icons.shield_outlined,
+                  size: 36,
+                  color: Color(0xFF0F62FE),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
 
-                child: Row(
-                  children: [
+  // =========================================================
+  // DRAWER / MENU LATERAL NEXA
+  // =========================================================
 
-                    // LOGO NEXA
-                    Image.asset(
-                      'assets/logo.nexa.png',
-
-                      height: 36,
-
-                      errorBuilder: (
-                        context,
-                        error,
-                        stackTrace,
-                      ) {
-                        return const Icon(
-                          Icons.shield_outlined,
-                          color: Colors.white,
-                          size: 36,
-                        );
-                      },
-                    ),
-
-                    const SizedBox(width: 14),
-
-                    const Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
-
-                      children: [
-
-                        Text(
-                          "NEXA",
-
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight:
-                                FontWeight.bold,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-
-                        Text(
-                          "Segurança é prioridade",
-
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      backgroundColor: const Color(0xFF071C30),
+      child: Stack(
+        children: [
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 380,
+            child: Image.asset(
+              "assets/funci.png",
+              fit: BoxFit.cover,
+              alignment: Alignment.bottomCenter,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  "assets/funci.webp",
+                  fit: BoxFit.cover,
+                  alignment: Alignment.bottomCenter,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox();
+                  },
+                );
+              },
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 380,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    const Color(0xFF071C30),
+                    const Color(0xFF071C30).withOpacity(0.65),
                   ],
                 ),
               ),
-
-              const SizedBox(height: 10),
-
-              // =================================================
-              // SEÇÃO PRINCIPAL
-              // =================================================
-
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-
-                child: Text(
-                  "PRINCIPAL",
-
-                  style: TextStyle(
-                    color: Colors.white54,
-                    fontSize: 11,
-                    fontWeight:
-                        FontWeight.bold,
-                    letterSpacing: 1.1,
+            ),
+          ),
+          SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 20,
                   ),
-                ),
-              ),
-
-              // DASHBOARD
-              _menuItem(
-                icon: Icons.grid_view_rounded,
-                texto: "Dashboard",
-                ativo: false,
-
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          const DashboardPageFun(),
-                    ),
-                  );
-                },
-              ),
-
-              // ANÁLISE DE EPI
-              _menuItem(
-                icon: Icons.videocam_outlined,
-                texto: "Análise de EPI",
-                ativo: false,
-
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          const DashboardCameraPage(),
-                    ),
-                  );
-                },
-              ),
-
-              const SizedBox(height: 20),
-
-              // =================================================
-              // SEÇÃO CONTA
-              // =================================================
-
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-
-                child: Text(
-                  "CONTA",
-
-                  style: TextStyle(
-                    color: Colors.white54,
-                    fontSize: 11,
-                    fontWeight:
-                        FontWeight.bold,
-                    letterSpacing: 1.1,
-                  ),
-                ),
-              ),
-
-              // PERFIL
-              _menuItem(
-                icon: Icons.person_outline,
-                texto: "Perfil",
-                ativo: true,
-
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-
-              const Spacer(),
-
-              // =================================================
-              // BOTÃO SAIR
-              // =================================================
-
-              Padding(
-                padding:
-                    const EdgeInsets.all(20.0),
-
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            InstitucionalPage(),
-                      ),
-
-                      (route) => false,
-                    );
-                  },
-
-                  style:
-                      OutlinedButton.styleFrom(
-                    backgroundColor:
-                        Colors.black
-                            .withOpacity(0.2),
-
-                    side: const BorderSide(
-                      color: Colors.white38,
-                      width: 1,
-                    ),
-
-                    minimumSize:
-                        const Size(
-                      double.infinity,
-                      50,
-                    ),
-
-                    shape:
-                        RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(
-                        25,
-                      ),
-                    ),
-                  ),
-
-                  child: const Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center,
-
+                  child: Row(
                     children: [
-
-                      Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                        size: 20,
+                      Image.asset(
+                        'assets/logo.nexa.png',
+                        height: 36,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.shield_outlined,
+                            color: Colors.white,
+                            size: 36,
+                          );
+                        },
                       ),
-
-                      SizedBox(width: 10),
-
-                      Text(
-                        "Sair do Sistema",
-
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight:
-                              FontWeight.bold,
+                      const SizedBox(width: 14),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "NEXA",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            Text(
+                              "Segurança é prioridade",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: Text(
+                    "PRINCIPAL",
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.1,
+                    ),
+                  ),
+                ),
+                _menuItem(
+                  icon: Icons.grid_view_rounded,
+                  texto: "Dashboard",
+                  ativo: false,
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardPageFun(),
+                      ),
+                    );
+                  },
+                ),
+                _menuItem(
+                  icon: Icons.videocam_outlined,
+                  texto: "Análise de EPI",
+                  ativo: false,
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardCameraPage(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: Text(
+                    "CONTA",
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.1,
+                    ),
+                  ),
+                ),
+                _menuItem(
+                  icon: Icons.person_outline,
+                  texto: "Perfil",
+                  ativo: true,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => InstitucionalPage()),
+                        (route) => false,
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.black.withOpacity(0.2),
+                      side: const BorderSide(color: Colors.white38, width: 1),
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.logout, color: Colors.white, size: 20),
+                        SizedBox(width: 10),
+                        Flexible(
+                          child: Text(
+                            "Sair do Sistema",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
+
   // =========================================================
   // ITEM DO DRAWER
   // =========================================================
@@ -1504,50 +1127,26 @@ Widget _buildDrawer(BuildContext context) {
     bool ativo = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 3,
-      ),
-
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
       child: InkWell(
-        borderRadius:
-            BorderRadius.circular(12),
-
+        borderRadius: BorderRadius.circular(12),
         onTap: onTap,
-
         child: Container(
-          padding:
-              const EdgeInsets.symmetric(
-            vertical: 12,
-            horizontal: 16,
-          ),
-
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           decoration: BoxDecoration(
-            color: ativo
-                ? const Color(0xFF0075E3)
-                : Colors.transparent,
-
-            borderRadius:
-                BorderRadius.circular(12),
+            color: ativo ? const Color(0xFF0075E3) : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
           ),
-
           child: Row(
             children: [
-
-              Icon(
-                icon,
-                color: Colors.white,
-                size: 22,
-              ),
-
+              Icon(icon, color: Colors.white, size: 22),
               const SizedBox(width: 15),
-
-              Text(
-                texto,
-
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
+              Expanded(
+                child: Text(
+                  texto,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
             ],
@@ -1562,22 +1161,16 @@ Widget _buildDrawer(BuildContext context) {
 // FORMATADOR DE TELEFONE
 // =============================================================
 
-class _TelefoneInputFormatter
-    extends TextInputFormatter {
+class _TelefoneInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    String numeros =
-        newValue.text.replaceAll(
-      RegExp(r'[^0-9]'),
-      '',
-    );
+    String numeros = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numeros.length > 11) {
-      numeros =
-          numeros.substring(0, 11);
+      numeros = numeros.substring(0, 11);
     }
 
     String formatado;
@@ -1585,21 +1178,15 @@ class _TelefoneInputFormatter
     if (numeros.length <= 2) {
       formatado = numeros;
     } else if (numeros.length <= 7) {
-      formatado =
-          '(${numeros.substring(0, 2)}) '
-          '${numeros.substring(2)}';
+      formatado = '(${numeros.substring(0, 2)}) ${numeros.substring(2)}';
     } else {
       formatado =
-          '(${numeros.substring(0, 2)}) '
-          '${numeros.substring(2, 7)}-'
-          '${numeros.substring(7)}';
+          '(${numeros.substring(0, 2)}) ${numeros.substring(2, 7)}-${numeros.substring(7)}';
     }
 
     return TextEditingValue(
       text: formatado,
-      selection: TextSelection.collapsed(
-        offset: formatado.length,
-      ),
+      selection: TextSelection.collapsed(offset: formatado.length),
     );
   }
 }
