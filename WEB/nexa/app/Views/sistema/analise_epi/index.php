@@ -694,6 +694,83 @@ body{
 
 }
 
+
+/* =========================================================
+   STATUS DA ANÁLISE CONTÍNUA
+========================================================= */
+
+.analysis-status{
+    position:absolute;
+    top:68px;
+    right:22px;
+    z-index:30;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:10px 16px;
+    min-width:230px;
+
+    border-radius:22px;
+
+    background:rgba(8,20,32,.82);
+    border:1px solid rgba(25,170,237,.45);
+
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+
+    backdrop-filter:blur(8px);
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.analysis-status .status-icon{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#ffd166;
+    box-shadow:0 0 10px rgba(255,209,102,.8);
+    flex:none;
+}
+
+.analysis-status.analisando .status-icon{
+    background:#42ff87;
+    box-shadow:0 0 10px rgba(66,255,135,.9);
+    animation:pulse 1s infinite;
+}
+
+.analysis-status.finalizando .status-icon{
+    background:#19aaed;
+    box-shadow:0 0 10px rgba(25,170,237,.9);
+}
+
+.analysis-status.concluido .status-icon{
+    background:#42ff87;
+    box-shadow:0 0 10px rgba(66,255,135,.9);
+    animation:none;
+}
+
+.analysis-status.erro .status-icon{
+    background:#ff5252;
+    box-shadow:0 0 10px rgba(255,82,82,.9);
+    animation:none;
+}
+
+.analysis-status .status-text{
+    white-space:nowrap;
+}
+
+.analysis-timer{
+    margin-left:auto;
+    color:#19aaed;
+    font-weight:800;
+}
+
+#overlay{
+    object-fit:cover;
+}
+
 </style>
 
 </head>
@@ -752,6 +829,16 @@ body{
 
                 Transmitindo
 
+            </div>
+
+            <div class="analysis-status" id="analysis-status">
+                <span class="status-icon"></span>
+                <span class="status-text" id="analysis-status-text">
+                    Preparando análise...
+                </span>
+                <span class="analysis-timer" id="analysis-timer">
+                    0s
+                </span>
             </div>
 
 
@@ -816,43 +903,11 @@ body{
            <div
     class="resultado-box"
     id="resultado"
+    style="display:none;"
 >
     <h3 id="mensagem"></h3>
-
     <div id="lista-epis"></div>
 </div>
-
-                <h3 id="mensagem"></h3>
-
-                <div
-                    class="resultado-item"
-                    id="capacete">
-                </div>
-
-                <div
-                    class="resultado-item"
-                    id="luva">
-                </div>
-
-                <div
-                    class="resultado-item"
-                    id="oculos">
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 BOTÃO ANALISAR
-            ================================================== -->
-
-            <button class="btn-analisar">
-
-                <i class="fa-solid fa-shield-halved"></i>
-
-                ANALISAR EPI
-
-            </button>
 
 
         </div>
@@ -863,16 +918,72 @@ body{
 <script>
 
 let analisando = false;
+let monitorando = false;
+let frameEmAnalise = false;
+
 let streamCamera = null;
+let intervaloMonitoramento = null;
+let intervaloRelogio = null;
+
+let inicioAnalise = 0;
+const DURACAO_ANALISE = 7000;
+const INTERVALO_FRAMES = 700;
+
+let melhorFrame = null;
+
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+function obterElemento(id){
+    return document.getElementById(id);
+}
+
+
+/* =========================================================
+   STATUS VISUAL
+========================================================= */
+
+function atualizarStatusAnalise(tipo, texto, tempo = null){
+
+    const status = obterElemento('analysis-status');
+    const textoElemento = obterElemento('analysis-status-text');
+    const timer = obterElemento('analysis-timer');
+
+    if (!status || !textoElemento) {
+        return;
+    }
+
+    status.classList.remove(
+        'analisando',
+        'finalizando',
+        'concluido',
+        'erro'
+    );
+
+    if (tipo) {
+        status.classList.add(tipo);
+    }
+
+    textoElemento.textContent = texto;
+
+    if (timer) {
+        timer.textContent =
+            tempo !== null
+                ? `${tempo}s`
+                : '';
+    }
+}
 
 
 /* =========================================================
    INICIAR CÂMERA
 ========================================================= */
 
-async function iniciarCamera() {
+async function iniciarCamera(){
 
-    const video = document.getElementById('camera');
+    const video = obterElemento('camera');
 
     try {
 
@@ -880,19 +991,15 @@ async function iniciarCamera() {
             !navigator.mediaDevices ||
             !navigator.mediaDevices.getUserMedia
         ) {
-
             throw new Error(
                 'Seu navegador não permite acesso à câmera.'
             );
-
         }
-
 
         streamCamera =
             await navigator.mediaDevices.getUserMedia({
 
                 video: {
-
                     facingMode: 'user',
 
                     width: {
@@ -902,23 +1009,36 @@ async function iniciarCamera() {
                     height: {
                         ideal: 720
                     }
-
                 },
 
                 audio: false
-
             });
-
 
         video.srcObject = streamCamera;
 
         await video.play();
 
-
-        console.log(
-            'Câmera iniciada com sucesso.'
+        atualizarStatusAnalise(
+            '',
+            'Câmera pronta. Iniciando...',
+            0
         );
 
+        /*
+         * Dá um pequeno tempo para o vídeo estabilizar antes
+         * de começar a enviar os frames.
+         */
+        setTimeout(function(){
+
+            if (
+                video.readyState >= 2 &&
+                video.videoWidth > 0 &&
+                video.videoHeight > 0
+            ) {
+                iniciarAnaliseContinua();
+            }
+
+        }, 500);
 
     } catch (erro) {
 
@@ -927,17 +1047,18 @@ async function iniciarCamera() {
             erro
         );
 
+        atualizarStatusAnalise(
+            'erro',
+            'Câmera indisponível',
+            ''
+        );
 
         const status =
-            document.querySelector(
-                '.record-status'
-            );
-
+            document.querySelector('.record-status');
 
         if (status) {
 
             status.innerHTML = `
-
                 <span style="
                     width:9px;
                     height:9px;
@@ -945,723 +1066,698 @@ async function iniciarCamera() {
                     border-radius:50%;
                     display:inline-block;
                 "></span>
-
                 Câmera indisponível
-
             `;
-
         }
 
+        if (typeof Swal !== 'undefined') {
 
-        Swal.fire({
-
-            icon: 'error',
-
-            title: 'Câmera não disponível',
-
-            text:
-                'Permita o acesso à câmera no navegador para utilizar a análise de EPI.',
-
-            confirmButtonColor: '#0a66c2'
-
-        });
-
+            Swal.fire({
+                icon: 'error',
+                title: 'Câmera não disponível',
+                text:
+                    'Permita o acesso à câmera no navegador para utilizar a análise de EPI.',
+                confirmButtonColor: '#0a66c2'
+            });
+        }
     }
-
 }
 
 
 /* =========================================================
-   ANALISAR EPI
+   CAPTURAR FRAME DA CÂMERA
 ========================================================= */
 
-async function analisarAutomatico() {
+function capturarFrame(){
 
-    /* Evita duas análises ao mesmo tempo */
-
-    if (analisando) {
-
-        return;
-
-    }
-
-
-    const video =
-        document.getElementById('camera');
-
-
-    /* =====================================================
-       VERIFICAR CÂMERA
-    ===================================================== */
+    const video = obterElemento('camera');
 
     if (
         !video ||
-        !video.srcObject ||
         video.readyState < 2 ||
-        video.videoWidth === 0 ||
-        video.videoHeight === 0
+        !video.videoWidth ||
+        !video.videoHeight
     ) {
-
-        Swal.fire({
-
-            icon: 'warning',
-
-            title: 'Câmera não está pronta',
-
-            text:
-                'Aguarde a câmera carregar antes de realizar a análise.',
-
-            confirmButtonColor: '#0a66c2'
-
-        });
-
-        return;
-
+        return null;
     }
 
+    const canvas =
+        document.createElement('canvas');
 
-    /* =====================================================
-       PEGAR ID DA CÂMERA
-    ===================================================== */
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx =
+        canvas.getContext('2d', {
+            alpha: false
+        });
+
+    if (!ctx) {
+        return null;
+    }
+
+    ctx.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    return canvas.toDataURL(
+        'image/jpeg',
+        0.82
+    );
+}
+
+
+/* =========================================================
+   ENVIAR FRAME PARA O BACKEND
+========================================================= */
+
+async function enviarFrame(imagem, modo){
 
     const cameraId =
         document.body.dataset.cameraId;
 
-
-    if (!cameraId) {
-
-        Swal.fire({
-
-            icon: 'warning',
-
-            title: 'Câmera não encontrada',
-
-            text:
-                'Não existe uma câmera cadastrada para o setor deste funcionário.',
-
-            confirmButtonColor: '#0a66c2'
-
-        });
-
-        return;
-
+    if (!cameraId || !imagem) {
+        throw new Error(
+            'Câmera ou imagem não disponível.'
+        );
     }
 
+    const resposta =
+        await fetch(
+            '<?= base_url('camera_analise/analisar') ?>',
+            {
+                method: 'POST',
 
-    analisando = true;
+                headers: {
+                    'Content-Type':
+                        'application/json',
 
+                    'Accept':
+                        'application/json'
+                },
 
-    /* =====================================================
-       ALTERAR BOTÃO
-    ===================================================== */
+                body: JSON.stringify({
 
-    const botao =
-        document.querySelector(
-            '.btn-analisar'
+                    imagem: imagem,
+
+                    camera_id: cameraId,
+
+                    modo: modo
+                })
+            }
         );
 
+    const textoResposta =
+        await resposta.text();
 
-    const textoOriginal =
-        botao
-            ? botao.innerHTML
-            : '';
+    if (!resposta.ok) {
 
-
-    if (botao) {
-
-        botao.disabled = true;
-
-        botao.innerHTML = `
-
-            <i class="fa-solid fa-spinner fa-spin"></i>
-
-            ANALISANDO...
-
-        `;
-
+        throw new Error(
+            `Erro HTTP ${resposta.status}: ${textoResposta}`
+        );
     }
 
+    let dados;
 
     try {
 
+        dados =
+            JSON.parse(textoResposta);
 
-        /* =====================================================
-           CRIAR IMAGEM DA CÂMERA
-        ===================================================== */
+    } catch (erroJSON) {
 
-        const canvas =
-            document.createElement(
-                'canvas'
-            );
-
-
-        canvas.width =
-            video.videoWidth;
-
-
-        canvas.height =
-            video.videoHeight;
-
-
-        const ctx =
-            canvas.getContext(
-                '2d'
-            );
-
-
-        ctx.drawImage(
-
-            video,
-
-            0,
-            0,
-
-            canvas.width,
-            canvas.height
-
+        throw new Error(
+            'O servidor retornou uma resposta que não é um JSON válido.'
         );
-
-
-        const imagemBase64 =
-            canvas.toDataURL(
-
-                'image/jpeg',
-
-                0.85
-
-            );
-
-
-        /* =====================================================
-           ENVIAR PARA O BACKEND
-        ===================================================== */
-
-        const resposta =
-            await fetch(
-
-                '<?= base_url('camera_analise/analisar') ?>',
-
-                {
-
-                    method: 'POST',
-
-                    headers: {
-
-                        'Content-Type':
-                            'application/json',
-
-                        'Accept':
-                            'application/json'
-
-                    },
-
-                    body: JSON.stringify({
-
-                        imagem:
-                            imagemBase64,
-
-                        camera_id:
-                            cameraId
-
-                    })
-
-                }
-
-            );
-
-
-        /* =====================================================
-           LER RESPOSTA
-        ===================================================== */
-
-        const textoResposta =
-            await resposta.text();
-
-
-        console.log(
-            'Resposta do servidor:',
-            textoResposta
-        );
-
-
-        if (!resposta.ok) {
-
-            throw new Error(
-
-                `Erro HTTP ${resposta.status}: ${textoResposta}`
-
-            );
-
-        }
-
-
-        let dados;
-
-
-        try {
-
-            dados =
-                JSON.parse(
-                    textoResposta
-                );
-
-        } catch (erroJSON) {
-
-            throw new Error(
-                'O servidor retornou uma resposta que não é um JSON válido.'
-            );
-
-        }
-
-
-        console.log(
-            'Dados da IA:',
-            dados
-        );
-
-
-        /* =====================================================
-           VERIFICAR STATUS
-        ===================================================== */
-
-        if (!dados.status) {
-
-            throw new Error(
-
-                dados.mensagem ||
-                'Não foi possível realizar a análise.'
-
-            );
-
-        }
-
-
-        /* =====================================================
-           PEGAR ELEMENTOS DO RESULTADO
-        ===================================================== */
-
-        const resultado =
-            document.getElementById(
-                'resultado'
-            );
-
-
-        const mensagem =
-            document.getElementById(
-                'mensagem'
-            );
-
-
-        const lista =
-            document.getElementById(
-                'lista-epis'
-            );
-
-
-        /* =====================================================
-           VERIFICAR ELEMENTOS
-        ===================================================== */
-
-        if (!resultado) {
-
-            throw new Error(
-                'Elemento #resultado não encontrado no HTML.'
-            );
-
-        }
-
-
-        if (!mensagem) {
-
-            throw new Error(
-                'Elemento #mensagem não encontrado no HTML.'
-            );
-
-        }
-
-
-        if (!lista) {
-
-            throw new Error(
-                'Elemento #lista-epis não encontrado no HTML.'
-            );
-
-        }
-
-
-        /* =====================================================
-           MOSTRAR CARD
-        ===================================================== */
-
-        resultado.style.display =
-            'block';
-
-
-        /* =====================================================
-           LIMPAR RESULTADO ANTERIOR
-        ===================================================== */
-
-        lista.innerHTML = '';
-
-
-        /* =====================================================
-           PEGAR EPIs
-        ===================================================== */
-
-        const epis =
-            Array.isArray(dados.epis)
-                ? dados.epis
-                : [];
-
-        atualizarListaEpis(epis);
-        desenharDeteccoes(epis);
-
-
-        /* =====================================================
-           NENHUM EPI CADASTRADO
-        ===================================================== */
-
-        if (epis.length === 0) {
-
-            mensagem.textContent =
-                '⚠️ Nenhum EPI cadastrado';
-
-
-            lista.innerHTML = `
-
-                <div class="resultado-item">
-
-                    Nenhum EPI foi cadastrado para este funcionário.
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        /* =====================================================
-           SEPARAR DETECTADOS E AUSENTES
-        ===================================================== */
-
-        const detectados =
-            epis.filter(function(epi) {
-
-                return epi.detectado === true;
-
-            });
-
-
-        const ausentes =
-            epis.filter(function(epi) {
-
-                return epi.detectado !== true;
-
-            });
-
-
-        /* =====================================================
-           DEFINIR TÍTULO
-        ===================================================== */
-
-        if (ausentes.length > 0) {
-
-            mensagem.textContent =
-                '⚠️ Violação de EPI';
-
-        } else {
-
-            mensagem.textContent =
-                '✅ Todos os EPIs estão corretos';
-
-        }
-
-
-        /* =====================================================
-           MOSTRAR DETECTADOS
-        ===================================================== */
-
-        if (detectados.length > 0) {
-
-            detectados.forEach(function(epi) {
-
-                const item =
-                    document.createElement(
-                        'div'
-                    );
-
-
-                item.className =
-                    'resultado-item';
-
-
-                item.textContent =
-                    `✅ ${epi.nome} detectado`;
-
-
-                lista.appendChild(
-                    item
-                );
-
-            });
-
-        }
-
-
-        /* =====================================================
-           MOSTRAR AUSENTES
-        ===================================================== */
-
-        if (ausentes.length > 0) {
-
-            ausentes.forEach(function(epi) {
-
-                const item =
-                    document.createElement(
-                        'div'
-                    );
-
-
-                item.className =
-                    'resultado-item';
-
-
-                item.textContent =
-                    `❌ ${epi.nome} ausente`;
-
-
-                lista.appendChild(
-                    item
-                );
-
-            });
-
-        }
-
-
-        /* =====================================================
-           LOG DA OCORRÊNCIA
-        ===================================================== */
-
-        if (dados.ocorrencia) {
-
-            console.log(
-                'Ocorrência:',
-                dados.ocorrencia
-            );
-
-        }
-
-
-        /* =====================================================
-           LOG DO FUNCIONÁRIO
-        ===================================================== */
-
-        if (dados.funcionario) {
-
-            console.log(
-
-                'Funcionário:',
-                dados.funcionario.nome
-
-            );
-
-        }
-
-
-        /* =====================================================
-           LOG DA CÂMERA
-        ===================================================== */
-
-        if (dados.camera) {
-
-            console.log(
-
-                'Câmera:',
-                dados.camera.identificador
-
-            );
-
-        }
-
-/* =====================================================
-   ENCERRAR SESSÃO APÓS 2 SEGUNDOS
-===================================================== */
-
-setTimeout(function() {
-
-    encerrarSessao();
-
-}, 2000);
-
-
-    } catch (erro) {
-
-        console.error(
-            'Erro durante análise:',
-            erro
-        );
-
-
-        Swal.fire({
-
-            icon: 'error',
-
-            title: 'Erro na análise',
-
-            text:
-                erro.message ||
-                'Não foi possível realizar a análise.',
-
-            confirmButtonColor: '#0a66c2'
-
-        });
-
-
-    } finally {
-
-        analisando = false;
-
-
-        /* =====================================================
-           RESTAURAR BOTÃO
-        ===================================================== */
-
-        if (botao) {
-
-            botao.disabled = false;
-
-            botao.innerHTML =
-                textoOriginal ||
-                `
-
-                    <i class="fa-solid fa-shield-halved"></i>
-
-                    ANALISAR EPI
-
-                `;
-
-        }
-
     }
 
+    if (!dados.status) {
+
+        throw new Error(
+            dados.mensagem ||
+            'Não foi possível realizar a análise.'
+        );
+    }
+
+    return dados;
 }
 
 
 /* =========================================================
-   BOTÃO ANALISAR
+   CALCULAR QUALIDADE DO FRAME
 ========================================================= */
 
-document.addEventListener(
-    'DOMContentLoaded',
-    function() {
+function calcularQualidadeFrame(epis){
 
-        const botao =
-            document.querySelector(
-                '.btn-analisar'
-            );
-
-
-        if (botao) {
-
-            botao.addEventListener(
-                'click',
-                function() {
-
-                    analisarAutomatico();
-
-                }
-            );
-
-        }
-
-
-        /* Inicia a câmera */
-
-        iniciarCamera();
-
+    if (!Array.isArray(epis) || !epis.length) {
+        return 0;
     }
-);
+
+    let detectados = 0;
+    let pontuacao = 0;
+
+    epis.forEach(function(epi){
+
+        if (epi.detectado === true) {
+
+            detectados++;
+
+            const d =
+                epi.deteccao || {};
+
+            const confianca =
+                Number(
+                    d.confianca || 0
+                );
+
+            const score =
+                Number(
+                    d.pontuacao || 0
+                );
+
+            pontuacao +=
+                (confianca * 100) +
+                score;
+        }
+    });
+
+    /*
+     * Cobertura dos EPIs tem prioridade.
+     * Depois usamos confiança/pontuação para desempatar.
+     */
+    return (
+        detectados * 10000
+    ) + pontuacao;
+}
 
 
 /* =========================================================
-   ENCERRAR CÂMERA
+   GUARDAR MELHOR FRAME
 ========================================================= */
 
-window.addEventListener(
-    'beforeunload',
-    function() {
+function guardarMelhorFrame(imagem, dados){
 
-        if (streamCamera) {
+    const epis =
+        Array.isArray(dados.epis)
+            ? dados.epis
+            : [];
 
-            streamCamera
-                .getTracks()
-                .forEach(function(track) {
+    const qualidade =
+        calcularQualidadeFrame(epis);
 
-                    track.stop();
+    if (
+        !melhorFrame ||
+        qualidade > melhorFrame.qualidade
+    ) {
 
-                });
+        melhorFrame = {
 
+            imagem: imagem,
+
+            dados: dados,
+
+            qualidade: qualidade
+        };
+
+        console.log(
+            'NEXA - novo melhor frame:',
+            melhorFrame
+        );
+    }
+}
+
+
+/* =========================================================
+   ANÁLISE CONTÍNUA
+========================================================= */
+
+function iniciarAnaliseContinua(){
+
+    if (monitorando || analisando) {
+        return;
+    }
+
+    monitorando = true;
+    analisando = true;
+
+    melhorFrame = null;
+    inicioAnalise = Date.now();
+
+    limparOverlay();
+
+    atualizarStatusAnalise(
+        'analisando',
+        'Analisando câmera ao vivo...',
+        0
+    );
+
+    /*
+     * Primeiro frame imediatamente.
+     */
+    analisarFrameMonitoramento();
+
+    intervaloMonitoramento =
+        setInterval(
+            analisarFrameMonitoramento,
+            INTERVALO_FRAMES
+        );
+
+    intervaloRelogio =
+        setInterval(
+            atualizarRelogioAnalise,
+            250
+        );
+}
+
+
+/* =========================================================
+   RELÓGIO DOS 7 SEGUNDOS
+========================================================= */
+
+function atualizarRelogioAnalise(){
+
+    if (!monitorando) {
+        return;
+    }
+
+    const decorrido =
+        Date.now() - inicioAnalise;
+
+    const segundos =
+        Math.min(
+            7,
+            Math.floor(decorrido / 1000)
+        );
+
+    atualizarStatusAnalise(
+        'analisando',
+        'Analisando câmera ao vivo...',
+        segundos
+    );
+
+    if (decorrido >= DURACAO_ANALISE) {
+
+        pararMonitoramento();
+
+        finalizarAnalise();
+    }
+}
+
+
+/* =========================================================
+   PARAR MONITORAMENTO
+========================================================= */
+
+function pararMonitoramento(){
+
+    monitorando = false;
+
+    if (intervaloMonitoramento) {
+
+        clearInterval(
+            intervaloMonitoramento
+        );
+
+        intervaloMonitoramento = null;
+    }
+
+    if (intervaloRelogio) {
+
+        clearInterval(
+            intervaloRelogio
+        );
+
+        intervaloRelogio = null;
+    }
+}
+
+
+/* =========================================================
+   ANALISAR FRAME DURANTE OS 7 SEGUNDOS
+========================================================= */
+
+async function analisarFrameMonitoramento(){
+
+    if (
+        !monitorando ||
+        frameEmAnalise
+    ) {
+        return;
+    }
+
+    const tempoDecorrido =
+        Date.now() - inicioAnalise;
+
+    if (tempoDecorrido >= DURACAO_ANALISE) {
+        return;
+    }
+
+    const imagem =
+        capturarFrame();
+
+    if (!imagem) {
+        return;
+    }
+
+    frameEmAnalise = true;
+
+    try {
+
+        const dados =
+            await enviarFrame(
+                imagem,
+                'monitoramento'
+            );
+
+        if (!monitorando) {
+            return;
         }
 
+        /*
+         * O quadrado é atualizado a cada frame que chega.
+         */
+        desenharDeteccoes(
+            Array.isArray(dados.epis)
+                ? dados.epis
+                : []
+        );
+
+        atualizarListaEpis(
+            Array.isArray(dados.epis)
+                ? dados.epis
+                : [],
+            false
+        );
+
+        guardarMelhorFrame(
+            imagem,
+            dados
+        );
+
+    } catch (erro) {
+
+        /*
+         * Erros momentâneos durante o monitoramento não
+         * encerram a câmera. Apenas ficam no console.
+         */
+        console.warn(
+            'NEXA - falha momentânea no frame:',
+            erro.message
+        );
+
+    } finally {
+
+        frameEmAnalise = false;
     }
-);
+}
 
 
-function normalizarEpiFrontend(nome) {
+/* =========================================================
+   ANÁLISE FINAL
+========================================================= */
+
+async function finalizarAnalise(){
+
+    analisando = true;
+
+    atualizarStatusAnalise(
+        'finalizando',
+        'Consolidando análise final...',
+        7
+    );
+
+    /*
+     * Se o último frame ainda estiver chegando, espera um
+     * pouco para aproveitar a melhor detecção possível.
+     */
+    const limiteEspera =
+        Date.now() + 4000;
+
+    while (
+        frameEmAnalise &&
+        Date.now() < limiteEspera
+    ) {
+
+        await new Promise(function(resolve){
+            setTimeout(resolve, 100);
+        });
+    }
+
+    let imagemFinal =
+        melhorFrame
+            ? melhorFrame.imagem
+            : capturarFrame();
+
+    if (!imagemFinal) {
+
+        analisando = false;
+
+        atualizarStatusAnalise(
+            'erro',
+            'Não foi possível capturar a imagem final.',
+            ''
+        );
+
+        return;
+    }
+
+    try {
+
+        /*
+         * IMPORTANTE:
+         * somente o modo "final" pode gerar ocorrência.
+         */
+        const dados =
+            await enviarFrame(
+                imagemFinal,
+                'final'
+            );
+
+        console.log(
+            'NEXA - ANÁLISE FINAL:',
+            dados
+        );
+
+        atualizarListaEpis(
+            Array.isArray(dados.epis)
+                ? dados.epis
+                : [],
+            true
+        );
+
+        desenharDeteccoes(
+            Array.isArray(dados.epis)
+                ? dados.epis
+                : []
+        );
+
+        mostrarResultadoFinal(
+            dados
+        );
+
+        atualizarStatusAnalise(
+            'concluido',
+            'Análise concluída',
+            7
+        );
+
+        /*
+         * Mantém o resultado visível por 4 segundos.
+         * Depois encerra a câmera e desloga o funcionário.
+         */
+        setTimeout(function(){
+
+            encerrarSessao();
+
+        }, 4000);
+
+    } catch (erro) {
+
+        console.error(
+            'Erro na análise final:',
+            erro
+        );
+
+        atualizarStatusAnalise(
+            'erro',
+            'Erro na análise final',
+            ''
+        );
+
+        if (typeof Swal !== 'undefined') {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro na análise',
+                text:
+                    erro.message ||
+                    'Não foi possível realizar a análise final.',
+                confirmButtonColor: '#0a66c2'
+            });
+        }
+
+    } finally {
+
+        analisando = false;
+    }
+}
+
+
+/* =========================================================
+   MOSTRAR RESULTADO FINAL
+========================================================= */
+
+function mostrarResultadoFinal(dados){
+
+    const resultado =
+        obterElemento('resultado');
+
+    const mensagem =
+        obterElemento('mensagem');
+
+    const lista =
+        obterElemento('lista-epis');
+
+    if (!resultado || !mensagem || !lista) {
+        return;
+    }
+
+    resultado.style.display =
+        'block';
+
+    lista.innerHTML = '';
+
+    const epis =
+        Array.isArray(dados.epis)
+            ? dados.epis
+            : [];
+
+    if (!epis.length) {
+
+        mensagem.textContent =
+            '⚠️ Nenhum EPI cadastrado';
+
+        lista.innerHTML = `
+            <div class="resultado-item">
+                Nenhum EPI foi cadastrado para este funcionário.
+            </div>
+        `;
+
+        return;
+    }
+
+    const detectados =
+        epis.filter(function(epi){
+            return epi.detectado === true;
+        });
+
+    const ausentes =
+        epis.filter(function(epi){
+            return epi.detectado !== true;
+        });
+
+    if (ausentes.length > 0) {
+
+        mensagem.textContent =
+            '⚠️ Violação de EPI';
+
+    } else {
+
+        mensagem.textContent =
+            '✅ Todos os EPIs estão corretos';
+    }
+
+    detectados.forEach(function(epi){
+
+        const item =
+            document.createElement('div');
+
+        item.className =
+            'resultado-item detectado';
+
+        item.textContent =
+            `✅ ${epi.nome} detectado`;
+
+        lista.appendChild(item);
+    });
+
+    ausentes.forEach(function(epi){
+
+        const item =
+            document.createElement('div');
+
+        item.className =
+            'resultado-item ausente';
+
+        item.textContent =
+            `❌ ${epi.nome} ausente`;
+
+        lista.appendChild(item);
+    });
+
+    if (dados.ocorrencia) {
+
+        console.log(
+            'NEXA - ocorrência criada:',
+            dados.ocorrencia
+        );
+    }
+}
+
+
+/* =========================================================
+   ATUALIZAR LISTA DE EPIs
+========================================================= */
+
+function normalizarEpiFrontend(nome){
 
     return String(nome || '')
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .trim();
-
 }
 
 
-function atualizarListaEpis(epis) {
+function atualizarListaEpis(epis, resultadoFinal){
 
     const itens =
         document.querySelectorAll(
             '.epi-obrigatorio-item[data-epi]'
         );
 
-
-    itens.forEach(function(item) {
+    itens.forEach(function(item){
 
         const nomeItem =
             normalizarEpiFrontend(
                 item.dataset.epi
             );
 
-
         const epi =
-            epis.find(function(e) {
-
-                return (
-                    normalizarEpiFrontend(e.nome)
-                    ===
-                    nomeItem
-                );
-
-            });
-
+            Array.isArray(epis)
+                ? epis.find(function(e){
+                    return (
+                        normalizarEpiFrontend(e.nome)
+                        ===
+                        nomeItem
+                    );
+                })
+                : null;
 
         if (!epi) {
             return;
         }
 
-
         const status =
             item.querySelector('.epi-status');
-
 
         if (!status) {
             return;
         }
-
 
         status.classList.remove(
             'epi-aguardando',
@@ -1669,36 +1765,60 @@ function atualizarListaEpis(epis) {
             'epi-ausente'
         );
 
+        if (resultadoFinal) {
 
-        if (epi.detectado === true) {
+            if (epi.detectado === true) {
 
-            status.textContent =
-                '✓ DETECTADO';
+                status.textContent =
+                    '✓ DETECTADO';
 
-            status.classList.add(
-                'epi-detectado'
-            );
+                status.classList.add(
+                    'epi-detectado'
+                );
+
+            } else {
+
+                status.textContent =
+                    '✕ AUSENTE';
+
+                status.classList.add(
+                    'epi-ausente'
+                );
+            }
 
         } else {
 
-            status.textContent =
-                '✕ AUSENTE';
+            if (epi.detectado === true) {
 
-            status.classList.add(
-                'epi-ausente'
-            );
+                status.textContent =
+                    '✓ DETECTADO';
 
+                status.classList.add(
+                    'epi-detectado'
+                );
+
+            } else {
+
+                status.textContent =
+                    'ANALISANDO';
+
+                status.classList.add(
+                    'epi-aguardando'
+                );
+            }
         }
-
     });
-
 }
 
 
-function limparOverlay() {
+/* =========================================================
+   LIMPAR OVERLAY
+========================================================= */
+
+function limparOverlay(){
 
     const canvas =
-        document.getElementById('overlay');
+        obterElemento('overlay');
 
     if (!canvas) {
         return;
@@ -1707,29 +1827,34 @@ function limparOverlay() {
     const ctx =
         canvas.getContext('2d');
 
+    if (!ctx) {
+        return;
+    }
+
     ctx.clearRect(
         0,
         0,
         canvas.width,
         canvas.height
     );
-
 }
 
 
-function desenharDeteccoes(epis) {
+/* =========================================================
+   DESENHAR DETECÇÕES AO VIVO
+========================================================= */
+
+function desenharDeteccoes(epis){
 
     const video =
-        document.getElementById('camera');
+        obterElemento('camera');
 
     const canvas =
-        document.getElementById('overlay');
-
+        obterElemento('overlay');
 
     if (!video || !canvas) {
         return;
     }
-
 
     if (
         !video.videoWidth ||
@@ -1738,17 +1863,23 @@ function desenharDeteccoes(epis) {
         return;
     }
 
-
+    /*
+     * O canvas usa exatamente a mesma proporção da câmera.
+     * Como o CSS aplica object-fit: cover tanto no vídeo
+     * quanto no canvas, o recorte fica alinhado.
+     */
     canvas.width =
         video.videoWidth;
 
     canvas.height =
         video.videoHeight;
 
-
     const ctx =
         canvas.getContext('2d');
 
+    if (!ctx) {
+        return;
+    }
 
     ctx.clearRect(
         0,
@@ -1757,8 +1888,11 @@ function desenharDeteccoes(epis) {
         canvas.height
     );
 
+    if (!Array.isArray(epis)) {
+        return;
+    }
 
-    epis.forEach(function(epi) {
+    epis.forEach(function(epi){
 
         if (
             !epi.detectado ||
@@ -1767,26 +1901,20 @@ function desenharDeteccoes(epis) {
             return;
         }
 
-
         const d =
             epi.deteccao;
-
 
         const x =
             Number(d.x || 0);
 
-
         const y =
             Number(d.y || 0);
-
 
         const width =
             Number(d.width || 0);
 
-
         const height =
             Number(d.height || 0);
-
 
         if (
             width <= 0 ||
@@ -1795,25 +1923,26 @@ function desenharDeteccoes(epis) {
             return;
         }
 
-
         /*
-         * =====================================================
-         * CONTORNO VERDE
-         * =====================================================
+         * Quadrado verde acompanha a posição enviada
+         * pelo Roboflow em cada novo frame.
          */
+        ctx.save();
 
         ctx.strokeStyle =
             '#42ff87';
 
         ctx.lineWidth =
-            5;
+            Math.max(
+                4,
+                canvas.width / 300
+            );
 
         ctx.shadowColor =
             '#42ff87';
 
         ctx.shadowBlur =
             12;
-
 
         ctx.strokeRect(
             x - width / 2,
@@ -1822,52 +1951,35 @@ function desenharDeteccoes(epis) {
             height
         );
 
-
-        ctx.shadowBlur =
-            0;
-
-
-        /*
-         * =====================================================
-         * NOME + CONFIANÇA
-         * =====================================================
-         */
+        ctx.restore();
 
         const confianca =
             Number(
                 d.confianca || 0
             );
 
-
         const porcentagem =
             Math.round(
                 confianca * 100
             );
 
-
         const texto =
             `${epi.nome} ${porcentagem}%`;
-
 
         ctx.font =
             'bold 18px Arial';
 
-
         const medida =
             ctx.measureText(texto);
-
 
         const larguraTexto =
             medida.width + 20;
 
-
         const alturaTexto =
             34;
 
-
         const labelX =
             x - width / 2;
-
 
         const labelY =
             Math.max(
@@ -1875,10 +1987,8 @@ function desenharDeteccoes(epis) {
                 y - height / 2 - alturaTexto
             );
 
-
         ctx.fillStyle =
-            'rgba(0,0,0,.75)';
-
+            'rgba(0,0,0,.78)';
 
         ctx.fillRect(
             labelX,
@@ -1887,104 +1997,89 @@ function desenharDeteccoes(epis) {
             alturaTexto
         );
 
-
         ctx.fillStyle =
             '#42ff87';
-
 
         ctx.fillText(
             texto,
             labelX + 10,
             labelY + 23
         );
-
     });
-
-
 }
 
 
 /* =========================================================
-   FECHAR CÂMERA APÓS 2 SEGUNDOS
+   INICIALIZAÇÃO
 ========================================================= */
 
-function fecharCamera() {
+document.addEventListener(
+    'DOMContentLoaded',
+    function(){
+
+        /*
+         * Não existe mais botão para iniciar a análise.
+         * A análise começa automaticamente assim que o vídeo
+         * estiver disponível.
+         */
+        iniciarCamera();
+    }
+);
+
+
+/* =========================================================
+   ENCERRAR CÂMERA AO SAIR DA PÁGINA
+========================================================= */
+
+window.addEventListener(
+    'beforeunload',
+    function(){
+
+        pararMonitoramento();
+
+        if (streamCamera) {
+
+            streamCamera
+                .getTracks()
+                .forEach(function(track){
+                    track.stop();
+                });
+        }
+    }
+);
+
+
+/* =========================================================
+   ENCERRAR SESSÃO APÓS A ANÁLISE FINAL
+========================================================= */
+
+function encerrarSessao(){
+
+    pararMonitoramento();
 
     if (streamCamera) {
 
         streamCamera
             .getTracks()
-            .forEach(function(track) {
-
+            .forEach(function(track){
                 track.stop();
-
             });
 
         streamCamera = null;
-
     }
 
-    const video = document.getElementById('camera');
+    const video =
+        obterElemento('camera');
 
     if (video) {
-
         video.pause();
-
         video.srcObject = null;
-
     }
 
-    const status =
-        document.querySelector('.record-status');
-
-    if (status) {
-
-        status.innerHTML = `
-
-            <span style="
-                width:9px;
-                height:9px;
-                background:#ff4444;
-                border-radius:50%;
-                display:inline-block;
-            "></span>
-
-            Câmera encerrada
-
-        `;
-
-    }
-
-    console.log('Câmera encerrada após 2 segundos.');
-
-}
-
-/* =========================================================
-   ENCERRAR SESSÃO E VOLTAR PARA LOGIN
-========================================================= */
-
-function encerrarSessao() {
-
-    // Para a câmera antes de sair
-    if (streamCamera) {
-
-        streamCamera
-            .getTracks()
-            .forEach(function(track) {
-
-                track.stop();
-
-            });
-
-        streamCamera = null;
-
-    }
-
-    // Redireciona para o logout do funcionário
     window.location.href =
         '<?= base_url('logoutfun') ?>';
-
 }
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>

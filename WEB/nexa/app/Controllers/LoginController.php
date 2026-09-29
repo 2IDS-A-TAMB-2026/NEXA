@@ -11,35 +11,56 @@ class LoginController extends BaseController
         return view('login');
     }
 
-    public function autenticar()
-    {
-        $email = $this->request->getPost('email');
-        $senha = $this->request->getPost('senha');
 
-        $model = new AdministradorModel();
+public function autenticar()
+{
+    $email = $this->request->getPost('email');
+    $senha = $this->request->getPost('senha');
 
-        $usuario = $model
-            ->where('EMAIL_CORPORATIVO', $email)
-            ->where('SENHA', $senha)
-            ->first();
+    $model = new AdministradorModel();
 
-        if ($usuario) {
+    // Busca somente pelo e-mail
+    $usuario = $model
+        ->where('EMAIL_CORPORATIVO', $email)
+        ->first();
 
-            if ($senha == $usuario['SENHA']) {
+    if ($usuario) {
 
-                session()->set([
-                    'cpf' => $usuario['CPF'],
-                    'nome' => $usuario['NOME_COMPLETO'],
-                    'logado' => true
-                ]);
+        $senhaBanco = $usuario['SENHA'];
 
-                return redirect()->to('/dashboard');
-            }
+        /*
+         * Aceita os dois formatos:
+         * 1. Senha criptografada com password_hash()
+         * 2. Senha salva diretamente em texto
+         */
+
+        $senhaValida = false;
+
+        // Tenta verificar como senha criptografada
+        if (password_verify($senha, $senhaBanco)) {
+            $senhaValida = true;
         }
 
-        return redirect()->back()
-            ->with('erro', 'Email ou senha inválidos');
+        // Se não for hash, compara diretamente
+        if (!$senhaValida && $senha === $senhaBanco) {
+            $senhaValida = true;
+        }
+
+        if ($senhaValida) {
+
+            session()->set([
+                'cpf'    => $usuario['CPF'],
+                'nome'   => $usuario['NOME_COMPLETO'],
+                'logado' => true
+            ]);
+
+            return redirect()->to('/dashboard');
+        }
     }
+
+    return redirect()->back()
+        ->with('erro', 'Email ou senha inválidos');
+}
 
     public function logout()
     {

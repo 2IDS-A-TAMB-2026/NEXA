@@ -106,88 +106,39 @@
     </div>
 
 
-    <div class="header-right">
+  <div class="header-right">
+                    <!-- MENU ACESSIBILIDADE (IGUAL AO DA PÁGINA DE CÂMERAS) -->
+                    <div class="access-menu">
 
+                        <button class="gear-btn" onclick="toggleAccessMenu()">
+                            <i class="fas fa-cog"></i>
+                        </button>
 
-        <!-- ACESSIBILIDADE -->
+                        <div class="access-options" id="accessOptions">
 
-        <div class="access-menu">
+                            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+                                <i class="fas fa-adjust"></i>
+                            </button>
 
-            <button
-                type="button"
-                class="gear-btn"
-                onclick="toggleAccessMenu()"
-                title="Acessibilidade"
-            >
+                            <button class="access-btn" onclick="toggleDark()">
+                                <i class="fas fa-moon"></i>
+                            </button>
 
-                <i class="fas fa-cog"></i>
+                            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+                                A+
+                            </button>
 
-            </button>
+                            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+                                A-
+                            </button>
 
+                            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
 
-            <div
-                class="access-options"
-                id="accessOptions"
-            >
+                        </div>
 
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.toggleContraste()"
-                    title="Alto Contraste"
-                >
-
-                    <i class="fas fa-adjust"></i>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.toggleDark()"
-                    title="Modo Escuro"
-                >
-
-                    <i class="fas fa-moon"></i>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.aumentarFonte()"
-                    title="Aumentar Fonte"
-                >
-                    A+
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.diminuirFonte()"
-                    title="Diminuir Fonte"
-                >
-                    A-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.lerPagina()"
-                    title="Ler Página"
-                >
-
-                    <i class="fas fa-volume-up"></i>
-
-                </button>
-
-            </div>
-
-        </div>
+                    </div>
 
 
         <!-- PERFIL -->
@@ -386,10 +337,10 @@
         let linhasPorPagina = 5;
         let ordemAtual = 'asc';
 
-        window.onload = function () {
-            renderizar();
-            iniciarEventos();
-        };
+        document.addEventListener("DOMContentLoaded", function () {
+    renderizar();
+    iniciarEventos();
+});
 
         function iniciarEventos() {
             const pesquisa = document.getElementById("pesquisaEpi");

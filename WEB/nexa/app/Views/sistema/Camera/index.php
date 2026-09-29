@@ -129,90 +129,39 @@
 
     </div>
 
+ <div class="header-right">
+                    <!-- MENU ACESSIBILIDADE (IGUAL AO DA PÁGINA DE CÂMERAS) -->
+                    <div class="access-menu">
 
-    <div class="header-right">
+                        <button class="gear-btn" onclick="toggleAccessMenu()">
+                            <i class="fas fa-cog"></i>
+                        </button>
 
+                        <div class="access-options" id="accessOptions">
 
-        <!-- ACESSIBILIDADE -->
+                            <button class="access-btn" onclick="Acessibilidade.toggleContraste()">
+                                <i class="fas fa-adjust"></i>
+                            </button>
 
-        <div class="access-menu">
+                            <button class="access-btn" onclick="toggleDark()">
+                                <i class="fas fa-moon"></i>
+                            </button>
 
-            <button
-                type="button"
-                class="gear-btn"
-                onclick="toggleAccessMenu()"
-                title="Acessibilidade"
-            >
+                            <button class="access-btn" onclick="Acessibilidade.aumentarFonte()">
+                                A+
+                            </button>
 
-                <i class="fas fa-cog"></i>
+                            <button class="access-btn" onclick="Acessibilidade.diminuirFonte()">
+                                A-
+                            </button>
 
-            </button>
+                            <button class="access-btn" onclick="Acessibilidade.lerPagina()">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
 
+                        </div>
 
-            <div
-                class="access-options"
-                id="accessOptions"
-            >
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.toggleContraste()"
-                    title="Alto Contraste"
-                >
-
-                    <i class="fas fa-adjust"></i>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.toggleDark()"
-                    title="Modo Escuro"
-                >
-
-                    <i class="fas fa-moon"></i>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.aumentarFonte()"
-                    title="Aumentar Fonte"
-                >
-                    A+
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.diminuirFonte()"
-                    title="Diminuir Fonte"
-                >
-                    A-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="access-btn"
-                    onclick="AcessibilidadePagina.lerPagina()"
-                    title="Ler Página"
-                >
-
-                    <i class="fas fa-volume-up"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
+                    </div>
 
         <!-- PERFIL -->
 

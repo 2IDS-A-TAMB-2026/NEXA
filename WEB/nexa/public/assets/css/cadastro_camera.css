@@ -1108,61 +1108,7 @@ body{
 
 }
 
-/* ==========================================================
-   MENU DE ACESSIBILIDADE
-========================================================== */
 
-.access-menu{
-    position:relative;
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:10px;
-    z-index:99999;
-}
-
-.gear-btn{
-    width:35px;
-    height:35px;
-    border:none;
-    border-radius:50%;
-    background:transparent;
-    color:#808080;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    box-shadow:none;
-    flex-shrink:0;
-}
-
-.gear-btn i{
-    font-size:20px;
-    transition:.3s;
-}
-
-.gear-btn:hover i{
-    transform:rotate(90deg);
-}
-
-.access-options{
-    position:absolute;
-    top:50%;
-    right:40px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-    transform:translateY(-50%);
-}
-
-.access-options.active{
-    opacity:1;
-    visibility:visible;
-    pointer-events:auto;
-}
 
 /* ==========================================================
    VLIBRAS

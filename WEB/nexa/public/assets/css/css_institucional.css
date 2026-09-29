@@ -961,3 +961,100 @@ footer {
 
     box-shadow: 0 12px 24px rgba(10, 102, 194, .45);
 }
+
+
+/* =========================================
+   CONTAINER DO VÍDEO
+========================================= */
+
+.video-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   VÍDEO
+========================================= */
+
+.video-container video {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+/* =========================================
+   BOTÃO DE SOM
+========================================= */
+
+.btn-som {
+    position: absolute;
+
+    /* canto inferior direito */
+    right: 20px;
+    bottom: 20px;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* efeito ao passar o mouse */
+.btn-som:hover {
+    background: rgba(15, 42, 68, 0.95);
+    transform: scale(1.08);
+}
+
+
+/* clique */
+.btn-som:active {
+    transform: scale(0.95);
+}
+
+
+/* acessibilidade */
+.btn-som:focus {
+    outline: 2px solid #19aaed;
+    outline-offset: 3px;
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 768px) {
+
+    .btn-som {
+        right: 12px;
+        bottom: 12px;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 17px;
+    }
+
+}

@@ -1,241 +1,859 @@
-     /* ===== RESET E CONFIGURAÇÕES GLOBAIS ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        h1{
-            color: #0d7ce3;
-        }
-
-        
-
-        body {
-            display: flex;
-            min-height: 100vh;
-            background: url('https://img.freepik.com/photos-premium/pour-securite-operation-travail-ingenieur-deux-ouvriers-du-batiment-tiennent-respectivement-casque-securite-jaune-blanc-the-generative-ai_28914-25222.jpg') no-repeat center center/cover;
-            transition:  0.3s;
-        }
+/* =========================================================
+   NEXA — PÁGINA DE PERFIL
+   CSS COMPLETO
+   DARK MODE + ALTO CONTRASTE
+========================================================= */
 
 
-  .main{
-    width:100%;
-    min-height:100vh;
+/* =========================================================
+   RESET
+========================================================= */
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:40px;
-}   
-
-
-
-        /* ===== CARD DO FORMULÁRIO (CONTAINER BRANCO) ===== */
-       
-        .card{
-    width:95%;
-    max-width:1300px;
-    min-width:1100px;
-
-    background:#fff;
-    border-radius:24px;
-    padding:50px 60px;
-
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-            margin: auto;
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-        /*perfil header*/
-
-     .perfil-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:35px;
-
-padding-bottom:30px;
-
-border-bottom:1px solid #edf2f8;
-
-position:relative;
-
-overflow:hidden;
-
-}
-.perfil-esquerda{
-
-display:flex;
-
-align-items:center;
-
-gap:18px;
-
-z-index:2;
-
-}
-.dots{
-
-position:absolute;
-
-width:70px;
-
-height:70px;
-
-background-image:radial-gradient(#C9DCF9 1.5px, transparent 1.5px);
-
-background-size:12px 12px;
-
-opacity:.9;
-
-}
-
-.dots2{
-
-bottom:10px;
-
-right:10px;
-
-}
-
-.dots1{
-
-top:15px;
-
-left:10px;
-
-}
-.perfil-info h1{
-
-font-size:38px;
-
-color:#12355b;
-
-margin-bottom:6px;
-
-}
-
-.perfil-info p{
-
-font-size:17px;
-
-color:#6c7a8e;
-
-margin-bottom:12px;
-
-}
-
-.linha{
-
-display:block;
-
-width:60px;
-
-height:4px;
-
-border-radius:20px;
-
-background:#0A66C2;
-
+h1 {
+    color: #0d7ce3;
 }
 
 
-.perfil-direita{
+/* =========================================================
+   BODY
+========================================================= */
 
-position:relative;
+body {
+    display: flex;
+    min-height: 100vh;
 
-width:240px;
+    background: color(white)
+        no-repeat center center / cover;
 
-height:150px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-}
-
-.seguranca-box{
-
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-
-    margin-top:15px;
-
-}
-
-.seguranca-box .input-box{
-
-    width:100%;
-
-}
-.perfil-direita{
-
-    position:relative;
-
-    width:300px;
-    height:180px;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    overflow:hidden;
-
-    flex-shrink:0;
-
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 
-.imagem-seguranca{
+/* =========================================================
+   MAIN
+   ESPAÇO PARA O HEADER
+========================================================= */
 
-    width:100%;
-    height:100%;
+.main {
+    width: 100%;
+    min-height: 100vh;
 
-    object-fit:cover;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 
-    object-position:center;
+    padding: 105px 40px 40px !important;
+}
 
-    display:block;
+
+/* =========================================================
+   CARD PRINCIPAL
+   MANTÉM GRANDE E LARGO
+========================================================= */
+
+.card {
+    width: 95% !important;
+    max-width: 1300px !important;
+    min-width: 1100px !important;
+
+    background: #ffffff;
+
+    border-radius: 24px;
+
+    padding: 40px 60px !important;
+
+    margin: 0 auto !important;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+    overflow: visible;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-header {
+    position: fixed;
+
+    top: 0;
+    left: 270px;
+    right: 0;
+
+    height: 75px;
+
+    background: #ffffff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 32px;
+
+    border-bottom: 1px solid #edf2f7;
+
+    box-shadow: 0 4px 20px rgba(15, 42, 68, 0.05);
+
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-title h1 {
+    color: #17325c;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    line-height: 1.1;
+}
+
+.header-title p {
+    margin-top: 6px;
+
+    color: #667085;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   PERFIL
+========================================================= */
+
+.perfil-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px !important;
+
+    padding-bottom: 22px !important;
+
+    border-bottom: 1px solid #edf2f8;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.perfil-esquerda {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.avatar {
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+
+    background: #0A66C2;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 25px;
+    font-weight: bold;
+
+    color: #ffffff;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   INFORMAÇÕES DO PERFIL
+========================================================= */
+
+.perfil-info {
+    position: relative;
+    z-index: 2;
+}
+
+.perfil-info h1 {
+    font-size: 34px;
+
+    color: #12355b;
+
+    margin-bottom: 6px;
+}
+
+.perfil-info p {
+    font-size: 16px;
+
+    color: #6c7a8e;
+
+    margin-bottom: 10px;
+}
+
+.linha {
+    display: block;
+
+    width: 60px;
+    height: 4px;
+
+    border-radius: 20px;
+
+    background: #0A66C2;
+}
+
+
+/* =========================================================
+   DECORAÇÃO
+========================================================= */
+
+.dots {
+    position: absolute;
+
+    width: 70px;
+    height: 70px;
+
+    background-image:
+        radial-gradient(
+            #C9DCF9 1.5px,
+            transparent 1.5px
+        );
+
+    background-size: 12px 12px;
+
+    opacity: 0.9;
+
+    pointer-events: none;
+}
+
+.dots1 {
+    top: 15px;
+    left: 10px;
+}
+
+.dots2 {
+    bottom: 10px;
+    right: 10px;
+}
+
+
+/* =========================================================
+   IMAGEM DE SEGURANÇA
+========================================================= */
+
+.perfil-direita {
+    position: relative;
+
+    width: 300px !important;
+    height: 180px !important;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    z-index: 2;
+}
+
+.imagem-seguranca {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    display: block;
+}
+
+
+/* =========================================================
+   TÍTULO / SUBTÍTULO
+========================================================= */
+
+.card h1 {
+    text-align: center;
+
+    margin-bottom: 25px;
+
+    color: #0A66C2;
+
+    font-size: 28px;
+
+    font-weight: bold;
+}
+
+.subtitle {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+
+    color: #0A66C2;
+
+    margin-top: 22px;
+
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    margin-bottom: 20px;
+}
+
+.full {
+    grid-column: span 2;
+}
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.input-box {
+    background: #f5f5f5;
+
+    border-radius: 12px;
+
+    padding: 14px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid #dcdcdc;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.input-box i {
+    color: #0A66C2;
+
+    margin-right: 12px;
+
+    font-size: 16px;
+
+    width: 20px;
+
+    text-align: center;
+}
+
+.input-box input {
+    border: none;
+
+    background: transparent;
+
+    outline: none;
+
+    width: 100%;
+
+    font-size: 15px;
+
+    color: #333333;
+}
+
+.input-box.editable-field {
+    background: #ffffff;
+
+    border-color: #cccccc;
+}
+
+.input-box.editable-field:focus-within {
+    border-color: #0A66C2;
+
+    box-shadow:
+        0 0 0 3px rgba(10, 102, 194, 0.15);
+}
+
+.input-box.error {
+    border-color: #E53935;
+
+    background: #FFF8F8;
+}
+
+.error-text {
+    font-size: 13px;
+
+    color: #E53935;
+
+    margin-top: 6px;
+
+    padding-left: 5px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.btn {
+    margin-top: 15px;
+
+    width: 200px;
+    height: 48px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease;
+}
+
+.editar {
+    background: #0A66C2;
+
+    color: #FFFFFF;
+}
+
+.editar:hover {
+    background: #084D93;
+}
+
+.salvar {
+    display: none;
+
+    background: #28A745;
+
+    color: #FFFFFF;
+}
+
+.salvar:hover {
+    background: #1E7E34;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   EPIs OBRIGATÓRIOS
+   3 POR LINHA
+========================================================= */
+
+.epi-container {
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 12px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   CADA EPI
+========================================================= */
+
+.epi-container > * {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+.epi-container .epi-item {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    min-height: 100px !important;
+
+    margin: 0 !important;
+
+    padding: 12px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 12px !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 14px !important;
+}
+
+
+/* =========================================================
+   IMAGEM DOS EPIs
+========================================================= */
+
+.epi-container img {
+    width: 74px !important;
+    height: 74px !important;
+
+    min-width: 74px !important;
+    min-height: 74px !important;
+
+    object-fit: cover !important;
+
+    flex-shrink: 0 !important;
+}
+
+
+/* =========================================================
+   TEXTO DOS EPIs
+========================================================= */
+
+.epi-container .epi-info {
+    min-width: 0 !important;
+
+    flex: 1 !important;
+}
+
+.epi-container .epi-info strong,
+.epi-container .epi-item strong {
+    display: block !important;
+
+    font-size: 16px !important;
+
+    line-height: 1.2 !important;
+
+    margin-bottom: 4px !important;
+}
+
+.epi-container .epi-info span,
+.epi-container .epi-info small,
+.epi-container .epi-item small {
+    display: block !important;
+
+    font-size: 13px !important;
+
+    line-height: 1.3 !important;
+}
+
+
+/* =========================================================
+   DARK MODE — BASE
+========================================================= */
+
+body.dark-mode {
+    background: #07111F !important;
+
+    color: #DCE6F1 !important;
+}
+
+
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .card {
+        width: 100% !important;
+
+        min-width: 0 !important;
+
+        padding: 35px 40px !important;
+    }
+
+    .perfil-direita {
+        width: 250px !important;
+        height: 160px !important;
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: span 1;
+    }
+
+    .epi-container {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .perfil-header {
+        gap: 20px;
+    }
+
+    .perfil-direita {
+        width: 220px !important;
+        height: 140px !important;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .main {
+        padding: 90px 15px 25px !important;
+    }
+
+    .dashboard-header {
+        left: 0;
+    }
+
+    .card {
+        width: 100% !important;
+
+        min-width: 0 !important;
+
+        padding: 25px 20px !important;
+
+        border-radius: 18px;
+    }
+
+    .perfil-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .perfil-direita {
+        width: 100% !important;
+        height: 150px !important;
+    }
+
+    .epi-container {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+
+/* =========================================================
+   NEXA — EPIs OBRIGATÓRIOS
+   3 POR LINHA
+========================================================= */
+
+/* Área que contém o título + EPIs */
+.form-grid > .full:has(.fa-shield-alt) {
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 12px !important;
+
+    grid-column: span 2 !important;
+}
+
+
+/* Título "EPIs Obrigatórios" ocupa toda a largura */
+.form-grid > .full:has(.fa-shield-alt) > .subtitle {
+    grid-column: 1 / -1 !important;
+
+    width: 100% !important;
+
+    margin-top: 0 !important;
+    margin-bottom: 2px !important;
+}
+
+
+/* =========================================================
+   CADA EPI
+========================================================= */
+
+.form-grid > .full:has(.fa-shield-alt) > .input-box {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    margin-bottom: 0 !important;
+
+    padding: 12px !important;
+
+    gap: 15px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    box-sizing: border-box !important;
+
+    min-height: 85px !important;
+
+    border-radius: 14px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   IMAGEM DO EPI
+========================================================= */
+
+.form-grid > .full:has(.fa-shield-alt) > .input-box img {
+    width: 60px !important;
+
+    height: 60px !important;
+
+    min-width: 60px !important;
+
+    min-height: 60px !important;
+
+    object-fit: cover !important;
+
+    border-radius: 10px !important;
+
+    flex-shrink: 0 !important;
+}
+
+
+/* =========================================================
+   TEXTO DO EPI
+========================================================= */
+
+.form-grid > .full:has(.fa-shield-alt) > .input-box > div {
+    min-width: 0 !important;
+
+    flex: 1 !important;
+
+    overflow: hidden !important;
+}
+
+.form-grid > .full:has(.fa-shield-alt) > .input-box strong {
+    display: block !important;
+
+    color: #1f3556 !important;
+
+    font-size: 15px !important;
+
+    line-height: 1.2 !important;
+
+    margin-bottom: 3px !important;
+}
+
+.form-grid > .full:has(.fa-shield-alt) > .input-box small {
+    display: block !important;
+
+    color: #718096 !important;
+
+    font-size: 12px !important;
+
+    line-height: 1.25 !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+    white-space: nowrap !important;
+}
+
+
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .form-grid > .full:has(.fa-shield-alt) {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
 
 }
 
-        .dashboard-header {
+@media (max-width: 600px) {
 
-            position: fixed;
+    .form-grid > .full:has(.fa-shield-alt) {
+        grid-template-columns: 1fr !important;
+    }
 
-            top: 0;
-            left: 270px;
-            right: 0;
+}
 
-            height: 75px;
 
-            background: #fff;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            padding: 0 32px;
-
-            border-bottom: 1px solid #edf2f7;
-
-            box-shadow: 0 4px 20px rgba(15, 42, 68, .05);
-
-            z-index: 100;
-        }
-
-        .header-left {
+      .header-left {
             display: flex;
             align-items: center;
         }
@@ -265,309 +883,17 @@ align-items:center;
             font-size: 15px;
         }
 
-
-
-.avatar{
-
-width:70px;
-height:70px;
-
-border-radius:50%;
-
-background:#0A66C2;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:30px;
-
-font-weight:bold;
-
-color:white;
-
-flex-shrink:0;
-
+        .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.perfil-texto h1{
-
-font-size:42px;
-
-color:#10315f;
-
-margin-bottom:5px;
-
+.nome-empresa {
+    margin: 0;
+    color: #17325c;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    white-space: nowrap;
 }
-
-.perfil-texto p{
-
-font-size:18px;
-
-color:#6d7c93;
-
-}
-
-.dots{
-
-position:absolute;
-
-width:70px;
-
-height:70px;
-
-background-image:radial-gradient(#C9DCF9 1.5px, transparent 1.5px);
-
-background-size:12px 12px;
-
-opacity:.9;
-
-}
-
-.dots1{
-
-top:15px;
-
-left:10px;
-
-}
-.dots2{
-
-bottom:10px;
-
-right:10px;
-
-}
-
-.perfil-texto span{
-
-display:block;
-
-margin-top:12px;
-
-width:60px;
-
-height:5px;
-
-background:#0A66C2;
-
-border-radius:30px;
-
-}
-
- 
-
-        .card h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #0a66c2;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .subtitle{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    letter-spacing:.5px;
-
-    text-transform:uppercase;
-
-    color:#0A66C2;
-
-    margin-top:25px;
-
-    margin-bottom:15px;
-
-    }
-        /* Estrutura em Grid */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .full {
-            grid-column: span 2;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Caixas de Input Arredondadas e Elegantes */
-        .input-box {
-            background: #f5f5f5;
-            border-radius: 12px;
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            border: 1px solid #dcdcdc;
-            transition: all 0.2s;
-        }
-
-        .input-box i {
-            color: #0a66c2;
-            margin-right: 12px;
-            font-size: 16px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .input-box input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 100%;
-            font-size: 15px;
-            color: #333;
-        }
-
-        /* Estado quando o input está liberado para editar */
-        .input-box.editable-field {
-            background: #ffffff;
-            border-color: #cccccc;
-        }
-
-        .input-box.editable-field:focus-within {
-            border-color: #0a66c2;
-            box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.15);
-        }
-
-        /* Validação de Erro */
-        .input-box.error {
-            border-color: #e53935;
-            background: #fff8f8;
-        }
-
-        .error-text {
-            font-size: 13px;
-            color: #e53935;
-            margin-top: 6px;
-            padding-left: 5px;
-            font-weight: bold;
-        }
-
-        /* ===== BOTÕES ===== */
-        .btn {
-            margin-top: 15px;
-            width: 200px;
-            height: 48px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-left: auto;
-            margin-right: auto;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        .editar {
-            background: #0a66c2;
-            color: #fff;
-        }
-
-        .editar:hover {
-            background: #084d93;
-        }
-
-        .salvar {
-            display: none;
-            background: #28a745;
-            color: #fff;
-        }
-
-        .salvar:hover {
-            background: #1e7e34;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* ===== ACESSIBILIDADE - DARK MODE ===== */
-        .dark {
-            background: #0f172a !important;
-        }
-
-        .dark .card {
-            background: #1e293b;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .dark .card h1 {
-            color: #fff;
-        }
-
-        .dark .subtitle {
-            color: #38bdf8;
-        }
-
-        .dark .input-box {
-            background: #334155;
-            border-color: #475569;
-        }
-
-        .dark .input-box i {
-            color: #38bdf8;
-        }
-
-        .dark .input-box input {
-            color: #fff;
-        }
-
-        .dark .input-box.editable-field {
-            background: #1e293b;
-            border-color: #64748b;
-        }
-
-        /* ==========================================
-        ALTO CONTRASTE - BORDAS AMARELAS
-        ========================================== */
-
-        body.alto-contraste .input-box {
-            border-color: #FFFF00 !important;
-        }
-
-        body.alto-contraste .input-box.editable-field {
-            border-color: #FFFF00 !important;
-        }
-
-        body.alto-contraste .input-box.editable-field:focus-within {
-            border-color: #FFFF00 !important;
-            box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.25) !important;
-        }
-
-        /* Ícones dos campos */
-        body.alto-contraste .input-box i {
-            color: #FFFF00 !important;
-        }
-
-        /* Textos dentro dos campos */
-        body.alto-contraste .input-box input,
-        body.alto-contraste .input-box span,
-        body.alto-contraste .input-box strong,
-        body.alto-contraste .input-box small,
-        body.alto-contraste .input-box label {
-            color: #FFFFFF !important;
-        }
-
-
-        

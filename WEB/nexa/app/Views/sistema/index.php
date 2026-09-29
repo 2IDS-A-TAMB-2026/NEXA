@@ -278,22 +278,42 @@
         </div>
     </section>
 
-    <section class="video-section reveal">
+<section class="video-section reveal">
 
-        <div class="video-container">
+    <div class="video-container">
 
-            <video id="videoNexa" autoplay muted loop playsinline>
-                <source src="<?= base_url('assets/images/nexa.mp4') ?>" type="video/mp4">
+        <video
+            id="videoNexa"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+        >
+            <source
+                src="<?= base_url('assets/images/nexa.mp4') ?>"
+                type="video/mp4"
+            >
 
-            </video>
+            Seu navegador não suporta a reprodução de vídeo.
+        </video>
 
-            <button class="btn-som" onclick="toggleSom()">
-                <i class="fas fa-volume-mute"></i>
-            </button>
+        <!-- BOTÃO DE SOM -->
+        <button
+            type="button"
+            class="btn-som"
+            onclick="toggleSom()"
+            aria-label="Ativar som"
+            title="Ativar som"
+        >
+            <i class="fas fa-volume-xmark"></i>
+        </button>
 
-        </div>
+    </div>
 
-    </section>
+</section>
+
+
 
     <section class="page">
         <h1>Visão computacional</h1>
@@ -513,7 +533,7 @@
                     <a href="https://www.instagram.com/nexa.senai/" target="_blank" title="Nos siga no Instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="https://github.com/2IDS-A-TAMB-2026/NEXA.git"><i class="fab fa-github"></i></a>
                 </div>
             </div>
 
@@ -554,77 +574,210 @@
         </div>
     </footer>
 
+<script>
 
+    // ==============================
+    // MENU DE ACESSIBILIDADE
+    // ==============================
+    function toggleAccessMenu() {
+        const menu = document.getElementById("accessOptions");
 
-    <script>
-
-        function toggleAccessMenu() {
-    const menu = document.getElementById("accessOptions");
-    if (menu) {
-        menu.classList.toggle("show");
-    }
-}      else {
-            menu.style.display = "flex";
-            menu.classList.add("show");
+        if (menu) {
+            menu.classList.toggle("show");
         }
-        
-        const slides = document.querySelectorAll('.carousel img');
-        let index = 0;
+    }
+
+
+    // ==============================
+    // CARROSSEL
+    // ==============================
+    const slides = document.querySelectorAll('.carousel img');
+    let index = 0;
+
+    if (slides.length > 0) {
 
         setInterval(() => {
+
             slides[index].classList.remove('active');
+
             index = (index + 1) % slides.length;
+
             slides[index].classList.add('active');
+
         }, 3500);
 
-        let clicks = 0;
+    }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const logo = document.getElementById("logo");
+
+    // ==============================
+    // CLIQUE SECRETO NO LOGO
+    // ==============================
+    let clicks = 0;
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const logo = document.getElementById("logo");
+
+        if (logo) {
 
             logo.addEventListener("click", () => {
+
                 clicks++;
+
                 if (clicks === 5) {
                     window.location.href = "login_adm.html";
                 }
+
             });
+
+        }
+
+    });
+
+
+    // ==============================
+    // ANIMAÇÃO AO ROLAR
+    // ==============================
+    const reveals = document.querySelectorAll('.reveal');
+
+    function revealOnScroll() {
+
+        const windowHeight = window.innerHeight;
+
+        reveals.forEach(el => {
+
+            const elementTop = el.getBoundingClientRect().top;
+
+            if (elementTop < windowHeight - 100) {
+                el.classList.add('active');
+            }
+
         });
 
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+
+    window.addEventListener('load', revealOnScroll);
 
 
+    // ==============================
+    // VÍDEO INSTITUCIONAL
+    // ==============================
+    document.addEventListener("DOMContentLoaded", () => {
 
-        const reveals = document.querySelectorAll('.reveal');
+        const video = document.getElementById("videoNexa");
 
-        function revealOnScroll() {
-            const windowHeight = window.innerHeight;
+        if (video) {
 
-            reveals.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
+            video.muted = true;
 
-                if (elementTop < windowHeight - 100) {
-                    el.classList.add('active');
-                }
+            video.play().catch(() => {
+                console.log("O navegador bloqueou o autoplay do vídeo.");
             });
+
         }
 
-        window.addEventListener('scroll', revealOnScroll);
-        window.addEventListener('load', revealOnScroll);
+    });
 
-        function toggleSom() {
-            const video = document.getElementById("videoNexa");
-            const icon = document.getElementById("iconSom");
 
-            video.muted = !video.muted;
+    // ==============================
+    // SOM DO VÍDEO
+    // ==============================
+    function toggleSom() {
+
+        const video = document.getElementById("videoNexa");
+        const icon = document.querySelector(".btn-som i");
+
+        if (!video) return;
+
+        video.muted = !video.muted;
+
+        if (icon) {
 
             if (video.muted) {
+
                 icon.classList.remove("fa-volume-up");
                 icon.classList.add("fa-volume-mute");
+
             } else {
+
                 icon.classList.remove("fa-volume-mute");
                 icon.classList.add("fa-volume-up");
+
             }
+
         }
-    </script>
+
+    }
+
+// ==============================
+// VÍDEO INSTITUCIONAL
+// ==============================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const video = document.getElementById("videoNexa");
+
+    if (!video) return;
+
+    // Começa automaticamente e mutado
+    video.muted = true;
+
+    video.play().catch(() => {
+        console.log("Autoplay bloqueado pelo navegador.");
+    });
+
+});
+
+
+// ==============================
+// BOTÃO MUDAR SOM
+// ==============================
+
+function toggleSom() {
+
+    const video = document.getElementById("videoNexa");
+    const botao = document.querySelector(".btn-som");
+    const icone = botao ? botao.querySelector("i") : null;
+
+    if (!video) return;
+
+    // Alterna o estado
+    video.muted = !video.muted;
+
+    if (video.muted) {
+
+        // 🔇 MUTADO
+        if (icone) {
+            icone.classList.remove("fa-volume-high");
+            icone.classList.add("fa-volume-xmark");
+        }
+
+        if (botao) {
+            botao.setAttribute("aria-label", "Ativar som");
+            botao.setAttribute("title", "Ativar som");
+        }
+
+    } else {
+
+        // 🔊 COM SOM
+        if (icone) {
+            icone.classList.remove("fa-volume-xmark");
+            icone.classList.add("fa-volume-high");
+        }
+
+        if (botao) {
+            botao.setAttribute("aria-label", "Mutar vídeo");
+            botao.setAttribute("title", "Mutar vídeo");
+        }
+
+    }
+
+}
+
+</script>
+
 
     <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
 

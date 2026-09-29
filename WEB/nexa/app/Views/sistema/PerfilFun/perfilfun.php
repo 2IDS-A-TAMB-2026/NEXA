@@ -1,196 +1,378 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>NEXA | Perfil</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <link rel="stylesheet" href="<?= base_url('/assets/css/acessibilidade_fun.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/style_funci.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/perfil_fun.css') ?>">
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="<?= base_url('/assets/css/acessibilidade_fun.css') ?>"
+    >
+
+    <link
+        rel="stylesheet"
+        href="<?= base_url('assets/css/style_funci.css') ?>"
+    >
+
+    <link
+        rel="stylesheet"
+        href="<?= base_url('assets/css/perfil_fun.css') ?>"
+    >
+
+
+    <!-- SWEET ALERT -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- ESTILOS CORRIGIDOS PARA CORRIGIR O MODO ESCURO E ACESSIBILIDADE DO HEADER -->
-    <style>
-      
-        /* =========================================================
-           REGRAS FORÇADAS PARA O MODO ESCURO NO HEADER
-           ========================================================= */
-        body.dark .main-header,
-        body.dark-mode .main-header,
-        body.modo-escuro .main-header,
-        html.dark .main-header,
-        html.dark-mode .main-header,
-        [data-theme="dark"] .main-header {
-            background-color: #111827 !important;
-            background: #111827 !important;
-            border-bottom-color: #374151 !important;
-        }
-
-        body.dark .header-subtitle,
-        body.dark-mode .header-subtitle,
-        body.modo-escuro .header-subtitle,
-        body.dark .profile-name,
-        body.dark-mode .profile-name,
-        body.modo-escuro .profile-name,
-        html.dark .header-subtitle,
-        html.dark .profile-name {
-            color: #f3f4f6 !important;
-        }
-
-        body.dark .header-title,
-        body.dark-mode .header-title,
-        body.modo-escuro .header-title,
-        html.dark .header-title {
-            color: #60a5fa !important;
-        }
-
-        body.dark .profile-company,
-        body.dark-mode .profile-company,
-        body.modo-escuro .profile-company,
-        html.dark .profile-company {
-            color: #9ca3af !important;
-        }
-
-        body.dark .gear-btn,
-        body.dark-mode .gear-btn,
-        body.modo-escuro .gear-btn,
-        html.dark .gear-btn {
-            background-color: #1f2937 !important;
-            border-color: #374151 !important;
-            color: #f3f4f6 !important;
-        }
-
-        body.dark .access-options,
-        body.dark-mode .access-options,
-        body.modo-escuro .access-options,
-        html.dark .access-options {
-            background-color: #1f2937 !important;
-            border-color: #374151 !important;
-        }
-
-        body.dark .access-btn,
-        body.dark-mode .access-btn,
-        body.modo-escuro .access-btn,
-        html.dark .access-btn {
-            background-color: #374151 !important;
-            color: #f3f4f6 !important;
-        }
-
-        /* =========================================================
-           REGRAS FORÇADAS PARA MODO ALTO CONTRASTE NO HEADER
-           ========================================================= */
-        body.alto-contraste .main-header,
-        body.contrast .main-header,
-        [data-theme="contrast"] .main-header {
-            background-color: #000000 !important;
-            border-bottom: 2px solid #ffff00 !important;
-        }
-
-        body.alto-contraste .main-header *,
-        body.contrast .main-header *,
-        [data-theme="contrast"] .main-header * {
-            color: #ffff00 !important;
-        }
-
-        body.alto-contraste .profile-avatar,
-        body.contrast .profile-avatar {
-            background-color: #ffff00 !important;
-            color: #000000 !important;
-        }
-    </style>
 </head>
+
 
 <body>
 
+
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| MENSAGENS VINDAS DO CONTROLLER
+|--------------------------------------------------------------------------
+*/
+
+$mensagemErro =
+    session()->getFlashdata('erro');
+
+$mensagemSucesso =
+    session()->getFlashdata('sucesso');
+
+
+/*
+|--------------------------------------------------------------------------
+| ERROS DE SENHA
+|--------------------------------------------------------------------------
+*/
+
+$erroSenhaAtual = '';
+
+$erroNovaSenha = '';
+
+$erroConfirmarSenha = '';
+
+$erroGeral = '';
+
+
+/*
+|--------------------------------------------------------------------------
+| IDENTIFICA O TIPO DO ERRO
+|--------------------------------------------------------------------------
+*/
+
+if (!empty($mensagemErro)) {
+
+    $mensagemErroLower =
+        strtolower($mensagemErro);
+
+
+    if (
+        str_contains(
+            $mensagemErroLower,
+            'senha atual'
+        )
+    ) {
+
+        $erroSenhaAtual =
+            $mensagemErro;
+
+    }
+
+    elseif (
+        str_contains(
+            $mensagemErroLower,
+            'nova senha'
+        )
+    ) {
+
+        $erroNovaSenha =
+            $mensagemErro;
+
+    }
+
+    elseif (
+        str_contains(
+            $mensagemErroLower,
+            'senhas não coincidem'
+        )
+        ||
+        str_contains(
+            $mensagemErroLower,
+            'confirmação'
+        )
+    ) {
+
+        $erroConfirmarSenha =
+            $mensagemErro;
+
+    }
+
+    else {
+
+        $erroGeral =
+            $mensagemErro;
+
+    }
+
+}
+
+?>
+
+
+<!-- =========================================================
+     ERRO GERAL
+========================================================= -->
+
+<?php if (!empty($erroGeral)): ?>
+
+<script>
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function ()
+    {
+
+        Swal.fire({
+
+            icon: 'error',
+
+            title: 'Não foi possível atualizar',
+
+            text: <?= json_encode($erroGeral) ?>,
+
+            confirmButtonColor: '#0a66c2',
+
+            confirmButtonText: 'Continuar'
+
+        });
+
+    }
+);
+
+</script>
+
+<?php endif; ?>
+
+
+<!-- =========================================================
+     SUCESSO
+========================================================= -->
+
+<?php if (!empty($mensagemSucesso)): ?>
+
+<script>
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function ()
+    {
+
+        Swal.fire({
+
+            icon: 'success',
+
+            title: 'Sucesso!',
+
+            text: <?= json_encode($mensagemSucesso) ?>,
+
+            confirmButtonColor: '#0a66c2',
+
+            confirmButtonText: 'Continuar'
+
+        });
+
+    }
+);
+
+</script>
+
+<?php endif; ?>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
 <aside class="sidebar">
 
+
     <!-- FUNDO -->
+
     <img
         class="sidebar-construction"
         src="<?= base_url('assets/images/construcao.jpg') ?>"
         alt=""
     >
 
+
     <!-- CONTEÚDO -->
+
     <div class="sidebar-content">
 
+
         <!-- LOGO -->
+
         <div class="sidebar-logo">
+
             <img
                 src="<?= base_url('assets/images/logo_escura_transparente.png') ?>"
                 alt="NEXA"
             >
+
             <div class="sidebar-brand-text">
-                <strong>NEXA</strong>
+
+                <strong>
+                    NEXA
+                </strong>
+
                 <span>
                     Segurança é prioridade
                 </span>
+
             </div>
+
         </div>
 
-        <!-- MENU -->
+
+        <!-- =====================================================
+             MENU
+        ===================================================== -->
+
         <nav class="menu">
 
+
             <!-- PRINCIPAL -->
+
             <div class="menu-title">
                 PRINCIPAL
             </div>
 
+
             <!-- DASHBOARD -->
+
             <a href="<?= base_url('/dashboardfun') ?>">
+
                 <i class="fas fa-chart-line"></i>
+
                 <span>
                     Dashboard
                 </span>
+
             </a>
 
-            <!-- DASHBOARD CÂMERAS -->
+
+            <!-- ANÁLISE DE EPI -->
+
             <a href="<?= base_url('/camera_analise') ?>">
+
                 <i class="fas fa-video"></i>
+
                 <span>
                     Análise de EPI
                 </span>
+
             </a>
 
+
             <!-- CONTA -->
+
             <div class="menu-title">
                 CONTA
             </div>
 
+
             <!-- PERFIL -->
-            <a href="<?= base_url('/perfilfun') ?>" class="active">
+
+            <a
+                href="<?= base_url('/perfilfun') ?>"
+                class="active"
+            >
+
                 <i class="fas fa-user"></i>
+
                 <span>
                     Perfil
                 </span>
+
             </a>
+
 
         </nav>
 
-        <!-- SAIR -->
+
+        <!-- =====================================================
+             SAIR
+        ===================================================== -->
+
         <a
             href="<?= base_url('/') ?>"
             class="logout-item"
         >
+
             <i class="fas fa-sign-out-alt"></i>
+
             <span>
                 Sair do Sistema
             </span>
+
         </a>
+
 
     </div>
 
 </aside>
 
+
+<!-- =========================================================
+     OVERLAY
+========================================================= -->
+
 <div class="overlay">
 
-    <div class="main" style="display: flex; flex-direction: column; width: 100%; box-sizing: border-box; padding: 20px;">
 
-         <header class="dashboard-header">
+    <div
+        class="main"
+        style="
+            display:flex;
+            flex-direction:column;
+            width:100%;
+            box-sizing:border-box;
+            padding:20px;
+        "
+    >
+
+
+        <!-- =====================================================
+             HEADER
+        ===================================================== -->
+
+        <header class="dashboard-header">
+
+
+            <!-- LADO ESQUERDO -->
 
             <div class="header-left">
 
@@ -209,192 +391,433 @@
             </div>
 
 
+            <!-- LADO DIREITO -->
+
+            <div class="header-right">
 
 
+                <!-- =================================================
+                     ACESSIBILIDADE
+                ================================================= -->
 
-        <!--botao de acessibilidade TESTE que nao deu muito certo, o vlibras ta funcionando-->
-    <!-- BOTÃO CONFIGURAÇÕES -->
-
-            <button
-                class="gear-btn"
-                onclick="toggleAccessMenu()"
-            >
-        
-                <i class="fas fa-cog"></i>
-        
-            </button>
-        
-        
-            <!-- OPÇÕES -->
-        
-            <div
-                class="access-options"
-                id="accessOptions"
-            >
-        
-        
-                <!-- CONTRASTE -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.toggleContraste()"
-                    title="Alto contraste"
-                >
-        
-                    <i class="fas fa-adjust"></i>
-        
-                </button>
-        
-        
-                <!-- MODO ESCURO -->
-        
-                <button
-                    class="access-btn"
-                    onclick="toggleDark()"
-                    title="Modo escuro"
-                >
-        
-                    <i class="fas fa-moon"></i>
-        
-                </button>
-        
-        
-                <!-- AUMENTAR FONTE -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.aumentarFonte()"
-                    title="Aumentar fonte"
-                >
-        
-                    A+
-        
-                </button>
-        
-        
-                <!-- DIMINUIR FONTE -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.diminuirFonte()"
-                    title="Diminuir fonte"
-                >
-        
-                    A-
-        
-                </button>
-        
-        
-                <!-- LER PÁGINA -->
-        
-                <button
-                    class="access-btn"
-                    onclick="Acessibilidade.lerPagina()"
-                    title="Ler página"
-                >
-        
-                    <i class="fas fa-volume-up"></i>
-        
-                </button>
-        
-        
-            </div> 
+                <div class="access-menu">
 
 
+                    <!-- ENGRENAGEM -->
+
+                    <button
+                        type="button"
+                        class="gear-btn"
+                        onclick="toggleAccessMenu()"
+                        title="Opções de Acessibilidade"
+                    >
+
+                        <i class="fas fa-cog"></i>
+
+                    </button>
 
 
+                    <!-- OPÇÕES -->
+
+                    <div
+                        class="access-options"
+                        id="accessOptions"
+                    >
+
+
+                        <!-- ALTO CONTRASTE -->
+
+                        <button
+                            type="button"
+                            class="access-btn"
+                            onclick="Acessibilidade.toggleContraste()"
+                            title="Alto Contraste"
+                        >
+
+                            <i class="fas fa-adjust"></i>
+
+                        </button>
+
+
+                        <!-- MODO ESCURO -->
+
+                        <button
+                            type="button"
+                            class="access-btn"
+                            onclick="toggleDark()"
+                            title="Modo Escuro"
+                        >
+
+                            <i class="fas fa-moon"></i>
+
+                        </button>
+
+
+                        <!-- AUMENTAR FONTE -->
+
+                        <button
+                            type="button"
+                            class="access-btn"
+                            onclick="Acessibilidade.aumentarFonte()"
+                            title="Aumentar Fonte"
+                        >
+
+                            A+
+
+                        </button>
+
+
+                        <!-- DIMINUIR FONTE -->
+
+                        <button
+                            type="button"
+                            class="access-btn"
+                            onclick="Acessibilidade.diminuirFonte()"
+                            title="Diminuir Fonte"
+                        >
+
+                            A-
+
+                        </button>
+
+
+                        <!-- LER PÁGINA -->
+
+                        <button
+                            type="button"
+                            class="access-btn"
+                            onclick="Acessibilidade.lerPagina()"
+                            title="Ler Página"
+                        >
+
+                            <i class="fas fa-volume-up"></i>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPRESA -->
+
+                <p class="nome-empresa">
+                    NEXA SOLUÇÕES
+                </p>
+
+
+            </div>
 
         </header>
 
-        <form action="<?= base_url('perfilfun/atualizar') ?>" method="post">
+
+        <!-- =====================================================
+             FORMULÁRIO
+        ===================================================== -->
+
+        <form
+            action="<?= base_url('perfilfun/atualizar') ?>"
+            method="post"
+            id="formPerfil"
+        >
+
+            <?= csrf_field() ?>
+
+
+            <!-- =================================================
+                 CARD
+            ================================================= -->
+
             <div class="card">
+
+
+                <!-- =================================================
+                     CABEÇALHO
+                ================================================= -->
+
                 <div class="perfil-header">
+
+
+                    <!-- ESQUERDA -->
 
                     <div class="perfil-esquerda">
 
+
+                        <!-- AVATAR -->
+
                         <div class="avatar">
-                            <?= strtoupper(substr(session()->get('nome_fun'),0,1)); ?>
+
+                            <?= strtoupper(
+
+                                substr(
+
+                                    $funcionario['NOME_COMPLETO']
+
+                                    ?? session()->get('nome_fun')
+
+                                    ?? 'F',
+
+                                    0,
+
+                                    1
+
+                                )
+
+                            ); ?>
+
                         </div>
+
+
+                        <!-- TEXTO -->
 
                         <div class="perfil-info">
 
-                            <h1>Perfil do Funcionário</h1>
+                            <h1>
+                                Perfil do Funcionário
+                            </h1>
 
-                            <p>Visualize e gerencie suas informações pessoais</p>
+                            <p>
+                                Visualize e gerencie suas informações pessoais
+                            </p>
 
                             <span class="linha"></span>
 
                         </div>
 
+
                     </div>
 
-                  <div class="perfil-direita">
 
-    <img
-        src="<?= base_url('assets/images/capacete_perfil.png') ?>"
-        alt="Segurança com capacete"
-        class="imagem-seguranca"
-    >
+                    <!-- DIREITA -->
 
-</div>
+                    <div class="perfil-direita">
+
+                        <img
+                            id="imagemSeguranca"
+                            src="<?= base_url('assets/images/capacete_perfil.png') ?>"
+                            alt="Segurança com capacete"
+                            class="imagem-seguranca"
+                        >
+
+                    </div>
+
 
                 </div>
+
+
+                <!-- =================================================
+                     INFORMAÇÕES PESSOAIS
+                ================================================= -->
 
                 <div class="subtitle">
+
                     <i class="fa-regular fa-user"></i>
+
                     Informações pessoais
+
                 </div>
 
+
                 <div class="form-grid">
+
+
+                    <!-- =================================================
+                         NOME
+                    ================================================= -->
+
                     <div class="input-box full">
+
                         <i class="fas fa-user"></i>
-                        <input type="text" value="<?= session()->get('nome_fun') ?? 'Nome do Funcionário' ?>" disabled>
+
+                        <input
+                            id="nome"
+                            name="nome"
+                            type="text"
+                            value="<?= esc(
+
+                                old('nome')
+
+                                ?? $funcionario['NOME_COMPLETO']
+
+                                ?? session()->get('nome_fun')
+
+                                ?? ''
+
+                            ) ?>"
+                            maxlength="120"
+                            oninput="somenteLetras(this)"
+                            disabled
+                        >
+
                     </div>
+
+
+                    <!-- =================================================
+                         E-MAIL
+                    ================================================= -->
 
                     <div class="input-box">
+
                         <i class="fas fa-envelope"></i>
-                        <input id="email" type="email" value="<?= session()->get('email_fun') ?? 'email@nexa.com' ?>" disabled>
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value="<?= esc(
+
+                                old('email')
+
+                                ?? $funcionario['EMAIL_CORPORATIVO']
+
+                                ?? session()->get('email_fun')
+
+                                ?? ''
+
+                            ) ?>"
+                            maxlength="120"
+                            disabled
+                        >
+
                     </div>
 
-                    <div class="input-box" id="telefoneBox">
+
+                    <!-- =================================================
+                         TELEFONE
+                    ================================================= -->
+
+                    <div
+                        class="input-box"
+                        id="telefoneBox"
+                    >
+
                         <i class="fas fa-phone"></i>
+
                         <input
-                            id="telefone"     
+                            id="telefone"
                             name="telefone"
                             type="text"
-                            value="<?= $funcionario['TELEFONE'] ?? '' ?>"                    
+                            value="<?= esc(
+
+                                old('telefone')
+
+                                ?? $funcionario['TELEFONE']
+
+                                ?? ''
+
+                            ) ?>"
                             placeholder="(00) 00000-0000"
                             maxlength="15"
                             oninput="mascaraTelefone(this)"
                             disabled
                         >
+
                     </div>
 
+
+                    <!-- =================================================
+                         DATA NASCIMENTO
+                    ================================================= -->
+
                     <div class="input-box">
+
                         <i class="fas fa-calendar"></i>
-                        <input type="text" value="<?= isset($funcionario['DATA_NASCIMENTO']) 
-                            ? date('d/m/Y', strtotime($funcionario['DATA_NASCIMENTO'])) 
-                            : '' ?>" disabled>
+
+                        <input
+                            type="text"
+                            value="<?= isset(
+
+                                $funcionario['DATA_NASCIMENTO']
+
+                            )
+
+                                ? date(
+
+                                    'd/m/Y',
+
+                                    strtotime(
+
+                                        $funcionario['DATA_NASCIMENTO']
+
+                                    )
+
+                                )
+
+                                : '' ?>"
+                            disabled
+                        >
+
                     </div>
 
+
+                    <!-- =================================================
+                         RFID
+                    ================================================= -->
+
                     <div class="input-box">
+
                         <i class="fas fa-id-badge"></i>
-                        <input type="text" value="<?= $funcionario['UID_RFID'] ?? '' ?>" disabled>
+
+                        <input
+                            type="text"
+                            value="<?= esc(
+
+                                $funcionario['UID_RFID']
+
+                                ?? ''
+
+                            ) ?>"
+                            disabled
+                        >
+
                     </div>
+
+
+                    <!-- =================================================
+                         EPIs
+                    ================================================= -->
 
                     <div class="full">
+
+
                         <div class="subtitle">
+
                             <i class="fas fa-shield-alt"></i>
+
                             EPIs Obrigatórios
+
                         </div>
 
+
                         <?php if (!empty($epis)): ?>
+
+
                             <?php foreach ($epis as $epi): ?>
-                               <div class="input-box" style="margin-bottom:10px; gap:15px;">
+
+
+                                <div
+                                    class="input-box"
+                                    style="
+                                        margin-bottom:10px;
+                                        gap:15px;
+                                    "
+                                >
+
 
                                     <img
-                                        src="<?= base_url('uploads/epis/' . $epi['IMAGEM_EPI']) ?>"
-                                        alt="<?= $epi['NOME_EPI'] ?>"
+                                        src="<?= base_url(
+
+                                            'uploads/epis/'
+
+                                            . $epi['IMAGEM_EPI']
+
+                                        ) ?>"
+                                        alt="<?= esc(
+
+                                            $epi['NOME_EPI']
+
+                                        ) ?>"
                                         style="
                                             width:60px;
                                             height:60px;
@@ -404,270 +827,1591 @@
                                         "
                                     >
 
+
                                     <div>
-                                        <strong><?= $epi['NOME_EPI'] ?></strong><br>
-                                        <small><?= $epi['DESCRICAO_EPI'] ?></small>
+
+                                        <strong>
+
+                                            <?= esc(
+
+                                                $epi['NOME_EPI']
+
+                                            ) ?>
+
+                                        </strong>
+
+                                        <br>
+
+                                        <small>
+
+                                            <?= esc(
+
+                                                $epi['DESCRICAO_EPI']
+
+                                                ?? ''
+
+                                            ) ?>
+
+                                        </small>
+
                                     </div>
 
+
                                 </div>
+
+
                             <?php endforeach; ?>
+
+
                         <?php else: ?>
+
+
                             <div class="input-box">
+
                                 <i class="fas fa-hard-hat"></i>
-                                <span>Nenhum EPI obrigatório cadastrado.</span>
+
+                                <span>
+
+                                    Nenhum EPI obrigatório cadastrado.
+
+                                </span>
+
                             </div>
+
+
                         <?php endif; ?>
+
+
                     </div>
+
+
                 </div>
 
+
+                <!-- =================================================
+                     SEGURANÇA
+                ================================================= -->
+
                 <div class="subtitle">
+
                     <i class="fas fa-lock"></i>
+
                     Segurança
+
                 </div>
+
 
                 <div class="seguranca-box">
 
-                    <!-- Senha atual -->
-                    <div class="input-box full input-group" id="senhaAtualBox">
 
-                        <div style="display:flex;align-items:center;width:100%;">
+                    <!-- =================================================
+                         SENHA ATUAL
+                    ================================================= -->
+
+                    <div
+                        class="input-box full input-group <?= !empty($erroSenhaAtual) ? 'error' : '' ?>"
+                        id="senhaAtualBox"
+                    >
+
+
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                width:100%;
+                            "
+                        >
 
                             <i class="fas fa-lock"></i>
 
+
                             <div class="campo">
 
-                                <label>Senha atual</label>
+                                <label>
+                                    Senha atual
+                                </label>
+
 
                                 <input
                                     id="senhaAtual"
-                                    name="SenhaAtual"
+                                    name="senhaAtual"
                                     type="password"
-                                    placeholder="********"
-                                    disabled>
+                                    placeholder="Digite sua senha atual"
+                                    disabled
+                                >
+
 
                             </div>
 
+
                         </div>
 
-                        <div class="error-text" id="erroAtual"></div>
+
+                        <!-- ERRO APARECE AQUI -->
+
+                        <div
+                            class="error-text"
+                            id="erroAtual"
+                        >
+
+                            <?= esc($erroSenhaAtual) ?>
+
+                        </div>
+
 
                     </div>
 
-                    <!-- Nova senha -->
-                    <div class="input-box input-group" id="novaSenhaBox" style="display:none;">
 
-                        <div style="display:flex;align-items:center;width:100%;">
+                    <!-- =================================================
+                         NOVA SENHA
+                    ================================================= -->
+
+                    <div
+                        class="input-box input-group <?= !empty($erroNovaSenha) ? 'error' : '' ?>"
+                        id="novaSenhaBox"
+                        style="display:none;"
+                    >
+
+
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                width:100%;
+                            "
+                        >
 
                             <i class="fas fa-key"></i>
 
+
                             <div class="campo">
 
-                                <label>Nova senha</label>
+                                <label>
+                                    Nova senha
+                                </label>
+
 
                                 <input
                                     id="novaSenha"
                                     name="novaSenha"
-                                    type="password">
+                                    type="password"
+                                    minlength="6"
+                                    maxlength="100"
+                                    placeholder="Mínimo 6 caracteres"
+                                >
+
 
                             </div>
 
+
                         </div>
 
-                        <div class="error-text" id="erroNova"></div>
+
+                        <div
+                            class="error-text"
+                            id="erroNova"
+                        >
+
+                            <?= esc($erroNovaSenha) ?>
+
+                        </div>
+
 
                     </div>
 
-                    <!-- Confirmar senha -->
-                    <div class="input-box input-group" id="confirmarSenhaBox" style="display:none;">
 
-                        <div style="display:flex;align-items:center;width:100%;">
+                    <!-- =================================================
+                         CONFIRMAR SENHA
+                    ================================================= -->
+
+                    <div
+                        class="input-box input-group <?= !empty($erroConfirmarSenha) ? 'error' : '' ?>"
+                        id="confirmarSenhaBox"
+                        style="display:none;"
+                    >
+
+
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                width:100%;
+                            "
+                        >
 
                             <i class="fas fa-key"></i>
 
+
                             <div class="campo">
 
-                                <label>Confirmar senha</label>
+                                <label>
+                                    Confirmar senha
+                                </label>
+
 
                                 <input
                                     id="confirmarSenha"
-                                    type="password">
+                                    name="confirmarSenha"
+                                    type="password"
+                                    minlength="6"
+                                    maxlength="100"
+                                    placeholder="Digite novamente"
+                                >
+
 
                             </div>
 
+
                         </div>
 
-                        <div class="error-text" id="erroConfirmar"></div>
+
+                        <div
+                            class="error-text"
+                            id="erroConfirmar"
+                        >
+
+                            <?= esc($erroConfirmarSenha) ?>
+
+                        </div>
+
 
                     </div>
 
+
                 </div>
 
-                <button type="button" class="btn editar" onclick="editar()">
-                    <i class="fas fa-edit"></i> Editar Campos
+
+                <!-- =================================================
+                     BOTÕES
+                ================================================= -->
+
+                <button
+                    type="button"
+                    class="btn editar"
+                    onclick="editar()"
+                >
+
+                    <i class="fas fa-edit"></i>
+
+                    Editar Campos
+
                 </button>
-                <button type="button" class="btn salvar" onclick="salvar()" style="display:none;">
-                    <i class="fas fa-save"></i> Salvar Alterações
+
+
+                <button
+                    type="button"
+                    class="btn salvar"
+                    onclick="salvar()"
+                    style="display:none;"
+                >
+
+                    <i class="fas fa-save"></i>
+
+                    Salvar Alterações
+
                 </button>
+
+
             </div>
-            <input type="hidden" name="novaSenha" id="novaSenhaHidden">
+
+
         </form>
 
+
     </div>
+
+
 </div>
 
-    <!-- WIDGET VLIBRAS -->
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-            <div class="vw-plugin-top-wrapper"></div>
-        </div>
+
+<!-- =========================================================
+     VLIBRAS
+========================================================= -->
+
+<div
+    vw
+    class="enabled"
+>
+
+    <div
+        vw-access-button
+        class="active"
+    ></div>
+
+
+    <div vw-plugin-wrapper>
+
+        <div class="vw-plugin-top-wrapper"></div>
+
     </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>
 
-    <script>
-        // Função para abrir/fechar o submenu de acessibilidade
-        function toggleAccessMenu() {
-            const menu = document.getElementById("accessOptions");
-            if (menu) {
-                menu.classList.toggle("active");
+</div>
+
+
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+
+<script>
+
+new window.VLibras.Widget(
+    'https://vlibras.gov.br/app'
+);
+
+
+/* =========================================================
+   MENU DE ACESSIBILIDADE
+========================================================= */
+
+function toggleAccessMenu()
+{
+
+    const menu =
+        document.getElementById(
+            "accessOptions"
+        );
+
+
+    if (menu) {
+
+        menu.classList.toggle(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MODO ESCURO
+========================================================= */
+
+function toggleDark()
+{
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+    document.body.classList.toggle(
+        "dark-mode"
+    );
+
+    document.documentElement.classList.toggle(
+        "dark"
+    );
+
+
+    atualizarImagemPerfil();
+
+}
+
+
+/* =========================================================
+   SOMENTE LETRAS NO NOME
+========================================================= */
+
+function somenteLetras(input)
+{
+
+    /*
+    |--------------------------------------------------------------------------
+    | Permite letras, espaços e acentos.
+    |--------------------------------------------------------------------------
+    */
+
+    input.value =
+        input.value.replace(
+            /[^A-Za-zÀ-ÿ\s]/g,
+            ''
+        );
+
+}
+
+
+/* =========================================================
+   EDITAR
+========================================================= */
+
+function editar()
+{
+
+    const nome =
+        document.getElementById(
+            "nome"
+        );
+
+
+    const email =
+        document.getElementById(
+            "email"
+        );
+
+
+    const telefone =
+        document.getElementById(
+            "telefone"
+        );
+
+
+    const senhaAtual =
+        document.getElementById(
+            "senhaAtual"
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LIBERA DADOS PESSOAIS
+    |--------------------------------------------------------------------------
+    */
+
+    nome.disabled = false;
+
+    email.disabled = false;
+
+    telefone.disabled = false;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LIBERA SENHA ATUAL
+    |--------------------------------------------------------------------------
+    */
+
+    senhaAtual.disabled = false;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CLASSES VISUAIS
+    |--------------------------------------------------------------------------
+    */
+
+    nome
+        .closest(".input-box")
+        .classList
+        .add("editable-field");
+
+
+    email
+        .closest(".input-box")
+        .classList
+        .add("editable-field");
+
+
+    document
+        .getElementById(
+            "telefoneBox"
+        )
+        .classList
+        .add("editable-field");
+
+
+    document
+        .getElementById(
+            "senhaAtualBox"
+        )
+        .classList
+        .add("editable-field");
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MOSTRA NOVA SENHA
+    |--------------------------------------------------------------------------
+    */
+
+    document
+        .getElementById(
+            "novaSenhaBox"
+        )
+        .style
+        .display = "flex";
+
+
+    document
+        .getElementById(
+            "confirmarSenhaBox"
+        )
+        .style
+        .display = "flex";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TROCA BOTÕES
+    |--------------------------------------------------------------------------
+    */
+
+    document
+        .querySelector(
+            ".editar"
+        )
+        .style
+        .display = "none";
+
+
+    document
+        .querySelector(
+            ".salvar"
+        )
+        .style
+        .display = "flex";
+
+}
+
+
+/* =========================================================
+   SALVAR
+========================================================= */
+
+async function salvar()
+{
+
+    const nome =
+        document.getElementById(
+            "nome"
+        );
+
+
+    const email =
+        document.getElementById(
+            "email"
+        );
+
+
+    const telefone =
+        document.getElementById(
+            "telefone"
+        );
+
+
+    const senhaAtual =
+        document.getElementById(
+            "senhaAtual"
+        );
+
+
+    const nova =
+        document.getElementById(
+            "novaSenha"
+        );
+
+
+    const confirmar =
+        document.getElementById(
+            "confirmarSenha"
+        );
+
+
+    const senhaAtualBox =
+        document.getElementById(
+            "senhaAtualBox"
+        );
+
+
+    const novaBox =
+        document.getElementById(
+            "novaSenhaBox"
+        );
+
+
+    const confirmarBox =
+        document.getElementById(
+            "confirmarSenhaBox"
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LIMPA ERROS
+    |--------------------------------------------------------------------------
+    */
+
+    limparErros();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | NOME
+    |--------------------------------------------------------------------------
+    */
+
+    const nomeLimpo =
+        nome.value.trim();
+
+
+    if (
+        nomeLimpo.length < 3
+    ) {
+
+        mostrarErroNome(
+            "O nome deve possuir pelo menos 3 caracteres."
+        );
+
+        nome.focus();
+
+        return;
+
+    }
+
+
+    const nomeValido =
+        /^[A-Za-zÀ-ÿ\s]+$/.test(
+            nomeLimpo
+        );
+
+
+    if (!nomeValido) {
+
+        mostrarErroNome(
+            "O nome deve conter somente letras e espaços."
+        );
+
+        nome.focus();
+
+        return;
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | E-MAIL
+    |--------------------------------------------------------------------------
+    */
+
+    const emailValor =
+        email.value.trim();
+
+
+    const emailValido =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(
+            emailValor
+        );
+
+
+    if (!emailValido) {
+
+        Swal.fire({
+
+            icon: "error",
+
+            title: "E-mail inválido",
+
+            text: "Digite um e-mail válido.",
+
+            confirmButtonColor: "#0a66c2"
+
+        });
+
+        email.focus();
+
+        return;
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TELEFONE
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        telefone.value.trim() === ""
+    ) {
+
+        mostrarErroTelefone(
+            "Digite seu telefone."
+        );
+
+        telefone.focus();
+
+        return;
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | VERIFICA SE ESTÁ ALTERANDO A SENHA
+    |--------------------------------------------------------------------------
+    */
+
+    const estaAlterandoSenha =
+        nova.value !== "" ||
+        confirmar.value !== "";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SENHA
+    |--------------------------------------------------------------------------
+    */
+
+    if (estaAlterandoSenha) {
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SENHA ATUAL OBRIGATÓRIA
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            senhaAtual.value.trim() === ""
+        ) {
+
+            senhaAtualBox
+                .classList
+                .add("error");
+
+
+            document
+                .getElementById(
+                    "erroAtual"
+                )
+                .innerText =
+                "Digite sua senha atual para alterar a senha.";
+
+
+            senhaAtual.focus();
+
+            return;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | NOVA SENHA
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            nova.value.length < 6
+        ) {
+
+            novaBox
+                .classList
+                .add("error");
+
+
+            document
+                .getElementById(
+                    "erroNova"
+                )
+                .innerText =
+                "A senha deve ter no mínimo 6 caracteres.";
+
+
+            nova.focus();
+
+            return;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONFIRMAÇÃO
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            nova.value !==
+            confirmar.value
+        ) {
+
+            confirmarBox
+                .classList
+                .add("error");
+
+
+            document
+                .getElementById(
+                    "erroConfirmar"
+                )
+                .innerText =
+                "As senhas não coincidem.";
+
+
+            confirmar.focus();
+
+            return;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | IMPORTANTE:
+        | PRIMEIRO VERIFICA A SENHA NO PHP.
+        |
+        | O SWEET ALERT AINDA NÃO APARECE.
+        |--------------------------------------------------------------------------
+        */
+
+        const senhaFoiVerificada =
+            await verificarSenhaAtual();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SENHA INCORRETA
+        |
+        | O verificarSenhaAtual() já mostra o erro
+        | diretamente no campo.
+        |--------------------------------------------------------------------------
+        */
+
+        if (!senhaFoiVerificada) {
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LIBERA CAMPOS PARA O POST
+    |--------------------------------------------------------------------------
+    */
+
+    nome.disabled = false;
+
+    email.disabled = false;
+
+    telefone.disabled = false;
+
+    senhaAtual.disabled = false;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AGORA SIM:
+    | SWEET ALERT DE CONFIRMAÇÃO
+    |--------------------------------------------------------------------------
+    */
+
+    Swal.fire({
+
+        icon: "question",
+
+        title: "Salvar alterações?",
+
+        text: "Seus dados serão atualizados.",
+
+        showCancelButton: true,
+
+        confirmButtonText: "Salvar",
+
+        cancelButtonText: "Cancelar",
+
+        confirmButtonColor: "#0a66c2",
+
+        cancelButtonColor: "#64748b"
+
+    }).then(
+
+        function (result)
+        {
+
+            if (
+                result.isConfirmed
+            ) {
+
+                document
+                    .getElementById(
+                        "formPerfil"
+                    )
+                    .submit();
+
             }
+
         }
 
-        // Função do Modo Escuro garantindo a classe no body e html
-        function toggleDark() {
-            document.body.classList.toggle("dark");
-            document.body.classList.toggle("dark-mode");
-            document.documentElement.classList.toggle("dark");
-        }
+    );
 
-        // Handlers seguros para chamar o arquivo acessibilidade.js
-        function toggleContrasteHandler() {
-            if (typeof Acessibilidade !== 'undefined' && Acessibilidade.toggleContraste) {
-                Acessibilidade.toggleContraste();
-            } else {
-                document.body.classList.toggle("alto-contraste");
-            }
-        }
+}
 
-        function aumentarFonteHandler() {
-            if (typeof Acessibilidade !== 'undefined' && Acessibilidade.aumentarFonte) {
-                Acessibilidade.aumentarFonte();
-            }
-        }
 
-        function diminuirFonteHandler() {
-            if (typeof Acessibilidade !== 'undefined' && Acessibilidade.diminuirFonte) {
-                Acessibilidade.diminuirFonte();
-            }
-        }
+/* =========================================================
+   VERIFICAR SENHA ATUAL ANTES DO SWEET ALERT
+========================================================= */
 
-        function lerPaginaHandler() {
-            if (typeof Acessibilidade !== 'undefined' && Acessibilidade.lerPagina) {
-                Acessibilidade.lerPagina();
-            }
-        }
+async function verificarSenhaAtual()
+{
 
-        function toggleVLibras() {
-            const vlibrasBtn = document.querySelector('[vw-access-button]');
-            if (vlibrasBtn) {
-                vlibrasBtn.click();
-            }
-        }
+    const senhaAtual =
+        document.getElementById(
+            "senhaAtual"
+        );
 
-        function editar(){
-            const telefoneInput = document.getElementById("telefone");
-            const senhaAtualInput = document.getElementById("senhaAtual");
-            
-            telefoneInput.disabled = false;
-            senhaAtualInput.disabled = false;
 
-            document.getElementById("telefoneBox").classList.add("editable-field");
-            document.getElementById("senhaAtualBox").classList.add("editable-field");
-            document.getElementById("novaSenhaBox").classList.add("editable-field");
-            document.getElementById("confirmarSenhaBox").classList.add("editable-field");
+    const senhaAtualBox =
+        document.getElementById(
+            "senhaAtualBox"
+        );
 
-            document.getElementById("novaSenhaBox").style.display = "flex";
-            document.getElementById("confirmarSenhaBox").style.display = "flex";
 
-            document.querySelector(".editar").style.display = "none";
-            document.querySelector(".salvar").style.display = "flex";
-        }
+    const erroAtual =
+        document.getElementById(
+            "erroAtual"
+        );
 
-        function salvar(){
-            let ok = true;
 
-            const nova = document.getElementById("novaSenha");
-            const confirmar = document.getElementById("confirmarSenha");
-            const novaBox = document.getElementById("novaSenhaBox");
-            const confirmarBox = document.getElementById("confirmarSenhaBox");
+    /*
+    |--------------------------------------------------------------------------
+    | MOSTRA LOADING
+    |--------------------------------------------------------------------------
+    */
 
-            limparErros();
+    const botaoSalvar =
+        document.querySelector(
+            ".salvar"
+        );
 
-            if(nova.value !== "" || confirmar.value !== ""){
-                if(nova.value.length < 8){
-                    document.getElementById("erroNova").innerText = "A senha deve ter no mínimo 8 caracteres";
-                    novaBox.classList.add("error");
-                    ok = false;
+
+    const textoOriginal =
+        botaoSalvar.innerHTML;
+
+
+    botaoSalvar.disabled = true;
+
+
+    botaoSalvar.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+
+
+    try {
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | ENVIA A SENHA PARA O CONTROLLER
+        |--------------------------------------------------------------------------
+        */
+
+        const resposta =
+            await fetch(
+                "<?= base_url('perfilfun/verificar-senha') ?>",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/x-www-form-urlencoded",
+
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+
+                    },
+
+                    body:
+
+                        "senhaAtual=" +
+
+                        encodeURIComponent(
+                            senhaAtual.value
+                        ) +
+
+                        "&<?= csrf_token() ?>=" +
+
+                        encodeURIComponent(
+                            "<?= csrf_hash() ?>"
+                        )
+
                 }
+            );
 
-                if(nova.value !== confirmar.value){
-                    document.getElementById("erroConfirmar").innerText = "As senhas não coincidem";
-                    confirmarBox.classList.add("error");
-                    ok = false;
-                }
-            }
 
-            if(!ok) return;
+        /*
+        |--------------------------------------------------------------------------
+        | CONVERTE RESPOSTA
+        |--------------------------------------------------------------------------
+        */
 
-            document.getElementById("telefone").readOnly = true;
+        const dados =
+            await resposta.json();
 
-            document.getElementById("telefoneBox").classList.remove("editable-field");
-            document.getElementById("senhaAtualBox").classList.remove("editable-field");
 
-            document.getElementById("novaSenhaBox").style.display = "none";
-            document.getElementById("confirmarSenhaBox").style.display = "none";
+        /*
+        |--------------------------------------------------------------------------
+        | SENHA INCORRETA
+        |--------------------------------------------------------------------------
+        */
 
-            document.querySelector(".editar").style.display = "flex";
-            document.querySelector(".salvar").style.display = "none";
+        if (
+            !dados.sucesso
+        ) {
 
-            document.getElementById("novaSenhaHidden").value = document.getElementById("novaSenha").value;
-            
-            Swal.fire({
-                icon: "success",
-                title: "Sucesso!",
-                text: "Seus dados foram atualizados com sucesso.",
-                confirmButtonColor: "#0a66c2",
-                confirmButtonText: "Continuar"
-            }).then(() => {
-                document.querySelector("form").submit();
-            });
+
+            senhaAtualBox
+                .classList
+                .add("error");
+
+
+            erroAtual.innerText =
+                dados.mensagem
+                ||
+                "A senha atual está incorreta.";
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | FOCA NO CAMPO
+            |--------------------------------------------------------------------------
+            */
+
+            senhaAtual.focus();
+
+
+            return false;
+
         }
 
-        function limparErros(){
-            document.getElementById("erroNova").innerText = "";
-            document.getElementById("erroConfirmar").innerText = "";
-            document.getElementById("novaSenhaBox").classList.remove("error");
-            document.getElementById("confirmarSenhaBox").classList.remove("error");
+
+        /*
+        |--------------------------------------------------------------------------
+        | SENHA CORRETA
+        |--------------------------------------------------------------------------
+        */
+
+        return true;
+
+
+    }
+
+    catch (erro) {
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | ERRO DE COMUNICAÇÃO
+        |--------------------------------------------------------------------------
+        */
+
+        senhaAtualBox
+            .classList
+            .add("error");
+
+
+        erroAtual.innerText =
+            "Não foi possível verificar a senha. Tente novamente.";
+
+
+        return false;
+
+
+    }
+
+    finally {
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESTAURA BOTÃO
+        |--------------------------------------------------------------------------
+        */
+
+        botaoSalvar.disabled =
+            false;
+
+
+        botaoSalvar.innerHTML =
+            textoOriginal;
+
+    }
+
+}
+
+
+/* =========================================================
+   ERRO DO NOME
+========================================================= */
+
+function mostrarErroNome(
+    mensagem
+)
+{
+
+    const nome =
+        document.getElementById(
+            "nome"
+        );
+
+
+    let erro =
+        document.getElementById(
+            "erroNome"
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CRIA O ERRO CASO NÃO EXISTA
+    |--------------------------------------------------------------------------
+    */
+
+    if (!erro) {
+
+        erro =
+            document.createElement(
+                "div"
+            );
+
+
+        erro.id =
+            "erroNome";
+
+
+        erro.className =
+            "error-text";
+
+
+        nome
+            .closest(".input-box")
+            .appendChild(
+                erro
+            );
+
+    }
+
+
+    erro.innerText =
+        mensagem;
+
+
+    nome
+        .closest(".input-box")
+        .classList
+        .add("error");
+
+}
+
+
+/* =========================================================
+   ERRO DO TELEFONE
+========================================================= */
+
+function mostrarErroTelefone(
+    mensagem
+)
+{
+
+    const telefone =
+        document.getElementById(
+            "telefone"
+        );
+
+
+    const telefoneBox =
+        document.getElementById(
+            "telefoneBox"
+        );
+
+
+    let erro =
+        document.getElementById(
+            "erroTelefone"
+        );
+
+
+    if (!erro) {
+
+        erro =
+            document.createElement(
+                "div"
+            );
+
+
+        erro.id =
+            "erroTelefone";
+
+
+        erro.className =
+            "error-text";
+
+
+        telefoneBox.appendChild(
+            erro
+        );
+
+    }
+
+
+    erro.innerText =
+        mensagem;
+
+
+    telefoneBox
+        .classList
+        .add("error");
+
+}
+
+
+/* =========================================================
+   LIMPAR ERROS
+========================================================= */
+
+function limparErros()
+{
+
+    const erroNome =
+        document.getElementById(
+            "erroNome"
+        );
+
+
+    if (erroNome) {
+
+        erroNome.innerText =
+            "";
+
+    }
+
+
+    const erroTelefone =
+        document.getElementById(
+            "erroTelefone"
+        );
+
+
+    if (erroTelefone) {
+
+        erroTelefone.innerText =
+            "";
+
+    }
+
+
+    document
+        .getElementById(
+            "erroAtual"
+        )
+        .innerText =
+        "";
+
+
+    document
+        .getElementById(
+            "erroNova"
+        )
+        .innerText =
+        "";
+
+
+    document
+        .getElementById(
+            "erroConfirmar"
+        )
+        .innerText =
+        "";
+
+
+    document
+        .getElementById(
+            "senhaAtualBox"
+        )
+        .classList
+        .remove("error");
+
+
+    document
+        .getElementById(
+            "novaSenhaBox"
+        )
+        .classList
+        .remove("error");
+
+
+    document
+        .getElementById(
+            "confirmarSenhaBox"
+        )
+        .classList
+        .remove("error");
+
+
+    document
+        .getElementById(
+            "telefoneBox"
+        )
+        .classList
+        .remove("error");
+
+
+    const nome =
+        document.getElementById(
+            "nome"
+        );
+
+
+    if (nome) {
+
+        nome
+            .closest(".input-box")
+            .classList
+            .remove("error");
+
+    }
+
+}
+
+
+/* =========================================================
+   MÁSCARA TELEFONE
+========================================================= */
+
+function mascaraTelefone(
+    input
+)
+{
+
+    let v =
+        input.value
+        .replace(
+            /\D/g,
+            ""
+        );
+
+
+    if (
+        v.length > 11
+    ) {
+
+        v =
+            v.substring(
+                0,
+                11
+            );
+
+    }
+
+
+    if (
+        v.length <= 10
+    ) {
+
+        v =
+            v.replace(
+                /(\d{2})(\d)/,
+                "($1) $2"
+            );
+
+
+        v =
+            v.replace(
+                /(\d{4})(\d)/,
+                "$1-$2"
+            );
+
+    }
+
+    else {
+
+        v =
+            v.replace(
+                /(\d{2})(\d)/,
+                "($1) $2"
+            );
+
+
+        v =
+            v.replace(
+                /(\d{5})(\d)/,
+                "$1-$2"
+            );
+
+    }
+
+
+    input.value =
+        v;
+
+}
+
+
+/* =========================================================
+   IMAGEM DO PERFIL
+========================================================= */
+
+function atualizarImagemPerfil()
+{
+
+    const imagem =
+        document.getElementById(
+            'imagemSeguranca'
+        );
+
+
+    if (!imagem) {
+
+        return;
+
+    }
+
+
+    const modoEscuro =
+
+        document.body.classList.contains(
+            'dark-mode'
+        )
+
+        ||
+
+        document.body.classList.contains(
+            'dark'
+        );
+
+
+    const altoContraste =
+
+        document.body.classList.contains(
+            'alto-contraste'
+        );
+
+
+    const imagemClara =
+        "<?= base_url(
+            'assets/images/capacete_perfil.png'
+        ) ?>";
+
+
+    const imagemEscura =
+        "<?= base_url(
+            'assets/images/capacete_perfil_escuro.png'
+        ) ?>";
+
+
+    if (
+        modoEscuro ||
+        altoContraste
+    ) {
+
+        imagem.src =
+            imagemEscura;
+
+    }
+
+    else {
+
+        imagem.src =
+            imagemClara;
+
+    }
+
+}
+
+
+/* =========================================================
+   AO CARREGAR
+========================================================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function ()
+    {
+
+        atualizarImagemPerfil();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SE HOUVE ERRO DE SENHA,
+        | REABRE AUTOMATICAMENTE A EDIÇÃO
+        |--------------------------------------------------------------------------
+        */
+
+        const possuiErroSenha =
+
+            <?= (
+
+                !empty($erroSenhaAtual)
+
+                ||
+
+                !empty($erroNovaSenha)
+
+                ||
+
+                !empty($erroConfirmarSenha)
+
+            )
+
+                ? 'true'
+
+                : 'false'
+
+            ?>;
+
+
+        if (
+            possuiErroSenha
+        ) {
+
+            editar();
+
         }
 
-        function mascaraTelefone(input){
-            let v = input.value.replace(/\D/g, "");
+    }
 
-            if(v.length <= 10){
-                v = v.replace(/(\d{2})(\d)/, "($1) $2");
-                v = v.replace(/(\d{4})(\d)/, "$1-$2");
-            } else {
-                v = v.replace(/(\d{2})(\d)/, "($1) $2");
-                v = v.replace(/(\d{5})(\d)/, "$1-$2");
-            }
-            input.value = v;
+);
+
+
+/* =========================================================
+   OBSERVAR MODO ESCURO / CONTRASTE
+========================================================= */
+
+const observadorModo =
+
+    new MutationObserver(
+
+        function ()
+        {
+
+            atualizarImagemPerfil();
+
         }
-    </script>
 
-    <script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
+    );
+
+
+observadorModo.observe(
+
+    document.body,
+
+    {
+
+        attributes: true,
+
+        attributeFilter: [
+            'class'
+        ]
+
+    }
+
+);
+
+</script>
+
+
+<!-- =========================================================
+     ACESSIBILIDADE
+========================================================= -->
+
+<script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
+
 
 </body>
+
 </html>

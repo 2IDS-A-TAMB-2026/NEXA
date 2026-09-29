@@ -1,1284 +1,3207 @@
 /* =========================================================
-   ACESSIBILIDADE NO HEADER
-   ========================================================= */
-
-/* CONTAINER PAI DA ENGRENAGEM E MENU */
-.header-access {
-    position: relative !important;
-    display: flex;
-    align-items: center;
-    margin-right: 0.875rem;
-}
-
-/* BOTÃO DA ENGRENAGEM */
-.gear-btn {
-    width: 2.188rem;
-    height: 2.188rem;
-    border: none;
-    outline: none;
-    background: transparent !important;
-    color: #808080;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    font-size: 1.25rem;
-    transition: color .25s ease, transform .3s ease;
-}
-
-.gear-btn:hover {
-    background: transparent !important;
-    color: #555;
-    transform: rotate(30deg);
-}
-
-/* MENU DE ACESSIBILIDADE (FECHADO POR PADRÃO) */
-.access-options {
-    position: absolute !important;
-    top: calc(100% + 8px) !important; /* Surge logo abaixo da engrenagem */
-    right: 0 !important;              /* Cresce para a esquerda */
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
-    
-    /* ESCONDIDO */
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateY(-8px) scale(.96);
-    transform-origin: top right;
-    transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
-    z-index: 99999 !important;
-}
-
-/* MENU ABERTO (QUANDO TEM A CLASSE .active) */
-.access-options.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translateY(0) scale(1) !important;
-}
-
-/* BOTÕES DENTRO DO MENU */
-.access-btn {
-    width: 35px;
-    height: 35px;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    background: transparent !important;
-    color: #808080;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 600;
-    transition: color .2s ease, transform .2s ease;
-}
-
-.access-btn:hover {
-    background: transparent !important;
-    color: #444;
-    transform: translateY(-2px);
-}
-
-.access-btn:focus,
-.access-btn:active {
-    background: transparent !important;
-    outline: none;
-    box-shadow: none;
-}
-
-/* DARK MODE - HEADER E ACESSIBILIDADE */
-body.dark .gear-btn,
-body.dark-mode .gear-btn {
-    background: #374151 !important;
-    color: #d1d5db !important;
-}
-
-body.dark .gear-btn:hover,
-body.dark-mode .gear-btn:hover {
-    background: #4b5563 !important;
-    color: #ffffff !important;
-}
-
-body.dark .access-options,
-body.dark-mode .access-options {
-    background: #1f2937 !important;
-    border-color: #374151 !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .4) !important;
-}
-
-body.dark .access-btn,
-body.dark-mode .access-btn {
-    background: #374151 !important;
-    color: #d1d5db !important;
-}
-
-body.dark .access-btn:hover,
-body.dark-mode .access-btn:hover {
-    background: #4b5563 !important;
-    color: #ffffff !important;
-}
-
-/* ALTO CONTRASTE - BOTÕES E MENU */
-body.alto-contraste .gear-btn,
-.alto-contraste .gear-btn {
-    background: #000000 !important;
-    color: #ffd600 !important;
-    border: 2px solid #ffd600 !important;
-}
-
-body.alto-contraste .access-options,
-.alto-contraste .access-options {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-}
-
-body.alto-contraste .access-btn,
-.alto-contraste .access-btn {
-    background: #000000 !important;
-    color: #ffd600 !important;
-    border: 1px solid #ffd600 !important;
-}
-
-body.alto-contraste .access-btn:hover,
-.alto-contraste .access-btn:hover {
-    background: #ffd600 !important;
-    color: #000000 !important;
-}
-
-/* RESPONSIVO */
-@media (max-width: 768px) {
-    .header-access {
-        margin-right: 8px;
-    }
-
-    .gear-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 16px;
-    }
-
-    .access-options {
-        right: -10px !important;
-        flex-wrap: wrap;
-        width: 170px;
-    }
-}
+   NEXA — ACESSIBILIDADE DA SIDEBAR
+   DARK MODE + ALTO CONTRASTE
+========================================================= */
 
 
 /* =========================================================
-   2. MENU DE ACESSIBILIDADE (ESCONDIDO POR PADRÃO)
-   ========================================================= */
-
-.access-options {
-    position: absolute !important;
-    top: 100% !important; /* Surge logo abaixo do botão da engrenagem */
-    right: 0 !important;   /* Alinha à direita da engrenagem */
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.625rem;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.875rem;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
-    
-    /* ESCONDIDO POR PADRÃO */
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none; /* Impede cliques quando invisível */
-    transform: translateY(-10px) scale(.95);
-    transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
-    z-index: 99999 !important;
-}
-
-/* MOSTRA APENAS QUANDO RECEBE A CLASSE .active */
-.access-options.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translateY(8px) scale(1) !important;
-}
-
-/* BOTÕES INTERNOS DO MENU */
-.access-btn {
-    width: 2.188rem;
-    height: 2.188rem;
-    border: none;
-    outline: none;
-    border-radius: 0.375rem;
-    background: transparent !important;
-    color: #808080;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    cursor: pointer;
-    font-size: 0.938rem;
-    font-weight: 600;
-    transition: color .2s ease, transform .2s ease;
-}
-
-.access-btn:hover {
-    background: transparent !important;
-    color: #444;
-    transform: translateY(-2px);
-}
-
-/* =========================================================
-   MENU DE ACESSIBILIDADE — ABRE PARA A ESQUERDA
-   ========================================================= */
-
-.access-options {
-    position: absolute;
-
-    top: 52px;
-
-    /* faz o menu crescer para a esquerda */
-    right: 30px;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    padding: 8px 10px;
-
-    background: #ffffff;
-
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-
-    box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
-
-    opacity: 0;
-    visibility: hidden;
-
-    transform:
-        translateX(-8px)
-        translateY(-8px)
-        scale(.96);
-
-    transform-origin: top right;
-
-    transition:
-        opacity .2s ease,
-        visibility .2s ease,
-        transform .2s ease;
-
-    z-index: 9999;
-}
-
-
-/* MENU ABERTO */
-
-.access-options.active {
-    opacity: 1;
-    visibility: visible;
-
-    transform:
-        translateX(0)
-        translateY(0)
-        scale(1);
-}
-
-/* =========================================================
-   BOTÕES DO MENU
-   ========================================================= */
-.access-btn {
-    width: 35px;
-    height: 35px;
-
-    border: none;
-    outline: none;
-
-    border-radius: 0;
-
-    background: transparent !important;
-
-    color: #808080;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    cursor: pointer;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    transition:
-        color .2s ease,
-        transform .2s ease;
-}
-
-.access-btn:hover {
-    background: transparent !important;
-
-    color: #444;
-
-    transform: translateY(-2px);
-}
-
-.access-btn:focus,
-.access-btn:active {
-    background: transparent !important;
-    outline: none;
-    box-shadow: none;
-}
-
-/* =========================================================
-   DARK MODE - HEADER
-   ========================================================= */
-
-body.dark .gear-btn,
-body.dark-mode .gear-btn {
-    background: #374151;
-    color: #d1d5db;
-}
-
-
-body.dark .gear-btn:hover,
-body.dark-mode .gear-btn:hover {
-    background: #4b5563;
-    color: #ffffff;
-}
-
-
-body.dark .access-options,
-body.dark-mode .access-options {
-    background: #1f2937;
-
-    border-color: #374151;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
-}
-
-
-body.dark .access-btn,
-body.dark-mode .access-btn {
-    background: #374151;
-    color: #d1d5db;
-}
-
-
-body.dark .access-btn:hover,
-body.dark-mode .access-btn:hover {
-    background: #4b5563;
-    color: #ffffff;
-}
-
-
-/* =========================================================
-   ALTO CONTRASTE - BOTÕES E MENU DE ACESSIBILIDADE
-   ========================================================= */
-
-body.alto-contraste .gear-btn,
-.alto-contraste .gear-btn {
-    background: #000000 !important;
-    color: #ffd600 !important;
-    border: 2px solid #ffd600 !important;
-}
-
-body.alto-contraste .access-options,
-.alto-contraste .access-options {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-}
-
-body.alto-contraste .access-btn,
-.alto-contraste .access-btn {
-    background: #000000 !important;
-    color: #ffd600 !important;
-    border: 1px solid #ffd600 !important;
-}
-
-body.alto-contraste .access-btn:hover,
-.alto-contraste .access-btn:hover {
-    background: #ffd600 !important;
-    color: #000000 !important;
-}
-
-
-/* =========================================================
-   RESPONSIVO
-   ========================================================= */
-
-@media (max-width: 768px) {
-    .header-access {
-        margin-right: 8px;
-    }
-
-    .gear-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 16px;
-    }
-
-    .access-options {
-        right: -10px;
-        flex-wrap: wrap;
-        width: 170px;
-    }
-}
-
-
-/* ==========================================================
-   NEXA — MODO ESCURO
-========================================================== */
-
-body.dark-mode {
-    background: #0b1016;
-    color: #f1f5f9;
-}
-
-body.dark-mode .overlay {
-    background: #0b1016;
-}
+   1. DARK MODE — SIDEBAR
+========================================================= */
 
 body.dark-mode .sidebar {
-    background: #080d12 !important;
+    background: #061525 !important;
+    border-right: none !important;
 }
 
+
+/* =========================================================
+   2. DARK MODE — IMAGEM DA SIDEBAR
+========================================================= */
+
 body.dark-mode .sidebar-construction {
-    opacity: .30 !important;
-    filter: grayscale(35%) brightness(.55) contrast(1.05) !important;
+    opacity: 0.32 !important;
+
+    filter:
+        brightness(0.62)
+        saturate(0.72)
+        contrast(0.92) !important;
 }
+
+
+/* =========================================================
+   3. DARK MODE — DEGRADÊ SOBRE A IMAGEM
+========================================================= */
 
 body.dark-mode .sidebar::after {
     background: linear-gradient(
         to bottom,
-        #080d12 0%,
-        rgba(8,13,18,.99) 12%,
-        rgba(8,13,18,.94) 27%,
-        rgba(8,13,18,.82) 43%,
-        rgba(8,13,18,.62) 60%,
-        rgba(8,13,18,.36) 76%,
-        rgba(8,13,18,.05) 100%
+        #061525 0%,
+        rgba(6, 21, 37, 0.98) 8%,
+        rgba(6, 21, 37, 0.90) 22%,
+        rgba(6, 21, 37, 0.68) 42%,
+        rgba(6, 21, 37, 0.40) 62%,
+        rgba(6, 21, 37, 0.16) 82%,
+        rgba(6, 21, 37, 0) 100%
     ) !important;
 }
 
-body.dark-mode .sidebar-brand-text strong { color: #f5f7fa !important; }
-body.dark-mode .sidebar-brand-text span { color: rgba(255,255,255,.72) !important; }
-body.dark-mode .menu-title { color: rgba(255,255,255,.55) !important; }
 
-body.dark-mode .menu a { background: transparent !important; color: #e7edf4 !important; }
-body.dark-mode .menu a span { color: #e7edf4 !important; }
-body.dark-mode .menu a i { color: #d8e0e8 !important; }
+/* =========================================================
+   4. DARK MODE — LOGO / TEXTOS
+========================================================= */
 
-body.dark-mode .menu a:hover { background: rgba(255,255,255,.06) !important; }
+body.dark-mode .sidebar-brand-text strong {
+    color: #F1F5F9 !important;
+}
+
+body.dark-mode .sidebar-brand-text span {
+    color: #94A3B8 !important;
+}
+
+
+/* =========================================================
+   5. DARK MODE — TÍTULOS DO MENU
+========================================================= */
+
+body.dark-mode .menu-title,
+body.dark-mode .sidebar .section-title {
+    color: #8295AA !important;
+}
+
+
+/* =========================================================
+   6. DARK MODE — LINKS
+========================================================= */
+
+body.dark-mode .menu a,
+body.dark-mode .sidebar a {
+    background: transparent !important;
+    color: #D8E3EE !important;
+}
+
+body.dark-mode .menu a span {
+    color: #D8E3EE !important;
+}
+
+body.dark-mode .menu a i,
+body.dark-mode .sidebar i {
+    color: #C3D0DD !important;
+}
+
+
+/* =========================================================
+   7. DARK MODE — HOVER
+========================================================= */
+
+body.dark-mode .menu a:hover,
+body.dark-mode .sidebar a:hover {
+    background: rgba(59, 130, 246, 0.10) !important;
+    color: #FFFFFF !important;
+}
+
 body.dark-mode .menu a:hover i,
-body.dark-mode .menu a:hover span { color: #ffffff !important; }
+body.dark-mode .menu a:hover span {
+    color: #FFFFFF !important;
+}
 
-body.dark-mode .menu a.active { background: #0878e5 !important; color: #ffffff !important; }
+
+/* =========================================================
+   8. DARK MODE — ITEM ATIVO
+========================================================= */
+
+body.dark-mode .menu a.active,
+body.dark-mode .sidebar a.active,
+body.dark-mode .sidebar .active {
+    background: #0A66C2 !important;
+    color: #FFFFFF !important;
+}
+
 body.dark-mode .menu a.active i,
-body.dark-mode .menu a.active span { color: #ffffff !important; }
-
-body.dark-mode .logout-item {
-    background: rgba(255,255,255,.035) !important;
-    border: 1px solid rgba(255,255,255,.16) !important;
-    color: #f1f5f9 !important;
+body.dark-mode .menu a.active span,
+body.dark-mode .sidebar a.active i,
+body.dark-mode .sidebar a.active span {
+    color: #FFFFFF !important;
 }
+
+
+/* =========================================================
+   9. DARK MODE — SAIR DO SISTEMA
+========================================================= */
+
+body.dark-mode .logout-item,
+body.dark-mode .sidebar .logout,
+body.dark-mode .sidebar .logout-btn {
+    background: rgba(255, 255, 255, 0.035) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+    color: #E5EDF5 !important;
+}
+
 body.dark-mode .logout-item i,
-body.dark-mode .logout-item span { color: #f1f5f9 !important; }
-body.dark-mode .logout-item:hover { background: rgba(255,255,255,.08) !important; }
-
-body.dark-mode .dashboard-header {
-    background: #0b1016;
-    border-bottom: 1px solid #202a34;
-    box-shadow: 0 2px 18px rgba(0,0,0,.35);
-}
-body.dark-mode .header-left h1 { color: #1685f5; }
-body.dark-mode .header-left span { color: #d5dde6; }
-body.dark-mode .profile-info strong { color: #f1f5f9; }
-body.dark-mode .profile-info small { color: #8996a5; }
-body.dark-mode .profile:hover { background: #151c24; }
-
-body.dark-mode .card {
-    background: #10161d;
-    border: 1px solid #202a34;
-    box-shadow: 0 10px 25px rgba(0,0,0,.30);
+body.dark-mode .logout-item span {
+    color: #E5EDF5 !important;
 }
 
-body.dark-mode .calendar-title h2 { color: #f1f5f9; }
-body.dark-mode .calendar-title span { color: #96a4b4; }
-body.dark-mode .calendar-icon { background: #0A66C2; color: #ffffff; }
-
-body.dark-mode .calendar-header strong { color: #1685f5; }
-body.dark-mode .calendar-header small { color: #d5dde6; }
-body.dark-mode .calendar-header button {
-    background: #151c24;
-    color: #1685f5;
-    border: 1px solid #2a3540;
-    box-shadow: 0 4px 12px rgba(0,0,0,.25);
-}
-body.dark-mode .calendar-header button:hover { background: #202a34; }
-
-body.dark-mode .dia { background: #171e26; color: #1685f5; }
-body.dark-mode .dia:hover { background: #202a34; }
-
-body.dark-mode .legend { color: #d5dde6; }
-
-body.dark-mode .card.dicas { background: #10161d; border: 1px solid #202a34; }
-body.dark-mode .card.dicas h3 { color: #1685f5; }
-body.dark-mode .card.dicas li {
-    background: #151c24;
-    border: 1px solid #26313d;
-    color: #f1f5f9;
-    box-shadow: 0 5px 15px rgba(0,0,0,.25);
-}
-body.dark-mode .card.dicas li:hover {
-    background: #1c2630;
-    box-shadow: 0 12px 25px rgba(10,102,194,.15);
-}
-body.dark-mode .card.dicas li i { background: #102b47; color: #1685f5; }
-body.dark-mode .card.dicas li:hover i { background: #0A66C2; color: #ffffff; }
-
-
-/* ==========================================================
-   PERFIL — MODO ESCURO
-========================================================== */
-
-body.dark .perfil-esquerda,
-body.dark .perfil-direita,
-body.dark-mode .perfil-esquerda,
-body.dark-mode .perfil-direita {
-    color: #f1f5f9;
-}
-
-body.dark .perfil-direita,
-body.dark-mode .perfil-direita {
-    background: #10161d;
-    border: 1px solid #202a34;
-    box-shadow: 0 10px 25px rgba(0,0,0,.30);
-}
-
-body.dark .fundo-capacete,
-body.dark-mode .fundo-capacete { background: #151c24; }
-
-body.dark .circulo,
-body.dark-mode .circulo {
-    background: #0A66C2;
-    box-shadow: 0 8px 25px rgba(10,102,194,.25);
-}
-
-body.dark .perfil-direita > i.fa-helmet-safety,
-body.dark-mode .perfil-direita > i.fa-helmet-safety {
-    color: #ffffff;
-    background: #0A66C2;
-}
-
-body.dark .subtitle,
-body.dark-mode .subtitle { color: #f1f5f9; }
-
-body.dark .input-box,
-body.dark-mode .input-box {
-    background: #171e26;
-    border: 1px solid #293542;
-    color: #f1f5f9;
-    box-shadow: none;
-}
-
-body.dark .input-box > i,
-body.dark .input-box i,
-body.dark-mode .input-box > i,
-body.dark-mode .input-box i { color: #1685f5; }
-
-body.dark .input-box input,
-body.dark-mode .input-box input { background: transparent; color: #f1f5f9; }
-
-body.dark .input-box input::placeholder,
-body.dark-mode .input-box input::placeholder { color: #7f8c9b; }
-
-body.dark .input-box input:disabled,
-body.dark-mode .input-box input:disabled { color: #d5dde6; opacity: 1; }
-
-body.dark .input-box.editable-field,
-body.dark-mode .input-box.editable-field {
-    background: #1b2530;
-    border-color: #0A66C2;
-}
-
-body.dark .input-box.editable-field input,
-body.dark-mode .input-box.editable-field input { color: #ffffff; }
-
-body.dark .campo label,
-body.dark-mode .campo label { color: #d5dde6; }
-
-body.dark .input-box strong,
-body.dark-mode .input-box strong { color: #f1f5f9; }
-
-body.dark .input-box small,
-body.dark-mode .input-box small { color: #9aa8b8; }
-
-body.dark .input-box img,
-body.dark-mode .input-box img { border-color: #354250 !important; }
-
-body.dark .input-box.error,
-body.dark-mode .input-box.error { border-color: #f44336; }
-
-body.dark .error-text,
-body.dark-mode .error-text { color: #ff6b6b; }
-
-body.dark .btn.editar,
-body.dark .btn.salvar,
-body.dark-mode .btn.editar,
-body.dark-mode .btn.salvar {
-    background: #0A66C2;
-    color: #ffffff;
-}
-
-body.dark .btn.editar:hover,
-body.dark .btn.salvar:hover,
-body.dark-mode .btn.editar:hover,
-body.dark-mode .btn.salvar:hover {
-    background: #0878e5;
+body.dark-mode .logout-item:hover,
+body.dark-mode .sidebar .logout:hover,
+body.dark-mode .sidebar .logout-btn:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
 }
 
 
-/* ==========================================================
-   NEXA — ALTO CONTRASTE (PÁGINA DO FUNCIONÁRIO COMPLETA)
-========================================================== */
+/* =========================================================
+   10. ALTO CONTRASTE — SIDEBAR
+========================================================= */
 
-body.alto-contraste {
+body.alto-contraste .sidebar,
+body.high-contrast .sidebar {
     background: #000000 !important;
-    color: #ffffff !important;
+
+    border-right: 2px solid #FFFF00 !important;
 }
 
-body.alto-contraste .overlay {
-    background: #000000 !important;
+
+/* =========================================================
+   11. ALTO CONTRASTE — LOGO / TEXTOS
+========================================================= */
+
+body.alto-contraste .sidebar-brand-text strong,
+body.alto-contraste .sidebar-brand-text span,
+body.high-contrast .sidebar-brand-text strong,
+body.high-contrast .sidebar-brand-text span {
+    color: #FFFF00 !important;
 }
 
-/* SIDEBAR ALTO CONTRASTE */
-body.alto-contraste .sidebar {
-    background: #000000 !important;
-    border-right: 2px solid #ffd600 !important;
+
+/* =========================================================
+   12. ALTO CONTRASTE — TÍTULOS
+========================================================= */
+
+body.alto-contraste .menu-title,
+body.high-contrast .menu-title {
+    color: #FFFF00 !important;
 }
 
-body.alto-contraste .sidebar-construction {
-    filter: brightness(2) contrast(2) grayscale(100%) !important;
-    opacity: 0.15 !important;
-}
 
-body.alto-contraste .sidebar::after {
+/* =========================================================
+   13. ALTO CONTRASTE — LINKS
+========================================================= */
+
+body.alto-contraste .menu a,
+body.alto-contraste .menu a span,
+body.alto-contraste .menu a i,
+body.alto-contraste .sidebar a,
+body.high-contrast .menu a,
+body.high-contrast .menu a span,
+body.high-contrast .menu a i,
+body.high-contrast .sidebar a {
+    color: #FFFF00 !important;
+
     background: transparent !important;
 }
 
-body.alto-contraste .sidebar-brand-text strong {
-    color: #ffd600 !important;
+
+/* =========================================================
+   14. ALTO CONTRASTE — HOVER
+========================================================= */
+
+body.alto-contraste .menu a:hover,
+body.high-contrast .menu a:hover {
+    background: #222200 !important;
+
+    color: #FFFF00 !important;
 }
 
-body.alto-contraste .sidebar-brand-text span {
-    color: #ffffff !important;
-}
-
-body.alto-contraste .menu-title {
-    color: #ffd600 !important;
-    font-weight: bold;
-}
-
-body.alto-contraste .menu a {
-    background: #000000 !important;
-    color: #ffffff !important;
-    border: 1px solid #ffd600 !important;
-    margin-bottom: 4px;
-}
-
-body.alto-contraste .menu a i,
-body.alto-contraste .menu a span {
-    color: #ffffff !important;
-}
-
-body.alto-contraste .menu a:hover {
-    background: #ffd600 !important;
-    color: #000000 !important;
-}
-
+body.alto-contraste .menu a:hover span,
 body.alto-contraste .menu a:hover i,
-body.alto-contraste .menu a:hover span {
+body.high-contrast .menu a:hover span,
+body.high-contrast .menu a:hover i {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   15. ALTO CONTRASTE — ITEM ATIVO
+========================================================= */
+
+body.alto-contraste .menu a.active,
+body.high-contrast .menu a.active {
+    background: #FFFF00 !important;
+
     color: #000000 !important;
 }
 
-body.alto-contraste .menu a.active {
-    background: #ffd600 !important;
-    color: #000000 !important;
-    font-weight: bold;
-}
-
+body.alto-contraste .menu a.active span,
 body.alto-contraste .menu a.active i,
-body.alto-contraste .menu a.active span {
+body.high-contrast .menu a.active span,
+body.high-contrast .menu a.active i {
     color: #000000 !important;
 }
 
-body.alto-contraste .logout-item {
-    background: #000000 !important;
-    border: 2px solid #ff4d4d !important;
-    color: #ff4d4d !important;
-}
 
+/* =========================================================
+   16. ALTO CONTRASTE — SAIR
+========================================================= */
+
+body.alto-contraste .logout-item,
+body.alto-contraste .logout-item span,
 body.alto-contraste .logout-item i,
-body.alto-contraste .logout-item span {
-    color: #ff4d4d !important;
+body.high-contrast .logout-item,
+body.high-contrast .logout-item span,
+body.high-contrast .logout-item i {
+    background: transparent !important;
+
+    color: #FFFF00 !important;
+
+    border-color: #FFFF00 !important;
 }
 
-body.alto-contraste .logout-item:hover {
-    background: #ff4d4d !important;
-    color: #000000 !important;
+body.alto-contraste .logout-item:hover,
+body.high-contrast .logout-item:hover {
+    background: #222200 !important;
+
+    color: #FFFF00 !important;
 }
 
+body.alto-contraste .logout-item:hover span,
 body.alto-contraste .logout-item:hover i,
-body.alto-contraste .logout-item:hover span {
+body.high-contrast .logout-item:hover span,
+body.high-contrast .logout-item:hover i {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   17. ALTO CONTRASTE — IMAGEM DA SIDEBAR
+   MANTÉM A IMAGEM VISÍVEL
+========================================================= */
+
+body.alto-contraste .sidebar-construction,
+body.high-contrast .sidebar-construction {
+    opacity: 0.45 !important;
+
+    filter:
+        brightness(0.55)
+        contrast(1.05)
+        saturate(0.85) !important;
+
+    z-index: 0 !important;
+}
+
+
+/* =========================================================
+   18. ALTO CONTRASTE — DEGRADÊ PRETO
+========================================================= */
+
+body.alto-contraste .sidebar::after,
+body.high-contrast .sidebar::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.99) 0%,
+        rgba(0, 0, 0, 0.97) 15%,
+        rgba(0, 0, 0, 0.94) 30%,
+        rgba(0, 0, 0, 0.88) 50%,
+        rgba(0, 0, 0, 0.78) 70%,
+        rgba(0, 0, 0, 0.62) 88%,
+        rgba(0, 0, 0, 0.50) 100%
+    ) !important;
+
+    pointer-events: none !important;
+
+    z-index: 1 !important;
+}
+
+
+/* =========================================================
+   19. CONTEÚDO DA SIDEBAR ACIMA DO DEGRADÊ
+========================================================= */
+
+body.alto-contraste .sidebar-content,
+body.high-contrast .sidebar-content {
+    position: relative !important;
+
+    z-index: 10 !important;
+}
+
+
+/* =========================================================
+   20. DARK MODE + ALTO CONTRASTE
+   ALTO CONTRASTE PREVALECE
+========================================================= */
+
+body.dark-mode.alto-contraste .sidebar,
+body.dark-mode.high-contrast .sidebar {
+    background: #000000 !important;
+
+    border-right: 2px solid #FFFF00 !important;
+}
+
+
+/* Textos */
+body.dark-mode.alto-contraste .sidebar-brand-text strong,
+body.dark-mode.alto-contraste .sidebar-brand-text span,
+body.dark-mode.alto-contraste .menu-title,
+body.dark-mode.alto-contraste .menu a,
+body.dark-mode.alto-contraste .menu a span,
+body.dark-mode.alto-contraste .menu a i,
+body.dark-mode.alto-contraste .logout-item,
+body.dark-mode.alto-contraste .logout-item span,
+body.dark-mode.alto-contraste .logout-item i,
+
+body.dark-mode.high-contrast .sidebar-brand-text strong,
+body.dark-mode.high-contrast .sidebar-brand-text span,
+body.dark-mode.high-contrast .menu-title,
+body.dark-mode.high-contrast .menu a,
+body.dark-mode.high-contrast .menu a span,
+body.dark-mode.high-contrast .menu a i,
+body.dark-mode.high-contrast .logout-item,
+body.dark-mode.high-contrast .logout-item span,
+body.dark-mode.high-contrast .logout-item i {
+    color: #FFFF00 !important;
+}
+
+
+/* Links */
+body.dark-mode.alto-contraste .menu a,
+body.dark-mode.high-contrast .menu a {
+    background: transparent !important;
+}
+
+
+/* Hover */
+body.dark-mode.alto-contraste .menu a:hover,
+body.dark-mode.high-contrast .menu a:hover {
+    background: #222200 !important;
+    color: #FFFF00 !important;
+}
+
+
+/* Ativo */
+body.dark-mode.alto-contraste .menu a.active,
+body.dark-mode.high-contrast .menu a.active {
+    background: #FFFF00 !important;
     color: #000000 !important;
 }
 
-/* HEADER ALTO CONTRASTE */
-body.alto-contraste .dashboard-header {
+body.dark-mode.alto-contraste .menu a.active span,
+body.dark-mode.alto-contraste .menu a.active i,
+body.dark-mode.high-contrast .menu a.active span,
+body.dark-mode.high-contrast .menu a.active i {
+    color: #000000 !important;
+}
+
+
+/* Sair */
+body.dark-mode.alto-contraste .logout-item,
+body.dark-mode.high-contrast .logout-item {
     background: #000000 !important;
-    border-bottom: 2px solid #ffd600 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    color: #FFFF00 !important;
+}
+
+body.dark-mode.alto-contraste .logout-item span,
+body.dark-mode.alto-contraste .logout-item i,
+body.dark-mode.high-contrast .logout-item span,
+body.dark-mode.high-contrast .logout-item i {
+    color: #FFFF00 !important;
+}
+
+body.dark-mode.alto-contraste .logout-item:hover,
+body.dark-mode.high-contrast .logout-item:hover {
+    background: #222200 !important;
+}
+
+
+/* =========================================================
+   21. COMBINAÇÃO — IMAGEM
+   ALTO CONTRASTE CONTINUA PREVALECENDO
+========================================================= */
+
+body.dark-mode.alto-contraste .sidebar-construction,
+body.dark-mode.high-contrast .sidebar-construction {
+    opacity: 0.45 !important;
+
+    filter:
+        brightness(0.55)
+        contrast(1.05)
+        saturate(0.85) !important;
+}
+
+body.dark-mode.alto-contraste .sidebar::after,
+body.dark-mode.high-contrast .sidebar::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.99) 0%,
+        rgba(0, 0, 0, 0.97) 15%,
+        rgba(0, 0, 0, 0.94) 30%,
+        rgba(0, 0, 0, 0.88) 50%,
+        rgba(0, 0, 0, 0.78) 70%,
+        rgba(0, 0, 0, 0.62) 88%,
+        rgba(0, 0, 0, 0.50) 100%
+    ) !important;
+}
+
+body.dark-mode.alto-contraste .sidebar-content,
+body.dark-mode.high-contrast .sidebar-content {
+    position: relative !important;
+
+    z-index: 10 !important;
+}
+
+
+/* =========================================================
+   NEXA — ACESSIBILIDADE COMPLETA
+   ENGRENAGEM + BOTÕES + DARK MODE + ALTO CONTRASTE
+========================================================= */
+
+
+/* =========================================================
+   1. CONTAINER DA ACESSIBILIDADE
+========================================================= */
+
+.access-menu {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    flex-direction: row !important;
+
+    gap: 0 !important;
+
+    z-index: 99999 !important;
+}
+
+
+/* =========================================================
+   2. ENGRENAGEM
+   SEM BOLINHA / SEM FUNDO
+========================================================= */
+
+.access-menu .gear-btn,
+.gear-btn {
+    position: relative !important;
+
+    order: 1 !important;
+
+    flex-shrink: 0 !important;
+
+    width: 35px !important;
+    height: 35px !important;
+
+    min-width: 35px !important;
+    max-width: 35px !important;
+
+    min-height: 35px !important;
+    max-height: 35px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    outline: none !important;
+    box-shadow: none !important;
+
+    color: #808080 !important;
+
+    cursor: pointer !important;
+
+    font-size: 20px !important;
+
+    transform: none !important;
+
+    transition: color 0.25s ease !important;
+
+    z-index: 100001 !important;
+}
+
+
+/* =========================================================
+   3. ÍCONE DA ENGRENAGEM
+========================================================= */
+
+.access-menu .gear-btn i,
+.access-menu .gear-btn svg,
+.access-menu .gear-btn .fa,
+.access-menu .gear-btn .fas {
+    color: #808080 !important;
+
+    fill: currentColor !important;
+
+    transition:
+        color 0.25s ease,
+        transform 0.5s ease !important;
+}
+
+
+/* =========================================================
+   4. HOVER DA ENGRENAGEM
+   SOMENTE O ÍCONE MUDA
+========================================================= */
+
+.access-menu .gear-btn:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    color: #0A66C2 !important;
+
+    transform: none !important;
+}
+
+.access-menu .gear-btn:hover i,
+.access-menu .gear-btn:hover svg,
+.access-menu .gear-btn:hover .fa,
+.access-menu .gear-btn:hover .fas {
+    color: #0A66C2 !important;
+
+    fill: currentColor !important;
+}
+
+
+/* =========================================================
+   5. CLIQUE — GIRA O ÍCONE
+========================================================= */
+
+.access-menu .gear-btn:active i,
+.access-menu .gear-btn:active svg,
+.access-menu .gear-btn:active .fa,
+.access-menu .gear-btn:active .fas {
+    transform: rotate(90deg) !important;
+}
+
+
+/* =========================================================
+   6. MENU ABERTO — ENGRENAGEM AZUL
+========================================================= */
+
+.access-menu:has(.access-options.active) .gear-btn,
+.access-menu:has(.access-options.show) .gear-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    color: #0A66C2 !important;
+
+    transform: none !important;
+}
+
+.access-menu:has(.access-options.active) .gear-btn i,
+.access-menu:has(.access-options.active) .gear-btn svg,
+.access-menu:has(.access-options.active) .gear-btn .fa,
+.access-menu:has(.access-options.active) .gear-btn .fas,
+.access-menu:has(.access-options.show) .gear-btn i,
+.access-menu:has(.access-options.show) .gear-btn svg,
+.access-menu:has(.access-options.show) .gear-btn .fa,
+.access-menu:has(.access-options.show) .gear-btn .fas {
+    color: #0A66C2 !important;
+
+    fill: currentColor !important;
+
+    animation: accessibilityGearOpen 0.5s ease !important;
+}
+
+
+/* =========================================================
+   7. ANIMAÇÃO DA ENGRENAGEM
+========================================================= */
+
+@keyframes accessibilityGearOpen {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(90deg);
+    }
+
+}
+
+
+/* =========================================================
+   8. MENU DE OPÇÕES
+   ABRE PARA A ESQUERDA
+========================================================= */
+
+.access-menu .access-options,
+.access-options {
+    position: absolute !important;
+
+    top: 50% !important;
+
+    right: 40px !important;
+
+    left: auto !important;
+
+    width: max-content !important;
+
+    height: 46px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: flex-end !important;
+
+    flex-direction: row !important;
+
+    gap: 6px !important;
+
+    padding: 5px 8px !important;
+
+    box-sizing: border-box !important;
+
+    background: rgba(255,255,255,.95) !important;
+
+    border: 1px solid #D1D5DB !important;
+
+    border-radius: 10px !important;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.12) !important;
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+
+    pointer-events: none !important;
+
+    transform: translateY(-50%) !important;
+
+    transition:
+        opacity .2s ease,
+        visibility .2s ease !important;
+
+    z-index: 100000 !important;
+}
+
+
+/* =========================================================
+   9. MENU ABERTO
+   .active OU .show
+========================================================= */
+
+.access-options.active,
+.access-options.show {
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    pointer-events: auto !important;
+}
+
+
+/* =========================================================
+   10. BOTÕES DE ACESSIBILIDADE
+========================================================= */
+
+.access-menu .access-options .access-btn,
+.access-options .access-btn {
+    width: 36px !important;
+
+    height: 36px !important;
+
+    min-width: 36px !important;
+
+    max-width: 36px !important;
+
+    min-height: 36px !important;
+
+    max-height: 36px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    border-radius: 50% !important;
+
+    outline: none !important;
+
+    box-shadow: none !important;
+
+    color: #808080 !important;
+
+    font-size: 14px !important;
+
+    font-weight: 600 !important;
+
+    opacity: 1 !important;
+
+    transform: none !important;
+
+    cursor: pointer !important;
+
+    transition:
+        color .2s ease,
+        background-color .2s ease !important;
+}
+
+
+/* =========================================================
+   11. ÍCONES DOS BOTÕES
+========================================================= */
+
+.access-menu .access-options .access-btn i,
+.access-options .access-btn i,
+.access-options .access-btn svg {
+    font-size: 17px !important;
+
+    color: #808080 !important;
+
+    fill: currentColor !important;
+
+    transition:
+        color .2s ease !important;
+}
+
+
+/* =========================================================
+   12. HOVER DOS BOTÕES
+   SEM AUMENTAR O TAMANHO
+========================================================= */
+
+.access-menu .access-options .access-btn:hover,
+.access-menu .access-options .access-btn:focus,
+.access-menu .access-options .access-btn:active,
+
+.access-options .access-btn:hover,
+.access-options .access-btn:focus,
+.access-options .access-btn:active {
+    width: 36px !important;
+
+    height: 36px !important;
+
+    min-width: 36px !important;
+
+    max-width: 36px !important;
+
+    min-height: 36px !important;
+
+    max-height: 36px !important;
+
+    transform: none !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    color: #808080 !important;
+}
+
+
+/* Ícone */
+.access-menu .access-options .access-btn:hover i,
+.access-menu .access-options .access-btn:focus i,
+.access-menu .access-options .access-btn:active i,
+
+.access-options .access-btn:hover i,
+.access-options .access-btn:focus i,
+.access-options .access-btn:active i {
+    color: #808080 !important;
+}
+
+
+/* =========================================================
+   13. DARK MODE — MENU
+========================================================= */
+
+body.dark-mode .access-options,
+body.dark .access-options {
+    background: #1C2536 !important;
+
+    border-color: #2D3D54 !important;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.35) !important;
+}
+
+
+/* =========================================================
+   14. DARK MODE — BOTÕES
+========================================================= */
+
+body.dark-mode .access-btn,
+body.dark .access-btn {
+    background: transparent !important;
+
+    color: #5B9BEA !important;
+
+    border: none !important;
+}
+
+body.dark-mode .access-btn i,
+body.dark .access-btn i {
+    color: #5B9BEA !important;
+}
+
+
+/* Hover */
+body.dark-mode .access-btn:hover,
+body.dark-mode .access-btn:focus,
+body.dark-mode .access-btn:active,
+
+body.dark .access-btn:hover,
+body.dark .access-btn:focus,
+body.dark .access-btn:active {
+    background: transparent !important;
+
+    color: #93C5FD !important;
+}
+
+body.dark-mode .access-btn:hover i,
+body.dark-mode .access-btn:focus i,
+body.dark-mode .access-btn:active i,
+
+body.dark .access-btn:hover i,
+body.dark .access-btn:focus i,
+body.dark .access-btn:active i {
+    color: #93C5FD !important;
+}
+
+
+/* =========================================================
+   15. DARK MODE — ENGRENAGEM
+========================================================= */
+
+body.dark-mode .access-menu .gear-btn,
+body.dark .access-menu .gear-btn {
+    background: transparent !important;
+
+    background-color: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    color: #94A3B8 !important;
+}
+
+body.dark-mode .access-menu .gear-btn i,
+body.dark-mode .access-menu .gear-btn svg,
+body.dark-mode .access-menu .gear-btn .fa,
+body.dark-mode .access-menu .gear-btn .fas,
+
+body.dark .access-menu .gear-btn i,
+body.dark .access-menu .gear-btn svg,
+body.dark .access-menu .gear-btn .fa,
+body.dark .access-menu .gear-btn .fas {
+    color: #94A3B8 !important;
+}
+
+
+/* Hover / aberto */
+body.dark-mode .access-menu .gear-btn:hover,
+body.dark-mode .access-menu:has(.access-options.active) .gear-btn,
+body.dark-mode .access-menu:has(.access-options.show) .gear-btn,
+
+body.dark .access-menu .gear-btn:hover,
+body.dark .access-menu:has(.access-options.active) .gear-btn,
+body.dark .access-menu:has(.access-options.show) .gear-btn {
+    background: transparent !important;
+
+    color: #60A5FA !important;
+
+    border: none !important;
+
     box-shadow: none !important;
 }
+
+body.dark-mode .access-menu .gear-btn:hover i,
+body.dark-mode .access-menu .gear-btn:hover svg,
+body.dark-mode .access-menu:has(.access-options.active) .gear-btn i,
+body.dark-mode .access-menu:has(.access-options.active) .gear-btn svg,
+body.dark-mode .access-menu:has(.access-options.show) .gear-btn i,
+body.dark-mode .access-menu:has(.access-options.show) .gear-btn svg,
+
+body.dark .access-menu .gear-btn:hover i,
+body.dark .access-menu .gear-btn:hover svg,
+body.dark .access-menu:has(.access-options.active) .gear-btn i,
+body.dark .access-menu:has(.access-options.active) .gear-btn svg,
+body.dark .access-menu:has(.access-options.show) .gear-btn i,
+body.dark .access-menu:has(.access-options.show) .gear-btn svg {
+    color: #60A5FA !important;
+}
+
+
+/* =========================================================
+   16. ALTO CONTRASTE — MENU
+========================================================= */
+
+body.alto-contraste .access-options,
+body.high-contrast .access-options {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   17. ALTO CONTRASTE — BOTÕES
+========================================================= */
+
+body.alto-contraste .access-options .access-btn,
+body.high-contrast .access-options .access-btn {
+    width: 36px !important;
+
+    height: 36px !important;
+
+    min-width: 36px !important;
+
+    min-height: 36px !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   18. ALTO CONTRASTE — ÍCONES
+========================================================= */
+
+body.alto-contraste .access-options .access-btn i,
+body.alto-contraste .access-options .access-btn svg,
+body.high-contrast .access-options .access-btn i,
+body.high-contrast .access-options .access-btn svg {
+    color: #FFFF00 !important;
+
+    fill: currentColor !important;
+}
+
+
+/* =========================================================
+   19. ALTO CONTRASTE — HOVER
+========================================================= */
+
+body.alto-contraste .access-options .access-btn:hover,
+body.alto-contraste .access-options .access-btn:focus,
+body.alto-contraste .access-options .access-btn:active,
+
+body.high-contrast .access-options .access-btn:hover,
+body.high-contrast .access-options .access-btn:focus,
+body.high-contrast .access-options .access-btn:active {
+    background: #FFFF00 !important;
+
+    color: #000000 !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
+
+body.alto-contraste .access-options .access-btn:hover i,
+body.alto-contraste .access-options .access-btn:focus i,
+body.alto-contraste .access-options .access-btn:active i,
+
+body.high-contrast .access-options .access-btn:hover i,
+body.high-contrast .access-options .access-btn:focus i,
+body.high-contrast .access-options .access-btn:active i {
+    color: #000000 !important;
+}
+
+
+/* =========================================================
+   20. ALTO CONTRASTE — ENGRENAGEM
+   SEM BOLINHA
+========================================================= */
+
+body.alto-contraste .access-menu .gear-btn,
+body.high-contrast .access-menu .gear-btn {
+    width: 35px !important;
+
+    height: 35px !important;
+
+    min-width: 35px !important;
+
+    min-height: 35px !important;
+
+    background: transparent !important;
+
+    background-color: transparent !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    outline: none !important;
+
+    box-shadow: none !important;
+
+    color: #FFFF00 !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+}
+
+body.alto-contraste .access-menu .gear-btn i,
+body.alto-contraste .access-menu .gear-btn svg,
+body.alto-contraste .access-menu .gear-btn .fa,
+body.alto-contraste .access-menu .gear-btn .fas,
+
+body.high-contrast .access-menu .gear-btn i,
+body.high-contrast .access-menu .gear-btn svg,
+body.high-contrast .access-menu .gear-btn .fa,
+body.high-contrast .access-menu .gear-btn .fas {
+    color: #FFFF00 !important;
+
+    fill: currentColor !important;
+}
+
+
+/* Hover */
+body.alto-contraste .access-menu .gear-btn:hover,
+body.high-contrast .access-menu .gear-btn:hover {
+    background: transparent !important;
+
+    background-color: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    color: #FFFF00 !important;
+}
+
+body.alto-contraste .access-menu .gear-btn:hover i,
+body.alto-contraste .access-menu .gear-btn:hover svg,
+body.high-contrast .access-menu .gear-btn:hover i,
+body.high-contrast .access-menu .gear-btn:hover svg {
+    color: #FFFF00 !important;
+}
+
+
+/* Menu aberto */
+body.alto-contraste .access-menu:has(.access-options.active) .gear-btn,
+body.alto-contraste .access-menu:has(.access-options.show) .gear-btn,
+body.high-contrast .access-menu:has(.access-options.active) .gear-btn,
+body.high-contrast .access-menu:has(.access-options.show) .gear-btn {
+    background: transparent !important;
+
+    color: #FFFF00 !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
+
+body.alto-contraste .access-menu:has(.access-options.active) .gear-btn i,
+body.alto-contraste .access-menu:has(.access-options.active) .gear-btn svg,
+body.alto-contraste .access-menu:has(.access-options.show) .gear-btn i,
+body.alto-contraste .access-menu:has(.access-options.show) .gear-btn svg,
+
+body.high-contrast .access-menu:has(.access-options.active) .gear-btn i,
+body.high-contrast .access-menu:has(.access-options.active) .gear-btn svg,
+body.high-contrast .access-menu:has(.access-options.show) .gear-btn i,
+body.high-contrast .access-menu:has(.access-options.show) .gear-btn svg {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   21. DARK MODE + ALTO CONTRASTE
+   ALTO CONTRASTE PREVALECE
+========================================================= */
+
+body.dark-mode.alto-contraste .access-options,
+body.dark-mode.high-contrast .access-options {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* Botões */
+body.dark-mode.alto-contraste .access-options .access-btn,
+body.dark-mode.high-contrast .access-options .access-btn {
+    background: transparent !important;
+
+    color: #FFFF00 !important;
+
+    border: none !important;
+}
+
+
+/* Ícones */
+body.dark-mode.alto-contraste .access-options .access-btn i,
+body.dark-mode.alto-contraste .access-options .access-btn svg,
+body.dark-mode.high-contrast .access-options .access-btn i,
+body.dark-mode.high-contrast .access-options .access-btn svg {
+    color: #FFFF00 !important;
+}
+
+
+/* Hover */
+body.dark-mode.alto-contraste .access-options .access-btn:hover,
+body.dark-mode.alto-contraste .access-options .access-btn:focus,
+body.dark-mode.alto-contraste .access-options .access-btn:active,
+
+body.dark-mode.high-contrast .access-options .access-btn:hover,
+body.dark-mode.high-contrast .access-options .access-btn:focus,
+body.dark-mode.high-contrast .access-options .access-btn:active {
+    background: #FFFF00 !important;
+
+    color: #000000 !important;
+}
+
+body.dark-mode.alto-contraste .access-options .access-btn:hover i,
+body.dark-mode.alto-contraste .access-options .access-btn:focus i,
+body.dark-mode.alto-contraste .access-options .access-btn:active i,
+
+body.dark-mode.high-contrast .access-options .access-btn:hover i,
+body.dark-mode.high-contrast .access-options .access-btn:focus i,
+body.dark-mode.high-contrast .access-options .access-btn:active i {
+    color: #000000 !important;
+}
+
+
+/* Engrenagem */
+body.dark-mode.alto-contraste .access-menu .gear-btn,
+body.dark-mode.high-contrast .access-menu .gear-btn {
+    background: transparent !important;
+
+    background-color: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    color: #FFFF00 !important;
+}
+
+body.dark-mode.alto-contraste .access-menu .gear-btn i,
+body.dark-mode.alto-contraste .access-menu .gear-btn svg,
+body.dark-mode.high-contrast .access-menu .gear-btn i,
+body.dark-mode.high-contrast .access-menu .gear-btn svg {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   22. GARANTIA — ABERTURA COM .ACTIVE OU .SHOW
+========================================================= */
+
+body.dark-mode .access-options.active,
+body.dark-mode .access-options.show,
+body.dark .access-options.active,
+body.dark .access-options.show,
+
+body.alto-contraste .access-options.active,
+body.alto-contraste .access-options.show,
+body.high-contrast .access-options.active,
+body.high-contrast .access-options.show,
+
+body.dark-mode.alto-contraste .access-options.active,
+body.dark-mode.alto-contraste .access-options.show,
+body.dark-mode.high-contrast .access-options.active,
+body.dark-mode.high-contrast .access-options.show {
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    pointer-events: auto !important;
+}
+
+
+/* =========================================================
+   23. RESPONSIVO
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .access-menu {
+        width: 35px !important;
+
+        height: 35px !important;
+
+        margin-right: 5px !important;
+    }
+
+    .gear-btn {
+        width: 35px !important;
+
+        height: 35px !important;
+
+        font-size: 18px !important;
+    }
+
+    .access-options {
+        right: 40px !important;
+
+        gap: 5px !important;
+    }
+
+    .access-btn {
+        width: 30px !important;
+
+        height: 30px !important;
+    }
+
+}
+
+
+/* =========================================================
+   NEXA — PERFIL
+   MODO ESCURO + ALTO CONTRASTE COMPLETO
+   SOBRESCREVE O CSS ANTERIOR
+========================================================= */
+
+
+/* =========================================================
+   1. MODO ESCURO — BODY
+========================================================= */
+
+body.dark-mode,
+body.dark {
+    background: #07111F !important;
+    color: #DCE6F1 !important;
+}
+
+
+/* =========================================================
+   2. MAIN
+========================================================= */
+
+body.dark-mode .main,
+body.dark .main {
+    background: #07111F !important;
+}
+
+
+/* =========================================================
+   3. CARD PRINCIPAL
+========================================================= */
+
+body.dark-mode .card,
+body.dark .card {
+    background: #16263A !important;
+
+    border: 1px solid #2D3D54 !important;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.40) !important;
+
+    color: #F1F5F9 !important;
+}
+
+
+/* =========================================================
+   4. HEADER FIXO
+========================================================= */
+
+body.dark-mode .dashboard-header,
+body.dark .dashboard-header {
+    background: #081522 !important;
+
+    border-bottom: 1px solid #263B52 !important;
+
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+
+/* Título do header */
+body.dark-mode .header-title h1,
+body.dark .header-title h1 {
+    color: #F1F5F9 !important;
+}
+
+
+/* Subtítulo */
+body.dark-mode .header-title p,
+body.dark .header-title p {
+    color: #94A3B8 !important;
+}
+
+
+/* =========================================================
+   5. HEADER DO PERFIL
+========================================================= */
+
+body.dark-mode .perfil-header,
+body.dark .perfil-header {
+    border-bottom-color: #2D3D54 !important;
+
+    background: transparent !important;
+}
+
+
+/* =========================================================
+   6. NOME DO PERFIL
+========================================================= */
+
+body.dark-mode .perfil-info h1,
+body.dark .perfil-info h1 {
+    color: #F1F5F9 !important;
+}
+
+
+body.dark-mode .perfil-info p,
+body.dark .perfil-info p {
+    color: #94A3B8 !important;
+}
+
+
+/* =========================================================
+   7. LINHA AZUL DO PERFIL
+========================================================= */
+
+body.dark-mode .linha,
+body.dark .linha {
+    background: #3B82F6 !important;
+}
+
+
+/* =========================================================
+   8. AVATAR
+========================================================= */
+
+body.dark-mode .avatar,
+body.dark .avatar {
+    background: #0A66C2 !important;
+
+    color: #FFFFFF !important;
+}
+
+
+/* =========================================================
+   9. TÍTULOS
+========================================================= */
+
+body.dark-mode .card h1,
+body.dark .card h1 {
+    color: #60A5FA !important;
+}
+
+
+body.dark-mode .subtitle,
+body.dark .subtitle {
+    color: #60A5FA !important;
+}
+
+
+body.dark-mode .subtitle i,
+body.dark .subtitle i {
+    color: #60A5FA !important;
+}
+
+
+/* =========================================================
+   10. DECORAÇÃO — DOTS
+========================================================= */
+
+body.dark-mode .dots,
+body.dark .dots {
+    background-image:
+        radial-gradient(
+            #355477 1.5px,
+            transparent 1.5px
+        ) !important;
+
+    opacity: 0.70 !important;
+}
+
+
+/* =========================================================
+   11. INPUT BOX — BASE
+========================================================= */
+
+body.dark-mode .input-box,
+body.dark .input-box {
+    background: #1D3047 !important;
+
+    border-color: #2D4661 !important;
+
+    color: #F1F5F9 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   12. ÍCONES DOS INPUTS
+========================================================= */
+
+body.dark-mode .input-box i,
+body.dark .input-box i {
+    color: #60A5FA !important;
+}
+
+
+/* =========================================================
+   13. INPUTS
+========================================================= */
+
+body.dark-mode .input-box input,
+body.dark .input-box input {
+    background: transparent !important;
+
+    color: #F1F5F9 !important;
+
+    caret-color: #60A5FA !important;
+}
+
+
+/* Placeholder */
+body.dark-mode .input-box input::placeholder,
+body.dark .input-box input::placeholder {
+    color: #94A3B8 !important;
+}
+
+
+/* =========================================================
+   14. INPUT EDITÁVEL
+========================================================= */
+
+body.dark-mode .input-box.editable-field,
+body.dark .input-box.editable-field {
+    background: #16263A !important;
+
+    border-color: #3B526D !important;
+}
+
+
+/* Focus */
+body.dark-mode .input-box.editable-field:focus-within,
+body.dark .input-box.editable-field:focus-within {
+    border-color: #3B82F6 !important;
+
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.20) !important;
+}
+
+
+/* =========================================================
+   15. ERRO
+========================================================= */
+
+body.dark-mode .input-box.error,
+body.dark .input-box.error {
+    background: #2A171A !important;
+
+    border-color: #EF4444 !important;
+}
+
+
+body.dark-mode .error-text,
+body.dark .error-text {
+    color: #F87171 !important;
+}
+
+
+/* =========================================================
+   16. BOTÃO EDITAR
+========================================================= */
+
+body.dark-mode .editar,
+body.dark .editar {
+    background: #0A66C2 !important;
+
+    color: #FFFFFF !important;
+
+    box-shadow:
+        0 5px 15px rgba(10, 102, 194, 0.25) !important;
+}
+
+
+body.dark-mode .editar:hover,
+body.dark .editar:hover {
+    background: #2563EB !important;
+}
+
+
+/* =========================================================
+   17. BOTÃO SALVAR
+========================================================= */
+
+body.dark-mode .salvar,
+body.dark .salvar {
+    background: #16A34A !important;
+
+    color: #FFFFFF !important;
+}
+
+
+body.dark-mode .salvar:hover,
+body.dark .salvar:hover {
+    background: #15803D !important;
+}
+
+
+/* =========================================================
+   18. TEXTO DOS EPIs
+========================================================= */
+
+body.dark-mode .form-grid > .full:has(.fa-shield-alt) > .input-box strong,
+body.dark .form-grid > .full:has(.fa-shield-alt) > .input-box strong {
+    color: #F1F5F9 !important;
+}
+
+
+body.dark-mode .form-grid > .full:has(.fa-shield-alt) > .input-box small,
+body.dark .form-grid > .full:has(.fa-shield-alt) > .input-box small {
+    color: #94A3B8 !important;
+}
+
+
+/* =========================================================
+   19. CARDS DOS EPIs
+========================================================= */
+
+body.dark-mode .form-grid > .full:has(.fa-shield-alt) > .input-box,
+body.dark .form-grid > .full:has(.fa-shield-alt) > .input-box {
+    background: #1D3047 !important;
+
+    border-color: #2D4661 !important;
+
+    color: #F1F5F9 !important;
+}
+
+
+/* =========================================================
+   20. IMAGEM DOS EPIs
+========================================================= */
+
+body.dark-mode .form-grid > .full:has(.fa-shield-alt) > .input-box img,
+body.dark .form-grid > .full:has(.fa-shield-alt) > .input-box img {
+    border-color: #3B526D !important;
+}
+
+
+/* =========================================================
+   21. EPI CONTAINER ANTIGO
+   CASO ALGUMA PARTE USE .epi-container
+========================================================= */
+
+body.dark-mode .epi-container .epi-item,
+body.dark-mode .epi-container > *,
+body.dark .epi-container .epi-item,
+body.dark .epi-container > * {
+    background: #1D3047 !important;
+
+    border-color: #2D4661 !important;
+
+    color: #F1F5F9 !important;
+}
+
+
+body.dark-mode .epi-container .epi-info strong,
+body.dark-mode .epi-container .epi-item strong,
+body.dark .epi-container .epi-info strong,
+body.dark .epi-container .epi-item strong {
+    color: #F1F5F9 !important;
+}
+
+
+body.dark-mode .epi-container .epi-info span,
+body.dark-mode .epi-container .epi-info small,
+body.dark-mode .epi-container .epi-item small,
+body.dark .epi-container .epi-info span,
+body.dark .epi-container .epi-info small,
+body.dark .epi-container .epi-item small {
+    color: #94A3B8 !important;
+}
+
+
+/* =========================================================
+   22. IMAGEM PRINCIPAL
+========================================================= */
+
+body.dark-mode .perfil-direita,
+body.dark .perfil-direita {
+    background: transparent !important;
+}
+
+
+/* =========================================================
+   23. LINKS / TEXTOS GERAIS
+========================================================= */
+
+body.dark-mode .card p,
+body.dark .card p {
+    color: #DCE6F1;
+}
+
+
+/* =========================================================
+   24. ALTO CONTRASTE — BODY
+   PREVALECE SOBRE O DARK MODE
+========================================================= */
+
+body.alto-contraste,
+body.high-contrast {
+    background: #000000 !important;
+
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   25. MAIN
+========================================================= */
+
+body.alto-contraste .main,
+body.high-contrast .main {
+    background: #000000 !important;
+}
+
+
+/* =========================================================
+   26. CARD
+========================================================= */
+
+body.alto-contraste .card,
+body.high-contrast .card {
+    background: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   27. HEADER
+========================================================= */
+
+body.alto-contraste .dashboard-header,
+body.high-contrast .dashboard-header {
+    background: #000000 !important;
+
+    border-bottom: 2px solid #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   28. TÍTULO DO HEADER
+========================================================= */
+
+body.alto-contraste .header-title h1,
+body.high-contrast .header-title h1 {
+    color: #FFFF00 !important;
+}
+
+
+body.alto-contraste .header-title p,
+body.high-contrast .header-title p {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   29. HEADER DO PERFIL
+========================================================= */
+
+body.alto-contraste .perfil-header,
+body.high-contrast .perfil-header {
+    background: #000000 !important;
+
+    border-bottom: 2px solid #FFFF00 !important;
+}
+
+
+/* =========================================================
+   30. INFORMAÇÕES DO PERFIL
+========================================================= */
+
+body.alto-contraste .perfil-info h1,
+body.high-contrast .perfil-info h1 {
+    color: #FFFF00 !important;
+}
+
+
+body.alto-contraste .perfil-info p,
+body.high-contrast .perfil-info p {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   31. LINHA
+========================================================= */
+
+body.alto-contraste .linha,
+body.high-contrast .linha {
+    background: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   32. AVATAR
+========================================================= */
+
+body.alto-contraste .avatar,
+body.high-contrast .avatar {
+    background: #FFFF00 !important;
+
+    color: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* =========================================================
+   33. TÍTULOS
+========================================================= */
+
+body.alto-contraste .card h1,
+body.high-contrast .card h1 {
+    color: #FFFF00 !important;
+}
+
+
+body.alto-contraste .subtitle,
+body.high-contrast .subtitle {
+    color: #FFFF00 !important;
+}
+
+
+body.alto-contraste .subtitle i,
+body.high-contrast .subtitle i {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   34. DECORAÇÃO
+========================================================= */
+
+body.alto-contraste .dots,
+body.high-contrast .dots {
+    background-image:
+        radial-gradient(
+            #FFFF00 1.5px,
+            transparent 1.5px
+        ) !important;
+
+    opacity: 0.50 !important;
+}
+
+
+/* =========================================================
+   35. INPUTS
+========================================================= */
+
+body.alto-contraste .input-box,
+body.high-contrast .input-box {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    color: #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   36. ÍCONES DOS INPUTS
+========================================================= */
+
+body.alto-contraste .input-box i,
+body.high-contrast .input-box i {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   37. INPUT TEXT
+========================================================= */
+
+body.alto-contraste .input-box input,
+body.high-contrast .input-box input {
+    background: transparent !important;
+
+    color: #FFFF00 !important;
+
+    caret-color: #FFFF00 !important;
+}
+
+
+body.alto-contraste .input-box input::placeholder,
+body.high-contrast .input-box input::placeholder {
+    color: #FFFF00 !important;
+
+    opacity: 1 !important;
+}
+
+
+/* =========================================================
+   38. INPUT EDITÁVEL
+========================================================= */
+
+body.alto-contraste .input-box.editable-field,
+body.high-contrast .input-box.editable-field {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* =========================================================
+   39. INPUT EM FOCO
+========================================================= */
+
+body.alto-contraste .input-box.editable-field:focus-within,
+body.high-contrast .input-box.editable-field:focus-within {
+    border-color: #FFFF00 !important;
+
+    box-shadow:
+        0 0 0 3px #FFFF00 !important;
+}
+
+
+/* =========================================================
+   40. ERROS
+========================================================= */
+
+body.alto-contraste .input-box.error,
+body.high-contrast .input-box.error {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+body.alto-contraste .error-text,
+body.high-contrast .error-text {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   41. BOTÕES
+========================================================= */
+
+body.alto-contraste .btn,
+body.high-contrast .btn {
+    background: #FFFF00 !important;
+
+    color: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* Hover */
+body.alto-contraste .btn:hover,
+body.high-contrast .btn:hover {
+    background: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* =========================================================
+   42. ÍCONES DOS BOTÕES
+========================================================= */
+
+body.alto-contraste .btn i,
+body.high-contrast .btn i {
+    color: inherit !important;
+}
+
+
+/* =========================================================
+   43. EPIs — ÁREA
+========================================================= */
+
+body.alto-contraste
+.form-grid > .full:has(.fa-shield-alt),
+body.high-contrast
+.form-grid > .full:has(.fa-shield-alt) {
+    background: #000000 !important;
+}
+
+
+/* =========================================================
+   44. CARDS DOS EPIs
+========================================================= */
+
+body.alto-contraste
+.form-grid > .full:has(.fa-shield-alt) > .input-box,
+body.high-contrast
+.form-grid > .full:has(.fa-shield-alt) > .input-box {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   45. TEXTO DOS EPIs
+========================================================= */
+
+body.alto-contraste
+.form-grid > .full:has(.fa-shield-alt) > .input-box strong,
+body.high-contrast
+.form-grid > .full:has(.fa-shield-alt) > .input-box strong {
+    color: #FFFF00 !important;
+}
+
+
+body.alto-contraste
+.form-grid > .full:has(.fa-shield-alt) > .input-box small,
+body.high-contrast
+.form-grid > .full:has(.fa-shield-alt) > .input-box small {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   46. IMAGEM DOS EPIs
+   MANTÉM A IMAGEM VISÍVEL
+========================================================= */
+
+body.alto-contraste
+.form-grid > .full:has(.fa-shield-alt) > .input-box img,
+body.high-contrast
+.form-grid > .full:has(.fa-shield-alt) > .input-box img {
+    border: 2px solid #FFFF00 !important;
+
+    opacity: 1 !important;
+
+    filter: none !important;
+}
+
+
+/* =========================================================
+   47. EPI CONTAINER ANTIGO
+========================================================= */
+
+body.alto-contraste .epi-container .epi-item,
+body.alto-contraste .epi-container > *,
+body.high-contrast .epi-container .epi-item,
+body.high-contrast .epi-container > * {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    color: #FFFF00 !important;
+}
+
+
+body.alto-contraste .epi-container .epi-info strong,
+body.alto-contraste .epi-container .epi-item strong,
+body.high-contrast .epi-container .epi-info strong,
+body.high-contrast .epi-container .epi-item strong {
+    color: #FFFF00 !important;
+}
+
+
+body.alto-contraste .epi-container .epi-info span,
+body.alto-contraste .epi-container .epi-info small,
+body.alto-contraste .epi-container .epi-item small,
+body.high-contrast .epi-container .epi-info span,
+body.high-contrast .epi-container .epi-info small,
+body.high-contrast .epi-container .epi-item small {
+    color: #FFFF00 !important;
+}
+
+
+/* =========================================================
+   48. ÍCONES EM ALTO CONTRASTE
+========================================================= */
+
+body.alto-contraste i,
+body.high-contrast i {
+    color: #FFFF00;
+}
+
+
+/* =========================================================
+   49. MODO ESCURO + ALTO CONTRASTE
+   ALTO CONTRASTE GANHA
+========================================================= */
+
+body.dark-mode.alto-contraste,
+body.dark.alto-contraste,
+body.dark-mode.high-contrast,
+body.dark.high-contrast {
+    background: #000000 !important;
+
+    color: #FFFF00 !important;
+}
+
+
+/* CARD */
+body.dark-mode.alto-contraste .card,
+body.dark.alto-contraste .card,
+body.dark-mode.high-contrast .card,
+body.dark.high-contrast .card {
+    background: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* HEADER */
+body.dark-mode.alto-contraste .dashboard-header,
+body.dark.alto-contraste .dashboard-header,
+body.dark-mode.high-contrast .dashboard-header,
+body.dark.high-contrast .dashboard-header {
+    background: #000000 !important;
+
+    border-bottom: 2px solid #FFFF00 !important;
+}
+
+
+/* TEXTOS */
+body.dark-mode.alto-contraste .perfil-info h1,
+body.dark.alto-contraste .perfil-info h1,
+body.dark-mode.high-contrast .perfil-info h1,
+body.dark.high-contrast .perfil-info h1,
+
+body.dark-mode.alto-contraste .perfil-info p,
+body.dark.alto-contraste .perfil-info p,
+body.dark-mode.high-contrast .perfil-info p,
+body.dark.high-contrast .perfil-info p {
+    color: #FFFF00 !important;
+}
+
+
+/* INPUTS */
+body.dark-mode.alto-contraste .input-box,
+body.dark.alto-contraste .input-box,
+body.dark-mode.high-contrast .input-box,
+body.dark.high-contrast .input-box {
+    background: #000000 !important;
+
+    color: #FFFF00 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* BOTÕES */
+body.dark-mode.alto-contraste .btn,
+body.dark.alto-contraste .btn,
+body.dark-mode.high-contrast .btn,
+body.dark.high-contrast .btn {
+    background: #FFFF00 !important;
+
+    color: #000000 !important;
+}
+
+
+/* EPIs */
+body.dark-mode.alto-contraste
+.form-grid > .full:has(.fa-shield-alt) > .input-box,
+body.dark.alto-contraste
+.form-grid > .full:has(.fa-shield-alt) > .input-box,
+body.dark-mode.high-contrast
+.form-grid > .full:has(.fa-shield-alt) > .input-box,
+body.dark.high-contrast
+.form-grid > .full:has(.fa-shield-alt) > .input-box {
+    background: #000000 !important;
+
+    border: 2px solid #FFFF00 !important;
+}
+
+
+/* =========================================================
+   50. RESPONSIVO — DARK MODE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body.dark-mode .card,
+    body.dark .card {
+        background: #16263A !important;
+    }
+
+}
+
+
+/* =========================================================
+   51. RESPONSIVO — ALTO CONTRASTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body.alto-contraste .card,
+    body.high-contrast .card {
+        background: #000000 !important;
+
+        border-color: #FFFF00 !important;
+    }
+
+}
+
+
+/* =========================================================
+   🌙 MODO ESCURO — NEXA
+========================================================= */
+
+body.dark-mode,
+body.modo-escuro,
+body[data-theme="dark"] {
+
+    background:#0f1724 !important;
+    color:#e5edf7;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+body.dark-mode .dashboard-header,
+body.modo-escuro .dashboard-header,
+body[data-theme="dark"] .dashboard-header {
+
+    background:#111c2d !important;
+    border-bottom:1px solid #26364d !important;
+    box-shadow:0 2px 18px rgba(0,0,0,.35) !important;
+}
+
+body.dark-mode .header-left h1,
+body.modo-escuro .header-left h1,
+body[data-theme="dark"] .header-left h1 {
+
+    color:#5b9bea !important;
+}
+
+body.dark-mode .header-left span,
+body.modo-escuro .header-left span,
+body[data-theme="dark"] .header-left span {
+
+    color:#a8b7ca !important;
+}
+
+
+/* =========================
+   PERFIL
+========================= */
+
+body.dark-mode .profile:hover,
+body.modo-escuro .profile:hover,
+body[data-theme="dark"] .profile:hover {
+
+    background:#1b2a3e !important;
+}
+
+body.dark-mode .profile-info strong,
+body.modo-escuro .profile-info strong,
+body[data-theme="dark"] .profile-info strong {
+
+    color:#f1f5f9 !important;
+}
+
+body.dark-mode .profile-info small,
+body.modo-escuro .profile-info small,
+body[data-theme="dark"] .profile-info small {
+
+    color:#94a3b8 !important;
+}
+
+body.dark-mode .profile-avatar,
+body.modo-escuro .profile-avatar,
+body[data-theme="dark"] .profile-avatar {
+
+    background:#0A66C2 !important;
+    color:#fff !important;
+}
+
+
+/* =========================================================
+   MAIN / CARDS
+========================================================= */
+
+body.dark-mode .card,
+body.modo-escuro .card,
+body[data-theme="dark"] .card {
+
+    background:#162235 !important;
+    border-color:#26364d !important;
+    box-shadow:0 10px 25px rgba(0,0,0,.30) !important;
+}
+
+
+/* =========================================================
+   CALENDÁRIO
+========================================================= */
+
+body.dark-mode .calendar-title h2,
+body.modo-escuro .calendar-title h2,
+body[data-theme="dark"] .calendar-title h2 {
+
+    color:#e5edf7 !important;
+}
+
+body.dark-mode .calendar-title span,
+body.modo-escuro .calendar-title span,
+body[data-theme="dark"] .calendar-title span {
+
+    color:#94a3b8 !important;
+}
+
+body.dark-mode .calendar-icon,
+body.modo-escuro .calendar-icon,
+body[data-theme="dark"] .calendar-icon {
+
+    background:#0A66C2 !important;
+    color:#fff !important;
+}
+
+
+/* MÊS */
+
+body.dark-mode .calendar-header strong,
+body.modo-escuro .calendar-header strong,
+body[data-theme="dark"] .calendar-header strong {
+
+    color:#5b9bea !important;
+}
+
+body.dark-mode .calendar-header small,
+body.modo-escuro .calendar-header small,
+body[data-theme="dark"] .calendar-header small {
+
+    color:#94a3b8 !important;
+}
+
+
+/* BOTÕES DO CALENDÁRIO */
+
+body.dark-mode .calendar-header button,
+body.modo-escuro .calendar-header button,
+body[data-theme="dark"] .calendar-header button {
+
+    background:#1d2b3e !important;
+    color:#5b9bea !important;
+    box-shadow:0 4px 12px rgba(0,0,0,.30) !important;
+}
+
+body.dark-mode .calendar-header button:hover,
+body.modo-escuro .calendar-header button:hover,
+body[data-theme="dark"] .calendar-header button:hover {
+
+    background:#263b55 !important;
+}
+
+
+/* =========================
+   DIAS
+========================= */
+
+body.dark-mode .dia,
+body.modo-escuro .dia,
+body[data-theme="dark"] .dia {
+
+    background:#1b2a3d !important;
+    color:#8fc0ff !important;
+}
+
+body.dark-mode .dia:hover,
+body.modo-escuro .dia:hover,
+body[data-theme="dark"] .dia:hover {
+
+    background:#243a54 !important;
+}
+
+body.dark-mode .dia.tem-varias,
+body.modo-escuro .dia.tem-varias,
+body[data-theme="dark"] .dia.tem-varias {
+
+    box-shadow:inset 0 0 0 2px #304b6a !important;
+}
+
+body.dark-mode .dia.tem-varias:hover,
+body.modo-escuro .dia.tem-varias:hover,
+body[data-theme="dark"] .dia.tem-varias:hover {
+
+    box-shadow:inset 0 0 0 2px #5b9bea !important;
+}
+
+
+/* QUANTIDADE */
+
+body.dark-mode .quantidade-ocorrencias,
+body.modo-escuro .quantidade-ocorrencias,
+body[data-theme="dark"] .quantidade-ocorrencias {
+
+    background:#0A66C2 !important;
+    color:#fff !important;
+}
+
+
+/* =========================================================
+   LEGENDA
+========================================================= */
+
+body.dark-mode .legend,
+body.modo-escuro .legend,
+body[data-theme="dark"] .legend {
+
+    color:#c5d0df !important;
+}
+
+
+/* =========================================================
+   DICAS
+========================================================= */
+
+body.dark-mode .card.dicas,
+body.modo-escuro .card.dicas,
+body[data-theme="dark"] .card.dicas {
+
+    background:#15283e !important;
+    border:none !important;
+}
+
+body.dark-mode .card.dicas h3,
+body.modo-escuro .card.dicas h3,
+body[data-theme="dark"] .card.dicas h3 {
+
+    color:#5b9bea !important;
+}
+
+
+body.dark-mode .card.dicas li,
+body.modo-escuro .card.dicas li,
+body[data-theme="dark"] .card.dicas li {
+
+    background:#1b2a3d !important;
+    color:#d8e3ee !important;
+    box-shadow:0 5px 15px rgba(0,0,0,.30) !important;
+}
+
+body.dark-mode .card.dicas li:hover,
+body.modo-escuro .card.dicas li:hover,
+body[data-theme="dark"] .card.dicas li:hover {
+
+    background:#22364e !important;
+    box-shadow:0 12px 25px rgba(0,0,0,.35) !important;
+}
+
+
+body.dark-mode .card.dicas li i,
+body.modo-escuro .card.dicas li i,
+body[data-theme="dark"] .card.dicas li i {
+
+    background:#263b55 !important;
+    color:#5b9bea !important;
+}
+
+
+body.dark-mode .card.dicas li:hover i,
+body.modo-escuro .card.dicas li:hover i,
+body[data-theme="dark"] .card.dicas li:hover i {
+
+    background:#0A66C2 !important;
+    color:#fff !important;
+}
+
+
+/* =========================================================
+   🌙 MODAL
+========================================================= */
+
+body.dark-mode #modal,
+body.modo-escuro #modal,
+body[data-theme="dark"] #modal {
+
+    background:rgba(3,10,20,.72) !important;
+}
+
+
+body.dark-mode .modal-box,
+body.modo-escuro .modal-box,
+body[data-theme="dark"] .modal-box {
+
+    background:#162235 !important;
+    box-shadow:0 25px 70px rgba(0,0,0,.55) !important;
+}
+
+
+/* HEADER DO MODAL */
+
+body.dark-mode .modal-header,
+body.modo-escuro .modal-header,
+body[data-theme="dark"] .modal-header {
+
+    border-bottom:1px solid #293a50 !important;
+}
+
+
+body.dark-mode .modal-icon,
+body.modo-escuro .modal-icon,
+body[data-theme="dark"] .modal-icon {
+
+    background:#203b5b !important;
+    color:#5b9bea !important;
+}
+
+
+body.dark-mode .modal-titulo h3,
+body.modo-escuro .modal-titulo h3,
+body[data-theme="dark"] .modal-titulo h3 {
+
+    color:#edf4fc !important;
+}
+
+
+body.dark-mode .modal-titulo span,
+body.modo-escuro .modal-titulo span,
+body[data-theme="dark"] .modal-titulo span {
+
+    color:#94a3b8 !important;
+}
+
+
+/* BOTÃO X */
+
+body.dark-mode .modal-fechar,
+body.modo-escuro .modal-fechar,
+body[data-theme="dark"] .modal-fechar {
+
+    background:#1d2b3e !important;
+    color:#a8b7ca !important;
+}
+
+
+body.dark-mode .modal-fechar:hover,
+body.modo-escuro .modal-fechar:hover,
+body[data-theme="dark"] .modal-fechar:hover {
+
+    background:#263b55 !important;
+    color:#5b9bea !important;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+body.dark-mode .modal-resumo,
+body.modo-escuro .modal-resumo,
+body[data-theme="dark"] .modal-resumo {
+
+    background:#182b42 !important;
+    border-color:#2c4663 !important;
+}
+
+
+body.dark-mode .modal-resumo strong,
+body.modo-escuro .modal-resumo strong,
+body[data-theme="dark"] .modal-resumo strong {
+
+    color:#e5edf7 !important;
+}
+
+
+body.dark-mode .modal-resumo span,
+body.modo-escuro .modal-resumo span,
+body[data-theme="dark"] .modal-resumo span {
+
+    color:#94a3b8 !important;
+}
+
+
+/* =========================================================
+   OCORRÊNCIAS
+========================================================= */
+
+body.dark-mode .ocorrencia-item,
+body.modo-escuro .ocorrencia-item,
+body[data-theme="dark"] .ocorrencia-item {
+
+    background:#19283b !important;
+    border-color:#2b3d53 !important;
+}
+
+
+body.dark-mode .ocorrencia-item:hover,
+body.modo-escuro .ocorrencia-item:hover,
+body[data-theme="dark"] .ocorrencia-item:hover {
+
+    border-color:#3d6490 !important;
+    box-shadow:0 8px 20px rgba(0,0,0,.30) !important;
+}
+
+
+body.dark-mode .ocorrencia-numero,
+body.modo-escuro .ocorrencia-numero,
+body[data-theme="dark"] .ocorrencia-numero {
+
+    color:#e5edf7 !important;
+}
+
+
+body.dark-mode .ocorrencia-hora,
+body.modo-escuro .ocorrencia-hora,
+body[data-theme="dark"] .ocorrencia-hora {
+
+    background:#203b5b !important;
+    color:#73adf5 !important;
+}
+
+
+/* =========================================================
+   DADOS DOS EPIs
+========================================================= */
+
+body.dark-mode .dado,
+body.modo-escuro .dado,
+body[data-theme="dark"] .dado {
+
+    background:#202f42 !important;
+}
+
+
+body.dark-mode .dado span,
+body.modo-escuro .dado span,
+body[data-theme="dark"] .dado span {
+
+    color:#8fa0b4 !important;
+}
+
+
+body.dark-mode .dado strong,
+body.modo-escuro .dado strong,
+body[data-theme="dark"] .dado strong {
+
+    color:#d8e3ee !important;
+}
+
+
+/* =========================================================
+   FOOTER MODAL
+========================================================= */
+
+body.dark-mode .modal-footer,
+body.modo-escuro .modal-footer,
+body[data-theme="dark"] .modal-footer {
+
+    border-top:1px solid #293a50 !important;
+}
+
+
+body.dark-mode .btn-fechar-modal,
+body.modo-escuro .btn-fechar-modal,
+body[data-theme="dark"] .btn-fechar-modal {
+
+    background:#0A66C2 !important;
+    color:#fff !important;
+}
+
+
+body.dark-mode .btn-fechar-modal:hover,
+body.modo-escuro .btn-fechar-modal:hover,
+body[data-theme="dark"] .btn-fechar-modal:hover {
+
+    background:#1476d4 !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR DO MODAL
+========================================================= */
+
+body.dark-mode .ocorrencias-lista::-webkit-scrollbar-thumb,
+body.modo-escuro .ocorrencias-lista::-webkit-scrollbar-thumb,
+body[data-theme="dark"] .ocorrencias-lista::-webkit-scrollbar-thumb {
+
+    background:#40546b !important;
+}
+
+
+/* =========================================================
+   🌓 ALTO CONTRASTE
+========================================================= */
+
+body.alto-contraste {
+
+    background:#000 !important;
+    color:#fff !important;
+}
+
+
+/* HEADER */
+
+body.alto-contraste .dashboard-header {
+
+    background:#000 !important;
+    border-bottom:2px solid #fff !important;
+    box-shadow:none !important;
+}
+
 
 body.alto-contraste .header-left h1 {
-    color: #ffd600 !important;
+
+    color:#FFFF00 !important;
 }
+
 
 body.alto-contraste .header-left span {
-    color: #ffffff !important;
+
+    color:#fff !important;
 }
 
-body.alto-contraste .profile-info strong {
-    color: #ffffff !important;
-}
 
-body.alto-contraste .profile-info small {
-    color: #ffd600 !important;
-}
+/* PERFIL */
 
 body.alto-contraste .profile:hover {
-    background: #1a1a1a !important;
-    outline: 1px solid #ffd600;
+
+    background:#222 !important;
 }
 
-/* CARDS & CALENDÁRIO ALTO CONTRASTE */
+
+body.alto-contraste .profile-info strong,
+body.alto-contraste .profile-info small {
+
+    color:#fff !important;
+}
+
+
+body.alto-contraste .profile-avatar {
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:2px solid #FFFF00 !important;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
 body.alto-contraste .card {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-    box-shadow: none !important;
+
+    background:#000 !important;
+    border:2px solid #fff !important;
+    box-shadow:none !important;
 }
 
-body.alto-contraste .calendar-title h2 {
-    color: #ffd600 !important;
-}
 
+/* =========================================================
+   CALENDÁRIO
+========================================================= */
+
+body.alto-contraste .calendar-title h2,
 body.alto-contraste .calendar-title span {
-    color: #ffffff !important;
+
+    color:#fff !important;
 }
+
 
 body.alto-contraste .calendar-icon {
-    background: #ffd600 !important;
-    color: #000000 !important;
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:2px solid #FFFF00 !important;
 }
+
 
 body.alto-contraste .calendar-header strong {
-    color: #ffd600 !important;
+
+    color:#FFFF00 !important;
 }
+
 
 body.alto-contraste .calendar-header small {
-    color: #ffffff !important;
+
+    color:#fff !important;
 }
+
 
 body.alto-contraste .calendar-header button {
-    background: #000000 !important;
-    color: #ffd600 !important;
-    border: 2px solid #ffd600 !important;
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:2px solid #FFFF00 !important;
+    box-shadow:none !important;
 }
 
-body.alto-contraste .calendar-header button:hover {
-    background: #ffd600 !important;
-    color: #000000 !important;
-}
 
 body.alto-contraste .dia {
-    background: #000000 !important;
-    color: #ffffff !important;
-    border: 1px solid #ffd600 !important;
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:1px solid #fff !important;
 }
+
 
 body.alto-contraste .dia:hover {
-    background: #ffd600 !important;
-    color: #000000 !important;
+
+    background:#222 !important;
 }
+
+
+body.alto-contraste .dia.tem-varias {
+
+    box-shadow:inset 0 0 0 2px #FFFF00 !important;
+}
+
+
+body.alto-contraste .dia.tem-varias:hover {
+
+    box-shadow:inset 0 0 0 3px #FFFF00 !important;
+}
+
+
+body.alto-contraste .quantidade-ocorrencias {
+
+    background:#FFFF00 !important;
+    color:#000 !important;
+}
+
+
+/* =========================================================
+   LEGENDA
+========================================================= */
 
 body.alto-contraste .legend {
-    color: #ffffff !important;
+
+    color:#fff !important;
 }
 
-/* DICAS ALTO CONTRASTE */
+
+/* =========================================================
+   DICAS
+========================================================= */
+
 body.alto-contraste .card.dicas {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
+
+    background:#000 !important;
+    border:2px solid #fff !important;
 }
+
 
 body.alto-contraste .card.dicas h3 {
-    color: #ffd600 !important;
+
+    color:#FFFF00 !important;
 }
+
 
 body.alto-contraste .card.dicas li {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-    color: #ffffff !important;
-    box-shadow: none !important;
+
+    background:#000 !important;
+    color:#fff !important;
+    border:1px solid #fff !important;
+    box-shadow:none !important;
 }
+
 
 body.alto-contraste .card.dicas li:hover {
-    background: #ffd600 !important;
-    color: #000000 !important;
+
+    background:#222 !important;
+    box-shadow:none !important;
 }
+
 
 body.alto-contraste .card.dicas li i {
-    background: #ffd600 !important;
-    color: #000000 !important;
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:1px solid #FFFF00 !important;
 }
+
 
 body.alto-contraste .card.dicas li:hover i {
-    background: #000000 !important;
-    color: #ffd600 !important;
-}
 
-/* PERFIL ALTO CONTRASTE */
-body.alto-contraste .perfil-esquerda,
-body.alto-contraste .perfil-direita {
-    color: #ffffff !important;
-}
-
-body.alto-contraste .perfil-direita {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-    box-shadow: none !important;
-}
-
-body.alto-contraste .fundo-capacete {
-    background: #000000 !important;
-}
-
-body.alto-contraste .circulo {
-    background: #ffd600 !important;
-    box-shadow: none !important;
-}
-
-body.alto-contraste .perfil-direita > i.fa-helmet-safety {
-    color: #000000 !important;
-    background: #ffd600 !important;
-}
-
-body.alto-contraste .subtitle {
-    color: #ffd600 !important;
-}
-
-body.alto-contraste .input-box {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-    color: #ffffff !important;
-}
-
-body.alto-contraste .input-box > i,
-body.alto-contraste .input-box i {
-    color: #ffd600 !important;
-}
-
-body.alto-contraste .input-box.editable-field {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-}
-
-body.alto-contraste .input-box.editable-field input {
-    color: #ffffff !important;
+    background:#FFFF00 !important;
+    color:#000 !important;
 }
 
 
-/* CAMPOS DE SENHA - TEXTO BRANCO */
-body.alto-contraste .seguranca-box .input-box {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
-}
+/* =========================================================
+   MODAL — ALTO CONTRASTE
+========================================================= */
 
-body.alto-contraste .seguranca-box .input-box input {
-    color: #ffffff !important;
-}
+body.alto-contraste #modal {
 
-body.alto-contraste .seguranca-box .input-box input::placeholder {
-    color: #ffffff !important;
-    opacity: 1 !important;
-}
-
-body.alto-contraste .seguranca-box .input-box i {
-    color: #ffd600 !important;
+    background:rgba(0,0,0,.90) !important;
+    backdrop-filter:none !important;
 }
 
 
-body.alto-contraste .campo label {
-    color: #ffd600 !important;
+body.alto-contraste .modal-box {
+
+    background:#000 !important;
+    border:2px solid #fff !important;
+    box-shadow:none !important;
 }
 
-body.alto-contraste .input-box.editable-field input {
-    color: #ffffff !important;
+
+body.alto-contraste .modal-header {
+
+    border-bottom:2px solid #fff !important;
 }
 
 
-body.alto-contraste .input-box input::placeholder {
-    color: #ffd600 !important;
+body.alto-contraste .modal-icon {
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:2px solid #FFFF00 !important;
 }
 
-body.alto-contraste .input-box input:disabled {
-    color: #ffffff !important;
-    opacity: 1;
+
+body.alto-contraste .modal-titulo h3,
+body.alto-contraste .modal-titulo span {
+
+    color:#fff !important;
 }
 
-body.alto-contraste .input-box.editable-field {
-    background: #000000 !important;
-    border: 2px solid #ffd600 !important;
+
+/* X */
+
+body.alto-contraste .modal-fechar {
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:2px solid #FFFF00 !important;
 }
 
-body.alto-contraste .input-box.editable-field input {
-    color: #ffffff !important;
+
+body.alto-contraste .modal-fechar:hover {
+
+    background:#FFFF00 !important;
+    color:#000 !important;
 }
 
-body.alto-contraste .campo label {
-    color: #ffd600 !important;
+
+/* RESUMO */
+
+body.alto-contraste .modal-resumo {
+
+    background:#000 !important;
+    border:2px solid #fff !important;
 }
 
-body.alto-contraste .input-box strong {
-    color: #ffffff !important;
+
+body.alto-contraste .modal-resumo strong,
+body.alto-contraste .modal-resumo span {
+
+    color:#fff !important;
 }
 
-body.alto-contraste .input-box small {
-    color: #ffd600 !important;
+
+body.alto-contraste .resumo-icon {
+
+    background:#FFFF00 !important;
+    color:#000 !important;
 }
 
-body.alto-contraste .input-box img {
-    border-color: #ffd600 !important;
+
+/* OCORRÊNCIAS */
+
+body.alto-contraste .ocorrencia-item {
+
+    background:#000 !important;
+    border:2px solid #fff !important;
+    box-shadow:none !important;
 }
 
-body.alto-contraste .input-box.error {
-    border: 2px solid #ff0000 !important;
+
+body.alto-contraste .ocorrencia-item:hover {
+
+    border-color:#FFFF00 !important;
+    box-shadow:none !important;
 }
 
-body.alto-contraste .error-text {
-    color: #ff0000 !important;
-    font-weight: bold;
+
+body.alto-contraste .ocorrencia-numero {
+
+    color:#fff !important;
 }
 
-body.alto-contraste .btn.editar,
-body.alto-contraste .btn.salvar {
-    background: #ffd600 !important;
-    color: #000000 !important;
-    border: 2px solid #ffd600 !important;
-    font-weight: bold;
+
+body.alto-contraste .ocorrencia-hora {
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:1px solid #FFFF00 !important;
 }
 
-body.alto-contraste .btn.editar:hover,
-body.alto-contraste .btn.salvar:hover {
-    background: #000000 !important;
-    color: #ffd600 !important;
+
+/* DADOS */
+
+body.alto-contraste .dado {
+
+    background:#000 !important;
+    border:1px solid #fff !important;
 }
 
-/* --- REGRA PADRÃO --- */
-.main-header {
-    background-color: #ffffff;
-    transition: background-color 0.3s, border-color 0.3s;
+
+body.alto-contraste .dado span,
+body.alto-contraste .dado strong {
+
+    color:#fff !important;
 }
 
-/* --- FORÇAR MODO ESCURO NO HEADER (Cobre Body, HTML e Data-Attributes) --- */
-body.dark .main-header,
-body.dark-mode .main-header,
-body.modo-escuro .main-header,
-html.dark .main-header,
-html.dark-mode .main-header,
-[data-theme="dark"] .main-header {
-    background-color: #111827 !important;
-    background: #111827 !important;
-    border-bottom-color: #1f2937 !important;
+
+body.alto-contraste .dado-icone.detectado,
+body.alto-contraste .dado-icone.ausente {
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:1px solid #FFFF00 !important;
 }
 
-/* Cor dos textos do Header no Modo Escuro */
-body.dark .main-header *,
-body.dark-mode .main-header *,
-body.modo-escuro .main-header *,
-html.dark .main-header *,
-html.dark-mode .main-header *,
-[data-theme="dark"] .main-header * {
-    color: #f3f4f6 !important;
+
+/* FOOTER */
+
+body.alto-contraste .modal-footer {
+
+    border-top:2px solid #fff !important;
 }
 
-/* Destaque para o título no Modo Escuro */
-body.dark .header-title,
-body.dark-mode .header-title,
-body.modo-escuro .header-title,
-html.dark .header-title,
-[data-theme="dark"] .header-title {
-    color: #60a5fa !important;
+
+body.alto-contraste .btn-fechar-modal {
+
+    background:#FFFF00 !important;
+    color:#000 !important;
+    border:2px solid #FFFF00 !important;
 }
 
-/* --- MODO ALTO CONTRASTE --- */
-body.alto-contraste .main-header,
-body.contrast .main-header,
-[data-theme="contrast"] .main-header {
-    background-color: #000000 !important;
-    border-bottom: 2px solid #ffff00 !important;
+
+body.alto-contraste .btn-fechar-modal:hover {
+
+    background:#fff !important;
+    color:#000 !important;
 }
 
-body.alto-contraste .main-header *,
-body.contrast .main-header *,
-[data-theme="contrast"] .main-header * {
-    color: #ffff00 !important;
+
+/* SCROLLBAR */
+
+body.alto-contraste .ocorrencias-lista::-webkit-scrollbar-thumb {
+
+    background:#FFFF00 !important;
 }
 
-/* ==========================================================
-   CONFIGURAÇÕES VLIBRAS
-========================================================== */
 
-/* Esconde o botão/bolinha azul padrão do VLibras */
-[vw-access-button] {
-    display: none !important;
+/* =========================================================
+   🌓🌙 ALTO CONTRASTE + MODO ESCURO
+   O ALTO CONTRASTE TEM PRIORIDADE
+========================================================= */
+
+body.alto-contraste.dark-mode,
+body.alto-contraste.modo-escuro,
+body.alto-contraste[data-theme="dark"] {
+
+    background:#000 !important;
+    color:#fff !important;
 }
 
-/* Garante que o avatar do robô fique visível por cima dos elementos */
-.vw-plugin-wrapper {
-    z-index: 999999 !important;
+
+body.alto-contraste.dark-mode .dashboard-header,
+body.alto-contraste.modo-escuro .dashboard-header,
+body.alto-contraste[data-theme="dark"] .dashboard-header {
+
+    background:#000 !important;
+    border-bottom:2px solid #fff !important;
+}
+
+
+body.alto-contraste.dark-mode .card,
+body.alto-contraste.modo-escuro .card,
+body.alto-contraste[data-theme="dark"] .card {
+
+    background:#000 !important;
+    border:2px solid #fff !important;
+}
+
+
+body.alto-contraste.dark-mode .card.dicas,
+body.alto-contraste.modo-escuro .card.dicas,
+body.alto-contraste[data-theme="dark"] .card.dicas {
+
+    background:#000 !important;
+}
+
+
+body.alto-contraste.dark-mode .header-left h1,
+body.alto-contraste.modo-escuro .header-left h1,
+body.alto-contraste[data-theme="dark"] .header-left h1 {
+
+    color:#FFFF00 !important;
+}
+
+
+body.alto-contraste.dark-mode .calendar-header strong,
+body.alto-contraste.modo-escuro .calendar-header strong,
+body.alto-contraste[data-theme="dark"] .calendar-header strong {
+
+    color:#FFFF00 !important;
+}
+
+
+body.alto-contraste.dark-mode .dia,
+body.alto-contraste.modo-escuro .dia,
+body.alto-contraste[data-theme="dark"] .dia {
+
+    background:#000 !important;
+    color:#FFFF00 !important;
+    border:1px solid #fff !important;
+}
+
+
+/* =========================================================
+   GARANTIA — TEXTOS IMPORTANTES
+========================================================= */
+
+body.alto-contraste .calendar-title h2,
+body.alto-contraste .modal-titulo h3,
+body.alto-contraste .ocorrencia-numero,
+body.alto-contraste .dado strong {
+
+    font-weight:700 !important;
 }
 
 /* =========================================================
-   ALTO CONTRASTE — CAMPOS DE SEGURANÇA
-   ========================================================= */
+   OVERLAY
+========================================================= */
 
-/* Texto dos campos de senha */
-body.alto-contraste .seguranca-box .input-box,
-body.alto-contraste .seguranca-box .input-box *,
-body.alto-contraste .seguranca-box .input-box input {
-    color: #ffffff !important;
+.overlay {
+    margin-left:260px;
+    min-height:100vh;
+    width:calc(100% - 260px);
+
+    overflow-y:auto;
+
+    background:#f4f5f6;
+
+    padding:20px 30px;
+
+    transition:
+        background .3s ease,
+        color .3s ease;
 }
 
-/* Ícones continuam amarelos */
-body.alto-contraste .seguranca-box .input-box > i,
-body.alto-contraste .seguranca-box .input-box i {
-    color: #ffd600 !important;
-}
-
-/* Placeholder também branco */
-body.alto-contraste .seguranca-box .input-box input::placeholder {
-    color: #ffffff !important;
-    opacity: 1 !important;
-}
 
 /* =========================================================
-   ALTO CONTRASTE — TEXTOS DOS CAMPOS
-   ========================================================= */
+   MAIN
+========================================================= */
 
-/* Todos os textos dentro dos input-box ficam brancos */
-body.alto-contraste .input-box,
-body.alto-contraste .input-box *,
-body.alto-contraste .input-box input {
-    color: #ffffff !important;
+.main {
+    width:100%;
+    padding-top:110px;
+    padding-left:20px;
+    padding-right:20px;
+    min-height:100vh;
+    overflow:hidden;
+
+    background:transparent;
 }
 
-/* Ícones ficam amarelos */
-body.alto-contraste .input-box > i,
-body.alto-contraste .input-box i {
-    color: #ffd600 !important;
-}
-
-/* Placeholder branco */
-body.alto-contraste .input-box input::placeholder {
-    color: #ffffff !important;
-    opacity: 1 !important;
-}
 
 /* =========================================================
-   ALTO CONTRASTE — TÍTULOS E TEXTOS AZUIS
-   ========================================================= */
+   🌙 OVERLAY + MAIN — MODO ESCURO
+========================================================= */
 
-body.alto-contraste .perfil-esquerda h1,
-body.alto-contraste .perfil-esquerda h2,
-body.alto-contraste .perfil-esquerda h3,
-body.alto-contraste .perfil-esquerda p,
-body.alto-contraste .perfil-esquerda span,
-body.alto-contraste .perfil-esquerda strong,
-body.alto-contraste .perfil-direita h1,
-body.alto-contraste .perfil-direita h2,
-body.alto-contraste .perfil-direita h3,
-body.alto-contraste .perfil-direita p,
-body.alto-contraste .perfil-direita span,
-body.alto-contraste .perfil-direita strong {
-    color: #ffd600 !important;
+body.dark-mode .overlay,
+body.modo-escuro .overlay,
+body[data-theme="dark"] .overlay {
+
+    background:#0f1724 !important;
+    color:#e5edf7;
 }
 
 
-/* TÍTULO "PERFIL DO FUNCIONÁRIO" */
-body.alto-contraste .perfil-esquerda h1,
-body.alto-contraste .perfil-esquerda .titulo,
-body.alto-contraste .perfil-esquerda .title {
-    color: #ffd600 !important;
+body.dark-mode .main,
+body.modo-escuro .main,
+body[data-theme="dark"] .main {
+
+    background:transparent !important;
 }
 
-
-/* SUBTÍTULO */
-body.alto-contraste .perfil-esquerda .subtitle,
-body.alto-contraste .perfil-esquerda .subtitulo {
-    color: #ffd600 !important;
-}
-
-
-/* ÍCONES AZUIS */
-body.alto-contraste .perfil-esquerda i,
-body.alto-contraste .perfil-direita i {
-    color: #ffd600 !important;
-}
-
-
-/* CÍRCULO COM A LETRA */
-body.alto-contraste .circulo {
-    background: #ffd600 !important;
-    color: #000000 !important;
-}
-
-
-/* LINHA AZUL ABAIXO DO TEXTO */
-body.alto-contraste .perfil-esquerda hr,
-body.alto-contraste .perfil-esquerda::after {
-    border-color: #ffd600 !important;
-    background-color: #ffd600 !important;
-}
 
 /* =========================================================
-   ALTO CONTRASTE — BOLA DO PERFIL
-   ========================================================= */
+   🌓 OVERLAY + MAIN — ALTO CONTRASTE
+========================================================= */
 
-body.alto-contraste .circulo {
-    background: #ffd600 !important;
-    color: #000000 !important;
-    border-color: #ffd600 !important;
+body.alto-contraste .overlay {
+
+    background:#000 !important;
+    color:#fff !important;
 }
 
-body.alto-contraste .circulo * {
-    color: #000000 !important;
+
+body.alto-contraste .main {
+
+    background:transparent !important;
 }
+
 
 /* =========================================================
-   ALTO CONTRASTE — CÍRCULO DO PERFIL
-   ========================================================= */
+   🌓🌙 ALTO CONTRASTE + MODO ESCURO
+========================================================= */
 
-/* Força o círculo azul a ficar amarelo */
-body.alto-contraste .circulo,
-body.alto-contraste .fundo-capacete,
-body.alto-contraste .avatar,
-body.alto-contraste .foto-perfil {
-    background: #ffd600 !important;
-    background-color: #ffd600 !important;
-    border-color: #ffd600 !important;
-    box-shadow: none !important;
-}
+body.alto-contraste.dark-mode .overlay,
+body.alto-contraste.modo-escuro .overlay,
+body.alto-contraste[data-theme="dark"] .overlay {
 
-/* Letra F dentro do círculo */
-body.alto-contraste .circulo *,
-body.alto-contraste .fundo-capacete *,
-body.alto-contraste .avatar *,
-body.alto-contraste .foto-perfil * {
-    color: #000000 !important;
-}
-
-/* Caso a letra F seja um texto direto */
-body.alto-contraste .circulo {
-    color: #000000 !important;
-}
-
-/* =========================================================
-   ALTO CONTRASTE — PERFIL DO FUNCIONÁRIO
-   ========================================================= */
-
-/* TÍTULO */
-body.alto-contraste .header-left h1,
-body.alto-contraste .header-title {
-    color: #ffd600 !important;
-}
-
-/* SUBTÍTULO */
-body.alto-contraste .header-left span {
-    color: #ffd600 !important;
-}
-
-/* BOLA COM A LETRA "F" */
-body.alto-contraste .perfil-esquerda .circulo {
-    background: #ffd600 !important;
-    color: #000000 !important;
-}
-
-/* CASO O "F" TENHA OUTRO ELEMENTO */
-body.alto-contraste .circulo,
-body.alto-contraste .circulo * {
-    background-color: #ffd600 !important;
-    color: #000000 !important;
-}
-
-/* LINHA AZUL ABAIXO DO TEXTO */
-body.alto-contraste .perfil-esquerda::after,
-body.alto-contraste .perfil-esquerda .linha,
-body.alto-contraste .perfil-esquerda .linha-azul,
-body.alto-contraste .perfil-esquerda .underline,
-body.alto-contraste .perfil-esquerda hr {
-    background: #ffd600 !important;
-    background-color: #ffd600 !important;
-    border-color: #ffd600 !important;
-    color: #ffd600 !important;
-}
-
-/* SE A LINHA FOR FEITA COM BORDER */
-body.alto-contraste .header-left h1::after,
-body.alto-contraste .header-title::after {
-    background: #ffd600 !important;
-    border-color: #ffd600 !important;
-}
-
-/* GARANTE QUE ÍCONES/ELEMENTOS AZUIS DA ÁREA FIQUEM AMARELOS */
-body.alto-contraste .perfil-esquerda i,
-body.alto-contraste .perfil-esquerda svg {
-    color: #ffd600 !important;
-    fill: #ffd600 !important;
-}
-
-body.alto-contraste .circulo,
-body.alto-contraste .circulo * {
-    background-color: #ffd600 !important;
-    color: #000000 !important;
-}
-
-/* =========================================================
-   ALTO CONTRASTE — AVATAR DO PERFIL
-   ========================================================= */
-
-/* BOLA AMARELA */
-body.alto-contraste .perfil-esquerda .avatar {
-    background: #ffd600 !important;
-    background-color: #ffd600 !important;
-    
-    /* LETRA PRETA */
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-}
-
-/* LETRA F PRETA */
-body.alto-contraste .perfil-esquerda .avatar::first-letter {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
+    background:#000 !important;
+    color:#fff !important;
 }

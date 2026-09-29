@@ -1,10 +1,8 @@
 /* =========================================================
    SIDEBAR NEXA
 ========================================================= */
-
 .sidebar {
     position: fixed !important;
-
     top: 0 !important;
     left: 0 !important;
 
@@ -17,12 +15,13 @@
     background: #06294a !important;
 
     overflow: hidden !important;
-
     box-sizing: border-box !important;
+
+    /* BORDAS ARREDONDADAS */
+    border-radius: 0 20px 20px 0 !important;
 
     z-index: 1000 !important;
 }
-
 
 /* =========================================================
    FUNDO DA CONSTRUÇÃO

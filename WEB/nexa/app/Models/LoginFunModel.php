@@ -22,7 +22,7 @@ class LoginFunModel extends Model
     public function verificarLogin($email)
     {
         return $this
-            ->where('EMAIL_CORPORATIVO', $email)
+            ->where('EMAIL_CORPORATIVO', trim($email))
             ->first();
     }
 }

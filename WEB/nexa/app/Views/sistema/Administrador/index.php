@@ -381,14 +381,16 @@
                 </div>
 
 
-                  <div class="perfil-direita">
+                <div class="perfil-direita">
 
     <img
+        id="imagemSeguranca"
         src="<?= base_url('assets/images/capacete_perfil.png') ?>"
         alt="Segurança com capacete"
         class="imagem-seguranca"
     >
-            </div>
+
+</div>
 </div>
 
 
@@ -557,12 +559,15 @@
 
                         <i class="fas fa-phone"></i>
 
-                        <input
-                            id="TELEFONE_FUNC"
-                            name="TELEFONE"
-                            type="text"
-                            value="<?= $administrador['TELEFONE'] ?>"
-                        >
+                      <input
+    id="TELEFONE_FUNC"
+    name="TELEFONE"
+    type="text"
+    value="<?= esc($administrador['TELEFONE'] ?? '') ?>"
+    maxlength="15"
+    inputmode="numeric"
+    placeholder="(00) 00000-0000"
+>
 
                     </div>
 
@@ -745,230 +750,385 @@
         );
     </script>
 
+<script>
 
-    <script>
+/* =========================================================
+   ELEMENTOS
+========================================================= */
 
-        /* =========================================================
-           ELEMENTOS
-        ========================================================= */
+const mudarSenha =
+    document.getElementById('mudar-senha');
 
-        const mudarSenha =
-            document.getElementById('mudar-senha');
+const atencao =
+    document.getElementById('atencao');
 
-        const atencao =
-            document.getElementById('atencao');
+const senhaIPT =
+    document.getElementById('SENHA');
 
-        const senhaIPT =
-            document.getElementById('SENHA');
+const btnEditar =
+    document.getElementById('botao_editar');
 
-        const btnEditar =
-            document.getElementById('botao_editar');
+const btnSalvar =
+    document.getElementById('botao_salvar');
 
-        const btnSalvar =
-            document.getElementById('botao_salvar');
+const senhaBox =
+    document.getElementById('senhaBox');
 
-        const senhaBox =
-            document.getElementById('senhaBox');
+const confirmarSenhaBox =
+    document.getElementById('confirmarSenhaBox');
 
-        const confirmarSenhaBox =
-            document.getElementById('confirmarSenhaBox');
+const clique_editar =
+    document.getElementById('clique-editar');
 
-        const clique_editar =
-            document.getElementById('clique-editar');
+const telefoneInput =
+    document.getElementById('TELEFONE_FUNC');
 
 
-        /* =========================================================
-           SUBMIT
-        ========================================================= */
+/* =========================================================
+   MÁSCARA DE TELEFONE
+   Aceita:
+   (11) 99999-9999
+   (11) 9999-9999
+========================================================= */
 
-        document
-            .getElementById('editar-perfil')
-            .addEventListener('submit', function(event) {
+if (telefoneInput) {
 
-                event.preventDefault();
+    telefoneInput.addEventListener('input', function () {
 
-                const senha =
-                    document.getElementById('SENHA').value;
+        let valor = this.value.replace(/\D/g, '');
 
-                const confirmar =
-                    document.getElementById('CONFIRMAR_SENHA').value;
+        // Máximo de 11 números
+        valor = valor.substring(0, 11);
 
+        if (valor.length <= 10) {
 
-                /* ---------------------------------------------
-                   VALIDAÇÃO
-                --------------------------------------------- */
+            // Telefone fixo
+            valor = valor.replace(
+                /^(\d{2})(\d{4})(\d{0,4})$/,
+                '($1) $2-$3'
+            );
 
-                if (
-                    senha !== '' &&
-                    senha !== confirmar
-                ) {
+        } else {
 
-                    Swal.fire({
-
-                        icon: 'error',
-
-                        title: 'Erro',
-
-                        text:
-                            'As senhas não coincidem.',
-
-                        confirmButtonColor:
-                            '#0a66c2',
-
-                        confirmButtonText:
-                            'Entendi'
-
-                    });
-
-                    return;
-                }
-
-
-                /* ---------------------------------------------
-                   CONFIRMAÇÃO
-                --------------------------------------------- */
-
-                Swal.fire({
-
-                    title: 'Confirmar alterações?',
-
-                    text:
-                        'Deseja realmente salvar as alterações do seu perfil?',
-
-                    icon: 'warning',
-
-                    showCancelButton: true,
-
-                    confirmButtonText:
-                        'Sim, salvar',
-
-                    cancelButtonText:
-                        'Cancelar',
-
-                    confirmButtonColor:
-                        '#0a66c2',
-
-                    cancelButtonColor:
-                        '#6c757d'
-
-                }).then((result) => {
-
-                    if (result.isConfirmed) {
-
-                        this.submit();
-
-                    }
-
-                });
-
-            });
-
-
-        /* =========================================================
-           EDITAR
-        ========================================================= */
-
-        function editar() {
-
-            document
-                .getElementById('formulario-demonstracao')
-                .style.display = 'none';
-
-
-            document
-                .getElementById('formulario-funcional')
-                .style.display = 'grid';
-
-
-            document
-                .getElementById('grupo-acoes')
-                .style.display = 'flex';
-
-
-            document
-                .getElementById('atencao')
-                .style.display = 'block';
-
-
-            document
-                .getElementById('clique-editar')
-                .style.display = 'none';
-
-
-            document
-                .getElementById('mudar-senha')
-                .style.display = 'block';
-
-
-            document
-                .getElementById('senhaBox')
-                .style.display = 'flex';
-
-
-            document
-                .getElementById('confirmarSenhaBox')
-                .style.display = 'flex';
-
-
-            btnEditar.style.display = 'none';
-
-            btnSalvar.style.display = 'flex';
+            // Celular
+            valor = valor.replace(
+                /^(\d{2})(\d{5})(\d{0,4})$/,
+                '($1) $2-$3'
+            );
         }
 
+        this.value = valor;
 
-        /* =========================================================
-           CANCELAR
-        ========================================================= */
+    });
 
-        function cancelarEdicao() {
+}
+
+
+/* =========================================================
+   SUBMIT DO FORMULÁRIO
+========================================================= */
+
+document
+    .getElementById('editar-perfil')
+    .addEventListener('submit', function(event) {
+
+        event.preventDefault();
+
+        const senha =
+            document.getElementById('SENHA').value;
+
+        const confirmar =
+            document.getElementById('CONFIRMAR_SENHA').value;
+
+        const telefone =
+            document.getElementById('TELEFONE_FUNC').value;
+
+        const telefoneNumeros =
+            telefone.replace(/\D/g, '');
+
+
+        /* -------------------------------------------------
+           VALIDAÇÃO DO TELEFONE
+        ------------------------------------------------- */
+
+        if (
+            telefoneNumeros.length !== 10 &&
+            telefoneNumeros.length !== 11
+        ) {
 
             Swal.fire({
 
-                title: 'Cancelar edição?',
+                icon: 'error',
+
+                title: 'Telefone inválido',
 
                 text:
-                    'As alterações realizadas serão descartadas.',
-
-                icon: 'question',
-
-                showCancelButton: true,
-
-                confirmButtonText:
-                    'Sim, cancelar',
-
-                cancelButtonText:
-                    'Continuar editando',
+                    'Digite um telefone válido com DDD.',
 
                 confirmButtonColor:
-                    '#d33',
+                    '#0a66c2',
 
-                cancelButtonColor:
-                    '#0a66c2'
-
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-
-                    location.reload();
-
-                }
+                confirmButtonText:
+                    'Entendi'
 
             });
 
+            return;
         }
 
 
-       
+        /* -------------------------------------------------
+           VALIDAÇÃO DAS SENHAS
+        ------------------------------------------------- */
+
+        if (
+            senha !== '' &&
+            senha !== confirmar
+        ) {
+
+            Swal.fire({
+
+                icon: 'error',
+
+                title: 'Erro',
+
+                text:
+                    'As senhas não coincidem.',
+
+                confirmButtonColor:
+                    '#0a66c2',
+
+                confirmButtonText:
+                    'Entendi'
+
+            });
+
+            return;
+        }
 
 
-       
+        /* -------------------------------------------------
+           CONFIRMAÇÃO
+        ------------------------------------------------- */
+
+        Swal.fire({
+
+            title:
+                'Confirmar alterações?',
+
+            text:
+                'Deseja realmente salvar as alterações do seu perfil?',
+
+            icon:
+                'warning',
+
+            showCancelButton:
+                true,
+
+            confirmButtonText:
+                'Sim, salvar',
+
+            cancelButtonText:
+                'Cancelar',
+
+            confirmButtonColor:
+                '#0a66c2',
+
+            cancelButtonColor:
+                '#6c757d'
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                this.submit();
+
+            }
+
+        });
+
+    });
 
 
-        
-       
+/* =========================================================
+   EDITAR PERFIL
+========================================================= */
+
+function editar() {
+
+    document
+        .getElementById('formulario-demonstracao')
+        .style.display = 'none';
 
 
-        
+    document
+        .getElementById('formulario-funcional')
+        .style.display = 'grid';
+
+
+    document
+        .getElementById('grupo-acoes')
+        .style.display = 'flex';
+
+
+    document
+        .getElementById('atencao')
+        .style.display = 'block';
+
+
+    document
+        .getElementById('clique-editar')
+        .style.display = 'none';
+
+
+    document
+        .getElementById('mudar-senha')
+        .style.display = 'block';
+
+
+    document
+        .getElementById('senhaBox')
+        .style.display = 'flex';
+
+
+    document
+        .getElementById('confirmarSenhaBox')
+        .style.display = 'flex';
+
+
+    btnEditar.style.display = 'none';
+
+    btnSalvar.style.display = 'flex';
+
+
+    // Coloca o cursor no nome
+    document
+        .getElementById('NOME_COMPLETO_FUNC')
+        .focus();
+
+}
+
+
+/* =========================================================
+   IMAGEM DO PERFIL
+   CLARO / ESCURO / ALTO CONTRASTE
+========================================================= */
+
+function atualizarImagemPerfil() {
+
+    const imagem =
+        document.getElementById('imagemSeguranca');
+
+    if (!imagem) {
+        return;
+    }
+
+    const modoEscuro =
+        document.body.classList.contains('dark-mode');
+
+    const altoContraste =
+        document.body.classList.contains('alto-contraste');
+
+    const imagemClara =
+        "<?= base_url('assets/images/capacete_perfil.png') ?>";
+
+    const imagemEscura =
+        "<?= base_url('assets/images/capacete_perfil_escuro.png') ?>";
+
+
+    if (modoEscuro || altoContraste) {
+
+        imagem.src = imagemEscura;
+
+    } else {
+
+        imagem.src = imagemClara;
+
+    }
+
+}
+
+
+/* =========================================================
+   CARREGAR IMAGEM AO ABRIR A PÁGINA
+========================================================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+
+        atualizarImagemPerfil();
+
+    }
+);
+
+
+/* =========================================================
+   DETECTAR MUDANÇA DE TEMA
+========================================================= */
+
+const observadorModo =
+    new MutationObserver(function () {
+
+        atualizarImagemPerfil();
+
+    });
+
+
+observadorModo.observe(
+    document.body,
+    {
+        attributes: true,
+        attributeFilter: ['class']
+    }
+);
+
+
+/* =========================================================
+   CANCELAR EDIÇÃO
+========================================================= */
+
+function cancelarEdicao() {
+
+    Swal.fire({
+
+        title:
+            'Cancelar edição?',
+
+        text:
+            'As alterações realizadas serão descartadas.',
+
+        icon:
+            'question',
+
+        showCancelButton:
+            true,
+
+        confirmButtonText:
+            'Sim, cancelar',
+
+        cancelButtonText:
+            'Continuar editando',
+
+        confirmButtonColor:
+            '#d33',
+
+        cancelButtonColor:
+            '#0a66c2'
+
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            location.reload();
+
+        }
+
+    });
+
+}
+
+
     </script>
 
 <!-- COMPONENTE VLIBRAS -->

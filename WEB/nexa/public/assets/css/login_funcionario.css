@@ -692,3 +692,167 @@ body.fonte-90 .titulo {
 body.fonte-80 .titulo {
     font-size: 26px;
 }
+
+
+
+
+.btn-rfid {
+    width: 100%;
+    height: 48px;
+
+    margin-top: 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    background: transparent;
+    color: #1f2937;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn-rfid:hover {
+    background: #0A66C2;
+    border-color: #0A66C2;
+    color: #fff;
+}
+
+.btn-rfid:active {
+    transform: scale(0.98);
+}
+
+.btn-rfid:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* =====================================================
+   LOGIN COM CARTÃO
+===================================================== */
+
+.btn-login-cartao {
+    width: 100%;
+    height: 48px;
+
+    margin-top: 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #334155;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.btn-login-cartao:hover {
+    background: #f1f5f9;
+
+    border-color: #0A66C2;
+
+    color: #0A66C2;
+}
+
+
+.btn-login-cartao.aguardando {
+    background: #0A66C2;
+
+    border-color: #0A66C2;
+
+    color: #ffffff;
+
+    cursor: default;
+}
+
+
+/* =====================================================
+   STATUS RFID
+===================================================== */
+
+.status-rfid {
+    margin-top: 12px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+.status-rfid i {
+    margin-right: 5px;
+}
+
+/* =====================================================
+   LOGIN COM CARTÃO — DARK MODE
+===================================================== */
+
+body.dark-mode .btn-login-cartao,
+body.modo-escuro .btn-login-cartao {
+    background: transparent;
+
+    border-color: #475569;
+
+    color: #d8e3ee;
+}
+
+
+body.dark-mode .btn-login-cartao:hover,
+body.modo-escuro .btn-login-cartao:hover {
+    background: rgba(10, 102, 194, 0.12);
+
+    border-color: #5B9BEA;
+
+    color: #5B9BEA;
+}
+
+
+body.dark-mode .btn-login-cartao.aguardando,
+body.modo-escuro .btn-login-cartao.aguardando {
+    background: #0A66C2;
+
+    border-color: #0A66C2;
+
+    color: #ffffff;
+}
+
+
+body.dark-mode .status-rfid,
+body.modo-escuro .status-rfid {
+    color: #94a3b8;
+}

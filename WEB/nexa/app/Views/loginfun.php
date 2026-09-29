@@ -3,567 +3,1123 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <title>NEXA | Login</title>
+<title>NEXA | Login</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <!-- FONT -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+<!-- FONT -->
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
 
-    <!-- ÍCONES -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    >
+<!-- ÍCONES -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+>
 
-    <!-- ACESSIBILIDADE -->
-    
+<!-- ACESSIBILIDADE -->
+<link
+    rel="stylesheet"
+    href="<?= base_url('assets/css/acessibilidade_login.css') ?>"
+>
 
-    <link
-        rel="stylesheet"
-        href="<?= base_url('assets/css/acessibilidade_login.css') ?>"
-    >
-
-    <!-- LOGIN -->
-    <link
-        rel="stylesheet"
-        href="<?= base_url('assets/css/login_funcionario.css') ?>"
-    >
+<!-- LOGIN -->
+<link
+    rel="stylesheet"
+    href="<?= base_url('assets/css/login_funcionario.css') ?>"
+>
 
 </head>
-
 
 <body>
 
 
-    <!-- =====================================================
-         ACESSIBILIDADE
-    ====================================================== -->
+<!-- =====================================================
+     ACESSIBILIDADE
+====================================================== -->
 
-    <div class="access-menu">
+<div class="access-menu">
+
+    <button
+        class="gear-btn"
+        onclick="toggleAccessMenu()"
+    >
+        <i class="fas fa-cog"></i>
+    </button>
+
+
+    <div
+        class="access-options"
+        id="accessOptions"
+    >
 
         <button
-            class="gear-btn"
-            onclick="toggleAccessMenu()"
+            class="access-btn"
+            onclick="Acessibilidade.toggleContraste()"
         >
-            <i class="fas fa-cog"></i>
+            <i class="fas fa-adjust"></i>
         </button>
 
 
-        <div
-            class="access-options"
-            id="accessOptions"
+        <button
+            class="access-btn"
+            onclick="toggleDark()"
         >
+            <i class="fas fa-moon"></i>
+        </button>
 
-            <button
-                class="access-btn"
-                onclick="Acessibilidade.toggleContraste()"
+
+        <button
+            class="access-btn"
+            onclick="Acessibilidade.aumentarFonte()"
+        >
+            A+
+        </button>
+
+
+        <button
+            class="access-btn"
+            onclick="Acessibilidade.diminuirFonte()"
+        >
+            A-
+        </button>
+
+
+        <button
+            class="access-btn"
+            onclick="Acessibilidade.lerPagina()"
+        >
+            <i class="fas fa-volume-up"></i>
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTAINER PRINCIPAL
+====================================================== -->
+
+<div class="login-container">
+
+
+    <!-- =================================================
+         LADO ESQUERDO
+    ================================================== -->
+
+    <div class="left-side">
+
+
+        <!-- =================================================
+             CARROSSEL DE VÍDEOS
+        ================================================== -->
+
+        <div class="video-carousel">
+
+            <video
+                id="videoCarousel"
+                autoplay
+                muted
+                playsinline
+                preload="auto"
             >
-                <i class="fas fa-adjust"></i>
-            </button>
+
+                <source
+                    src="<?= base_url('assets/videos/epi_construcao_1.mp4') ?>"
+                    type="video/mp4"
+                >
+
+            </video>
+
+        </div>
 
 
-            <button
-                class="access-btn"
-                onclick="toggleDark()"
-            >
-                <i class="fas fa-moon"></i>
-            </button>
+        <!-- =================================================
+             TEXTO SOBRE O VÍDEO
+        ================================================== -->
 
+        <div class="left-content">
 
-            <button
-                class="access-btn"
-                onclick="Acessibilidade.aumentarFonte()"
-            >
-                A+
-            </button>
+            <div class="linha"></div>
 
+            <h2>
 
-            <button
-                class="access-btn"
-                onclick="Acessibilidade.diminuirFonte()"
-            >
-                A-
-            </button>
+                Segurança
 
+                <strong>
+                    em primeiro lugar.
+                </strong>
 
-            <button
-                class="access-btn"
-                onclick="Acessibilidade.lerPagina()"
-            >
-                <i class="fas fa-volume-up"></i>
-            </button>
+            </h2>
+
+            <p>
+
+                Tecnologia e prevenção trabalhando
+                juntas para um ambiente mais seguro.
+
+            </p>
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         CONTAINER PRINCIPAL
-    ====================================================== -->
+    <!-- =================================================
+         LADO DIREITO
+    ================================================== -->
 
-    <div class="login-container">
+    <div class="right-side">
 
 
         <!-- =================================================
-             LADO ESQUERDO
+             LOGO
         ================================================== -->
 
-        <div class="left-side">
+        <div class="logo-container">
+
+            <img
+                class="logo-light"
+                src="<?= base_url('assets/images/logo_transparente.png') ?>"
+                alt="NEXA - Safety at the Core"
+            >
+
+            <img
+                class="logo-dark"
+                src="<?= base_url('assets/images/logo_escura.png') ?>"
+                alt="NEXA - Safety at the Core"
+            >
+
+        </div>
+
+
+        <!-- =================================================
+             ÁREA DO FORMULÁRIO
+        ================================================== -->
+
+        <div class="login-form-area">
+
+
+            <h1 class="titulo">
+                Login
+            </h1>
+
+
+            <p class="subtitulo">
+                Área do Funcionário
+            </p>
 
 
             <!-- =================================================
-                 CARROSSEL DE VÍDEOS
+                 MENSAGEM DE ERRO
             ================================================== -->
 
-            <div class="video-carousel">
+            <?php if (session()->getFlashdata('erro')): ?>
+
+                <div class="erro-login">
+
+                    <?= esc(session()->getFlashdata('erro')) ?>
+
+                </div>
+
+            <?php endif; ?>
 
 
-                <video
-                    id="videoCarousel"
-                    autoplay
-                    muted
-                    playsinline
-                    preload="auto"
-                >
+            <!-- =================================================
+                 FORMULÁRIO
+            ================================================== -->
 
-                    <source
-                        src="<?= base_url('assets/videos/epi_construcao_1.mp4') ?>"
-                        type="video/mp4"
+            <form
+                method="post"
+                action="<?= base_url('/loginfun/autenticar') ?>"
+            >
+
+                <?= csrf_field() ?>
+
+                <div class="input-box">
+
+                    <i class="fas fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        name="email_fun"
+                        placeholder="E-mail corporativo"
+                        autocomplete="email"
+                        
                     >
 
-                </video>
+                </div>
 
+
+                <div class="input-box">
+
+                    <i class="fas fa-lock"></i>
+
+                    <input
+                        type="password"
+                        name="senha"
+                        placeholder="Senha"
+                        autocomplete="current-password"
+                        
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-login"
+                >
+
+                    Entrar
+
+                </button>
+
+                <button
+                    type="button"
+                    id="btnLoginCartao"
+                    class="btn-login-cartao"
+                    onclick="ativarLoginCartao()"
+                >
+                    <i class="fas fa-id-card"></i>
+                    Login com o cartão
+                </button>
+
+                <div
+                    id="statusRFID"
+                    class="status-rfid"
+                    style="display: none;"
+                >
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Aguardando aproximação do cartão...
+                </div>
+
+            </form>
+
+
+            <!-- =================================================
+                 LINKS
+            ================================================== -->
+
+            <div class="links">
+
+                <a href="<?= base_url('/') ?>">
+
+                    Voltar para página inicial
+
+                </a>
 
             </div>
 
 
-
             <!-- =================================================
-                 TEXTO SOBRE O VÍDEO
+                 RODAPÉ
             ================================================== -->
 
-            <div class="left-content">
+            <div class="footer">
 
-
-                <!-- LINHA DECORATIVA -->
-
-                <div class="linha"></div>
-
-
-                <!-- TÍTULO -->
-
-                <h2>
-
-                    Segurança
-
-                    <strong>
-                        em primeiro lugar.
-                    </strong>
-
-                </h2>
-
-
-                <!-- TEXTO -->
-
-                <p>
-
-                    Tecnologia e prevenção trabalhando
-                    juntas para um ambiente mais seguro.
-
-                </p>
-
+                © 2026 — NEXA
 
             </div>
 
 
         </div>
-
-
-
-        <!-- =================================================
-             LADO DIREITO
-        ================================================== -->
-
-        <div class="right-side">
-
-
-            <!-- =================================================
-                 LOGO
-            ================================================== -->
-
-          
-            <div class="logo-container">
-
-                <img 
-                    class="logo-light"
-                    src="<?= base_url('assets/images/logo_transparente.png') ?>"
-                    alt="NEXA - Safety at the Core"
-                >
-        
-                <img 
-                    class="logo-dark"
-                    src="<?= base_url('assets/images/logo_escura.png') ?>"
-                    alt="NEXA - Safety at the Core"
-                >
-        
-            </div>
-            <!-- ÁREA DO FORMULÁRIO -->
-
-            <div class="login-form-area">
-
-
-                <!-- =================================================
-                     TÍTULO
-                ================================================== -->
-
-                <h1 class="titulo">
-
-                    Login
-
-                </h1>
-
-
-                <!-- =================================================
-                     SUBTÍTULO
-                ================================================== -->
-
-                <p class="subtitulo">
-
-                    Área do Funcionário
-
-                </p>
-
-
-
-                <!-- =================================================
-                     MENSAGEM DE ERRO
-                ================================================== -->
-
-                <?php if(session()->getFlashdata('erro')): ?>
-
-                    <div class="erro-login">
-
-                        <?= session()->getFlashdata('erro') ?>
-
-                    </div>
-
-                <?php endif; ?>
-
-
-
-                <!-- =================================================
-                     FORMULÁRIO
-                ================================================== -->
-
-                <form
-                    method="post"
-                    action="<?= base_url('/loginfun/autenticar') ?>"
-                >
-
-
-                    <!-- =================================================
-                         E-MAIL
-                    ================================================== -->
-
-                    <div class="input-box">
-
-
-                        <i class="fas fa-envelope"></i>
-
-
-                        <input
-                            type="email"
-                            name="email_fun"
-                            placeholder="E-mail corporativo"
-                            autocomplete="email"
-                            
-                        >
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         SENHA
-                    ================================================== -->
-
-                    <div class="input-box">
-
-
-                        <i class="fas fa-lock"></i>
-
-
-                        <input
-                            type="password"
-                            name="senha"
-                            placeholder="Senha"
-                            autocomplete="current-password"
-                            
-                        >
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         BOTÃO ENTRAR
-                    ================================================== -->
-
-                    <button
-                        type="submit"
-                        class="btn-login"
-                    >
-
-                        Entrar
-
-                    </button>
-
-
-                </form>
-
-
-
-                <!-- =================================================
-                     LINKS
-                ================================================== -->
-
-                <div class="links">
-
-
-                    <!-- RECUPERAÇÃO -->
-
-                   
-
-                    <a href="<?= base_url('/') ?>">
-
-                        Voltar para página inicial
-
-                    </a>
-
-
-                </div>
-
-
-
-                <!-- =================================================
-                     RODAPÉ
-                ================================================== -->
-
-                <div class="footer">
-
-                    © 2026 — NEXA
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
 
     </div>
 
-    <!-- =====================================================
-         JAVASCRIPT DE ACESSIBILIDADE
-    ====================================================== -->
-
-    <script>
-  
-    src="<?= base_url('assets/js/acessibilidade.js') ?>"
-    </script>
+</div>
 
 
+<!-- =====================================================
+     JAVASCRIPT DE ACESSIBILIDADE
+====================================================== -->
 
-    <!-- =====================================================
-         CARROSSEL DE VÍDEOS
-    ====================================================== -->
-
-
-    <script>
-        (function () {
-
-            let verificandoRFID = false;
-
-            async function verificarRFID() {
-
-                // Evita duas consultas simultâneas
-                if (verificandoRFID) {
-                    return;
-                }
-
-                verificandoRFID = true;
-
-                try {
-
-                    const resposta = await fetch(
-                        '<?= base_url("api/rfid/status") ?>',
-                        {
-                            method: 'GET',
-                            headers: {
-                                'Accept': 'application/json'
-                            },
-                            cache: 'no-store'
-                        }
-                    );
-
-                    if (!resposta.ok) {
-                        return;
-                    }
-
-                    const dados = await resposta.json();
-
-                    console.log('RFID:', dados);
-
-                    // ==========================================
-                    // NOVO ACESSO DETECTADO
-                    // ==========================================
-
-                    if (
-                        dados.sucesso === true &&
-                        dados.novoAcesso === true
-                    ) {
-
-                        console.log(
-                            'RFID identificado:',
-                            dados.funcionario?.nome
-                        );
-
-                        console.log(
-                            'Câmera:',
-                            dados.camera?.identificador
-                        );
-
-                        // Evita executar novamente
-                        if (window.rfidRedirecionando) {
-                            return;
-                        }
-
-                        window.rfidRedirecionando = true;
-
-                        // Usa o redirect enviado pela API
-                        if (dados.redirect) {
-
-                            window.location.href = dados.redirect;
-
-                        } else {
-
-                            window.location.href =
-                                '<?= base_url("camera_analise") ?>';
-                        }
-                    }
-
-                } catch (erro) {
-
-                    console.error(
-                        'Erro ao consultar RFID:',
-                        erro
-                    );
-
-                } finally {
-
-                    verificandoRFID = false;
-                }
-            }
+<script src="<?= base_url('assets/js/acessibilidade.js') ?>"></script>
 
 
-            // ==========================================
-            // CONSULTAR RFID A CADA 1 SEGUNDO
-            // ==========================================
+<!-- =====================================================
+     RFID
+====================================================== -->
 
-            setInterval(
-                verificarRFID,
-                1000
-            );
+<!-- <script>
 
+(function () {
 
-            // Faz uma consulta imediatamente
-            verificarRFID();
+    /*
+     * ==================================================
+     * CONTROLE DO RFID
+     * ==================================================
+     */
 
-        })();
-        </script>
+    let verificandoRFID = false;
 
-    <script>
+    let rfidRedirecionando = false;
 
-        const videos = [
+    /*
+     * Guarda o ID da sessão RFID que já foi processada
+     * neste navegador.
+     */
 
-            "<?= base_url('assets/videos/epi_construcao_1.mp4') ?>",
-
-            "<?= base_url('assets/videos/epi_construcao_2.mp4') ?>",
-
-            "<?= base_url('assets/videos/epi_construcao_3.mp4') ?>",
-
-            "<?= base_url('assets/videos/epi_construcao_4.mp4') ?>"
-
-        ];
+    let sessaoRFIDProcessada = null;
 
 
-        const videoCarousel =
-            document.getElementById('videoCarousel');
+    /*
+     * ==================================================
+     * VERIFICAR RFID
+     * ==================================================
+     */
 
+    async function verificarRFID() {
 
-        let videoAtual = 0;
+        /*
+         * Evita consultas simultâneas.
+         */
+
+        if (verificandoRFID) {
+
+            return;
+
+        }
 
 
         /*
-         * Quando o vídeo termina,
-         * passa automaticamente para o próximo.
+         * Se já está redirecionando,
+         * não faz outra consulta.
          */
 
-        videoCarousel.addEventListener('ended', function () {
+        if (rfidRedirecionando) {
+
+            return;
+
+        }
 
 
-            videoAtual++;
+        verificandoRFID = true;
+
+
+        try {
+
+            /*
+             * Consulta a API.
+             */
+
+            const resposta = await fetch(
+                '<?= base_url("api/rfid/status") ?>',
+                {
+                    method: 'GET',
+
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+
+                    cache: 'no-store'
+                }
+            );
 
 
             /*
-             * Quando chegar ao quarto vídeo,
-             * volta para o primeiro.
+             * Verifica resposta HTTP.
              */
 
-            if (videoAtual >= videos.length) {
+            if (!resposta.ok) {
 
-                videoAtual = 0;
+                return;
 
             }
 
 
             /*
-             * Troca o vídeo.
+             * Converte para JSON.
              */
 
-            videoCarousel.src = videos[videoAtual];
+            const dados = await resposta.json();
+
+
+            console.log(
+                'RFID STATUS:',
+                dados
+            );
 
 
             /*
-             * Carrega o novo vídeo.
+             * ==================================================
+             * JÁ ESTÁ LOGADO
+             * ==================================================
+             *
+             * Se o servidor informar que a sessão atual
+             * já está autenticada, não fazemos outro login.
              */
 
-            videoCarousel.load();
+            if (dados.jaLogado === true) {
+
+                console.log(
+                    'Usuário já está logado.'
+                );
+
+                return;
+
+            }
 
 
             /*
-             * Inicia automaticamente.
+             * ==================================================
+             * NENHUM ACESSO NOVO
+             * ==================================================
              */
 
-            videoCarousel.play();
+            if (
+                dados.sucesso !== true ||
+                dados.novoAcesso !== true
+            ) {
+
+                return;
+
+            }
 
 
-        });
+            /*
+             * ==================================================
+             * IDENTIFICAR A SESSÃO RFID
+             * ==================================================
+             *
+             * O backend deve enviar o ID da sessão.
+             */
 
-    </script>
+            const sessaoId =
+                dados.sessaoId ??
+                dados.id ??
+                null;
+
+
+            /*
+             * Se recebemos um ID e ele já foi processado,
+             * não processamos novamente.
+             */
+
+            if (
+                sessaoId !== null &&
+                sessaoRFIDProcessada === sessaoId
+            ) {
+
+                console.log(
+                    'Sessão RFID já processada:',
+                    sessaoId
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * ==================================================
+             * NOVO ACESSO
+             * ==================================================
+             */
+
+            console.log(
+                'RFID identificado:',
+                dados.funcionario?.nome
+            );
+
+
+            console.log(
+                'CPF:',
+                dados.funcionario?.cpf
+            );
+
+
+            console.log(
+                'Câmera:',
+                dados.camera?.identificador
+            );
+
+
+            console.log(
+                'Terminal:',
+                dados.terminalId
+            );
+
+
+            /*
+             * ==================================================
+             * MARCAR COMO PROCESSADO
+             * ==================================================
+             */
+
+            if (sessaoId !== null) {
+
+                sessaoRFIDProcessada = sessaoId;
+
+            }
+
+
+            /*
+             * ==================================================
+             * BLOQUEAR OUTROS REDIRECIONAMENTOS
+             * ==================================================
+             */
+
+            rfidRedirecionando = true;
+
+
+            /*
+             * ==================================================
+             * REDIRECIONAMENTO
+             * ==================================================
+             */
+
+            if (dados.redirect) {
+
+                window.location.href =
+                    dados.redirect;
+
+            } else {
+
+                window.location.href =
+                    '<?= base_url("camera_analise") ?>';
+
+            }
+
+
+        } catch (erro) {
+
+            console.error(
+                'Erro ao consultar RFID:',
+                erro
+            );
+
+
+        } finally {
+
+            verificandoRFID = false;
+
+        }
+
+    }
+
+
+    /*
+     * ==================================================
+     * PRIMEIRA CONSULTA
+     * ==================================================
+     */
+
+    verificarRFID();
+
+
+    /*
+     * ==================================================
+     * CONSULTAR A CADA 1 SEGUNDO
+     * ==================================================
+     */
+
+    setInterval(
+        verificarRFID,
+        1000
+    );
+
+
+})();
+
+</script> -->
+
+<script>
+
+(function () {
+
+    /*
+     * ==================================================
+     * CONTROLE DO LOGIN RFID
+     * ==================================================
+     */
+
+    let verificandoRFID = false;
+
+    let rfidAtivo = false;
+
+    let rfidRedirecionando = false;
+
+    let intervaloRFID = null;
+
+    let sessaoRFIDProcessada = null;
+
+
+    /*
+     * ==================================================
+     * ELEMENTOS
+     * ==================================================
+     */
+
+    const btnLoginCartao =
+        document.getElementById('btnLoginCartao');
+
+    const statusRFID =
+        document.getElementById('statusRFID');
+
+
+    /*
+     * ==================================================
+     * ATIVAR LOGIN COM CARTÃO
+     * ==================================================
+     */
+
+    window.ativarLoginCartao = function () {
+
+        /*
+         * Se já estiver ativo,
+         * não faz nada.
+         */
+
+        if (rfidAtivo) {
+            return;
+        }
+
+
+        /*
+         * Ativa o RFID.
+         */
+
+        rfidAtivo = true;
+
+
+        /*
+         * Limpa uma sessão RFID processada anteriormente
+         * neste navegador.
+         */
+
+        sessaoRFIDProcessada = null;
+
+
+        /*
+         * Altera o botão.
+         */
+
+        btnLoginCartao.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> ' +
+            'Aguardando cartão...';
+
+
+        btnLoginCartao.classList.add(
+            'aguardando'
+        );
+
+
+        /*
+         * Mostra mensagem.
+         */
+
+        statusRFID.style.display =
+            'block';
+
+
+        /*
+         * Primeira consulta imediatamente.
+         */
+
+        verificarRFID();
+
+
+        /*
+         * Começa a consultar a cada 1 segundo.
+         */
+
+        intervaloRFID = setInterval(
+            verificarRFID,
+            1000
+        );
+
+    };
+
+
+    /*
+     * ==================================================
+     * DESATIVAR LOGIN RFID
+     * ==================================================
+     */
+
+    window.cancelarLoginCartao = function () {
+
+        rfidAtivo = false;
+
+
+        /*
+         * Para o intervalo.
+         */
+
+        if (intervaloRFID !== null) {
+
+            clearInterval(
+                intervaloRFID
+            );
+
+            intervaloRFID = null;
+
+        }
+
+
+        /*
+         * Restaura botão.
+         */
+
+        btnLoginCartao.innerHTML =
+            '<i class="fas fa-id-card"></i> ' +
+            'Login com o cartão';
+
+
+        btnLoginCartao.classList.remove(
+            'aguardando'
+        );
+
+
+        /*
+         * Esconde status.
+         */
+
+        statusRFID.style.display =
+            'none';
+
+    };
+
+
+    /*
+     * ==================================================
+     * VERIFICAR RFID
+     * ==================================================
+     */
+
+    async function verificarRFID() {
+
+        /*
+         * Só consulta se o usuário
+         * tiver clicado no botão.
+         */
+
+        if (!rfidAtivo) {
+
+            return;
+
+        }
+
+
+        /*
+         * Evita duas consultas simultâneas.
+         */
+
+        if (verificandoRFID) {
+
+            return;
+
+        }
+
+
+        /*
+         * Se já está redirecionando,
+         * não faz nova consulta.
+         */
+
+        if (rfidRedirecionando) {
+
+            return;
+
+        }
+
+
+        verificandoRFID = true;
+
+
+        try {
+
+            /*
+             * Consulta o backend.
+             */
+
+            const resposta = await fetch(
+                '<?= base_url("api/rfid/status") ?>',
+                {
+                    method: 'GET',
+
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+
+                    cache: 'no-store'
+                }
+            );
+
+
+            /*
+             * Verifica resposta HTTP.
+             */
+
+            if (!resposta.ok) {
+
+                return;
+
+            }
+
+
+            /*
+             * Converte para JSON.
+             */
+
+            const dados =
+                await resposta.json();
+
+
+            console.log(
+                'RFID STATUS:',
+                dados
+            );
+
+
+            /*
+             * ==================================================
+             * NENHUM CARTÃO
+             * ==================================================
+             */
+
+            if (
+                dados.sucesso !== true ||
+                dados.novoAcesso !== true
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * ==================================================
+             * PEGAR ID DA SESSÃO RFID
+             * ==================================================
+             */
+
+            const sessaoId =
+                dados.sessaoId ??
+                dados.id ??
+                null;
+
+
+            /*
+             * Evita processar a mesma sessão
+             * duas vezes.
+             */
+
+            if (
+                sessaoId !== null &&
+                sessaoRFIDProcessada === sessaoId
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * ==================================================
+             * CARTÃO ENCONTRADO
+             * ==================================================
+             */
+
+            console.log(
+                'Cartão identificado:',
+                dados.funcionario?.nome
+            );
+
+
+            console.log(
+                'CPF:',
+                dados.funcionario?.cpf
+            );
+
+
+            /*
+             * Marca sessão como processada.
+             */
+
+            if (sessaoId !== null) {
+
+                sessaoRFIDProcessada =
+                    sessaoId;
+
+            }
+
+
+            /*
+             * Bloqueia novas consultas.
+             */
+
+            rfidRedirecionando = true;
+
+
+            /*
+             * Para o intervalo.
+             */
+
+            if (intervaloRFID !== null) {
+
+                clearInterval(
+                    intervaloRFID
+                );
+
+                intervaloRFID = null;
+
+            }
+
+
+            /*
+             * Atualiza botão.
+             */
+
+            btnLoginCartao.innerHTML =
+                '<i class="fas fa-check"></i> ' +
+                'Cartão identificado!';
+
+
+            /*
+             * Atualiza mensagem.
+             */
+
+            statusRFID.innerHTML =
+                '<i class="fas fa-check"></i> ' +
+                'Login realizado. Entrando...';
+
+
+            /*
+             * ==================================================
+             * REDIRECIONAMENTO
+             * ==================================================
+             */
+
+            if (dados.redirect) {
+
+                window.location.href =
+                    dados.redirect;
+
+            } else {
+
+                window.location.href =
+                    '<?= base_url("camera_analise") ?>';
+
+            }
+
+        } catch (erro) {
+
+            console.error(
+                'Erro ao consultar RFID:',
+                erro
+            );
+
+        } finally {
+
+            verificandoRFID = false;
+
+        }
+
+    }
+
+
+})();
+
+</script>
+
+
+<!-- =====================================================
+     CARROSSEL DE VÍDEOS
+====================================================== -->
+
+<script>
+
+const videos = [
+
+    "<?= base_url('assets/videos/epi_construcao_1.mp4') ?>",
+
+    "<?= base_url('assets/videos/epi_construcao_2.mp4') ?>",
+
+    "<?= base_url('assets/videos/epi_construcao_3.mp4') ?>",
+
+    "<?= base_url('assets/videos/epi_construcao_4.mp4') ?>"
+
+];
+
+
+const videoCarousel =
+    document.getElementById('videoCarousel');
+
+
+let videoAtual = 0;
+
+
+/*
+ * ==================================================
+ * TROCAR VÍDEO
+ * ==================================================
+ */
+
+videoCarousel.addEventListener(
+    'ended',
+    function () {
+
+
+        videoAtual++;
+
+
+        /*
+         * Quando chegar ao último,
+         * volta para o primeiro.
+         */
+
+        if (
+            videoAtual >= videos.length
+        ) {
+
+            videoAtual = 0;
+
+        }
+
+
+        /*
+         * Troca o vídeo.
+         */
+
+        videoCarousel.src =
+            videos[videoAtual];
+
+
+        /*
+         * Carrega o novo vídeo.
+         */
+
+        videoCarousel.load();
+
+
+        /*
+         * Reproduz automaticamente.
+
+         */
+
+        videoCarousel.play()
+            .catch(function (erro) {
+
+                console.log(
+                    'Não foi possível iniciar o vídeo:',
+                    erro
+                );
+
+            });
+
+    }
+);
+
+</script>
 
 
 </body>

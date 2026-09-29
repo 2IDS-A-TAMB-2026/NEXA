@@ -411,53 +411,144 @@ class CameraController extends ResourceController
             $resultadoRoboflow['predictions'] ?? [];
 
 
-        /*
-         * ==========================================================
-         * 11. IDENTIFICAR EPIs DETECTADOS
-         * ==========================================================
-         */
+            $imagemLargura =
+    (float) (
+        $resultadoRoboflow['image']['width']
+        ?? 0
+    );
 
-        $episDetectados = [];
-
-
-        foreach ($predictions as $prediction) {
-
-            $classe =
-                $prediction['class']
-                ?? $prediction['class_name']
-                ?? null;
+$imagemAltura =
+    (float) (
+        $resultadoRoboflow['image']['height']
+        ?? 0
+    );
 
 
-            if (!$classe) {
-                continue;
+ /*
+ * ==========================================================
+ * 11. IDENTIFICAR EPIs DETECTADOS
+ * ==========================================================
+ */
+
+$episDetectados = [];
+$deteccoesObrigatorias = [];
+
+foreach ($predictions as $prediction) {
+
+    $classe =
+        $prediction['class']
+        ?? $prediction['class_name']
+        ?? null;
+
+    if (!$classe) {
+        continue;
+    }
+
+    $epiNormalizado =
+        $this->normalizarEpi($classe);
+
+    /*
+     * Só consideramos classes que são EPIs.
+     */
+    if (!$this->ehEpi($epiNormalizado)) {
+        continue;
+    }
+
+    /*
+     * Verifica se esse EPI é obrigatório
+     * para o funcionário.
+     */
+    if (
+        !in_array(
+            $epiNormalizado,
+            $episObrigatorios,
+            true
+        )
+    ) {
+        continue;
+    }
+
+    /*
+     * Adiciona à lista de EPIs detectados.
+     */
+    if (
+        !in_array(
+            $epiNormalizado,
+            $episDetectados,
+            true
+        )
+    ) {
+        $episDetectados[] = $epiNormalizado;
+    }
+
+    /*
+     * Guarda a posição da detecção
+     * para desenhar a caixa no Flutter.
+     */
+    $deteccoesObrigatorias[] = [
+        'nome' => $this->formatarNomeEpi(
+            $epiNormalizado
+        ),
+
+        'x' => (float) (
+            $prediction['x'] ?? 0
+        ),
+
+        'y' => (float) (
+            $prediction['y'] ?? 0
+        ),
+
+        'width' => (float) (
+            $prediction['width'] ?? 0
+        ),
+
+        'height' => (float) (
+            $prediction['height'] ?? 0
+        ),
+
+        'confidence' => (float) (
+            $prediction['confidence'] ?? 0
+        ),
+    ];
+}
+
+/*
+ * ==========================================================
+ * FILTRAR DETECTADOS
+ * SOMENTE EPIs OBRIGATÓRIOS DO FUNCIONÁRIO
+ * ==========================================================
+ */
+
+$episDetectadosObrigatorios = [];
+
+foreach ($episDetectados as $epiDetectado) {
+
+    $detectadoNormalizado =
+        $this->normalizarEpi($epiDetectado);
+
+    foreach ($episObrigatorios as $epiObrigatorio) {
+
+        $obrigatorioNormalizado =
+            $this->normalizarEpi($epiObrigatorio);
+
+        if ($detectadoNormalizado === $obrigatorioNormalizado) {
+
+            if (
+                !in_array(
+                    $epiDetectado,
+                    $episDetectadosObrigatorios
+                )
+            ) {
+                $episDetectadosObrigatorios[] =
+                    $epiDetectado;
             }
 
-
-            $epiNormalizado =
-                $this->normalizarEpi($classe);
-
-
-            /*
-             * Só adicionamos classes que realmente
-             * correspondem a EPI.
-             */
-
-            if ($this->ehEpi($epiNormalizado)) {
-
-                if (
-                    !in_array(
-                        $epiNormalizado,
-                        $episDetectados
-                    )
-                ) {
-
-                    $episDetectados[] =
-                        $epiNormalizado;
-                }
-            }
+            break;
         }
+    }
+}
 
-
+$episDetectados = $episDetectadosObrigatorios;
         /*
          * ==========================================================
          * 12. DESCOBRIR EPIs AUSENTES
@@ -670,6 +761,9 @@ $dadosOcorrencia = [
 
             'epis_detectados' =>
                 $episDetectados,
+
+                'deteccoes' =>
+    $deteccoesObrigatorias,
 
             'epis_ausentes' =>
                 $episAusentes,
