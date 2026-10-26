@@ -1,7 +1,7 @@
 const Acessibilidade = {
 
     tamanhoFonte: 100,
-    limiteMaximo: 140,
+    limiteMaximo: 120,
     limiteMinimo: 80,
     passo: 10,
 
@@ -168,12 +168,12 @@ const Acessibilidade = {
                 parseInt(salva);
 
 
-            if (
-                valor >= this.limiteMinimo &&
-                valor <= this.limiteMaximo
-            ) {
-
+            if ([80, 90, 100, 110, 120].includes(valor)) {
                 this.tamanhoFonte = valor;
+            } else {
+                // Corrige valores antigos que permitiam chegar a 130% ou 140%.
+                this.tamanhoFonte = 100;
+                localStorage.setItem("tamanhoFonteNexa", "100");
             }
         }
 

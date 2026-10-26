@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nexa_app/controllers/acessibility_controller.dart';
 import 'package:nexa_app/views/dashboard_page_fun.dart';
-import 'package:nexa_app/views/institucional_page.dart';
 import 'package:nexa_app/views/login_page.dart';
 import 'package:provider/provider.dart';
 
@@ -19,15 +18,26 @@ PreferredSizeWidget menuAppBar(BuildContext context) {
     );
   }
 
+  final acess = context.watch<AccessibilityController>();
+
   return AppBar(
     title: Row(
       children: [
         Image.asset('assets/logo.nexa.png', height: 30),
         const SizedBox(width: 10),
-        const Text("NEXA"),
+        Text(
+          "NEXA",
+          style: TextStyle(
+            color: acess.darkMode ? Colors.white : const Color(0xFF161616),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ],
     ),
-    backgroundColor: const Color(0xFFF8F9FA),
+    backgroundColor: acess.darkMode
+        ? const Color(0xFF1A2B4C)
+        : const Color(0xFFF8F9FA),
+    foregroundColor: acess.darkMode ? Colors.white : const Color(0xFF161616),
     actions: [
       Row(
         children: [
@@ -52,55 +62,6 @@ PreferredSizeWidget menuAppBar(BuildContext context) {
             ),
             onPressed: () {
               context.read<AccessibilityController>().diminuirFonte();
-            },
-          ),
-
-          IconButton(
-            icon: const Icon(
-              Icons.volume_up,
-              color: Color.fromARGB(255, 4, 64, 124),
-            ),
-            onPressed: () {
-              final texto = """
-NEXA.
-
-Safety at the Core.
-
-A NEXA é uma plataforma inteligente de segurança do trabalho, unindo tecnologia, dados e automação para proteger pessoas e operações.
-
-Botões principais:
-Acesse o app.
-Sobre nós.
-
-Missão, Visão e Valores.
-Missão: Transformar a segurança do trabalho em inteligência, promovendo ambientes mais seguros e eficientes.
-Visão: Ser referência global em soluções tecnológicas de segurança e compliance corporativo.
-Valores: Ética, inovação, responsabilidade social, transparência e compromisso com a vida.
-
-Soluções.
-Monitoramento de EPIs.
-Relatórios inteligentes.
-Compliance global.
-Alertas em tempo real.
-Centralização de dados.
-Gestão de riscos.
-
-Visão Computacional.
-A visão computacional é um campo da inteligência artificial que permite analisar imagens e detectar uso de EPIs.
-
-Sobre a NEXA.
-Plataforma focada em segurança do trabalho com tecnologia e dados.
-
-Equipe.
-Análise e design.
-Desenvolvimento full stack.
-Desenvolvimento back-end.
-
-Rodapé.
-Links e redes sociais da NEXA.
-""";
-
-              context.read<AccessibilityController>().lerTexto(texto);
             },
           ),
 

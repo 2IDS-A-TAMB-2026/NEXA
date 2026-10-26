@@ -533,14 +533,13 @@
                     <a href="https://www.instagram.com/nexa.senai/" target="_blank" title="Nos siga no Instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://github.com/2IDS-A-TAMB-2026/NEXA.git"><i class="fab fa-github"></i></a>
+                    <a href="https://github.com/2IDS-A-TAMB-2026/NEXA.git" target="_blank"><i class="fab fa-github"></i></a>
                 </div>
             </div>
 
             <div>
                 <h4>Empresa</h4>
                 <a href="#sobre_nexa">Sobre</a><br>
-                <a href="#">Carreiras</a><br>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nexa.senai@gmail.com" target="_blank">
                     nexa.senai@gmail.com
                 </a>

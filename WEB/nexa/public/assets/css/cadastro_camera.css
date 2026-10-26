@@ -1240,3 +1240,21 @@ body{
 
 }
 
+
+/* Paginação: mantém os números em tamanho fixo */
+.pagination,
+.pagination .page-link,
+.pagination button,
+.pagination span {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    transform: none !important;
+}
+
+/* Mantém o tamanho e o formato dos botões */
+.pagination .page-link,
+.pagination button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px 12px;
+}

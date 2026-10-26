@@ -306,6 +306,193 @@ class CadastroFunController extends BaseController
         ============================================================
         */
 
+        
+/*
+============================================================
+VALIDAR CAMPOS OBRIGATÓRIOS ANTES DA SENHA
+============================================================
+*/
+
+/*
+============================================================
+RECEBER DADOS DO FORMULÁRIO
+============================================================
+*/
+
+$dados = [
+    'NOME_COMPLETO' => trim((string) $this->request->getPost('NOME_COMPLETO')),
+    'DATA_NASCIMENTO' => trim((string) $this->request->getPost('DATA_NASCIMENTO')),
+    'EMAIL_CORPORATIVO' => trim((string) $this->request->getPost('EMAIL_CORPORATIVO')),
+    'TELEFONE' => trim((string) $this->request->getPost('TELEFONE')),
+    'UID_RFID' => trim((string) $this->request->getPost('UID_RFID')),
+    'FK_ID_SETOR' => $this->request->getPost('FK_ID_SETOR'),
+];
+
+/*
+============================================================
+VALIDAR CAMPOS OBRIGATÓRIOS
+============================================================
+*/
+
+$camposObrigatorios = [
+    'NOME_COMPLETO',
+    'DATA_NASCIMENTO',
+    'EMAIL_CORPORATIVO',
+    'TELEFONE',
+    'FK_ID_SETOR',
+];
+
+foreach ($camposObrigatorios as $campo) {
+    if (
+        !isset($dados[$campo]) ||
+        trim((string) $dados[$campo]) === ''
+    ) {
+        return redirect()
+            ->back()
+            ->withInput()
+            ->with(
+                'erro',
+                'Preencha todos os campos obrigatórios.'
+            );
+    }
+}
+
+/*
+============================================================
+VALIDAR IDADE MÍNIMA DE 14 ANOS
+============================================================
+*/
+
+$dataNascimento = $dados['DATA_NASCIMENTO'];
+
+$nascimento = \DateTime::createFromFormat(
+    '!Y-m-d',
+    $dataNascimento
+);
+
+$errosData = \DateTime::getLastErrors();
+
+$dataValida = $nascimento !== false
+    && (
+        $errosData === false
+        || (
+            $errosData['warning_count'] === 0
+            && $errosData['error_count'] === 0
+        )
+    )
+    && $nascimento->format('Y-m-d') === $dataNascimento;
+
+if (!$dataValida) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with('erro', 'Informe uma data de nascimento válida.');
+}
+
+$hoje = new \DateTime('today');
+
+if ($nascimento > $hoje) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with('erro', 'A data de nascimento não pode ser futura.');
+}
+
+$idade = $nascimento->diff($hoje)->y;
+
+if ($idade < 14) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with(
+            'erro',
+            'O funcionário deve ter no mínimo 14 anos completos.'
+        );
+}
+
+/*
+============================================================
+VERIFICAR E-MAIL DUPLICADO NA MESMA EMPRESA
+============================================================
+*/
+
+$email = strtolower($dados['EMAIL_CORPORATIVO']);
+
+$emailExistente = $model
+    ->where('FK_CNPJ_EMPRESA', $dadosAdm['FK_CNPJ_EMPRESA'])
+    ->where('EMAIL_CORPORATIVO', $email)
+    ->first();
+
+if ($emailExistente) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with(
+            'erro',
+            'Este e-mail já está cadastrado na sua empresa.'
+        );
+}
+
+/*
+============================================================
+VERIFICAR UID RFID DUPLICADO NA MESMA EMPRESA
+============================================================
+*/
+// RFID opcional, mas não pode se repetir na mesma empresa
+$uidRfid = trim((string) ($dados['UID_RFID'] ?? ''));
+
+if ($uidRfid !== '') {
+
+    $uidExistente = $model
+        ->where('FK_CNPJ_EMPRESA', $dadosAdm['FK_CNPJ_EMPRESA'])
+        ->where('UID_RFID', $uidRfid)
+        ->first();
+
+    if ($uidExistente) {
+        return redirect()->back()
+            ->withInput()
+            ->with('erro', 'Este cartão RFID já está cadastrado na sua empresa.');
+    }
+
+    $dados['UID_RFID'] = $uidRfid;
+
+} else {
+    // Se não informar cartão, salva como NULL
+    $dados['UID_RFID'] = null;
+}
+/*
+============================================================
+VALIDAR CAMPOS DE SENHA
+============================================================
+*/
+
+$senha = (string) $this->request->getPost('SENHA');
+$confirmarSenha = (string) $this->request->getPost('CONFIRMAR_SENHA');
+
+if (trim($senha) === '' || trim($confirmarSenha) === '') {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with('erro', 'Preencha a senha e a confirmação de senha.');
+}
+
+if (strlen($senha) < 6) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with('erro', 'A senha deve ter no mínimo 6 caracteres.');
+}
+
+if ($senha !== $confirmarSenha) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with(
+            'erro',
+            'A senha e a confirmação de senha devem ser iguais.'
+        );
+}
+
         $senha = (string) $this->request->getPost('SENHA');
         $confirmarSenha = (string) $this->request->getPost('CONFIRMAR_SENHA');
 
@@ -342,83 +529,11 @@ class CadastroFunController extends BaseController
                 );
         }
 
-        $dados = [
+        $dados['CPF'] = $cpf;
+$dados['FK_CNPJ_EMPRESA'] = $dadosAdm['FK_CNPJ_EMPRESA'];
+$dados['SENHA'] = password_hash($senha, PASSWORD_DEFAULT);
 
-            'CPF' =>
-                $cpf,
-
-            'NOME_COMPLETO' =>
-                trim(
-                    $this->request->getPost(
-                        'NOME_COMPLETO'
-                    )
-                ),
-
-            'DATA_NASCIMENTO' =>
-                $this->request->getPost(
-                    'DATA_NASCIMENTO'
-                ),
-
-            'EMAIL_CORPORATIVO' =>
-                trim(
-                    $this->request->getPost(
-                        'EMAIL_CORPORATIVO'
-                    )
-                ),
-
-            'TELEFONE' =>
-                trim(
-                    $this->request->getPost(
-                        'TELEFONE'
-                    )
-                ),
-
-            /*
-            ========================================================
-            RFID
-            ========================================================
-            */
-
-            'UID_RFID' =>
-                trim(
-                    $this->request->getPost(
-                        'UID_RFID'
-                    )
-                ),
-
-            /*
-            ========================================================
-            EMPRESA DO ADMINISTRADOR LOGADO
-            ========================================================
-            */
-
-            'FK_CNPJ_EMPRESA' =>
-                $dadosAdm['FK_CNPJ_EMPRESA'],
-
-            /*
-            ========================================================
-            SETOR
-            ========================================================
-            */
-
-            'FK_ID_SETOR' =>
-                $this->request->getPost(
-                    'FK_ID_SETOR'
-                ),
-
-            /*
-            ========================================================
-            SENHA
-            ========================================================
-            */
-
-            'SENHA' =>
-                password_hash(
-                    $senha,
-                    PASSWORD_DEFAULT
-                )
-        ];
-
+       
         /*
         ============================================================
         VALIDAR CAMPOS OBRIGATÓRIOS
@@ -430,7 +545,6 @@ class CadastroFunController extends BaseController
             empty($dados['DATA_NASCIMENTO']) ||
             empty($dados['EMAIL_CORPORATIVO']) ||
             empty($dados['TELEFONE']) ||
-            empty($dados['UID_RFID']) ||
             empty($dados['FK_ID_SETOR'])
         ) {
 
@@ -448,7 +562,50 @@ class CadastroFunController extends BaseController
         CADASTRAR
         ============================================================
         */
+/*
+============================================================
+VALIDAR SE PELO MENOS UM EPI FOI SELECIONADO
+============================================================
+*/
 
+$episRecebidos = $this->request->getPost('EPIS');
+
+if (is_string($episRecebidos)) {
+    $episRecebidos = json_decode($episRecebidos, true);
+}
+
+if (!is_array($episRecebidos) || empty($episRecebidos)) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with(
+            'erro',
+            'Selecione pelo menos um EPI para o funcionário.'
+        );
+}
+
+$temEpiSelecionado = false;
+
+foreach ($episRecebidos as $epi) {
+    $idEpi = is_array($epi)
+        ? ($epi['id'] ?? null)
+        : $epi;
+
+    if (is_numeric($idEpi) && (int) $idEpi > 0) {
+        $temEpiSelecionado = true;
+        break;
+    }
+}
+
+if (!$temEpiSelecionado) {
+    return redirect()
+        ->back()
+        ->withInput()
+        ->with(
+            'erro',
+            'Selecione pelo menos um EPI para o funcionário.'
+        );
+}
         if (!$model->insert($dados)) {
 
             $erros = $model->errors();

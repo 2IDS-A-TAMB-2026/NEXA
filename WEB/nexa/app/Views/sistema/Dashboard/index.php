@@ -59,25 +59,29 @@
 
                 <div class="menu-title">CADASTROS</div>
 
-                <a href="<?= base_url('/cadastro-funcionario') ?>">
-                    <i class="fas fa-users"></i>
-                    <span>Cadastro Funcionários</span>
-                </a>
-
+              
                 <a href="<?= base_url('/epi') ?>">
                     <i class="fas fa-helmet-safety"></i>
                     <span>Cadastro EPIs</span>
-                </a>
-
-                <a href="<?= base_url('/Camera') ?>">
-                    <i class="fas fa-camera"></i>
-                    <span>Cadastro Câmeras</span>
                 </a>
 
                 <a href="<?= base_url('/setor') ?>">
                     <i class="fas fa-building"></i>
                     <span>Cadastro Setores</span>
                 </a>
+
+                
+                <a href="<?= base_url('/Camera') ?>">
+                    <i class="fas fa-camera"></i>
+                    <span>Cadastro Câmeras</span>
+                </a>
+
+
+                  <a href="<?= base_url('/cadastro-funcionario') ?>">
+                    <i class="fas fa-users"></i>
+                    <span>Cadastro Funcionários</span>
+                </a>
+
 
                 <div class="menu-title">CONTA</div>
 
@@ -172,37 +176,47 @@
 
             <div class="content">
                 <div class="metrics">
-                    <div class="metric">
-                        <div class="metric-icon pessoas">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h4>Pessoas analisadas hoje</h4>
-                        <span><?= $pessoasHoje ?></span>
-                    </div>
+                 
+<div class="metric">
+    <div class="metric-header">
+        <div class="metric-icon pessoas">
+            <i class="fas fa-users"></i>
+        </div>
+        <h4>Pessoas analisadas hoje</h4>
+    </div>
+    <span><?= $pessoasHoje ?></span>
+</div>
 
-                    <div class="metric">
-                        <div class="metric-icon conformidade">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h4>Conformidade</h4>
-                        <span style="color:green;"><?= $conformidade ?>%</span>
-                    </div>
+<div class="metric">
+    <div class="metric-header">
+        <div class="metric-icon conformidade">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h4>Conformidade</h4>
+    </div>
+    <span class="valor-conformidade"><?= $conformidade ?>%</span>
+</div>
 
-                    <div class="metric">
-                        <div class="metric-icon alerta">
-                            <i class="fas fa-triangle-exclamation"></i>
-                        </div>
-                        <h4>Alertas ativos</h4>
-                        <span style="color:red;"><?= $alertas ?></span>
-                    </div>
+<div class="metric">
+    <div class="metric-header">
+        <div class="metric-icon alerta">
+            <i class="fas fa-triangle-exclamation"></i>
+        </div>
+        <h4>Alertas ativos</h4>
+    </div>
+    <span class="valor-alerta"><?= $alertas ?></span>
+</div>
 
-                    <div class="metric">
-                        <div class="metric-icon camera">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <h4>Câmeras ativas</h4>
-                        <span><?= $camerasAtivas ?></span>
-                    </div>
+<div class="metric">
+    <div class="metric-header">
+        <div class="metric-icon camera">
+            <i class="fas fa-video"></i>
+        </div>
+        <h4>Câmeras ativas</h4>
+    </div>
+    <span><?= $camerasAtivas ?></span>
+</div>
+
                 </div>
 
                 <div class="graficos-grid">

@@ -3647,3 +3647,34 @@ MODAL
     }
 
 }
+
+/* Paginação: mantém os números em tamanho fixo */
+.pagination,
+.pagination .page-link,
+.pagination button,
+.pagination span {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    transform: none !important;
+}
+
+/* Mantém o tamanho e o formato dos botões */
+.pagination .page-link,
+.pagination button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px 12px;
+}
+
+/* Mantém o texto de EPIs em tamanho fixo */
+#episSelecionados {
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+    transform: none !important;
+}
+
+/* Impede que elementos internos aumentem a fonte */
+#episSelecionados * {
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+}

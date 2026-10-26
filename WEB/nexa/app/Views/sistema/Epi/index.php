@@ -33,45 +33,47 @@
             </div>
 
             <nav class="menu">
-                <div class="menu-title">PRINCIPAL</div>
+                 <div class="menu-title">PRINCIPAL</div>
 
-                <a href="<?= base_url('dashboard') ?>">
+                <a href="<?= base_url('/dashboard') ?>" >
                     <i class="fas fa-chart-line"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="<?= base_url('dashboard_camera') ?>">
+                <a href="<?= base_url('/dashboard_camera') ?>">
                     <i class="fas fa-video"></i>
                     <span>Dashboard de Câmeras</span>
                 </a>
 
-                <a href="<?= base_url('ocorrencia') ?>">
+                <a href="<?= base_url('/ocorrencia') ?>">
                     <i class="fas fa-exclamation-triangle"></i>
                     <span>Ocorrências</span>
                 </a>
 
                 <div class="menu-title">CADASTROS</div>
 
-                <a href="<?= base_url('cadastro-funcionario') ?>">
-                    <i class="fas fa-users"></i>
-                    <span>Cadastro Funcionários</span>
-                </a>
-
-                <a href="<?= base_url('epi') ?>" class="active">
+              
+                <a href="<?= base_url('/epi') ?>" class="active">
                     <i class="fas fa-helmet-safety"></i>
                     <span>Cadastro EPIs</span>
                 </a>
 
-                <a href="<?= base_url('Camera') ?>">
-                    <i class="fas fa-camera"></i>
-                    <span>Cadastro Câmeras</span>
-                </a>
-
-                <a href="<?= base_url('setor') ?>">
+                <a href="<?= base_url('/setor') ?>">
                     <i class="fas fa-building"></i>
                     <span>Cadastro Setores</span>
                 </a>
 
+                
+                <a href="<?= base_url('/Camera') ?>">
+                    <i class="fas fa-camera"></i>
+                    <span>Cadastro Câmeras</span>
+                </a>
+
+
+                  <a href="<?= base_url('/cadastro-funcionario') ?>">
+                    <i class="fas fa-users"></i>
+                    <span>Cadastro Funcionários</span>
+                </a>
                 <div class="menu-title">CONTA</div>
 
                 <a href="<?= base_url('administrador') ?>">
@@ -230,8 +232,12 @@
                             <p class="p-card">Imagem do EPI</p>
                             <div class="input-box">
                                 <i class="fas fa-image"></i>
-                                <input type="file" id="imagem_epi" name="imagem_epi">
-                            </div>
+                        <input
+                            type="file"
+                            id="imagem_epi"
+                            name="imagem_epi"
+                            accept="image/*"
+                        >                            </div>
                             <div class="error-text"></div>
                         </div>
                     </div>

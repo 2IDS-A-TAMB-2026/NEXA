@@ -79,94 +79,47 @@
 
         <nav class="menu">
 
-            <div class="menu-title">
-                PRINCIPAL
-            </div>
+              <div class="menu-title">PRINCIPAL</div>
+
+                <a href="<?= base_url('/dashboard') ?>" >
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="<?= base_url('/dashboard_camera') ?>">
+                    <i class="fas fa-video"></i>
+                    <span>Dashboard de Câmeras</span>
+                </a>
+
+                <a href="<?= base_url('/ocorrencia') ?>">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Ocorrências</span>
+                </a>
+
+                <div class="menu-title">CADASTROS</div>
+
+              
+                <a href="<?= base_url('/epi') ?>">
+                    <i class="fas fa-helmet-safety"></i>
+                    <span>Cadastro EPIs</span>
+                </a>
+
+                <a href="<?= base_url('/setor') ?>">
+                    <i class="fas fa-building"></i>
+                    <span>Cadastro Setores</span>
+                </a>
+
+                
+                <a href="<?= base_url('/Camera') ?>">
+                    <i class="fas fa-camera"></i>
+                    <span>Cadastro Câmeras</span>
+                </a>
 
 
-            <a href="<?= base_url('/dashboard') ?>">
-
-                <i class="fas fa-chart-line"></i>
-
-                <span>
-                    Dashboard
-                </span>
-
-            </a>
-
-
-            <a href="<?= base_url('/dashboard_camera') ?>">
-
-                <i class="fas fa-video"></i>
-
-                <span>
-                    Dashboard de Câmeras
-                </span>
-
-            </a>
-
-
-            <a href="<?= base_url('/ocorrencia') ?>">
-
-                <i class="fas fa-exclamation-triangle"></i>
-
-                <span>
-                    Ocorrências
-                </span>
-
-            </a>
-
-
-            <div class="menu-title">
-                CADASTROS
-            </div>
-
-
-            <a
-                href="<?= base_url('/cadastro-funcionario') ?>"
-                class="active"
-            >
-
-                <i class="fas fa-users"></i>
-
-                <span>
-                    Cadastro Funcionários
-                </span>
-
-            </a>
-
-
-            <a href="<?= base_url('/epi') ?>">
-
-                <i class="fas fa-helmet-safety"></i>
-
-                <span>
-                    Cadastro EPIs
-                </span>
-
-            </a>
-
-
-            <a href="<?= base_url('/Camera') ?>">
-
-                <i class="fas fa-camera"></i>
-
-                <span>
-                    Cadastro Câmeras
-                </span>
-
-            </a>
-
-
-            <a href="<?= base_url('/setor') ?>">
-
-                <i class="fas fa-building"></i>
-
-                <span>
-                    Cadastro Setores
-                </span>
-
-            </a>
+                  <a href="<?= base_url('/cadastro-funcionario') ?>" class="active">
+                    <i class="fas fa-users"></i>
+                    <span>Cadastro Funcionários</span>
+                </a>
 
 
             <div class="menu-title">
@@ -676,7 +629,7 @@
                                 type="password"
                                 id="senha"
                                 name="SENHA"
-                                minlength="6"
+                               
                                 placeholder="Senha (mínimo 6 caracteres)"
                                 
                             >
@@ -1010,7 +963,77 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
+    const formulario = document.getElementById('form-fun');
+
+    if (!formulario) return;
+
+    formulario.addEventListener('submit', function (event) {
+
+        const camposObrigatorios = [
+            { id: 'nome', nome: 'Nome completo' },
+            { id: 'cpf', nome: 'CPF' },
+            { id: 'nascimento', nome: 'Data de nascimento' },
+            { id: 'email', nome: 'E-mail corporativo' },
+            { id: 'telefone', nome: 'Telefone' },
+            { id: 'uid_rfid', nome: 'UID RFID' },
+            { id: 'id_setor', nome: 'Setor' },
+            { id: 'senha', nome: 'Senha' },
+            { id: 'confirmSenha', nome: 'Confirmação de senha' }
+        ];
+
+        const camposVazios = camposObrigatorios.filter(function (campo) {
+            const elemento = document.getElementById(campo.id);
+            return !elemento || !elemento.value.trim();
+        });
+
+        if (camposVazios.length > 0) {
+
+            event.preventDefault();
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campos obrigatórios!',
+                text: 'Preencha todos os campos obrigatórios antes de cadastrar o funcionário.',
+                confirmButtonText: 'Entendi',
+                confirmButtonColor: '#0a66c2'
+            });
+
+            return;
+        }
+
+    });
+
+});
+</script>
+
+<?php
+$episAntigos = old('EPIS');
+
+if (is_string($episAntigos)) {
+    $episAntigos = json_decode($episAntigos, true);
+}
+
+if (!is_array($episAntigos)) {
+    $episAntigos = [];
+}
+
+$idsEpisAntigos = [];
+
+foreach ($episAntigos as $epi) {
+    if (is_array($epi)) {
+        $id = $epi['id'] ?? $epi['ID'] ?? null;
+    } else {
+        $id = $epi;
+    }
+
+    if ($id !== null && $id !== '') {
+        $idsEpisAntigos[] = (string) $id;
+    }
+}
+?>
 <!-- =============================================================
      DADOS PHP → JAVASCRIPT
 ============================================================= -->
@@ -1101,123 +1124,92 @@
     /* =========================================================
        EPIS SELECIONADOS
     ========================================================= */
+let episSelecionadosAtuais = [];
 
-    let episSelecionadosAtuais = [];
+const idsEpisAntigos = <?= json_encode(
+    $idsEpisAntigos,
+    JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP
+) ?>;
 
-    let modoSelecaoEPI = "cadastro";
-
+episSelecionadosAtuais = episDisponiveis
+    .filter(epi => idsEpisAntigos.includes(String(epi.ID)))
+    .map(epi => ({
+        id: Number(epi.ID),
+        nome: epi.NOME_EPI || epi.nome || "EPI"
+    }));
 
 
     /* =========================================================
        ACESSIBILIDADE
     ========================================================= */
 
-    const AcessibilidadePagina = {
-
-        tamanhoFonteAtual: 100,
-
+    // A página utiliza as funções centrais de acessibilidade do arquivo
+    // assets/js/acessibilidade.js, evitando dois controles de fonte separados.
+    window.AcessibilidadePagina = {
 
         aumentarFonte() {
-
-            if (this.tamanhoFonteAtual < 140) {
-
-                this.tamanhoFonteAtual += 10;
-
-                document.body.style.fontSize =
-                    this.tamanhoFonteAtual + "%";
-
+            if (window.Acessibilidade) {
+                window.Acessibilidade.aumentarFonte();
+            } else if (typeof Acessibilidade !== "undefined") {
+                Acessibilidade.aumentarFonte();
             }
-
         },
-
 
         diminuirFonte() {
-
-            if (this.tamanhoFonteAtual > 70) {
-
-                this.tamanhoFonteAtual -= 10;
-
-                document.body.style.fontSize =
-                    this.tamanhoFonteAtual + "%";
-
+            if (window.Acessibilidade) {
+                window.Acessibilidade.diminuirFonte();
+            } else if (typeof Acessibilidade !== "undefined") {
+                Acessibilidade.diminuirFonte();
             }
-
         },
-
 
         toggleContraste() {
-
-            document.body.classList.remove(
-                "high-contrast"
-            );
-
-            document.body.classList.toggle(
-                "alto-contraste"
-            );
-
+            if (typeof Acessibilidade !== "undefined") {
+                Acessibilidade.toggleContraste();
+            }
         },
-
 
         toggleDark() {
-
-            document.body.classList.remove(
-                "high-contrast"
-            );
-
-            document.body.classList.toggle(
-                "dark-mode"
-            );
-
+            if (typeof window.toggleDark === "function") {
+                window.toggleDark();
+            }
         },
 
-
         lerPagina() {
-
-            if (!("speechSynthesis" in window)) {
-
-                alert(
-                    "Seu navegador não suporta a leitura de texto por voz."
-                );
-
+            if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+                alert("Seu navegador não suporta a leitura de texto por voz.");
                 return;
-
             }
 
-
-            if (window.speechSynthesis.speaking) {
-
+            // Se a leitura já estiver em andamento, o botão interrompe a fala.
+            if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
                 window.speechSynthesis.cancel();
-
                 return;
-
             }
 
+            const conteudo = document.querySelector(".content-container");
+            if (!conteudo) {
+                alert("Não foi possível localizar o conteúdo da página.");
+                return;
+            }
 
-            const conteudo =
-                document.querySelector(
-                    ".content-container"
-                ) || document.body;
+            // Não lê os botões da acessibilidade nem elementos ocultos do menu.
+            const texto = conteudo.innerText
+                .replace(/\s+/g, " ")
+                .trim();
 
+            if (!texto) {
+                alert("Não há texto disponível para leitura.");
+                return;
+            }
 
-            const utterance =
-                new SpeechSynthesisUtterance(
-                    conteudo.innerText
-                );
-
-
-            utterance.lang = "pt-BR";
-
-            utterance.rate = 1.1;
-
-
-            window.speechSynthesis.speak(
-                utterance
-            );
-
+            const fala = new SpeechSynthesisUtterance(texto);
+            fala.lang = "pt-BR";
+            fala.rate = 1.0;
+            window.speechSynthesis.speak(fala);
         }
 
     };
-
 
 
     /* =========================================================
@@ -2645,7 +2637,33 @@ function atualizarBonecoEPI() {
 
     }
 
+function restaurarEPIsCadastro() {
+    const lista = document.getElementById("episSelecionados");
+    const hidden = document.getElementById("episHidden");
 
+    if (!lista || !hidden) return;
+
+    if (episSelecionadosAtuais.length === 0) {
+        lista.textContent = "Nenhum EPI selecionado";
+        hidden.value = "[]";
+    } else {
+        lista.innerHTML = episSelecionadosAtuais.map(epi => `
+            <span class="epi-tag">
+                <i class="fas ${iconeEPI(epi.nome)}"></i>
+                ${escapeHTML(epi.nome)}
+            </span>
+        `).join("");
+
+        hidden.value = JSON.stringify(episSelecionadosAtuais);
+    }
+
+    atualizarContadorEPIs();
+    atualizarBonecoEPI();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    restaurarEPIsCadastro();
+});
 
     /* =========================================================
        FECHAR MODAL EPI
@@ -3700,44 +3718,129 @@ function atualizarBonecoEPI() {
        VALIDAÇÃO E CONFIRMAÇÃO DO CADASTRO
     ========================================================= */
 
-    function validarSenhasCadastro() {
+    
+function validarSenhasCadastro() {
+    const camposObrigatorios = [
+        { id: "nome", nome: "Nome completo" },
+        { id: "cpf", nome: "CPF" },
+        { id: "nascimento", nome: "Data de nascimento" },
+        { id: "email", nome: "E-mail corporativo" },
+        { id: "telefone", nome: "Telefone" },
+        { id: "uid_rfid", nome: "UID RFID" },
+        { id: "id_setor", nome: "Setor" },
+        { id: "senha", nome: "Senha" },
+        { id: "confirmSenha", nome: "Confirmação de senha" }
+    ];
 
-        const senha =
-            document.getElementById("senha");
+    const camposVazios = camposObrigatorios.filter(campo => {
+        const elemento = document.getElementById(campo.id);
+        return !elemento || !elemento.value.trim();
+    });
 
-        const confirmarSenha =
-            document.getElementById("confirmSenha");
+    // Primeiro: verificar os campos obrigatórios
+    if (camposVazios.length > 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Campos obrigatórios!",
+            text: "Preencha todos os campos obrigatórios antes de cadastrar.",
+            confirmButtonText: "Entendi",
+            confirmButtonColor: "#0a66c2"
+        });
 
-        if (!senha || !confirmarSenha) {
-            return true;
-        }
-
-        if (senha.value.length < 6) {
-
-            Swal.fire({
-                icon: "warning",
-                title: "Senha inválida",
-                text: "A senha deve ter no mínimo 6 caracteres."
-            });
-
-            senha.focus();
-            return false;
-        }
-
-        if (senha.value !== confirmarSenha.value) {
-
-            Swal.fire({
-                icon: "warning",
-                title: "Senhas diferentes",
-                text: "A senha e a confirmação de senha devem ser iguais."
-            });
-
-            confirmarSenha.focus();
-            return false;
-        }
-
-        return true;
+        document.getElementById(camposVazios[0].id)?.focus();
+        return false;
     }
+
+
+    const episHidden = document.getElementById("episHidden");
+
+let episSelecionados = [];
+
+try {
+    episSelecionados = JSON.parse(episHidden?.value || "[]");
+} catch (erro) {
+    episSelecionados = [];
+}
+
+if (!Array.isArray(episSelecionados) || episSelecionados.length === 0) {
+    Swal.fire({
+        icon: "warning",
+        title: "Selecione pelo menos um EPI!",
+        text: "É necessário selecionar ao menos um EPI obrigatório para cadastrar o funcionário.",
+        confirmButtonText: "Entendi",
+        confirmButtonColor: "#0a66c2"
+    });
+
+    document.querySelector(".btn-selecionar-epi")?.focus();
+
+    return false;
+}
+    const senha = document.getElementById("senha");
+    const confirmarSenha = document.getElementById("confirmSenha");
+
+
+    
+const campoNascimento = document.getElementById("nascimento");
+const valorNascimento = campoNascimento.value;
+
+const nascimento = new Date(valorNascimento + "T00:00:00");
+const hoje = new Date();
+
+let idade = hoje.getFullYear() - nascimento.getFullYear();
+
+const aindaNaoFezAniversario =
+    hoje.getMonth() < nascimento.getMonth() ||
+    (
+        hoje.getMonth() === nascimento.getMonth() &&
+        hoje.getDate() < nascimento.getDate()
+    );
+
+if (aindaNaoFezAniversario) {
+    idade--;
+}
+
+if (idade < 14) {
+    Swal.fire({
+        icon: "warning",
+        title: "Idade mínima não atingida",
+        text: "O funcionário precisa ter pelo menos 14 anos completos.",
+        confirmButtonText: "Entendi",
+        confirmButtonColor: "#0a66c2"
+    });
+
+    campoNascimento.focus();
+    return false;
+}
+
+
+    // Segundo: verificar o tamanho da senha
+    if (senha.value.length < 6) {
+        Swal.fire({
+            icon: "warning",
+            title: "Senha inválida",
+            text: "A senha deve ter no mínimo 6 caracteres.",
+            confirmButtonColor: "#0a66c2"
+        });
+
+        senha.focus();
+        return false;
+    }
+
+    // Terceiro: verificar se as senhas coincidem
+    if (senha.value !== confirmarSenha.value) {
+        Swal.fire({
+            icon: "warning",
+            title: "Senhas diferentes",
+            text: "A senha e a confirmação devem ser iguais.",
+            confirmButtonColor: "#0a66c2"
+        });
+
+        confirmarSenha.focus();
+        return false;
+    }
+
+    return true;
+}
 
 
     document.addEventListener(

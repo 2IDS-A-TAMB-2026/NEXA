@@ -558,12 +558,20 @@ $routes->get(
 // PERFIL FUNCIONÁRIO
 // =====================================================
 
+
 $routes->get(
     '/perfilfun',
     'PerfilFunController::index',
     ['filter' => 'authfun']
 );
 
+// Verificar a senha atual do funcionário
+$routes->post(
+    '/perfilfun/verificar-senha',
+    'PerfilFunController::verificarSenha'
+);
+
+// Atualizar o perfil do funcionário
 $routes->post(
     '/perfilfun/atualizar',
     'PerfilFunController::atualizar'

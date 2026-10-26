@@ -55,7 +55,61 @@ class PerfilFunController extends BaseController
         ]);
     }
 
+public function verificarSenha()
+{
+    if (!session()->get('logado_fun')) {
+        return $this->response
+            ->setStatusCode(401)
+            ->setJSON([
+                'sucesso' => false,
+                'mensagem' => 'Sessão expirada. Faça login novamente.'
+            ]);
+    }
 
+    $model = new FuncionarioModel();
+
+    $cpf = session()->get('cpf_fun');
+    $funcionario = $model->find($cpf);
+
+    if (!$funcionario) {
+        return $this->response
+            ->setStatusCode(404)
+            ->setJSON([
+                'sucesso' => false,
+                'mensagem' => 'Funcionário não encontrado.'
+            ]);
+    }
+
+    $senhaAtual = (string) $this->request
+        ->getPost('senhaAtual');
+
+    $senhaBanco = (string) ($funcionario['SENHA'] ?? '');
+
+    $senhaValida = false;
+
+    if ($senhaAtual !== '' && $senhaBanco !== '') {
+        // Senhas armazenadas com password_hash()
+        $senhaValida = password_verify(
+            $senhaAtual,
+            $senhaBanco
+        );
+
+        // Compatibilidade com senhas antigas em texto puro
+        if (!$senhaValida) {
+            $senhaValida = hash_equals(
+                $senhaBanco,
+                $senhaAtual
+            );
+        }
+    }
+
+    return $this->response->setJSON([
+        'sucesso' => $senhaValida,
+        'mensagem' => $senhaValida
+            ? 'Senha atual confirmada.'
+            : 'A senha atual está incorreta.'
+    ]);
+}
     // =========================================================
     // ATUALIZAR PERFIL
     // =========================================================

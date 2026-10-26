@@ -1,69 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class AccessibilityController extends ChangeNotifier {
-  // ============================================================
-  // MODO ESCURO / MODO CLARO
-  // ============================================================
+  final FlutterTts _leitor = FlutterTts();
 
   bool _darkMode = false;
+  double _fontSizeScale = 1.0;
 
   bool get darkMode => _darkMode;
+  double get fontSizeScale => _fontSizeScale;
 
   void toggleDarkMode() {
     _darkMode = !_darkMode;
     notifyListeners();
   }
 
-  // ============================================================
-  // TAMANHO DA FONTE
-  // ============================================================
-
-  double _fontSizeScale = 1.0;
-
-  double get fontSizeScale => _fontSizeScale;
+  void definirModoEscuro(bool ativar) {
+    if (_darkMode == ativar) return;
+    _darkMode = ativar;
+    notifyListeners();
+  }
 
   void aumentarFonte() {
-    // Evita aumentar infinitamente
-    if (_fontSizeScale < 2.0) {
-      _fontSizeScale += 0.1;
-
-      if (_fontSizeScale > 2.0) {
-        _fontSizeScale = 2.0;
-      }
-
-      notifyListeners();
-    }
+    if (_fontSizeScale >= 1.5) return;
+    _fontSizeScale = (_fontSizeScale + 0.2).clamp(0.8, 1.5).toDouble();
+    notifyListeners();
   }
 
   void diminuirFonte() {
-    // Evita diminuir demais
-    if (_fontSizeScale > 0.7) {
-      _fontSizeScale -= 0.1;
-
-      if (_fontSizeScale < 0.7) {
-        _fontSizeScale = 0.7;
-      }
-
-      notifyListeners();
-    }
-  }
-
-  // ============================================================
-  // LEITURA DE TEXTO
-  // ============================================================
-
-  void lerTexto(String texto) {
-    // Sua lógica de áudio aqui
-  }
-
-  // ============================================================
-  // ALTO CONTRASTE
-  // ============================================================
-
-  bool altoContraste = false;
-
-  void toggleHighContrast() {
-    altoContraste = !altoContraste;
+    if (_fontSizeScale <= 0.8) return;
+    _fontSizeScale = (_fontSizeScale - 0.2).clamp(0.8, 1.5).toDouble();
     notifyListeners();
+  }
+
+  Future<void> lerTexto(String texto) async {
+    if (texto.trim().isEmpty) return;
+    await _leitor.stop();
+    await _leitor.setLanguage('pt-BR');
+    await _leitor.setSpeechRate(0.45);
+    await _leitor.speak(texto);
+  }
+
+  Future<void> pararLeitura() async {
+    await _leitor.stop();
+  }
+
+  @override
+  void dispose() {
+    _leitor.stop();
+    super.dispose();
   }
 }

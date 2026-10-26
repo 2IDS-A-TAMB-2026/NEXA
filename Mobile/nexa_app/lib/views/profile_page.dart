@@ -1,254 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:nexa_app/controllers/acessibility_controller.dart';
+import 'package:nexa_app/models/dashboard_fun_model.dart';
 import 'package:nexa_app/models/user_model.dart';
 import 'package:nexa_app/services/api_service.dart';
-import 'package:nexa_app/views/dashboard_page_fun.dart';
 import 'package:nexa_app/views/dashboard_cameras.dart';
 import 'package:nexa_app/views/institucional_page.dart';
+import 'package:nexa_app/views/profile_page.dart';
+import 'package:nexa_app/views/login_page.dart';
 import 'package:provider/provider.dart';
 
-class PerfilPage extends StatefulWidget {
-  const PerfilPage({super.key});
+class DashboardPageFun extends StatefulWidget {
+  const DashboardPageFun({super.key});
 
   @override
-  State<PerfilPage> createState() => _PerfilPageState();
+  State<DashboardPageFun> createState() => _DashboardPageFunState();
 }
 
-class _PerfilPageState extends State<PerfilPage> {
-  bool editando = false;
-  bool alterarSenha = false;
+class _DashboardPageFunState extends State<DashboardPageFun> {
+  DashboardFunModel? dashboard;
+
   bool carregando = true;
-  bool salvando = false;
+  String? erro;
 
-  late TextEditingController nomeController;
-  late TextEditingController emailController;
-  late TextEditingController telefoneController;
-  late TextEditingController cpfController;
-  late TextEditingController dataController;
-  late TextEditingController uidController;
-
-  late TextEditingController senhaAtualController;
-  late TextEditingController novaSenhaController;
-  late TextEditingController confirmarSenhaController;
-
-  String mensagem = '';
-  bool mensagemErro = false;
+  late DateTime mesAtual;
 
   @override
   void initState() {
     super.initState();
-
-    nomeController = TextEditingController();
-    emailController = TextEditingController();
-    telefoneController = TextEditingController();
-    cpfController = TextEditingController();
-    dataController = TextEditingController();
-    uidController = TextEditingController();
-
-    senhaAtualController = TextEditingController();
-    novaSenhaController = TextEditingController();
-    confirmarSenhaController = TextEditingController();
-
-    carregarPerfil();
+    mesAtual = DateTime(2026, 10);
+    carregarDashboard();
   }
 
-  // =========================================================
-  // CARREGAR PERFIL DA API
-  // =========================================================
-
-  Future<void> carregarPerfil() async {
-    try {
-      final usuario = await ApiService.buscarPerfilFuncionario(
-        usuarioLogado.cpf,
-      );
-
-      usuarioLogado = usuario;
-
-      nomeController.text = usuario.nome;
-      emailController.text = usuario.email;
-      telefoneController.text = formatarTelefone(usuario.telefone);
-      cpfController.text = usuario.cpf;
-      dataController.text = usuario.dataNascimento;
-      uidController.text = usuario.uidRfid;
-
-      if (mounted) {
-        setState(() {
-          carregando = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          carregando = false;
-          mensagemErro = true;
-          mensagem = e.toString().replaceFirst('Exception: ', '');
-        });
-      }
-    }
-  }
-
-  // =========================================================
-  // URL DA IMAGEM DO EPI
-  // =========================================================
-
-  String _urlImagemEpi(String imagem) {
-    if (imagem.trim().isEmpty) {
-      return '';
-    }
-
-    imagem = imagem.trim();
-
-    // Caso a API já envie uma URL completa
-    if (imagem.startsWith('http://') || imagem.startsWith('https://')) {
-      return imagem;
-    }
-
-    // Remove barras do começo
-    imagem = imagem.replaceFirst(RegExp(r'^/+'), '');
-
-    // Caso já venha com uploads/epis/
-    if (imagem.startsWith('uploads/epis/')) {
-      return '${ApiService.baseUrl}/$imagem';
-    }
-
-    // Caso venha somente o nome do arquivo
-    return '${ApiService.baseUrl}/uploads/epis/$imagem';
-  }
-
-  // =========================================================
-  // MÁSCARA TELEFONE
-  // =========================================================
-
-  String formatarTelefone(String valor) {
-    String numeros = valor.replaceAll(RegExp(r'[^0-9]'), '');
-
-    if (numeros.length > 11) {
-      numeros = numeros.substring(0, 11);
-    }
-
-    if (numeros.length <= 2) {
-      return numeros;
-    }
-
-    if (numeros.length <= 7) {
-      return '(${numeros.substring(0, 2)}) '
-          '${numeros.substring(2)}';
-    }
-
-    return '(${numeros.substring(0, 2)}) '
-        '${numeros.substring(2, 7)}-'
-        '${numeros.substring(7)}';
-  }
-
-  // =========================================================
-  // SALVAR ALTERAÇÕES
-  // =========================================================
-
-  Future<void> salvarAlteracoes() async {
-    if (salvando) return;
+  Future<void> carregarDashboard() async {
+    if (!mounted) return;
 
     setState(() {
-      salvando = true;
-      mensagem = '';
-      mensagemErro = false;
+      carregando = true;
+      erro = null;
     });
 
     try {
-      // =====================================================
-      // ATUALIZAR DADOS PESSOAIS
-      // =====================================================
-
-      await ApiService.atualizarPerfil(
-        usuarioLogado.cpf,
-        nome: nomeController.text.trim(),
-        email: emailController.text.trim(),
-        telefone: telefoneController.text.trim(),
-      );
-
-      // =====================================================
-      // ALTERAR SENHA SOMENTE SE FOI PREENCHIDA
-      // =====================================================
-
-      if (novaSenhaController.text.trim().isNotEmpty) {
-        if (senhaAtualController.text.trim().isEmpty) {
-          throw Exception('Digite sua senha atual para alterar a senha.');
-        }
-
-        if (novaSenhaController.text != confirmarSenhaController.text) {
-          throw Exception('A nova senha e a confirmação não coincidem.');
-        }
-
-        await ApiService.alterarSenha(
-          usuarioLogado.cpf,
-          senhaAtual: senhaAtualController.text,
-          novaSenha: novaSenhaController.text,
-        );
-      }
-
-      // =====================================================
-      // BUSCAR PERFIL NOVAMENTE
-      // =====================================================
-
-      final usuarioAtualizado = await ApiService.buscarPerfilFuncionario(
+      final dados = await ApiService.buscarDashboardFuncionario(
         usuarioLogado.cpf,
       );
 
-      usuarioLogado = usuarioAtualizado;
+      if (!mounted) return;
 
-      nomeController.text = usuarioAtualizado.nome;
-      emailController.text = usuarioAtualizado.email;
-      telefoneController.text = formatarTelefone(usuarioAtualizado.telefone);
-
-      senhaAtualController.clear();
-      novaSenhaController.clear();
-      confirmarSenhaController.clear();
-
-      if (mounted) {
-        setState(() {
-          editando = false;
-          alterarSenha = false;
-          salvando = false;
-          mensagemErro = false;
-          mensagem = 'Perfil atualizado com sucesso!';
-        });
-      }
+      setState(() {
+        dashboard = dados;
+        carregando = false;
+      });
     } catch (e) {
-      if (mounted) {
-        setState(() {
-          salvando = false;
-          mensagemErro = true;
-          mensagem = e.toString().replaceFirst('Exception: ', '');
-        });
-      }
+      if (!mounted) return;
+
+      setState(() {
+        carregando = false;
+        erro = e.toString().replaceFirst('Exception: ', '');
+      });
     }
   }
 
-  @override
-  void dispose() {
-    nomeController.dispose();
-    emailController.dispose();
-    telefoneController.dispose();
-    cpfController.dispose();
-    dataController.dispose();
-    uidController.dispose();
-
-    senhaAtualController.dispose();
-    novaSenhaController.dispose();
-    confirmarSenhaController.dispose();
-
-    super.dispose();
+  bool verificarDarkMode(AccessibilityController accessibility) {
+    try {
+      return (accessibility as dynamic).darkMode ??
+          (accessibility as dynamic).isDarkMode ??
+          false;
+    } catch (_) {
+      return false;
+    }
   }
 
-  // =========================================================
-  // BUILD
-  // =========================================================
+  void mudarMes(int delta) {
+    setState(() {
+      mesAtual = DateTime(mesAtual.year, mesAtual.month + delta, 1);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final accessibility = context.watch<AccessibilityController>();
-
-    final bool isDarkMode = accessibility.darkMode;
+    final bool isDarkMode = verificarDarkMode(accessibility);
 
     final Color backgroundColor = isDarkMode
         ? const Color(0xFF000000)
@@ -258,375 +89,206 @@ class _PerfilPageState extends State<PerfilPage> {
         ? const Color(0xFF1A2B4C)
         : Colors.white;
 
-    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
-
     final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
     final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
 
-    final Color fieldFillColor = isDarkMode
-        ? const Color(0xFF2A3B5C)
-        : const Color(0xFFF4F6FA);
+    final String nome = dashboard?.funcionario.nome.isNotEmpty == true
+        ? dashboard!.funcionario.nome
+        : usuarioLogado.nome.isNotEmpty
+        ? usuarioLogado.nome
+        : "Funcionário";
+
+    final String empresa = dashboard?.funcionario.empresa.isNotEmpty == true
+        ? dashboard!.funcionario.empresa
+        : usuarioLogado.empresa.isNotEmpty
+        ? usuarioLogado.empresa
+        : "NEXA SOLUÇÕES";
 
     return Scaffold(
       backgroundColor: backgroundColor,
-
-      // =====================================================
-      // DRAWER
-      // =====================================================
       drawer: _buildDrawer(context),
-
-      // =====================================================
-      // APP BAR
-      // =====================================================
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appBarColor,
         iconTheme: const IconThemeData(color: Color(0xFF0F62FE)),
-        title: Text(
-          'Perfil',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: isDarkMode ? Colors.white : const Color(0xFF0F62FE),
-            fontWeight: FontWeight.bold,
+        title: const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Bem-vindo,",
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+            textScaler: TextScaler.linear(1.0),
+            style: TextStyle(
+              color: Color(0xFF0F62FE),
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.text_increase, color: Color(0xFF0F62FE)),
-            onPressed: () {
-              context.read<AccessibilityController>().aumentarFonte();
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F62FE)),
+            tooltip: "Acessibilidade",
+            onSelected: (value) {
+              final accessibility = context.read<AccessibilityController>();
+              switch (value) {
+                case 'aumentar':
+                  accessibility.aumentarFonte();
+                  break;
+                case 'diminuir':
+                  accessibility.diminuirFonte();
+                  break;
+                case 'escuro':
+                  try {
+                    (accessibility as dynamic).toggleDarkMode();
+                  } catch (_) {
+                    try {
+                      (accessibility as dynamic).alternarTema();
+                    } catch (_) {}
+                  }
+                  break;
+                case 'contraste':
+                  try {
+                    (accessibility as dynamic).toggleHighContrast();
+                  } catch (_) {
+                    try {
+                      (accessibility as dynamic).alternarAltoContraste();
+                    } catch (_) {}
+                  }
+                  break;
+                case 'ler':
+                  final texto =
+                      """
+                  Bem-vindo $nome.
+                  Empresa $empresa.
+                  Dashboard do funcionário.
+                  Calendário de atividades e dicas de segurança ativas.
+                  """;
+                  accessibility.lerTexto(texto);
+                  break;
+              }
             },
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.text_decrease, color: Color(0xFF0F62FE)),
-            onPressed: () {
-              context.read<AccessibilityController>().diminuirFonte();
-            },
-          ),
-
-          IconButton(
-            icon: Icon(
-              isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
-              color: const Color(0xFF0F62FE),
-            ),
-            onPressed: () {
-              context.read<AccessibilityController>().toggleDarkMode();
-            },
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.volume_up, color: Color(0xFF0F62FE)),
-            onPressed: () {
-              context.read<AccessibilityController>().lerTexto('''
-Perfil do Funcionário.
-Nome: ${nomeController.text}.
-E-mail: ${emailController.text}.
-Telefone: ${telefoneController.text}.
-EPIs obrigatórios: ${usuarioLogado.epis}.
-''');
-            },
-          ),
-
-          const SizedBox(width: 10),
-        ],
-      ),
-
-      // =====================================================
-      // BODY
-      // =====================================================
-      body: carregando
-          ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFF0F62FE)),
-            )
-          : Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 16,
-                ),
-                child: Container(
-                  constraints: const BoxConstraints(maxWidth: 850),
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: cardColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
+            itemBuilder: (context) => [
+              const PopupMenuItem<String>(
+                enabled: false,
+                child: Text(
+                  "Acessibilidade",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0F62FE),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ),
+              const PopupMenuDivider(),
+              const PopupMenuItem<String>(
+                value: 'aumentar',
+                child: Row(
+                  children: [
+                    Icon(Icons.text_increase, color: Color(0xFF0F62FE)),
+                    SizedBox(width: 12),
+                    Text("Aumentar fonte"),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'diminuir',
+                child: Row(
+                  children: [
+                    Icon(Icons.text_decrease, color: Color(0xFF0F62FE)),
+                    SizedBox(width: 12),
+                    Text("Diminuir fonte"),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'escuro',
+                child: Row(
+                  children: [
+                    Icon(Icons.dark_mode_outlined, color: Color(0xFF0F62FE)),
+                    SizedBox(width: 12),
+                    Text("Modo escuro"),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'ler',
+                child: Row(
+                  children: [
+                    Icon(Icons.volume_up, color: Color(0xFF0F62FE)),
+                    SizedBox(width: 12),
+                    Text("Ler página"),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final largura = MediaQuery.sizeOf(context).width;
+              final double larguraPerfil = largura < 320
+                  ? 76
+                  : largura < 380
+                  ? 105
+                  : largura < 500
+                  ? 145
+                  : 190;
+
+              return SizedBox(
+                width: larguraPerfil,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardPageFun(),
+                      ),
+                    );
+                  },
+                  child: Row(
                     children: [
-                      // =================================================
-                      // HEADER
-                      // =================================================
-
-                      _buildHeader(isDarkMode, subTextColor),
-
-                      const SizedBox(height: 38),
-
-                      // =================================================
-                      // INFORMAÇÕES PESSOAIS
-                      // =================================================
-                      _secaoTitulo(
-                        Icons.person_outline,
-                        'INFORMAÇÕES PESSOAIS',
-                      ),
-
-                      const SizedBox(height: 18),
-
-                      campo(
-                        'Nome completo',
-                        nomeController,
-                        icon: Icons.person_outline,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                      ),
-
-                      campo(
-                        'E-mail corporativo',
-                        emailController,
-                        icon: Icons.email_outlined,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                      ),
-
-                      campo(
-                        'Telefone',
-                        telefoneController,
-                        icon: Icons.phone_outlined,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(11),
-                          _TelefoneInputFormatter(),
-                        ],
-                      ),
-
-                      campo(
-                        'CPF',
-                        cpfController,
-                        icon: Icons.badge_outlined,
-                        enabled: false,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                      ),
-
-                      campo(
-                        'Data de nascimento',
-                        dataController,
-                        icon: Icons.calendar_today_outlined,
-                        enabled: false,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                      ),
-
-                      campo(
-                        'Código RFID',
-                        uidController,
-                        icon: Icons.nfc_outlined,
-                        enabled: false,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                      ),
-
-                      const SizedBox(height: 22),
-
-                      // =================================================
-                      // VÍNCULO PROFISSIONAL
-                      // =================================================
-                      _secaoTitulo(
-                        Icons.business_outlined,
-                        'VÍNCULO PROFISSIONAL',
-                      ),
-
-                      const SizedBox(height: 18),
-
-                      campo(
-                        'Empresa',
-                        TextEditingController(text: usuarioLogado.empresa),
-                        icon: Icons.business_outlined,
-                        enabled: false,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                      ),
-
-                      campo(
-                        'Setor',
-                        TextEditingController(text: usuarioLogado.setor),
-                        icon: Icons.work_outline,
-                        enabled: false,
-                        textColor: textColor,
-                        fillColor: fieldFillColor,
-                      ),
-
-                      const SizedBox(height: 22),
-
-                      // =================================================
-                      // EPIs OBRIGATÓRIOS
-                      // =================================================
-                      _secaoTitulo(Icons.shield_outlined, 'EPIS OBRIGATÓRIOS'),
-
-                      const SizedBox(height: 18),
-
-                      _buildEpis(textColor, fieldFillColor),
-
-                      const SizedBox(height: 30),
-
-                      // =================================================
-                      // SEGURANÇA
-                      // =================================================
-                      _secaoTitulo(Icons.lock_outline, 'SEGURANÇA'),
-
-                      const SizedBox(height: 18),
-
-                      if (alterarSenha) ...[
-                        campo(
-                          'Senha atual',
-                          senhaAtualController,
-                          icon: Icons.lock_outline,
-                          oculto: true,
-                          textColor: textColor,
-                          fillColor: fieldFillColor,
-                        ),
-
-                        campo(
-                          'Nova senha',
-                          novaSenhaController,
-                          icon: Icons.lock_outline,
-                          oculto: true,
-                          textColor: textColor,
-                          fillColor: fieldFillColor,
-                        ),
-
-                        campo(
-                          'Confirmar nova senha',
-                          confirmarSenhaController,
-                          icon: Icons.lock_outline,
-                          oculto: true,
-                          textColor: textColor,
-                          fillColor: fieldFillColor,
-                        ),
-
-                        const SizedBox(height: 5),
-
-                        TextButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              alterarSenha = false;
-                              senhaAtualController.clear();
-                              novaSenhaController.clear();
-                              confirmarSenhaController.clear();
-                            });
-                          },
-                          icon: const Icon(Icons.close, size: 18),
-                          label: const Text('Cancelar alteração de senha'),
-                        ),
-                      ],
-
-                      if (mensagem.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            mensagem,
-                            style: TextStyle(
-                              color: mensagemErro ? Colors.red : Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: const Color(0xFF0F62FE),
+                        child: Text(
+                          nome.isNotEmpty ? nome[0].toUpperCase() : "F",
+                          maxLines: 1,
+                          textScaler: const TextScaler.linear(1.0),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-
-                      const SizedBox(height: 30),
-
-                      // =================================================
-                      // BOTÕES (RESPONSIVOS)
-                      // =================================================
-                      SizedBox(
-                        width: double.infinity,
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 12,
-                          runSpacing: 12,
+                      ),
+                      const SizedBox(width: 7),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (!alterarSenha)
-                              OutlinedButton.icon(
-                                onPressed: () {
-                                  setState(() {
-                                    alterarSenha = true;
-                                    editando = true;
-                                    mensagem = '';
-                                  });
-                                },
-                                icon: const Icon(Icons.lock_reset),
-                                label: const Text('Alterar senha'),
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xFF0F62FE),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 25,
-                                    vertical: 15,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                ),
+                            Text(
+                              nome,
+                              maxLines: 1,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              textScaler: const TextScaler.linear(1.0),
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
                               ),
-
-                            ElevatedButton.icon(
-                              icon: salvando
-                                  ? const SizedBox(
-                                      width: 18,
-                                      height: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : Icon(
-                                      editando
-                                          ? Icons.save
-                                          : Icons.edit_note_rounded,
-                                    ),
-                              label: Text(
-                                salvando
-                                    ? 'Salvando...'
-                                    : editando
-                                    ? 'Salvar alterações'
-                                    : 'Editar campos',
+                            ),
+                            Text(
+                              empresa,
+                              maxLines: 1,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              textScaler: const TextScaler.linear(1.0),
+                              style: TextStyle(
+                                color: subTextColor,
+                                fontSize: 9,
                               ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF0F62FE),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                              ),
-                              onPressed: salvando
-                                  ? null
-                                  : () {
-                                      if (editando) {
-                                        salvarAlteracoes();
-                                      } else {
-                                        setState(() {
-                                          editando = true;
-                                          mensagem = '';
-                                        });
-                                      }
-                                    },
                             ),
                           ],
                         ),
@@ -634,284 +296,120 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                     ],
                   ),
                 ),
-              ),
-            ),
+              );
+            },
+          ),
+          const SizedBox(width: 15),
+        ],
+      ),
+      body: _buildBody(context, isDarkMode),
     );
   }
 
-  // =========================================================
-  // EPIs
-  // =========================================================
-
-  Widget _buildEpis(Color textColor, Color fillColor) {
-    final epis = usuarioLogado.episObrigatorios;
-
-    if (epis.isEmpty) {
-      return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: fillColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: const Row(
-          children: [
-            Icon(Icons.info_outline, color: Colors.grey),
-            SizedBox(width: 10),
-            Expanded(child: Text('Nenhum EPI obrigatório cadastrado.')),
-          ],
-        ),
+  Widget _buildBody(BuildContext context, bool isDarkMode) {
+    if (carregando) {
+      return const Center(
+        child: CircularProgressIndicator(color: Color(0xFF0F62FE)),
       );
     }
 
-    return Column(
-      children: epis.map((epi) {
-        final String imagemUrl = _urlImagemEpi(epi.imagem);
+    if (erro != null) {
+      return _buildErro();
+    }
 
-        return Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 16),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: fillColor,
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // IMAGEM
-              Container(
-                width: 78,
-                height: 78,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEAF4FF),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(
-                  Icons.shield_outlined,
-                  color: Color(0xFF0075E3),
-                  size: 40,
-                ),
-              ),
+    if (dashboard == null) {
+      return _buildErro(mensagem: "Nenhum dado foi encontrado.");
+    }
 
-              const SizedBox(width: 18),
-
-              // INFORMAÇÕES DO EPI
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      epi.nome.isEmpty ? 'EPI' : epi.nome,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    if (epi.descricao.isNotEmpty) ...[
-                      const SizedBox(height: 7),
-                      Text(
-                        epi.descricao,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: textColor.withOpacity(0.70),
-                          fontSize: 13,
-                          height: 1.4,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-
-              // BLOQUEADO
-              const Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Icon(Icons.lock_outline, size: 18, color: Colors.grey),
-              ),
-            ],
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  // =========================================================
-  // CAMPO
-  // =========================================================
-
-  Widget campo(
-    String label,
-    TextEditingController controller, {
-    bool oculto = false,
-    bool enabled = true,
-    IconData? icon,
-    required Color textColor,
-    required Color fillColor,
-    TextInputType? keyboardType,
-    List<TextInputFormatter>? inputFormatters,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 22),
-      child: TextField(
-        controller: controller,
-        obscureText: oculto,
-        enabled: editando && enabled,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        maxLines: 1,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          overflow: TextOverflow.ellipsis,
-        ),
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: icon != null
-              ? Icon(icon, color: const Color(0xFF0F62FE), size: 20)
-              : null,
-          filled: true,
-          fillColor: fillColor,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 18,
-            horizontal: 16,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFF0F62FE), width: 2),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // =========================================================
-  // TÍTULO DA SEÇÃO
-  // =========================================================
-
-  Widget _secaoTitulo(IconData icon, String titulo) {
-    return Row(
-      children: [
-        Icon(icon, size: 18, color: const Color(0xFF0F62FE)),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            titulo,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF0F62FE),
-              letterSpacing: 0.8,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // =========================================================
-  // HEADER (RESPONSIVO)
-  // =========================================================
-
-  Widget _buildHeader(bool isDarkMode, Color subTextColor) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isNarrow = constraints.maxWidth < 450;
+        final bool isDesktop = constraints.maxWidth > 900;
 
-        return Row(
-          children: [
-            CircleAvatar(
-              radius: isNarrow ? 26 : 32,
-              backgroundColor: const Color(0xFF0F62FE),
-              child: Text(
-                usuarioLogado.nome.isNotEmpty
-                    ? usuarioLogado.nome[0].toUpperCase()
-                    : 'F',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: isNarrow ? 22 : 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+        return RefreshIndicator(
+          onRefresh: carregarDashboard,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 12),
+                isDesktop
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: CalendarioEPIInterativo(
+                              historico: dashboard!.ocorrencias.historico,
+                              mesAtual: mesAtual,
+                              onMudarMes: mudarMes,
+                              isDarkMode: isDarkMode,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          const Expanded(
+                            flex: 2,
+                            child: _DicasSegurancaSecao(),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          CalendarioEPIInterativo(
+                            historico: dashboard!.ocorrencias.historico,
+                            mesAtual: mesAtual,
+                            onMudarMes: mudarMes,
+                            isDarkMode: isDarkMode,
+                          ),
+                          const SizedBox(height: 24),
+                          const _DicasSegurancaSecao(),
+                        ],
+                      ),
+                const SizedBox(height: 24),
+              ],
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Perfil do Funcionário',
-                    style: TextStyle(
-                      fontSize: isNarrow ? 18 : 24,
-                      fontWeight: FontWeight.bold,
-                      color: isDarkMode
-                          ? Colors.white
-                          : const Color(0xFF0F62FE),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Visualize e gerencie suas informações pessoais',
-                    style: TextStyle(
-                      fontSize: isNarrow ? 12 : 14,
-                      color: subTextColor,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    height: 4,
-                    width: 45,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF0F62FE),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (!isNarrow)
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: isDarkMode
-                      ? const Color(0xFF2A3B5C)
-                      : const Color(0xFFEBF3FF),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.shield_outlined,
-                  size: 36,
-                  color: Color(0xFF0F62FE),
-                ),
-              ),
-          ],
+          ),
         );
       },
     );
   }
 
-  // =========================================================
-  // DRAWER / MENU LATERAL NEXA
-  // =========================================================
+  Widget _buildErro({String? mensagem}) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.error_outline, color: Colors.red, size: 52),
+            const SizedBox(height: 16),
+            const Text(
+              "Não foi possível carregar o Dashboard",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              mensagem ?? erro ?? "Verifique a conexão com a API.",
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(height: 22),
+            ElevatedButton.icon(
+              onPressed: carregarDashboard,
+              icon: const Icon(Icons.refresh),
+              label: const Text("Tentar novamente"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF0F62FE),
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
@@ -1024,22 +522,16 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                 _menuItem(
                   icon: Icons.grid_view_rounded,
                   texto: "Dashboard",
-                  ativo: false,
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const DashboardPageFun(),
-                      ),
-                    );
-                  },
+                  isSelected: true,
+                  onTap: () => Navigator.pop(context),
                 ),
                 _menuItem(
                   icon: Icons.videocam_outlined,
                   texto: "Análise de EPI",
-                  ativo: false,
+                  isSelected: false,
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.pop(context);
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => const DashboardCameraPage(),
@@ -1047,7 +539,7 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   child: Text(
@@ -1063,48 +555,46 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
                 _menuItem(
                   icon: Icons.person_outline,
                   texto: "Perfil",
-                  ativo: true,
+                  isSelected: false,
                   onTap: () {
                     Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardPageFun(),
+                      ),
+                    );
                   },
                 ),
                 const Spacer(),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (_) => InstitucionalPage()),
-                        (route) => false,
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.black.withOpacity(0.2),
-                      side: const BorderSide(color: Colors.white38, width: 1),
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.logout, color: Colors.white, size: 20),
-                        SizedBox(width: 10),
-                        Flexible(
-                          child: Text(
-                            "Sair do Sistema",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  padding: const EdgeInsets.all(20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        // Navegação segura usando pushAndRemoveUntil para limpar o histórico e voltar ao login
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                LoginPage(onLogin: () {}, onVoltar: () {}),
                           ),
+                          (route) => false,
+                        );
+                      },
+                      icon: const Icon(Icons.logout, color: Colors.white),
+                      label: const Text(
+                        "Sair do Sistema",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.white38),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -1116,77 +606,726 @@ EPIs obrigatórios: ${usuarioLogado.epis}.
     );
   }
 
-  // =========================================================
-  // ITEM DO DRAWER
-  // =========================================================
-
   Widget _menuItem({
     required IconData icon,
     required String texto,
+    required bool isSelected,
     required VoidCallback onTap,
-    bool ativo = false,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF0F62FE) : Colors.transparent,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.white),
+        title: Text(texto, style: const TextStyle(color: Colors.white)),
         onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          decoration: BoxDecoration(
-            color: ativo ? const Color(0xFF0075E3) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, color: Colors.white, size: 22),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Text(
-                  texto,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white, fontSize: 15),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
 }
 
-// =============================================================
-// FORMATADOR DE TELEFONE
-// =============================================================
+// =========================================================
+// WIDGET DO CALENDÁRIO INTERATIVO
+// =========================================================
 
-class _TelefoneInputFormatter extends TextInputFormatter {
+class CalendarioEPIInterativo extends StatelessWidget {
+  final List<dynamic> historico;
+  final DateTime mesAtual;
+  final Function(int) onMudarMes;
+  final bool isDarkMode;
+
+  const CalendarioEPIInterativo({
+    super.key,
+    required this.historico,
+    required this.mesAtual,
+    required this.onMudarMes,
+    required this.isDarkMode,
+  });
+
+  String _obterNomeMes(int mes) {
+    const meses = [
+      "JAN",
+      "FEV",
+      "MAR",
+      "ABR",
+      "MAI",
+      "JUN",
+      "JUL",
+      "AGO",
+      "SET",
+      "OUT",
+      "NOV",
+      "DEZ",
+    ];
+    return meses[mes - 1];
+  }
+
+  int _diasNoMes(DateTime data) {
+    return DateTime(data.year, data.month + 1, 0).day;
+  }
+
   @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
+  Widget build(BuildContext context) {
+    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
+    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
+    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
+    final Color dayBoxColor = isDarkMode
+        ? const Color(0xFF2A3B5C)
+        : const Color(0xFFF4F6FA);
+
+    final int totalDias = _diasNoMes(mesAtual);
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0F62FE),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.calendar_today, color: Colors.white),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Calendário",
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      "Visualize os dias e suas atividades",
+                      style: TextStyle(color: subTextColor, fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () => onMudarMes(-1),
+                icon: const Icon(Icons.chevron_left, color: Color(0xFF0F62FE)),
+              ),
+              Column(
+                children: [
+                  Text(
+                    _obterNomeMes(mesAtual.month),
+                    style: const TextStyle(
+                      color: Color(0xFF0F62FE),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    "${mesAtual.year}",
+                    style: TextStyle(color: subTextColor, fontSize: 11),
+                  ),
+                ],
+              ),
+              IconButton(
+                onPressed: () => onMudarMes(1),
+                icon: const Icon(Icons.chevron_right, color: Color(0xFF0F62FE)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 1.0,
+            ),
+            itemCount: totalDias,
+            itemBuilder: (context, index) {
+              final dia = index + 1;
+
+              final String diaStr = dia.toString().padLeft(2, '0');
+              final String mesStr = mesAtual.month.toString().padLeft(2, '0');
+              final String dataFormatada = "${mesAtual.year}-$mesStr-$diaStr";
+
+              final ocorrenciasDoDia = historico.where((h) {
+                final String dataAnalise = (h.dataAnalise ?? '').toString();
+                return dataAnalise.contains(dataFormatada) ||
+                    dataAnalise == "$diaStr/$mesStr/${mesAtual.year}";
+              }).toList();
+
+              Color dotColor = Colors.grey.shade400;
+              bool temErro = false;
+              bool temCorreto = false;
+
+              if (ocorrenciasDoDia.isNotEmpty) {
+                for (var o in ocorrenciasDoDia) {
+                  final status = (o.status ?? '').toString().toLowerCase();
+                  if (status.contains('regular') ||
+                      status.contains('correto') ||
+                      status.contains('conforme')) {
+                    temCorreto = true;
+                  } else {
+                    temErro = true;
+                  }
+                }
+
+                if (temErro) {
+                  dotColor = Colors.red;
+                } else if (temCorreto) {
+                  dotColor = Colors.green;
+                }
+              }
+
+              return InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  _mostrarDetalhesDia(
+                    context,
+                    dia,
+                    mesAtual.month,
+                    mesAtual.year,
+                    ocorrenciasDoDia,
+                    isDarkMode,
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: dayBoxColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "$dia",
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: dotColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _legendaItem(Colors.green, "Correto", subTextColor),
+              const SizedBox(width: 16),
+              _legendaItem(Colors.red, "Erro", subTextColor),
+              const SizedBox(width: 16),
+              _legendaItem(Colors.grey.shade400, "Sem registro", subTextColor),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // =========================================================
+  // MODAL DE DETALHAMENTO
+  // =========================================================
+  void _mostrarDetalhesDia(
+    BuildContext context,
+    int dia,
+    int mes,
+    int ano,
+    List<dynamic> ocorrencias,
+    bool isDarkMode,
   ) {
-    String numeros = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 550, maxHeight: 650),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0F62FE).withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: const Icon(
+                        Icons.fact_check_outlined,
+                        color: Color(0xFF0F62FE),
+                        size: 26,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Detalhamento das ocorrências",
+                            style: TextStyle(
+                              color: isDarkMode
+                                  ? Colors.white
+                                  : const Color(0xFF161616),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            "${ocorrencias.length} ocorrência(s) encontrada(s)",
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white70 : Colors.grey,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: isDarkMode ? Colors.white70 : Colors.grey,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: ocorrencias.isEmpty
+                      ? Center(
+                          child: Text(
+                            "Nenhum registro ou ocorrência neste dia.",
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white70 : Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: ocorrencias.length,
+                          itemBuilder: (context, index) {
+                            final oc = ocorrencias[index];
+                            final status = (oc.status ?? 'Conforme').toString();
+                            final hora = (oc.horaAnalise ?? '').toString();
+                            final camera = (oc.identificadorCamera ?? '')
+                                .toString();
+                            final ausentes = (oc.episAusente ?? '').toString();
 
-    if (numeros.length > 11) {
-      numeros = numeros.substring(0, 11);
-    }
+                            final String statusLower = status.toLowerCase();
+                            final bool ehRegular =
+                                (statusLower.contains("regular") &&
+                                    !statusLower.contains("irregular")) ||
+                                statusLower.contains("correto") ||
+                                statusLower.contains("conforme");
 
-    String formatado;
+                            final String dataFormatada =
+                                "$ano-${mes.toString().padLeft(2, '0')}-${dia.toString().padLeft(2, '0')}";
 
-    if (numeros.length <= 2) {
-      formatado = numeros;
-    } else if (numeros.length <= 7) {
-      formatado = '(${numeros.substring(0, 2)}) ${numeros.substring(2)}';
-    } else {
-      formatado =
-          '(${numeros.substring(0, 2)}) ${numeros.substring(2, 7)}-${numeros.substring(7)}';
-    }
+                            final bool temAusentes =
+                                ausentes.trim().isNotEmpty &&
+                                ausentes.trim().toLowerCase() != "nenhum";
 
-    return TextEditingValue(
-      text: formatado,
-      selection: TextSelection.collapsed(offset: formatado.length),
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 16),
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: isDarkMode
+                                    ? const Color(0xFF2A3B5C)
+                                    : const Color(0xFFF8FAFC),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: isDarkMode
+                                      ? Colors.white10
+                                      : Colors.grey.shade200,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Ocorrência ${index + 1}",
+                                        style: TextStyle(
+                                          color: isDarkMode
+                                              ? Colors.white
+                                              : const Color(0xFF161616),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: ehRegular
+                                              ? Colors.green.withOpacity(0.12)
+                                              : Colors.red.withOpacity(0.12),
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              ehRegular
+                                                  ? Icons.check_circle_outline
+                                                  : Icons.error_outline,
+                                              color: ehRegular
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                              size: 16,
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              status,
+                                              style: TextStyle(
+                                                color: ehRegular
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  _buildDetalheItemModal(
+                                    icon: Icons.calendar_today_outlined,
+                                    label: "Data",
+                                    value: dataFormatada,
+                                    isDarkMode: isDarkMode,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _buildDetalheItemModal(
+                                    icon: Icons.access_time_outlined,
+                                    label: "Horário",
+                                    value: hora.isNotEmpty
+                                        ? hora
+                                        : "Não informado",
+                                    isDarkMode: isDarkMode,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _buildDetalheItemModal(
+                                    icon: Icons.videocam_outlined,
+                                    label: "Câmera",
+                                    value: camera.isNotEmpty
+                                        ? camera
+                                        : "Não informado",
+                                    isDarkMode: isDarkMode,
+                                  ),
+                                  if (temAusentes) ...[
+                                    const SizedBox(height: 16),
+                                    const Text(
+                                      "EPIs ausentes",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.all(14),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red.withOpacity(0.08),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        ausentes,
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF0F62FE),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Text(
+                      "Fechar",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDetalheItemModal({
+    required IconData icon,
+    required String label,
+    required String value,
+    required bool isDarkMode,
+  }) {
+    final Color itemBoxColor = isDarkMode
+        ? const Color(0xFF1A2B4C)
+        : Colors.white;
+    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
+    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: itemBoxColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: const Color(0xFF0F62FE), size: 20),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: TextStyle(color: subTextColor, fontSize: 11)),
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _legendaItem(Color cor, String texto, Color textColor) {
+    return Row(
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: cor, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 6),
+        Text(texto, style: TextStyle(color: textColor, fontSize: 11)),
+      ],
+    );
+  }
+}
+
+// =========================================================
+// WIDGET DAS DICAS DE SEGURANÇA
+// =========================================================
+
+class _DicasSegurancaSecao extends StatelessWidget {
+  const _DicasSegurancaSecao();
+
+  @override
+  Widget build(BuildContext context) {
+    final accessibility = context.watch<AccessibilityController>();
+    final bool isDarkMode = (accessibility as dynamic).darkMode ?? false;
+
+    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
+    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
+    final Color itemBoxColor = isDarkMode
+        ? const Color(0xFF2A3B5C)
+        : const Color(0xFFF4F6FA);
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0F62FE),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.shield_outlined, color: Colors.white),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Dicas de\nSegurança",
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          _dicaItem(
+            Icons.security,
+            "Use sempre EPIs completos",
+            itemBoxColor,
+            textColor,
+          ),
+          const SizedBox(height: 12),
+          _dicaItem(
+            Icons.check_circle_outline,
+            "Verifique seus equipamentos",
+            itemBoxColor,
+            textColor,
+          ),
+          const SizedBox(height: 12),
+          _dicaItem(
+            Icons.warning_amber_rounded,
+            "Atenção às áreas de risco",
+            itemBoxColor,
+            textColor,
+          ),
+          const SizedBox(height: 12),
+          _dicaItem(
+            Icons.description_outlined,
+            "Siga as normas da empresa",
+            itemBoxColor,
+            textColor,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _dicaItem(
+    IconData icon,
+    String texto,
+    Color itemBoxColor,
+    Color textColor,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: itemBoxColor,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F62FE).withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: const Color(0xFF0F62FE), size: 22),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              texto,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

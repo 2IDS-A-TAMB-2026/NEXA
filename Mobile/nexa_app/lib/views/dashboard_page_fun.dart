@@ -6,6 +6,7 @@ import 'package:nexa_app/services/api_service.dart';
 import 'package:nexa_app/views/dashboard_cameras.dart';
 import 'package:nexa_app/views/institucional_page.dart';
 import 'package:nexa_app/views/profile_page.dart';
+import 'package:nexa_app/views/login_page.dart';
 import 'package:provider/provider.dart';
 
 class DashboardPageFun extends StatefulWidget {
@@ -21,15 +22,14 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
   bool carregando = true;
   String? erro;
 
+  late DateTime mesAtual;
+
   @override
   void initState() {
     super.initState();
+    mesAtual = DateTime(2026, 10);
     carregarDashboard();
   }
-
-  // =========================================================
-  // CARREGAR DASHBOARD PELA API
-  // =========================================================
 
   Future<void> carregarDashboard() async {
     if (!mounted) return;
@@ -60,10 +60,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
     }
   }
 
-  // =========================================================
-  // DARK MODE
-  // =========================================================
-
   bool verificarDarkMode(AccessibilityController accessibility) {
     try {
       return (accessibility as dynamic).darkMode ??
@@ -74,14 +70,15 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
     }
   }
 
-  // =========================================================
-  // BUILD
-  // =========================================================
+  void mudarMes(int delta) {
+    setState(() {
+      mesAtual = DateTime(mesAtual.year, mesAtual.month + delta, 1);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final accessibility = context.watch<AccessibilityController>();
-
     final bool isDarkMode = verificarDarkMode(accessibility);
 
     final Color backgroundColor = isDarkMode
@@ -93,7 +90,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
         : Colors.white;
 
     final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
     final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
 
     final String nome = dashboard?.funcionario.nome.isNotEmpty == true
@@ -110,20 +106,11 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-
-      // =====================================================
-      // DRAWER
-      // =====================================================
       drawer: _buildDrawer(context),
-
-      // =====================================================
-      // APP BAR
-      // =====================================================
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appBarColor,
         iconTheme: const IconThemeData(color: Color(0xFF0F62FE)),
-
         title: const Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -139,26 +126,19 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
             ),
           ),
         ),
-
         actions: [
-          // =================================================
-          // ACESSIBILIDADE
-          // =================================================
           PopupMenuButton<String>(
             icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F62FE)),
             tooltip: "Acessibilidade",
             onSelected: (value) {
               final accessibility = context.read<AccessibilityController>();
-
               switch (value) {
                 case 'aumentar':
                   accessibility.aumentarFonte();
                   break;
-
                 case 'diminuir':
                   accessibility.diminuirFonte();
                   break;
-
                 case 'escuro':
                   try {
                     (accessibility as dynamic).toggleDarkMode();
@@ -168,7 +148,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     } catch (_) {}
                   }
                   break;
-
                 case 'contraste':
                   try {
                     (accessibility as dynamic).toggleHighContrast();
@@ -178,19 +157,14 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     } catch (_) {}
                   }
                   break;
-
                 case 'ler':
                   final texto =
                       """
                   Bem-vindo $nome.
                   Empresa $empresa.
                   Dashboard do funcionário.
-                  Total de EPIs: ${dashboard?.epis.total ?? 0}.
-                  Total de ocorrências: ${dashboard?.ocorrencias.total ?? 0}.
-                  Ocorrências regulares: ${dashboard?.ocorrencias.regulares ?? 0}.
-                  Ocorrências irregulares: ${dashboard?.ocorrencias.irregulares ?? 0}.
+                  Calendário de atividades e dicas de segurança ativas.
                   """;
-
                   accessibility.lerTexto(texto);
                   break;
               }
@@ -206,9 +180,7 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                   ),
                 ),
               ),
-
               const PopupMenuDivider(),
-
               const PopupMenuItem<String>(
                 value: 'aumentar',
                 child: Row(
@@ -219,7 +191,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                   ],
                 ),
               ),
-
               const PopupMenuItem<String>(
                 value: 'diminuir',
                 child: Row(
@@ -230,7 +201,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                   ],
                 ),
               ),
-
               const PopupMenuItem<String>(
                 value: 'escuro',
                 child: Row(
@@ -241,7 +211,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                   ],
                 ),
               ),
-
               const PopupMenuItem<String>(
                 value: 'ler',
                 child: Row(
@@ -254,14 +223,9 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
               ),
             ],
           ),
-
-          // =================================================
-          // USUÁRIO
-          // =================================================
           LayoutBuilder(
             builder: (context, constraints) {
               final largura = MediaQuery.sizeOf(context).width;
-
               final double larguraPerfil = largura < 320
                   ? 76
                   : largura < 380
@@ -277,7 +241,9 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const PerfilPage()),
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardPageFun(),
+                      ),
                     );
                   },
                   child: Row(
@@ -333,21 +299,12 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
               );
             },
           ),
-
           const SizedBox(width: 15),
         ],
       ),
-
-      // =====================================================
-      // BODY
-      // =====================================================
       body: _buildBody(context, isDarkMode),
     );
   }
-
-  // =========================================================
-  // BODY
-  // =========================================================
 
   Widget _buildBody(BuildContext context, bool isDarkMode) {
     if (carregando) {
@@ -376,39 +333,39 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 24),
-
-                // ===========================================
-                // CALENDÁRIO + DICAS
-                // ===========================================
+                const SizedBox(height: 12),
                 isDesktop
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             flex: 3,
-                            child: CalendarioEPI(
-                              ocorrencias: dashboard!.ocorrencias.historico,
+                            child: CalendarioEPIInterativo(
+                              historico: dashboard!.ocorrencias.historico,
+                              mesAtual: mesAtual,
+                              onMudarMes: mudarMes,
+                              isDarkMode: isDarkMode,
                             ),
                           ),
-
                           const SizedBox(width: 24),
-
-                          const Expanded(flex: 2, child: _DicasSeguranca()),
+                          const Expanded(
+                            flex: 2,
+                            child: _DicasSegurancaSecao(),
+                          ),
                         ],
                       )
                     : Column(
                         children: [
-                          CalendarioEPI(
-                            ocorrencias: dashboard!.ocorrencias.historico,
+                          CalendarioEPIInterativo(
+                            historico: dashboard!.ocorrencias.historico,
+                            mesAtual: mesAtual,
+                            onMudarMes: mudarMes,
+                            isDarkMode: isDarkMode,
                           ),
-
                           const SizedBox(height: 24),
-
-                          const _DicasSeguranca(),
+                          const _DicasSegurancaSecao(),
                         ],
                       ),
-
                 const SizedBox(height: 24),
               ],
             ),
@@ -418,468 +375,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
     );
   }
 
-  // =========================================================
-  // CARDS DE RESUMO
-  // =========================================================
-
-  Widget _buildCardsResumo(bool isDarkMode, bool isDesktop) {
-    final ocorrencias = dashboard!.ocorrencias;
-
-    final epis = dashboard!.epis;
-
-    final cards = [
-      _ResumoCard(
-        titulo: "Ocorrências",
-        valor: ocorrencias.total.toString(),
-        descricao: "Total de análises realizadas",
-        icone: Icons.analytics_outlined,
-        cor: const Color(0xFF0F62FE),
-        isDarkMode: isDarkMode,
-      ),
-
-      _ResumoCard(
-        titulo: "Regulares",
-        valor: ocorrencias.regulares.toString(),
-        descricao: "Análises sem irregularidades",
-        icone: Icons.check_circle_outline,
-        cor: Colors.green,
-        isDarkMode: isDarkMode,
-      ),
-
-      _ResumoCard(
-        titulo: "Irregulares",
-        valor: ocorrencias.irregulares.toString(),
-        descricao: "Análises com irregularidades",
-        icone: Icons.warning_amber_rounded,
-        cor: Colors.red,
-        isDarkMode: isDarkMode,
-      ),
-
-      _ResumoCard(
-        titulo: "Meus EPIs",
-        valor: epis.total.toString(),
-        descricao: "EPIs vinculados ao funcionário",
-        icone: Icons.health_and_safety_outlined,
-        cor: const Color(0xFF7B61FF),
-        isDarkMode: isDarkMode,
-      ),
-    ];
-
-    if (isDesktop) {
-      return Row(
-        children: cards
-            .map(
-              (card) => Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: card,
-                ),
-              ),
-            )
-            .toList(),
-      );
-    }
-
-    return Column(
-      children: cards
-          .map(
-            (card) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: card,
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  // =========================================================
-  // ÚLTIMA VERIFICAÇÃO
-  // =========================================================
-
-  Widget _buildUltimaVerificacao(bool isDarkMode) {
-    final ultima = dashboard!.ocorrencias.ultimaVerificacao;
-
-    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
-
-    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
-    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
-
-    if (ultima == null) {
-      return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: cardColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.info_outline, color: Color(0xFF0F62FE)),
-            const SizedBox(width: 12),
-            Text(
-              "Nenhuma verificação realizada ainda.",
-              style: TextStyle(color: textColor, fontSize: 14),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final bool regular =
-        ultima.status.toLowerCase() == "regular" ||
-        ultima.status.toLowerCase() == "correto" ||
-        ultima.status.toLowerCase() == "conforme";
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0F62FE),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.fact_check_outlined,
-                  color: Colors.white,
-                ),
-              ),
-
-              const SizedBox(width: 14),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Última verificação",
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Resultado da análise mais recente",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: subTextColor, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 22),
-
-          Wrap(
-            spacing: 30,
-            runSpacing: 15,
-            children: [
-              _InfoItem(
-                titulo: "Data",
-                valor: ultima.dataAnalise,
-                textColor: textColor,
-                subTextColor: subTextColor,
-              ),
-
-              _InfoItem(
-                titulo: "Horário",
-                valor: ultima.horaAnalise,
-                textColor: textColor,
-                subTextColor: subTextColor,
-              ),
-
-              _InfoItem(
-                titulo: "Câmera",
-                valor: ultima.identificadorCamera.isNotEmpty
-                    ? ultima.identificadorCamera
-                    : "Não informado",
-                textColor: textColor,
-                subTextColor: subTextColor,
-              ),
-
-              _InfoItem(
-                titulo: "Status",
-                valor: ultima.status.isNotEmpty
-                    ? ultima.status
-                    : "Não informado",
-                textColor: regular ? Colors.green : Colors.red,
-                subTextColor: subTextColor,
-              ),
-            ],
-          ),
-
-          if (ultima.episDetectados.isNotEmpty ||
-              ultima.episAusente.isNotEmpty) ...[
-            const SizedBox(height: 20),
-
-            const Divider(),
-
-            const SizedBox(height: 15),
-
-            Text(
-              "EPIs detectados",
-              style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            Text(
-              ultima.episDetectados.isNotEmpty
-                  ? ultima.episDetectados
-                  : "Nenhum informado",
-              style: TextStyle(color: subTextColor, fontSize: 13),
-            ),
-
-            if (ultima.episAusente.isNotEmpty) ...[
-              const SizedBox(height: 12),
-
-              Text(
-                "EPIs ausentes",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              Text(
-                ultima.episAusente,
-                style: TextStyle(color: subTextColor, fontSize: 13),
-              ),
-            ],
-          ],
-        ],
-      ),
-    );
-  }
-
-  // =========================================================
-  // EPIs
-  // =========================================================
-
-  Widget _buildEpis(bool isDarkMode) {
-    final epis = dashboard!.epis.lista;
-
-    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
-
-    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
-    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.health_and_safety_outlined,
-                color: Color(0xFF0F62FE),
-                size: 27,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  "Meus EPIs",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 6),
-
-          Text(
-            "Equipamentos vinculados ao seu perfil",
-            style: TextStyle(color: subTextColor, fontSize: 13),
-          ),
-
-          const SizedBox(height: 20),
-
-          if (epis.isEmpty)
-            Text(
-              "Nenhum EPI cadastrado.",
-              style: TextStyle(color: subTextColor),
-            )
-          else
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: epis
-                  .map((epi) => _buildEpiItem(epi, isDarkMode))
-                  .toList(),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEpiItem(DashboardEpi epi, bool isDarkMode) {
-    final Color itemColor = isDarkMode
-        ? const Color(0xFF2A3B5C)
-        : const Color(0xFFF4F6FA);
-
-    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
-    return Container(
-      width: 220,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: itemColor,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F62FE).withOpacity(0.12),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.shield_outlined, color: Color(0xFF0F62FE)),
-          ),
-
-          const SizedBox(width: 12),
-
-          Expanded(
-            child: Text(
-              epi.nome.isNotEmpty ? epi.nome : "EPI",
-              style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // =========================================================
-  // CÂMERAS
-  // =========================================================
-
-  Widget _buildCameras(bool isDarkMode) {
-    final cameras = dashboard!.cameras;
-
-    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
-
-    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
-    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.videocam_outlined,
-                color: Color(0xFF0F62FE),
-                size: 27,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  "Câmeras do setor",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 6),
-
-          Text(
-            "Câmeras vinculadas ao seu setor",
-            style: TextStyle(color: subTextColor, fontSize: 13),
-          ),
-
-          const SizedBox(height: 20),
-
-          if (cameras.isEmpty)
-            Text(
-              "Nenhuma câmera encontrada.",
-              style: TextStyle(color: subTextColor),
-            )
-          else
-            Column(
-              children: cameras
-                  .map(
-                    (camera) =>
-                        _CameraItem(camera: camera, isDarkMode: isDarkMode),
-                  )
-                  .toList(),
-            ),
-        ],
-      ),
-    );
-  }
-
-  // =========================================================
-  // ERRO
-  // =========================================================
-
   Widget _buildErro({String? mensagem}) {
     return Center(
       child: Padding(
@@ -888,25 +383,19 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.error_outline, color: Colors.red, size: 52),
-
             const SizedBox(height: 16),
-
             const Text(
               "Não foi possível carregar o Dashboard",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 10),
-
             Text(
               mensagem ?? erro ?? "Verifique a conexão com a API.",
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),
-
             const SizedBox(height: 22),
-
             ElevatedButton.icon(
               onPressed: carregarDashboard,
               icon: const Icon(Icons.refresh),
@@ -921,10 +410,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
       ),
     );
   }
-
-  // =========================================================
-  // DRAWER
-  // =========================================================
 
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
@@ -952,7 +437,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
               },
             ),
           ),
-
           Positioned(
             bottom: 0,
             left: 0,
@@ -971,7 +455,6 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
               ),
             ),
           ),
-
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -994,9 +477,7 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                           );
                         },
                       ),
-
                       const SizedBox(width: 14),
-
                       const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1025,9 +506,7 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   child: Text(
@@ -1040,21 +519,18 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     ),
                   ),
                 ),
-
                 _menuItem(
                   icon: Icons.grid_view_rounded,
                   texto: "Dashboard",
                   isSelected: true,
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                 ),
-
                 _menuItem(
                   icon: Icons.videocam_outlined,
                   texto: "Análise de EPI",
                   isSelected: false,
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -1063,9 +539,7 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     );
                   },
                 ),
-
-                const SizedBox(height: 20),
-
+                const SizedBox(height: 15),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   child: Text(
@@ -1078,53 +552,48 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     ),
                   ),
                 ),
-
                 _menuItem(
                   icon: Icons.person_outline,
                   texto: "Perfil",
                   isSelected: false,
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const PerfilPage()),
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardPageFun(),
+                      ),
                     );
                   },
                 ),
-
                 const Spacer(),
-
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (_) => InstitucionalPage()),
-                        (route) => false,
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.black.withOpacity(0.2),
-                      side: const BorderSide(color: Colors.white38, width: 1),
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.logout, color: Colors.white, size: 20),
-                        SizedBox(width: 10),
-                        Text(
-                          "Sair do Sistema",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                LoginPage(onLogin: () {}, onVoltar: () {}),
                           ),
+                          (route) => false,
+                        );
+                      },
+                      icon: const Icon(Icons.logout, color: Colors.white),
+                      label: const Text(
+                        "Sair do Sistema",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.white38),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -1135,492 +604,84 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
       ),
     );
   }
-}
 
-// =========================================================
-// MENU ITEM
-// =========================================================
-
-Widget _menuItem({
-  required IconData icon,
-  required String texto,
-  required VoidCallback onTap,
-  bool isSelected = false,
-}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-    child: InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF0075E3) : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: Colors.white, size: 22),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Text(
-                texto,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        ),
+  Widget _menuItem({
+    required IconData icon,
+    required String texto,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF0F62FE) : Colors.transparent,
+        borderRadius: BorderRadius.circular(10),
       ),
-    ),
-  );
+      child: ListTile(
+        leading: Icon(icon, color: Colors.white),
+        title: Text(texto, style: const TextStyle(color: Colors.white)),
+        onTap: onTap,
+      ),
+    );
+  }
 }
 
 // =========================================================
-// CALENDÁRIO (CORRIGIDO PARA TELEMÓVEL)
+// WIDGET DO CALENDÁRIO INTERATIVO
 // =========================================================
 
-class CalendarioEPI extends StatefulWidget {
-  final List<DashboardOcorrencia> ocorrencias;
+class CalendarioEPIInterativo extends StatelessWidget {
+  final List<dynamic> historico;
+  final DateTime mesAtual;
+  final Function(int) onMudarMes;
+  final bool isDarkMode;
 
-  const CalendarioEPI({super.key, required this.ocorrencias});
+  const CalendarioEPIInterativo({
+    super.key,
+    required this.historico,
+    required this.mesAtual,
+    required this.onMudarMes,
+    required this.isDarkMode,
+  });
 
-  @override
-  State<CalendarioEPI> createState() => _CalendarioEPIState();
-}
-
-class _CalendarioEPIState extends State<CalendarioEPI> {
-  DateTime dataAtual = DateTime.now();
-
-  final meses = [
-    "JAN",
-    "FEV",
-    "MAR",
-    "ABR",
-    "MAI",
-    "JUN",
-    "JUL",
-    "AGO",
-    "SET",
-    "OUT",
-    "NOV",
-    "DEZ",
-  ];
-
-  // =========================================================
-  // RETORNA OCORRÊNCIAS DO DIA
-  // =========================================================
-
-  List<DashboardOcorrencia> ocorrenciasDoDia(int dia) {
-    return widget.ocorrencias.where((ocorrencia) {
-      final partes = ocorrencia.dataAnalise.split('-');
-
-      if (partes.length != 3) {
-        return false;
-      }
-
-      final ano = int.tryParse(partes[0]) ?? 0;
-
-      final mes = int.tryParse(partes[1]) ?? 0;
-
-      final diaOcorrencia = int.tryParse(partes[2]) ?? 0;
-
-      return ano == dataAtual.year &&
-          mes == dataAtual.month &&
-          diaOcorrencia == dia;
-    }).toList();
+  String _obterNomeMes(int mes) {
+    const meses = [
+      "JAN",
+      "FEV",
+      "MAR",
+      "ABR",
+      "MAI",
+      "JUN",
+      "JUL",
+      "AGO",
+      "SET",
+      "OUT",
+      "NOV",
+      "DEZ",
+    ];
+    return meses[mes - 1];
   }
 
-  void _abrirDetalhesOcorrencias(
-    BuildContext context,
-    List<DashboardOcorrencia> ocorrencias,
-    bool isDarkMode,
-  ) {
-    if (ocorrencias.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Não há ocorrências neste dia."),
-          backgroundColor: Colors.grey,
-        ),
-      );
-      return;
-    }
-
-    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
-
-    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
-    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
-
-    showDialog(
-      context: context,
-      builder: (dialogContext) {
-        return Dialog(
-          backgroundColor: cardColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
-          ),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 650, maxHeight: 700),
-            child: Padding(
-              padding: const EdgeInsets.all(26),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // =================================================
-                  // CABEÇALHO
-                  // =================================================
-
-                  Row(
-                    children: [
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0F62FE).withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: const Icon(
-                          Icons.fact_check_outlined,
-                          color: Color(0xFF0F62FE),
-                          size: 27,
-                        ),
-                      ),
-
-                      const SizedBox(width: 14),
-
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Detalhamento das ocorrências",
-                              style: TextStyle(
-                                color: textColor,
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-
-                            const SizedBox(height: 4),
-
-                            Text(
-                              "${ocorrencias.length} ocorrência(s) encontrada(s)",
-                              style: TextStyle(
-                                color: subTextColor,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(dialogContext);
-                        },
-                        icon: Icon(Icons.close, color: subTextColor),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  const Divider(),
-
-                  const SizedBox(height: 10),
-
-                  // =================================================
-                  // LISTA DE OCORRÊNCIAS
-                  // =================================================
-                  Flexible(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: ocorrencias.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 14),
-                      itemBuilder: (context, index) {
-                        final ocorrencia = ocorrencias[index];
-
-                        final String status = ocorrencia.status.isNotEmpty
-                            ? ocorrencia.status
-                            : "Não informado";
-
-                        final String statusLower = status.toLowerCase();
-
-                        final bool irregular =
-                            statusLower.contains("irregular") ||
-                            statusLower.contains("erro") ||
-                            statusLower.contains("inconforme");
-
-                        final Color statusColor = irregular
-                            ? Colors.red
-                            : Colors.green;
-
-                        return Container(
-                          padding: const EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            color: isDarkMode
-                                ? const Color(0xFF2A3B5C)
-                                : const Color(0xFFF4F6FA),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: statusColor.withOpacity(0.18),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // =====================================
-                              // NÚMERO + STATUS
-                              // =====================================
-
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Ocorrência ${index + 1}",
-                                      style: TextStyle(
-                                        color: textColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 11,
-                                      vertical: 6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: statusColor.withOpacity(0.12),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          irregular
-                                              ? Icons.warning_amber_rounded
-                                              : Icons.check_circle_outline,
-                                          color: statusColor,
-                                          size: 16,
-                                        ),
-
-                                        const SizedBox(width: 5),
-
-                                        Text(
-                                          status,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textScaler: const TextScaler.linear(
-                                            1.0,
-                                          ),
-                                          style: TextStyle(
-                                            color: statusColor,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(height: 18),
-
-                              // =====================================
-                              // DATA / HORÁRIO / CÂMERA
-                              // =====================================
-                              Wrap(
-                                spacing: 30,
-                                runSpacing: 15,
-                                children: [
-                                  _DetalheItem(
-                                    icone: Icons.calendar_today,
-                                    titulo: "Data",
-                                    valor: ocorrencia.dataAnalise,
-                                    textColor: textColor,
-                                    subTextColor: subTextColor,
-                                  ),
-
-                                  _DetalheItem(
-                                    icone: Icons.access_time,
-                                    titulo: "Horário",
-                                    valor: ocorrencia.horaAnalise,
-                                    textColor: textColor,
-                                    subTextColor: subTextColor,
-                                  ),
-
-                                  _DetalheItem(
-                                    icone: Icons.videocam_outlined,
-                                    titulo: "Câmera",
-                                    valor:
-                                        ocorrencia
-                                            .identificadorCamera
-                                            .isNotEmpty
-                                        ? ocorrencia.identificadorCamera
-                                        : "Não informado",
-                                    textColor: textColor,
-                                    subTextColor: subTextColor,
-                                  ),
-                                ],
-                              ),
-
-                              // =====================================
-                              // EPIS DETECTADOS
-                              // =====================================
-                              if (ocorrencia.episDetectados.isNotEmpty) ...[
-                                const SizedBox(height: 20),
-
-                                Text(
-                                  "EPIs detectados",
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 8),
-
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.withOpacity(0.08),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    ocorrencia.episDetectados,
-                                    style: TextStyle(
-                                      color: isDarkMode
-                                          ? Colors.white70
-                                          : Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-
-                              // =====================================
-                              // EPIS AUSENTES
-                              // =====================================
-                              if (ocorrencia.episAusente.isNotEmpty) ...[
-                                const SizedBox(height: 14),
-
-                                Text(
-                                  "EPIs ausentes",
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 8),
-
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red.withOpacity(0.08),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    ocorrencia.episAusente,
-                                    style: TextStyle(
-                                      color: isDarkMode
-                                          ? Colors.white70
-                                          : Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // =================================================
-                  // BOTÃO FECHAR
-                  // =================================================
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(dialogContext);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0F62FE),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        "Fechar",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  int _diasNoMes(DateTime data) {
+    return DateTime(data.year, data.month + 1, 0).day;
   }
 
   @override
   Widget build(BuildContext context) {
-    final accessibility = context.watch<AccessibilityController>();
-
-    bool isDarkMode = false;
-
-    try {
-      isDarkMode =
-          (accessibility as dynamic).darkMode ??
-          (accessibility as dynamic).isDarkMode ??
-          false;
-    } catch (_) {
-      isDarkMode = false;
-    }
-
     final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
-
     final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
-
     final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
-
-    final Color itemColor = isDarkMode
+    final Color dayBoxColor = isDarkMode
         ? const Color(0xFF2A3B5C)
         : const Color(0xFFF4F6FA);
 
-    final int mes = dataAtual.month;
-    final int ano = dataAtual.year;
-
-    final int diasNoMes = DateTime(ano, mes + 1, 0).day;
+    final int totalDias = _diasNoMes(mesAtual);
 
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
@@ -1635,20 +696,14 @@ class _CalendarioEPIState extends State<CalendarioEPI> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0F62FE),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(
-                  Icons.calendar_month_rounded,
-                  color: Colors.white,
-                  size: 22,
-                ),
+                child: const Icon(Icons.calendar_today, color: Colors.white),
               ),
-
-              const SizedBox(width: 15),
-
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1656,180 +711,466 @@ class _CalendarioEPIState extends State<CalendarioEPI> {
                     Text(
                       "Calendário",
                       style: TextStyle(
+                        color: textColor,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: textColor,
                       ),
                     ),
+                    const SizedBox(height: 2),
                     Text(
                       "Visualize os dias e suas atividades",
-                      style: TextStyle(fontSize: 13, color: subTextColor),
+                      style: TextStyle(color: subTextColor, fontSize: 13),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-
-          const SizedBox(height: 25),
-
+          const SizedBox(height: 24),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: const Icon(
-                  Icons.arrow_left,
-                  color: Color(0xFF0F62FE),
-                  size: 30,
-                ),
-                onPressed: () {
-                  setState(() {
-                    dataAtual = DateTime(
-                      dataAtual.year,
-                      dataAtual.month - 1,
-                      1,
-                    );
-                  });
-                },
+                onPressed: () => onMudarMes(-1),
+                icon: const Icon(Icons.chevron_left, color: Color(0xFF0F62FE)),
               ),
-
               Column(
                 children: [
                   Text(
-                    meses[mes - 1],
+                    _obterNomeMes(mesAtual.month),
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
                       color: Color(0xFF0F62FE),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
                   Text(
-                    "$ano",
-                    style: TextStyle(fontSize: 12, color: subTextColor),
+                    "${mesAtual.year}",
+                    style: TextStyle(color: subTextColor, fontSize: 11),
                   ),
                 ],
               ),
-
               IconButton(
-                icon: const Icon(
-                  Icons.arrow_right,
-                  color: Color(0xFF0F62FE),
-                  size: 30,
-                ),
-                onPressed: () {
-                  setState(() {
-                    dataAtual = DateTime(
-                      dataAtual.year,
-                      dataAtual.month + 1,
-                      1,
-                    );
-                  });
-                },
+                onPressed: () => onMudarMes(1),
+                icon: const Icon(Icons.chevron_right, color: Color(0xFF0F62FE)),
               ),
             ],
           ),
-
-          const SizedBox(height: 15),
-
-          // =========================================================
-          // GRID DO CALENDÁRIO COMchildAspectRatio E ESPAÇAMENTOS REDUZIDOS
-          // =========================================================
+          const SizedBox(height: 20),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: diasNoMes,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7,
-              crossAxisSpacing: 6,
-              mainAxisSpacing: 6,
-              childAspectRatio:
-                  0.85, // Dá espaço vertical para evitar overflow no telemóvel
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 1.0,
             ),
+            itemCount: totalDias,
             itemBuilder: (context, index) {
-              final int dia = index + 1;
-              final ocorrencias = ocorrenciasDoDia(dia);
+              final dia = index + 1;
 
-              Color bolinha = Colors.grey;
+              final String diaStr = dia.toString().padLeft(2, '0');
+              final String mesStr = mesAtual.month.toString().padLeft(2, '0');
+              final String dataFormatada = "${mesAtual.year}-$mesStr-$diaStr";
 
-              if (ocorrencias.isNotEmpty) {
-                final bool temErro = ocorrencias.any((ocorrencia) {
-                  final status = ocorrencia.status.toLowerCase();
-                  return status.contains("irregular") ||
-                      status.contains("erro") ||
-                      status.contains("inconforme");
-                });
+              final ocorrenciasDoDia = historico.where((h) {
+                final String dataAnalise = (h.dataAnalise ?? '').toString();
+                return dataAnalise.contains(dataFormatada) ||
+                    dataAnalise == "$diaStr/$mesStr/${mesAtual.year}";
+              }).toList();
 
-                bolinha = temErro ? Colors.red : Colors.green;
+              Color dotColor = Colors.grey.shade400;
+              bool temErro = false;
+              bool temCorreto = false;
+
+              if (ocorrenciasDoDia.isNotEmpty) {
+                for (var o in ocorrenciasDoDia) {
+                  final status = (o.status ?? '').toString().toLowerCase();
+                  if (status.contains('regular') ||
+                      status.contains('correto') ||
+                      status.contains('conforme')) {
+                    temCorreto = true;
+                  } else {
+                    temErro = true;
+                  }
+                }
+
+                if (temErro) {
+                  dotColor = Colors.red;
+                } else if (temCorreto) {
+                  dotColor = Colors.green;
+                }
               }
 
-              return Tooltip(
-                message: ocorrencias.isEmpty
-                    ? "Sem registros"
-                    : "${ocorrencias.length} ocorrência(s)",
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    if (ocorrencias.isNotEmpty) {
-                      _abrirDetalhesOcorrencias(
-                        context,
-                        ocorrencias,
-                        isDarkMode,
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    decoration: BoxDecoration(
-                      color: itemColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            "$dia",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Color(0xFF0F62FE),
-                            ),
-                          ),
+              return InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  _mostrarDetalhesDia(
+                    context,
+                    dia,
+                    mesAtual.month,
+                    mesAtual.year,
+                    ocorrenciasDoDia,
+                    isDarkMode,
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: dayBoxColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "$dia",
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
                         ),
-                        const SizedBox(height: 2),
-                        CircleAvatar(radius: 3, backgroundColor: bolinha),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: dotColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
             },
           ),
-
-          const SizedBox(height: 25),
-
-          // =========================================================
-          // LEGENDA ADAPTÁVEL (WRAP)
-          // =========================================================
-          Wrap(
-            spacing: 12,
-            runSpacing: 8,
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _LegendaItem(
-                cor: Colors.green,
-                texto: "Correto",
-                isDarkMode: isDarkMode,
-              ),
-              _LegendaItem(
-                cor: Colors.red,
-                texto: "Erro",
-                isDarkMode: isDarkMode,
-              ),
-              _LegendaItem(
-                cor: Colors.grey,
-                texto: "Sem registro",
-                isDarkMode: isDarkMode,
+              _legendaItem(Colors.green, "Correto", subTextColor),
+              const SizedBox(width: 16),
+              _legendaItem(Colors.red, "Erro", subTextColor),
+              const SizedBox(width: 16),
+              _legendaItem(Colors.grey.shade400, "Sem registro", subTextColor),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // =========================================================
+  // MODAL DE DETALHAMENTO (STATUS IRREGULAR COM CORREÇÃO DE COR)
+  // =========================================================
+  void _mostrarDetalhesDia(
+    BuildContext context,
+    int dia,
+    int mes,
+    int ano,
+    List<dynamic> ocorrencias,
+    bool isDarkMode,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 550, maxHeight: 650),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0F62FE).withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: const Icon(
+                        Icons.fact_check_outlined,
+                        color: Color(0xFF0F62FE),
+                        size: 26,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Detalhamento das ocorrências",
+                            style: TextStyle(
+                              color: isDarkMode
+                                  ? Colors.white
+                                  : const Color(0xFF161616),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            "${ocorrencias.length} ocorrência(s) encontrada(s)",
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white70 : Colors.grey,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: isDarkMode ? Colors.white70 : Colors.grey,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: ocorrencias.isEmpty
+                      ? Center(
+                          child: Text(
+                            "Nenhum registro ou ocorrência neste dia.",
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white70 : Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: ocorrencias.length,
+                          itemBuilder: (context, index) {
+                            final oc = ocorrencias[index];
+                            final status = (oc.status ?? 'Conforme').toString();
+                            final hora = (oc.horaAnalise ?? '').toString();
+                            final camera = (oc.identificadorCamera ?? '')
+                                .toString();
+                            final ausentes = (oc.episAusente ?? '').toString();
+
+                            final String statusLower = status.toLowerCase();
+                            final bool ehRegular =
+                                (statusLower.contains("regular") &&
+                                    !statusLower.contains("irregular")) ||
+                                statusLower.contains("correto") ||
+                                statusLower.contains("conforme");
+
+                            final String dataFormatada =
+                                "$ano-${mes.toString().padLeft(2, '0')}-${dia.toString().padLeft(2, '0')}";
+
+                            final bool temAusentes =
+                                ausentes.trim().isNotEmpty &&
+                                ausentes.trim().toLowerCase() != "nenhum";
+
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 16),
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: isDarkMode
+                                    ? const Color(0xFF2A3B5C)
+                                    : const Color(0xFFF8FAFC),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: isDarkMode
+                                      ? Colors.white10
+                                      : Colors.grey.shade200,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Ocorrência ${index + 1}",
+                                        style: TextStyle(
+                                          color: isDarkMode
+                                              ? Colors.white
+                                              : const Color(0xFF161616),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: ehRegular
+                                              ? Colors.green.withOpacity(0.12)
+                                              : Colors.red.withOpacity(0.12),
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              ehRegular
+                                                  ? Icons.check_circle_outline
+                                                  : Icons.error_outline,
+                                              color: ehRegular
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                              size: 16,
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              status,
+                                              style: TextStyle(
+                                                color: ehRegular
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  _buildDetalheItemModal(
+                                    icon: Icons.calendar_today_outlined,
+                                    label: "Data",
+                                    value: dataFormatada,
+                                    isDarkMode: isDarkMode,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _buildDetalheItemModal(
+                                    icon: Icons.access_time_outlined,
+                                    label: "Horário",
+                                    value: hora.isNotEmpty
+                                        ? hora
+                                        : "Não informado",
+                                    isDarkMode: isDarkMode,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _buildDetalheItemModal(
+                                    icon: Icons.videocam_outlined,
+                                    label: "Câmera",
+                                    value: camera.isNotEmpty
+                                        ? camera
+                                        : "Não informado",
+                                    isDarkMode: isDarkMode,
+                                  ),
+                                  if (temAusentes) ...[
+                                    const SizedBox(height: 16),
+                                    const Text(
+                                      "EPIs ausentes",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.all(14),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red.withOpacity(0.08),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        ausentes,
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF0F62FE),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Text(
+                      "Fechar",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDetalheItemModal({
+    required IconData icon,
+    required String label,
+    required String value,
+    required bool isDarkMode,
+  }) {
+    final Color itemBoxColor = isDarkMode
+        ? const Color(0xFF1A2B4C)
+        : Colors.white;
+    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
+    final Color subTextColor = isDarkMode ? Colors.white70 : Colors.grey;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: itemBoxColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: const Color(0xFF0F62FE), size: 20),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: TextStyle(color: subTextColor, fontSize: 11)),
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -1837,474 +1178,148 @@ class _CalendarioEPIState extends State<CalendarioEPI> {
       ),
     );
   }
-}
 
-// =========================================================
-// LEGENDA
-// =========================================================
-
-class _LegendaItem extends StatelessWidget {
-  final Color cor;
-  final String texto;
-  final bool isDarkMode;
-
-  const _LegendaItem({
-    required this.cor,
-    required this.texto,
-    required this.isDarkMode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _legendaItem(Color cor, String texto, Color textColor) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        CircleAvatar(radius: 4, backgroundColor: cor),
-        const SizedBox(width: 6),
-        Text(
-          texto,
-          style: TextStyle(
-            fontSize: 12,
-            color: isDarkMode ? Colors.white70 : Colors.black87,
-          ),
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: cor, shape: BoxShape.circle),
         ),
+        const SizedBox(width: 6),
+        Text(texto, style: TextStyle(color: textColor, fontSize: 11)),
       ],
     );
   }
 }
 
 // =========================================================
-// DICAS DE SEGURANÇA
+// WIDGET DAS DICAS DE SEGURANÇA
 // =========================================================
 
-class _DicasSeguranca extends StatelessWidget {
-  const _DicasSeguranca();
+class _DicasSegurancaSecao extends StatelessWidget {
+  const _DicasSegurancaSecao();
 
   @override
   Widget build(BuildContext context) {
     final accessibility = context.watch<AccessibilityController>();
+    final bool isDarkMode = (accessibility as dynamic).darkMode ?? false;
 
-    bool isDarkMode = false;
-
-    try {
-      isDarkMode =
-          (accessibility as dynamic).darkMode ??
-          (accessibility as dynamic).isDarkMode ??
-          false;
-    } catch (_) {
-      isDarkMode = false;
-    }
-
-    final Color cardColor = isDarkMode
-        ? const Color(0xFF1A2B4C)
-        : const Color(0xFFEBF3FF);
+    final Color cardColor = isDarkMode ? const Color(0xFF1A2B4C) : Colors.white;
+    final Color textColor = isDarkMode ? Colors.white : const Color(0xFF161616);
+    final Color itemBoxColor = isDarkMode
+        ? const Color(0xFF2A3B5C)
+        : const Color(0xFFF4F6FA);
 
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.shield_outlined, color: Color(0xFF0F62FE), size: 26),
-              SizedBox(width: 10),
-              Text(
-                "Dicas de\nSegurança",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF0F62FE),
-                  height: 1.1,
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0F62FE),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.shield_outlined, color: Colors.white),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Dicas de\nSegurança",
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-
-          const SizedBox(height: 20),
-
-          _cardDica(
-            icon: Icons.security_outlined,
-            texto: "Use sempre EPIs completos",
-            isDarkMode: isDarkMode,
+          const SizedBox(height: 24),
+          _dicaItem(
+            Icons.security,
+            "Use sempre EPIs completos",
+            itemBoxColor,
+            textColor,
           ),
-
-          _cardDica(
-            icon: Icons.check_circle_outline,
-            texto: "Verifique seus equipamentos",
-            isDarkMode: isDarkMode,
+          const SizedBox(height: 12),
+          _dicaItem(
+            Icons.check_circle_outline,
+            "Verifique seus equipamentos",
+            itemBoxColor,
+            textColor,
           ),
-
-          _cardDica(
-            icon: Icons.warning_amber_rounded,
-            texto: "Atenção às áreas de risco",
-            isDarkMode: isDarkMode,
+          const SizedBox(height: 12),
+          _dicaItem(
+            Icons.warning_amber_rounded,
+            "Atenção às áreas de risco",
+            itemBoxColor,
+            textColor,
           ),
-
-          _cardDica(
-            icon: Icons.description_outlined,
-            texto: "Siga as normas da empresa",
-            isDarkMode: isDarkMode,
+          const SizedBox(height: 12),
+          _dicaItem(
+            Icons.description_outlined,
+            "Siga as normas da empresa",
+            itemBoxColor,
+            textColor,
           ),
         ],
       ),
     );
   }
 
-  Widget _cardDica({
-    required IconData icon,
-    required String texto,
-    required bool isDarkMode,
-  }) {
-    final Color itemCardColor = isDarkMode
-        ? const Color(0xFF2A3B5C)
-        : Colors.white;
-
-    final Color itemTextColor = isDarkMode
-        ? Colors.white
-        : const Color(0xFF161616);
-
-    final Color iconBgColor = isDarkMode
-        ? const Color(0xFF1A2B4C)
-        : const Color(0xFFEBF3FF);
-
+  Widget _dicaItem(
+    IconData icon,
+    String texto,
+    Color itemBoxColor,
+    Color textColor,
+  ) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: itemCardColor,
+        color: itemBoxColor,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: iconBgColor,
-              borderRadius: BorderRadius.circular(10),
+              color: const Color(0xFF0F62FE).withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: const Color(0xFF0F62FE), size: 20),
+            child: Icon(icon, color: const Color(0xFF0F62FE), size: 22),
           ),
-
-          const SizedBox(width: 12),
-
+          const SizedBox(width: 14),
           Expanded(
             child: Text(
               texto,
               style: TextStyle(
-                fontSize: 13,
+                color: textColor,
                 fontWeight: FontWeight.w600,
-                color: itemTextColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// =========================================================
-// CARD DE RESUMO
-// =========================================================
-
-class _ResumoCard extends StatelessWidget {
-  final String titulo;
-  final String valor;
-  final String descricao;
-  final IconData icone;
-  final Color cor;
-  final bool isDarkMode;
-
-  const _ResumoCard({
-    required this.titulo,
-    required this.valor,
-    required this.descricao,
-    required this.icone,
-    required this.cor,
-    required this.isDarkMode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color(0xFF1A2B4C) : Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: cor.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icone, color: cor, size: 25),
-          ),
-
-          const SizedBox(width: 14),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  titulo,
-                  style: TextStyle(
-                    color: isDarkMode ? Colors.white70 : Colors.grey,
-                    fontSize: 12,
-                  ),
-                ),
-
-                const SizedBox(height: 3),
-
-                Text(
-                  valor,
-                  style: TextStyle(
-                    color: isDarkMode ? Colors.white : const Color(0xFF161616),
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 3),
-
-                Text(
-                  descricao,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: isDarkMode ? Colors.white54 : Colors.grey,
-                    fontSize: 10,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DetalheItem extends StatelessWidget {
-  final IconData icone;
-  final String titulo;
-  final String valor;
-  final Color textColor;
-  final Color subTextColor;
-
-  const _DetalheItem({
-    required this.icone,
-    required this.titulo,
-    required this.valor,
-    required this.textColor,
-    required this.subTextColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 34,
-          height: 34,
-          decoration: BoxDecoration(
-            color: const Color(0xFF0F62FE).withOpacity(0.10),
-            borderRadius: BorderRadius.circular(9),
-          ),
-          child: Icon(icone, color: const Color(0xFF0F62FE), size: 17),
-        ),
-        const SizedBox(width: 9),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                titulo,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: subTextColor, fontSize: 10),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                valor,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// =========================================================
-// ITEM DE INFORMAÇÃO
-// =========================================================
-
-class _InfoItem extends StatelessWidget {
-  final String titulo;
-  final String valor;
-  final Color textColor;
-  final Color subTextColor;
-
-  const _InfoItem({
-    required this.titulo,
-    required this.valor,
-    required this.textColor,
-    required this.subTextColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 70, maxWidth: 220),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            titulo,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: subTextColor, fontSize: 11),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            valor,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// =========================================================
-// ITEM DE CÂMERA
-// =========================================================
-
-class _CameraItem extends StatelessWidget {
-  final DashboardCamera camera;
-  final bool isDarkMode;
-
-  const _CameraItem({required this.camera, required this.isDarkMode});
-
-  @override
-  Widget build(BuildContext context) {
-    final bool ativa = camera.status.toLowerCase().contains("ativa");
-
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color(0xFF2A3B5C) : const Color(0xFFF4F6FA),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F62FE).withOpacity(0.12),
-              borderRadius: BorderRadius.circular(11),
-            ),
-            child: const Icon(
-              Icons.videocam_outlined,
-              color: Color(0xFF0F62FE),
-            ),
-          ),
-
-          const SizedBox(width: 12),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  camera.identificador.isNotEmpty
-                      ? camera.identificador
-                      : "Câmera",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: isDarkMode ? Colors.white : const Color(0xFF161616),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
-
-                const SizedBox(height: 4),
-
-                Text(
-                  camera.status.isNotEmpty
-                      ? camera.status
-                      : "Status não informado",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: isDarkMode ? Colors.white70 : Colors.grey,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: ativa
-                  ? Colors.green.withOpacity(0.12)
-                  : Colors.red.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              ativa ? "ATIVA" : "INATIVA",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textScaler: const TextScaler.linear(1.0),
-              style: TextStyle(
-                color: ativa ? Colors.green : Colors.red,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
+                fontSize: 13,
               ),
             ),
           ),

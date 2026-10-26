@@ -155,6 +155,18 @@ body{
    MÉTRICAS
 ========================================================== */
 
+
+
+
+/* Ícone e título na mesma linha */
+.metric-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+
 .metrics{
     display:grid;
     grid-template-columns: repeat(4,1fr);
@@ -162,18 +174,21 @@ body{
     margin-bottom:30px;
 }
 
-.metric{
-    background:#fff;
-    border-radius:22px;
-    padding:22px;
-    height:135px;
-    border:1px solid #edf2f7;
-    box-shadow: 0 8px 25px rgba(15,42,68,.06);
-    position:relative;
-    overflow:hidden;
-    transition:.25s;
-}
+.metric {
+    background: #fff;
+    border-radius: 22px;
+    padding: 18px 22px;
+    height: 145px;
+    min-width: 0;
+    border: 1px solid #edf2f7;
+    box-shadow: 0 8px 25px rgba(15, 42, 68, .06);
+    position: relative;
+    overflow: hidden;
+    transition: .25s;
 
+    display: flex;
+    flex-direction: column;
+}
 .metric:hover{
     transform:translateY(-5px);
     box-shadow: 0 15px 35px rgba(10,102,194,.12);
@@ -199,14 +214,29 @@ body{
     max-width:180px;
 }
 
-.metric span{
-    display:block;
-    margin-top:8px;
-    font-size:30px;
-    font-weight:700;
-    color:#17325c;
-}
 
+
+
+.metric > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+
+    width: 100%;
+    margin: 0;
+    padding-top: 5px;
+
+    font-size: clamp(24px, 2vw, 30px);
+    line-height: 1.2;
+    font-weight: 700;
+    color: #17325c;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+
+    position: relative;
+    z-index: 1;
+}
 .metric-icon{
     width:45px;
     height:45px;
@@ -758,3 +788,4 @@ body.contraste .metric:has(.camera) span,
 [data-theme="alto-contraste"] .metric:has(.camera) span {
     color: #ffffff !important;
 }
+

@@ -257,11 +257,15 @@ section h2 {
     margin-bottom: 15px;
 }
 
+
 section p {
-    max-width: 720px;
+    width: 100%;
+    max-width: none;
     font-size: 18px;
     color: var(--gray);
+    line-height: 1.7;
 }
+
 
 .visao_comp {
     background-color: #fff;
@@ -758,13 +762,15 @@ footer {
     margin-bottom: 15px;
 }
 
+
 .page .subtitle {
-    max-width: 900px;
+    width: 100%;
+    max-width: none;
     font-size: 18px;
     color: var(--gray);
     line-height: 1.7;
+    text-align: justify;
 }
-
 
 
 
@@ -1057,4 +1063,15 @@ footer {
         font-size: 17px;
     }
 
+}
+
+.page {
+    width: 100%;
+    padding: 90px 80px;
+}
+
+.page > p,
+.page .subtitle {
+    width: 100%;
+    max-width: none;
 }
