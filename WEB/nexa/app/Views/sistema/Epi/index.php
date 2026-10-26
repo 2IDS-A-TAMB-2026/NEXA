@@ -338,10 +338,10 @@
         let ordemAtual = 'asc';
 
         document.addEventListener("DOMContentLoaded", function () {
+    atualizarOpcoesEpi();
     renderizar();
     iniciarEventos();
 });
-
         function iniciarEventos() {
             const pesquisa = document.getElementById("pesquisaEpi");
             if (pesquisa) {
@@ -457,6 +457,66 @@
                 if (iconeTopo) iconeTopo.className = iconeClasse;
             });
         }
+
+
+        const tiposEpi = [
+    "Capacete",
+    "Luvas",
+    "Óculos de proteção",
+    "Botas de segurança",
+    "Máscara",
+    "Colete",
+    "Protetor auricular"
+];
+
+function normalizarNomeEpi(nome) {
+    return String(nome || "")
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+}
+
+function atualizarOpcoesEpi() {
+    const select = document.getElementById("nome_epi");
+
+    if (!select) return;
+
+    const selecionado = select.value;
+
+    // Tipos já cadastrados pelo administrador
+    const cadastrados = new Set(
+        epis.map(epi => normalizarNomeEpi(epi.NOME_EPI))
+    );
+
+    // Mantém apenas os tipos que ainda não foram cadastrados
+    const disponiveis = tiposEpi.filter(nome =>
+        !cadastrados.has(normalizarNomeEpi(nome))
+    );
+
+    select.innerHTML =
+        '<option value="">Selecione o EPI</option>';
+
+    disponiveis.forEach(nome => {
+        const option = document.createElement("option");
+        option.value = nome;
+        option.textContent = nome;
+        select.appendChild(option);
+    });
+
+    // Preserva a seleção quando ela ainda estiver disponível
+    if (disponiveis.includes(selecionado)) {
+        select.value = selecionado;
+    }
+
+    // Se todos os tipos já estiverem cadastrados
+    select.disabled = disponiveis.length === 0;
+
+    if (disponiveis.length === 0) {
+        select.innerHTML =
+            '<option value="">Todos os EPIs já foram cadastrados</option>';
+    }
+}
 
         function renderizar() {
             let lista = document.getElementById("lista");

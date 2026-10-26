@@ -53,60 +53,130 @@ if (!empty($ids)) {
     }
 
     // INSERIR
-    public function inserir()
-    {
-        $imagem = $this->request->getFile('imagem_epi');
+  public function inserir()
+{
+    $cpf = session()->get('cpf');
+    $nome = trim($this->request->getPost('nome_epi') ?? '');
+    $descricao = trim($this->request->getPost('des_epi') ?? '');
+    $imagem = $this->request->getFile('imagem_epi');
 
-        $nomeImagem = '';
+    if (!$cpf) {
+        return redirect()->to('/login');
+    }
 
-        if ($imagem && $imagem->isValid() && !$imagem->hasMoved()) {
-            $nomeImagem = $imagem->getRandomName();
-            $imagem->move(FCPATH . 'uploads/epis', $nomeImagem);
+    if (empty($nome) || empty($descricao)) {
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Preencha todos os campos obrigatórios.');
+    }
+
+    // Bloqueia EPI repetido para a mesma empresa/administrador
+    if ($this->epiJaCadastrado($nome, $cpf)) {
+        return redirect()->to('/epi')
+            ->with('error', 'Este tipo de EPI já está cadastrado!');
+    }
+
+    // Valida a imagem
+    if (!$imagem || !$imagem->isValid() || $imagem->hasMoved()) {
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Selecione uma imagem válida para o EPI.');
+    }
+
+    $nomeImagem = $imagem->getRandomName();
+
+    if (!$imagem->move(FCPATH . 'uploads/epis', $nomeImagem)) {
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Não foi possível salvar a imagem.');
+    }
+
+    $dados = [
+        'NOME_EPI' => $nome,
+        'IMAGEM_EPI' => $nomeImagem,
+        'DESCRICAO_EPI' => $descricao
+    ];
+
+    if (!$this->epiModel->insert($dados)) {
+        $caminhoImagem = FCPATH . 'uploads/epis/' . $nomeImagem;
+
+        if (is_file($caminhoImagem)) {
+            unlink($caminhoImagem);
         }
 
-        $dados = [
-            'NOME_EPI' => $this->request->getPost('nome_epi'),
-            'IMAGEM_EPI' => $nomeImagem,
-            'DESCRICAO_EPI' => $this->request->getPost('des_epi'),
-            //'FK_CPF_FUNCIONARIO' => $this->request->getPost('FK_CPF_FUNCIONARIO')
-        ];
-
-        
-        
-    
-      if (!$this->epiModel->insert($dados)) {
-    return redirect()->back()
-        ->withInput()
-        ->with('errors', $this->epiModel->errors());
-}
-
-$idEpi = $this->epiModel->getInsertID();
-
-$modelEpiAdm = new EpiAdmModel();
-
-$modelEpiAdm->insert([
-    'FK_EPI_ADM' => $idEpi,
-    'FK_ADMINISTRADOR_CPF' => session()->get('cpf')
-]);
-
-return redirect()->to('/epi')
-    ->with('sucesso', 'EPI cadastrado com sucesso!');
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Não foi possível cadastrar o EPI.');
     }
 
+    $idEpi = $this->epiModel->getInsertID();
 
-    public function atualizar($id)
-    {
-        $dados = [
-            'NOME_EPI' => $this->request->getPost('nome_epi'),
-            'DESCRICAO_EPI' => $this->request->getPost('des_epi'),
-            //'FK_CPF_FUNCIONARIO' => $this->request->getPost('FK_CPF_FUNCIONARIO')
-        ];
+    $modelEpiAdm = new EpiAdmModel();
 
-        $this->epiModel->update($id, $dados);
+    if (!$modelEpiAdm->insert([
+        'FK_EPI_ADM' => $idEpi,
+        'FK_ADMINISTRADOR_CPF' => $cpf
+    ])) {
+        $this->epiModel->delete($idEpi);
+
+        $caminhoImagem = FCPATH . 'uploads/epis/' . $nomeImagem;
+
+        if (is_file($caminhoImagem)) {
+            unlink($caminhoImagem);
+        }
 
         return redirect()->to('/epi')
-            ->with('sucesso', 'EPI atualizado com sucesso!');
+            ->with('error', 'Não foi possível vincular o EPI ao administrador.');
     }
+
+    return redirect()->to('/epi')
+        ->with('sucesso', 'EPI cadastrado com sucesso!');
+}
+
+
+ public function atualizar($id)
+{
+    $cpf = session()->get('cpf');
+
+    if (!$cpf) {
+        return redirect()->to('/login');
+    }
+
+    $nome = trim($this->request->getPost('nome_epi') ?? '');
+    $descricao = trim($this->request->getPost('des_epi') ?? '');
+
+    if (empty($nome) || empty($descricao)) {
+        return redirect()->to('/epi')
+            ->with('error', 'Preencha todos os campos obrigatórios.');
+    }
+
+    // Confirma que o EPI pertence ao administrador logado
+    $modelEpiAdm = new EpiAdmModel();
+
+    $relacao = $modelEpiAdm
+        ->where('FK_ADMINISTRADOR_CPF', $cpf)
+        ->where('FK_EPI_ADM', $id)
+        ->first();
+
+    if (!$relacao) {
+        return redirect()->to('/epi')
+            ->with('error', 'EPI não encontrado ou sem permissão para edição.');
+    }
+
+    // Ignora o próprio registro, mas bloqueia outros iguais
+    if ($this->epiJaCadastrado($nome, $cpf, $id)) {
+        return redirect()->to('/epi')
+            ->with('error', 'Já existe outro EPI desse tipo cadastrado!');
+    }
+
+    $this->epiModel->update($id, [
+        'NOME_EPI' => $nome,
+        'DESCRICAO_EPI' => $descricao
+    ]);
+
+    return redirect()->to('/epi')
+        ->with('sucesso', 'EPI atualizado com sucesso!');
+}
 
     // EXCLUIR
     public function excluir($id)
@@ -115,4 +185,48 @@ return redirect()->to('/epi')
 
         return redirect()->to('/epi');
     }
+
+
+
+
+    private function epiJaCadastrado($nome, $cpf, $ignorarId = null)
+{
+    $modelEpiAdm = new EpiAdmModel();
+
+    $relacoes = $modelEpiAdm
+        ->where('FK_ADMINISTRADOR_CPF', $cpf)
+        ->findAll();
+
+    $ids = array_column($relacoes, 'FK_EPI_ADM');
+
+    if (empty($ids)) {
+        return false;
+    }
+
+    $epis = $this->epiModel
+        ->whereIn('ID', $ids)
+        ->findAll();
+
+    $normalizar = function ($texto) {
+        return mb_strtolower(trim($texto), 'UTF-8');
+    };
+
+    foreach ($epis as $epi) {
+        if (
+            $ignorarId !== null &&
+            (int) $epi['ID'] === (int) $ignorarId
+        ) {
+            continue;
+        }
+
+        if (
+            $normalizar($epi['NOME_EPI']) ===
+            $normalizar($nome)
+        ) {
+            return true;
+        }
+    }
+
+    return false;
+}
 }

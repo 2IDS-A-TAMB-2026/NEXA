@@ -617,3 +617,26 @@ body.dark-mode .pagination span {
     background: #0A66C2;
     color: #ffffff;
 }
+
+/* ==========================================================
+   MASCOTE NEXA NAS OCORRÊNCIAS — identidade visual existente
+========================================================== */
+.ocorrencia-card-layout{display:grid;grid-template-columns:minmax(0,1fr) 224px;gap:18px;align-items:stretch}
+.ocorrencia-card-conteudo{min-width:0}
+.ocorrencia-mascote-painel{display:grid;grid-template-columns:94px minmax(0,1fr);align-items:center;gap:10px;padding:10px;border:1px solid #dbe9f6;border-radius:16px;background:linear-gradient(145deg,#f8fbff,#edf5ff);min-width:0}
+.ocorrencia-mascote-figura{position:relative;width:94px;aspect-ratio:3/4;align-self:center}
+.ocorrencia-mascote-figura img{display:block;width:100%;height:100%;object-fit:contain;border-radius:10px}
+.ocorrencia-mascote-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ocorrencia-mascote-overlay .ppe-highlight{display:none;stroke-width:12;stroke-linejoin:round;transition:fill .2s,stroke .2s}
+.ocorrencia-mascote-overlay .ppe-highlight.detectado{display:block;fill:rgba(34,197,94,.34);stroke:#16a34a;filter:drop-shadow(0 0 10px rgba(34,197,94,.8))}
+.ocorrencia-mascote-overlay .ppe-highlight.ausente{display:block;fill:rgba(239,68,68,.34);stroke:#ef4444;filter:drop-shadow(0 0 10px rgba(239,68,68,.8))}
+.ocorrencia-mascote-legenda{display:flex;flex-direction:column;gap:6px;min-width:0}
+.epi-resumo-status{display:flex;align-items:center;gap:5px;min-width:0;padding:6px 7px;border-radius:9px;font-size:10px;font-weight:700;line-height:1.2;overflow-wrap:anywhere}
+.epi-resumo-status.detectado{background:#eaf8ef;color:#15803d;border:1px solid #b9ebca}
+.epi-resumo-status.ausente{background:#fff0f0;color:#dc2626;border:1px solid #fecaca}
+.epi-resumo-vazio{font-size:10px;line-height:1.4;color:#7b8ba3;text-align:center}
+body.dark-mode .ocorrencia-mascote-painel{background:linear-gradient(145deg,#172638,#101d2c);border-color:#30465d}
+body.dark-mode .epi-resumo-status.detectado{background:#123625;color:#7ef0a5;border-color:#1e6842}
+body.dark-mode .epi-resumo-status.ausente{background:#3a1b24;color:#ff9aa5;border-color:#71303c}
+@media(max-width:1100px){.ocorrencia-card-layout{grid-template-columns:minmax(0,1fr) 190px}.ocorrencia-mascote-painel{grid-template-columns:78px minmax(0,1fr);gap:7px;padding:8px}.ocorrencia-mascote-figura{width:78px}.epi-resumo-status{font-size:9px;padding:5px}}
+@media(max-width:750px){.ocorrencia-card-layout{grid-template-columns:1fr}.ocorrencia-mascote-painel{grid-template-columns:100px minmax(0,1fr);justify-self:stretch}.ocorrencia-mascote-figura{width:100px}.ocorrencia-mascote-legenda{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.epi-resumo-status{font-size:10px}.info-grid{grid-template-columns:1fr 1fr}}

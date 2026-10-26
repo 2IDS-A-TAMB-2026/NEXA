@@ -22,7 +22,37 @@ class LoginFunController extends BaseController
 
         if ($funcionario) {
 
-            if (password_verify($senha, $funcionario['SENHA'])) {
+            // Primeiro, verifica senhas que já estão criptografadas.
+            $senhaValida = password_verify(
+                $senha,
+                $funcionario['SENHA']
+            );
+
+            // Compatibilidade temporária com senhas antigas em texto normal.
+            if (
+                !$senhaValida &&
+                hash_equals(
+                    (string) $funcionario['SENHA'],
+                    (string) $senha
+                )
+            ) {
+                $novaSenha = password_hash(
+                    $senha,
+                    PASSWORD_DEFAULT
+                );
+
+                // Atualiza somente a senha do funcionário encontrado.
+                $atualizou = $model->update(
+                    $funcionario['CPF'],
+                    ['SENHA' => $novaSenha]
+                );
+
+                if ($atualizou) {
+                    $senhaValida = true;
+                }
+            }
+
+            if ($senhaValida) {
 
                 session()->set([
                     'cpf_fun' => $funcionario['CPF'],

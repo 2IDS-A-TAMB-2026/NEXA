@@ -1,0 +1,8 @@
+NEXA — observacoes da versao preparada
+
+1. O arquivo .env foi sanitizado: a chave privada de API nao foi incluida no ZIP. Se voce utiliza deteccao via API, cole sua chave pessoal em ROBOFLOW_API_KEY.
+2. O banco configurado e BD_NEXA, com usuario root e senha vazia, padrao comum do XAMPP. Se sua instalacao tiver senha, atualize database.default.password no .env.
+3. O endereco baseURL esta configurado para http://192.168.0.113/nexa/public/. O celular e o computador precisam estar na mesma rede Wi-Fi e o Firewall deve permitir Apache/porta 80.
+4. Foi adicionada ao perfil do funcionario uma secao corporativa de visualizacao dos EPIs, com mascote ilustrativo e layout responsivo. O texto deixa claro que a ilustracao nao confirma deteccao em tempo real.
+5. A tela de ocorrencias ja continha o mascote com realce visual dos EPIs registrados; essa funcionalidade foi preservada.
+6. Faca backup da pasta atual antes de substituir arquivos. Teste login, perfil, ocorrencias e banco no XAMPP apos extrair.

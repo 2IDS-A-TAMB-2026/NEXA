@@ -201,6 +201,64 @@
     </div>
 
    <script>
+const mascoteOcorrenciaUrl = <?= json_encode(base_url('assets/images/mascote_nexa_3d_amarelo.png')) ?>;
+
+function normalizarEpiOcorrencia(nome) {
+    return String(nome || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+}
+
+function tipoEpiOcorrencia(nome) {
+    const n = normalizarEpiOcorrencia(nome);
+    if (n.includes('capacete')) return 'capacete';
+    if (n.includes('oculo')) return 'oculos';
+    if (n.includes('mascara') || n.includes('respirador')) return 'mascara';
+    if (n.includes('protetor auricular') || n.includes('protetor auditivo') || n.includes('abafador')) return 'protetor-auricular';
+    if (n.includes('colete') || n.includes('refletivo')) return 'colete';
+    if (n.includes('luva')) return 'luvas';
+    if (n.includes('bota') || n.includes('botina') || n.includes('calcado')) return 'botas';
+    return null;
+}
+
+function listaEpisOcorrencia(valor) {
+    const texto = String(valor || '').trim();
+    if (!texto || ['nenhum', 'nenhuma', 'n/a'].includes(normalizarEpiOcorrencia(texto))) return [];
+    return texto.split(/[,;|]+/).map(item => item.trim()).filter(Boolean);
+}
+
+function escaparHtmlOcorrencia(valor) {
+    return String(valor ?? '').replace(/[&<>"']/g, caractere => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[caractere]));
+}
+
+function montarMascoteOcorrencia(info) {
+    const detectados = listaEpisOcorrencia(info.EPIS_DETECTADOS);
+    const ausentes = listaEpisOcorrencia(info.EPIS_AUSENTE);
+    const defs = [
+        {key:'capacete', label:'Capacete', d:'M385 253 Q385 155 468 112 Q540 72 615 117 Q694 161 700 253 L700 274 Q545 305 385 274 Z'},
+        {key:'oculos', label:'Óculos', d:'M405 270 Q440 253 482 271 L521 286 L552 286 L590 270 Q635 252 675 274 L665 332 Q626 356 579 331 L542 318 L505 332 Q459 357 418 331 Z'},
+        {key:'mascara', label:'Máscara', d:'M426 342 Q541 315 658 343 L642 424 Q541 477 441 424 Z'},
+        {key:'protetor-auricular', label:'Protetor auricular', d:'M333 278 Q318 302 329 368 L350 407 L380 392 L372 302 Z M705 278 Q720 302 709 368 L688 407 L658 392 L666 302 Z'},
+        {key:'colete', label:'Colete refletivo', d:'M377 460 L447 449 L477 495 L610 495 L641 449 L710 461 L744 750 L687 795 L399 795 L343 750 Z'},
+        {key:'luvas', label:'Luvas', d:'M202 812 Q218 789 251 801 L299 829 L333 899 L318 950 Q294 982 263 962 L218 928 Q192 895 202 812 Z M744 829 L791 801 Q823 789 840 812 Q850 895 824 928 L779 962 Q748 982 724 950 L709 899 Z'},
+        {key:'botas', label:'Botas', d:'M302 1166 L478 1166 L484 1287 Q489 1311 479 1332 L276 1332 Q263 1324 267 1302 L282 1235 Z M555 1166 L730 1166 L755 1235 L771 1302 Q775 1324 762 1332 L559 1332 Q549 1311 553 1287 Z'}
+    ];
+    const status = {};
+    defs.forEach(def => {
+        const encontrado = detectados.some(item => tipoEpiOcorrencia(item) === def.key);
+        const ausente = ausentes.some(item => tipoEpiOcorrencia(item) === def.key);
+        status[def.key] = encontrado ? 'detectado' : (ausente ? 'ausente' : '');
+    });
+    const paths = defs.filter(def => status[def.key]).map(def => `<path class="ppe-highlight ${status[def.key]}" data-epi="${def.key}" d="${def.d}"/>`).join('');
+    const chips = defs.filter(def => status[def.key]).map(def => `<span class="epi-resumo-status ${status[def.key]}"><i class="fa-solid ${status[def.key] === 'detectado' ? 'fa-check' : 'fa-xmark'}"></i>${escaparHtmlOcorrencia(def.label)}</span>`).join('');
+    return `
+        <aside class="ocorrencia-mascote-painel" aria-label="Mascote e status dos EPIs">
+            <div class="ocorrencia-mascote-figura">
+                <img src="${mascoteOcorrenciaUrl}" alt="Mascote NEXA com equipamentos de segurança">
+                <svg class="ocorrencia-mascote-overlay" viewBox="0 0 1086 1448" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${paths}</svg>
+            </div>
+            <div class="ocorrencia-mascote-legenda">${chips || '<span class="epi-resumo-vazio">Sem status de EPI disponível</span>'}</div>
+        </aside>`;
+}
+
 const meses = [
     "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
     "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"
@@ -284,6 +342,8 @@ const statusClasse =
         ocorrenciasHTML += `
 
             <div class="ocorrencia-item">
+              <div class="ocorrencia-item-layout">
+                <div class="ocorrencia-item-conteudo">
 
                 <div class="ocorrencia-topo">
 
@@ -359,6 +419,9 @@ const statusClasse =
     }
 
 </div>
+                </div><!-- /ocorrencia-item-conteudo -->
+                ${montarMascoteOcorrencia(info)}
+              </div><!-- /ocorrencia-item-layout -->
             </div>
 
         `;
