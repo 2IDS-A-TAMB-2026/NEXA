@@ -7,8 +7,14 @@ import 'package:provider/provider.dart';
 class LoginPage extends StatefulWidget {
   final VoidCallback onLogin;
   final VoidCallback onVoltar;
+  final bool isLoggedOut; // Novo parâmetro para controlar o fluxo pós-logout
 
-  const LoginPage({super.key, required this.onLogin, required this.onVoltar});
+  const LoginPage({
+    super.key,
+    required this.onLogin,
+    required this.onVoltar,
+    this.isLoggedOut = false,
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -19,13 +25,8 @@ class _LoginPageState extends State<LoginPage> {
   final senhaController = TextEditingController();
 
   bool carregandoLogin = false;
-
   String? erroEmail;
   String? erroSenha;
-
-  // =========================================================
-  // LOGIN
-  // =========================================================
 
   Future<void> validar() async {
     setState(() {
@@ -72,83 +73,54 @@ class _LoginPageState extends State<LoginPage> {
       debugPrint('ERRO NO LOGIN');
       debugPrint('========================================');
       debugPrint('ERRO: $e');
-      debugPrint('TIPO: ${e.runtimeType}');
-      debugPrint('STACK TRACE:');
-      debugPrint('$stackTrace');
       debugPrint('========================================');
 
       if (!mounted) return;
 
       setState(() {
         carregandoLogin = false;
-
-        erroEmail =
-            '''
-
-
-${e.toString().replaceFirst('Exception: ', '')}
-''';
+        erroEmail = e.toString().replaceFirst('Exception: ', '');
       });
     }
   }
 
-  // =========================================================
-  // BUILD
-  // =========================================================
-
   @override
   Widget build(BuildContext context) {
     final largura = MediaQuery.of(context).size.width;
-
     final isMobile = largura < 800;
-
-    // PEGA O MESMO CONTROLLER GLOBAL
     final accessibility = context.watch<AccessibilityController>();
-
     final bool isDark = accessibility.darkMode;
 
     return Scaffold(
       backgroundColor: isDark
           ? const Color(0xFF0D1117)
           : const Color(0xFFF4F6FA),
-
       body: isMobile
           ? _mobileLayout(context, isDark)
           : _desktopLayout(context, isDark),
     );
   }
 
-  // =========================================================
-  // MOBILE
-  // =========================================================
-
   Widget _mobileLayout(BuildContext context, bool isDark) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // TOPO
           Container(
             width: double.infinity,
-
             padding: const EdgeInsets.only(top: 60, bottom: 50),
-
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF0A66C2), Color(0xFF003C8F)],
               ),
-
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
               ),
             ),
-
             child: Column(
               children: [
                 Image.asset("assets/logo_branco.png", height: 90),
-
                 const SizedBox(height: 10),
-
                 const Text(
                   "Login",
                   style: TextStyle(
@@ -160,50 +132,47 @@ ${e.toString().replaceFirst('Exception: ', '')}
               ],
             ),
           ),
-
-          // FORM
           Transform.translate(
             offset: const Offset(0, -30),
-
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 28),
-
               padding: const EdgeInsets.all(25),
-
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF161B22) : Colors.white,
-
                 borderRadius: BorderRadius.circular(20),
-
                 boxShadow: const [
                   BoxShadow(color: Colors.black12, blurRadius: 10),
                 ],
               ),
-
               child: Column(
                 children: [
-                  // VOLTAR
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-
-                      child: TextButton.icon(
-                        onPressed: widget.onVoltar,
-
-                        icon: const Icon(Icons.undo, color: Color(0xFF0A66C2)),
-
-                        label: const Text(
-                          "Voltar",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 36, 42, 224),
+                  // Exibe o botão de voltar apenas se não veio de um logout completo
+                  if (!widget.isLoggedOut)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            } else {
+                              widget.onVoltar();
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.undo,
+                            color: Color(0xFF0A66C2),
+                          ),
+                          label: const Text(
+                            "Voltar",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 36, 42, 224),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-
                   campo(
                     "E-mail",
                     Icons.email,
@@ -211,7 +180,6 @@ ${e.toString().replaceFirst('Exception: ', '')}
                     controller: emailController,
                     erro: erroEmail,
                   ),
-
                   campo(
                     "Senha",
                     Icons.lock,
@@ -220,47 +188,36 @@ ${e.toString().replaceFirst('Exception: ', '')}
                     isPassword: true,
                     erro: erroSenha,
                   ),
-
                   const SizedBox(height: 20),
-
                   ElevatedButton.icon(
                     onPressed: carregandoLogin ? null : validar,
-
                     icon: carregandoLogin
                         ? const SizedBox(
                             width: 22,
                             height: 22,
-
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               color: Colors.white,
                             ),
                           )
                         : const Icon(Icons.login, color: Colors.white),
-
                     label: Text(
                       carregandoLogin ? "Entrando..." : "Entrar",
-
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
-
                       backgroundColor: const Color(0xFF0A66C2),
-
                       disabledBackgroundColor: const Color(0xFF7AAEDC),
-
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 10),
                 ],
               ),
@@ -270,10 +227,6 @@ ${e.toString().replaceFirst('Exception: ', '')}
       ),
     );
   }
-
-  // =========================================================
-  // DESKTOP
-  // =========================================================
 
   Widget _desktopLayout(BuildContext context, bool isDark) {
     return Row(
@@ -285,74 +238,61 @@ ${e.toString().replaceFirst('Exception: ', '')}
                 colors: [Color(0xFF0A66C2), Color(0xFF003C8F)],
               ),
             ),
-
             child: Center(
               child: Image.asset("assets/logo_branco.png", height: 150),
             ),
           ),
         ),
-
         Expanded(
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(32),
-
                 child: Container(
                   width: 420,
-
                   padding: const EdgeInsets.all(35),
-
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF161B22) : Colors.white,
-
                     borderRadius: BorderRadius.circular(15),
-
                     boxShadow: const [
                       BoxShadow(color: Colors.black12, blurRadius: 10),
                     ],
                   ),
-
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-
-                        child: TextButton.icon(
-                          onPressed: widget.onVoltar,
-
-                          icon: const Icon(
-                            Icons.undo,
-                            color: Color(0xFF0A66C2),
+                      if (!widget.isLoggedOut)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton.icon(
+                            onPressed: () {
+                              if (Navigator.canPop(context)) {
+                                Navigator.pop(context);
+                              } else {
+                                widget.onVoltar();
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.undo,
+                              color: Color(0xFF0A66C2),
+                            ),
+                            label: const Text("Voltar"),
                           ),
-
-                          label: const Text("Voltar"),
                         ),
-                      ),
-
                       const SizedBox(height: 10),
-
                       Image.asset("assets/logo_branco.png", height: 60),
-
                       const SizedBox(height: 10),
-
                       Text(
                         "Login",
-
                         style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
-
                           color: isDark
                               ? Colors.white
                               : const Color(0xFF1F3C5B),
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
                       campo(
                         "E-mail",
                         Icons.email,
@@ -360,7 +300,6 @@ ${e.toString().replaceFirst('Exception: ', '')}
                         controller: emailController,
                         erro: erroEmail,
                       ),
-
                       campo(
                         "Senha",
                         Icons.lock,
@@ -369,30 +308,22 @@ ${e.toString().replaceFirst('Exception: ', '')}
                         isPassword: true,
                         erro: erroSenha,
                       ),
-
                       const SizedBox(height: 20),
-
                       ElevatedButton.icon(
                         onPressed: validar,
-
                         icon: const Icon(Icons.login, color: Colors.white),
-
                         label: const Text(
                           "Entrar",
                           style: TextStyle(color: Colors.white),
                         ),
-
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
-
                           backgroundColor: const Color(0xFF0A66C2),
-
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 10),
                     ],
                   ),
@@ -405,10 +336,6 @@ ${e.toString().replaceFirst('Exception: ', '')}
     );
   }
 
-  // =========================================================
-  // CAMPO
-  // =========================================================
-
   Widget campo(
     String label,
     IconData icon,
@@ -419,42 +346,28 @@ ${e.toString().replaceFirst('Exception: ', '')}
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
-
       child: TextField(
         controller: controller,
-
         obscureText: isPassword,
-
         style: TextStyle(color: isDark ? Colors.white : Colors.black),
-
         decoration: InputDecoration(
           labelText: label,
-
           labelStyle: TextStyle(
             color: isDark ? Colors.white70 : Colors.black87,
           ),
-
           errorText: erro,
-
           prefixIcon: Icon(icon, color: const Color(0xFF1F66B1)),
-
           filled: true,
-
           fillColor: isDark ? const Color(0xFF0D1117) : Colors.white,
-
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-
             borderSide: BorderSide(
               color: isDark ? Colors.white24 : Colors.black12,
             ),
           ),
-
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-
             borderSide: const BorderSide(color: Color(0xFF0A66C2), width: 2),
           ),
         ),
@@ -462,15 +375,10 @@ ${e.toString().replaceFirst('Exception: ', '')}
     );
   }
 
-  // =========================================================
-  // DISPOSE
-  // =========================================================
-
   @override
   void dispose() {
     emailController.dispose();
     senhaController.dispose();
-
     super.dispose();
   }
 }

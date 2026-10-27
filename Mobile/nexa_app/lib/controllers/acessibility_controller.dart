@@ -22,14 +22,17 @@ class AccessibilityController extends ChangeNotifier {
   }
 
   void aumentarFonte() {
-    if (_fontSizeScale >= 1.5) return;
-    _fontSizeScale = (_fontSizeScale + 0.2).clamp(0.8, 1.5).toDouble();
+    // Limite máximo reduzido para 1.15 para proteger o layout mobile
+    if (_fontSizeScale >= 1.15) return;
+    // Incremento ajustado para 0.05 para um aumento super suave
+    _fontSizeScale = (_fontSizeScale + 0.05).clamp(0.8, 1.15).toDouble();
     notifyListeners();
   }
 
   void diminuirFonte() {
     if (_fontSizeScale <= 0.8) return;
-    _fontSizeScale = (_fontSizeScale - 0.2).clamp(0.8, 1.5).toDouble();
+    // Decremento ajustado para 0.05 para manter a simetria
+    _fontSizeScale = (_fontSizeScale - 0.05).clamp(0.8, 1.15).toDouble();
     notifyListeners();
   }
 

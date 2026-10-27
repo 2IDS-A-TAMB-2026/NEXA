@@ -560,9 +560,7 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     Navigator.pop(context);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => const DashboardPageFun(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const PerfilPage()),
                     );
                   },
                 ),
@@ -573,11 +571,11 @@ class _DashboardPageFunState extends State<DashboardPageFun> {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       onPressed: () {
+                        // Redireciona para a página institucional e limpa o histórico de navegação
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (_) =>
-                                LoginPage(onLogin: () {}, onVoltar: () {}),
+                            builder: (_) => const InstitucionalPage(),
                           ),
                           (route) => false,
                         );
@@ -863,7 +861,7 @@ class CalendarioEPIInterativo extends StatelessWidget {
   }
 
   // =========================================================
-  // MODAL DE DETALHAMENTO (STATUS IRREGULAR COM CORREÇÃO DE COR)
+  // MODAL DE DETALHAMENTO
   // =========================================================
   void _mostrarDetalhesDia(
     BuildContext context,

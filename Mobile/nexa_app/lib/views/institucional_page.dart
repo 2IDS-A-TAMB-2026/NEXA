@@ -1190,7 +1190,7 @@ class FooterNexa extends StatelessWidget {
               ),
               const SizedBox(width: 15),
               const Text(
-                "© 2026",
+                "@ SENAI",
                 style: TextStyle(color: Colors.white38, fontSize: 11),
               ),
             ],
